@@ -473,8 +473,10 @@ int ebt_parse_icmp(const struct ebt_icmp_names *icmp_codes, size_t n_codes,
 
 	if (match < n_codes) {
 		type[0] = type[1] = icmp_codes[match].type;
-		code[0] = icmp_codes[match].code_min;
-		code[1] = icmp_codes[match].code_max;
+		if (code) {
+			code[0] = icmp_codes[match].code_min;
+			code[1] = icmp_codes[match].code_max;
+		}
 	} else {
 		char *next = parse_range(icmptype, 0, 255, number);
 		if (!next) {
@@ -486,17 +488,21 @@ int ebt_parse_icmp(const struct ebt_icmp_names *icmp_codes, size_t n_codes,
 		type[1] = (uint8_t) number[1];
 		switch (*next) {
 		case 0:
-			code[0] = 0;
-			code[1] = 255;
+			if (code) {
+				code[0] = 0;
+				code[1] = 255;
+			}
 			return 0;
 		case '/':
-			next = parse_range(next+1, 0, 255, number);
-			code[0] = (uint8_t) number[0];
-			code[1] = (uint8_t) number[1];
-			if (next == NULL)
-				return -1;
-			if (next && *next == 0)
-				return 0;
+			if (code) {
+				next = parse_range(next+1, 0, 255, number);
+				code[0] = (uint8_t) number[0];
+				code[1] = (uint8_t) number[1];
+				if (next == NULL)
+					return -1;
+				if (next && *next == 0)
+					return 0;
+			}
 		/* fallthrough */
 		default:
 			ebt_print_error("unknown character %c", *next);
@@ -508,6 +514,9 @@ int ebt_parse_icmp(const struct ebt_icmp_names *icmp_codes, size_t n_codes,
 
 static void print_icmp_code(uint8_t *code)
 {
+	if (!code)
+		return;
+
 	if (code[0] == code[1])
 		printf("/%"PRIu8 " ", code[0]);
 	else
@@ -529,8 +538,8 @@ void ebt_print_icmp_type(const struct ebt_icmp_names *icmp_codes,
 		if (icmp_codes[i].type != type[0])
 			continue;
 
-		if (icmp_codes[i].code_min == code[0] &&
-		    icmp_codes[i].code_max == code[1]) {
+		if (!code || (icmp_codes[i].code_min == code[0] &&
+			      icmp_codes[i].code_max == code[1])) {
 			printf("%s ", icmp_codes[i].name);
 			return;
 		}

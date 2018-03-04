@@ -25,6 +25,7 @@
 #define IP_SPORT  '5'
 #define IP_DPORT  '6'
 #define IP_ICMP   '7'
+#define IP_IGMP   '8'
 
 static struct option opts[] =
 {
@@ -40,6 +41,7 @@ static struct option opts[] =
 	{ "ip-destination-port" , required_argument, 0, IP_DPORT  },
 	{ "ip-dport"            , required_argument, 0, IP_DPORT  },
 	{ "ip-icmp-type"        , required_argument, 0, IP_ICMP   },
+	{ "ip-igmp-type"        , required_argument, 0, IP_IGMP   },
 	{ 0 }
 };
 
@@ -95,6 +97,14 @@ static const struct ebt_icmp_names icmp_codes[] = {
 	{ "address-mask-request", 17, 0, 0xFF },
 
 	{ "address-mask-reply", 18, 0, 0xFF }
+};
+
+static const struct ebt_icmp_names igmp_types[] = {
+	{ "membership-query", 0x11 },
+	{ "membership-report-v1", 0x12 },
+	{ "membership-report-v2", 0x16 },
+	{ "leave-group", 0x17 },
+	{ "membership-report-v3", 0x22 },
 };
 
 /* put the mask into 4 bytes */
@@ -162,10 +172,13 @@ static void print_help()
 "--ip-proto  [!] protocol      : ip protocol specification\n"
 "--ip-sport  [!] port[:port]   : tcp/udp source port or port range\n"
 "--ip-dport  [!] port[:port]   : tcp/udp destination port or port range\n"
-"--ip-icmp-type [!] type[[:type]/code[:code]] : icmp type/code or type/code range\n");
+"--ip-icmp-type [!] type[[:type]/code[:code]] : icmp type/code or type/code range\n"
+"--ip-igmp-type [!] type[:type]               : igmp type or type range\n");
 
 	printf("\nValid ICMP Types:\n");
 	ebt_print_icmp_types(icmp_codes, ARRAY_SIZE(icmp_codes));
+	printf("\nValid IGMP Types:\n");
+	ebt_print_icmp_types(igmp_types, ARRAY_SIZE(igmp_types));
 }
 
 static void init(struct ebt_entry_match *match)
@@ -183,6 +196,7 @@ static void init(struct ebt_entry_match *match)
 #define OPT_SPORT  0x10
 #define OPT_DPORT  0x20
 #define OPT_ICMP   0x40
+#define OPT_IGMP   0x80
 static int parse(int c, char **argv, int argc, const struct ebt_u_entry *entry,
    unsigned int *flags, struct ebt_entry_match **match)
 {
@@ -238,6 +252,16 @@ static int parse(int c, char **argv, int argc, const struct ebt_u_entry *entry,
 			ipinfo->invflags |= EBT_IP_ICMP;
 		if (ebt_parse_icmp(icmp_codes, ARRAY_SIZE(icmp_codes), optarg,
 				   ipinfo->icmp_type, ipinfo->icmp_code))
+			return 0;
+		break;
+
+	case IP_IGMP:
+		ebt_check_option2(flags, OPT_IGMP);
+		ipinfo->bitmask |= EBT_IP_IGMP;
+		if (ebt_check_inverse2(optarg))
+			ipinfo->invflags |= EBT_IP_IGMP;
+		if (ebt_parse_icmp(igmp_types, ARRAY_SIZE(igmp_types), optarg,
+				   ipinfo->igmp_type, NULL))
 			return 0;
 		break;
 
@@ -300,6 +324,12 @@ static void final_check(const struct ebt_u_entry *entry,
 	            ipinfo->protocol != IPPROTO_ICMP)) {
 		ebt_print_error("For ICMP filtering the IP protocol must be "
 				"1 (icmp)");
+	} else if ((ipinfo->bitmask & EBT_IP_IGMP) &&
+	         (!(ipinfo->bitmask & EBT_IP_PROTO) ||
+	            ipinfo->invflags & EBT_IP_PROTO ||
+	            ipinfo->protocol != IPPROTO_IGMP)) {
+		ebt_print_error("For IGMP filtering the IP protocol must be "
+				"2 (igmp)");
 	}
 }
 
@@ -365,6 +395,13 @@ static void print(const struct ebt_u_entry *entry,
 		ebt_print_icmp_type(icmp_codes, ARRAY_SIZE(icmp_codes),
 				    ipinfo->icmp_type, ipinfo->icmp_code);
 	}
+	if (ipinfo->bitmask & EBT_IP_IGMP) {
+		printf("--ip-igmp-type ");
+		if (ipinfo->invflags & EBT_IP_IGMP)
+			printf("! ");
+		ebt_print_icmp_type(igmp_types, ARRAY_SIZE(igmp_types),
+				    ipinfo->igmp_type, NULL);
+	}
 }
 
 static int compare(const struct ebt_entry_match *m1,
@@ -412,6 +449,11 @@ static int compare(const struct ebt_entry_match *m1,
 		    ipinfo1->icmp_type[1] != ipinfo2->icmp_type[1] ||
 		    ipinfo1->icmp_code[0] != ipinfo2->icmp_code[0] ||
 		    ipinfo1->icmp_code[1] != ipinfo2->icmp_code[1])
+			return 0;
+	}
+	if (ipinfo1->bitmask & EBT_IP_IGMP) {
+		if (ipinfo1->igmp_type[0] != ipinfo2->igmp_type[0] ||
+		    ipinfo1->igmp_type[1] != ipinfo2->igmp_type[1])
 			return 0;
 	}
 	return 1;
