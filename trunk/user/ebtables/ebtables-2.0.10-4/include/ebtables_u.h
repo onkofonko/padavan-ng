@@ -222,6 +222,15 @@ struct ebt_u_target
 	struct ebt_u_target *next;
 };
 
+
+struct ebt_icmp_names {
+	const char *name;
+	uint8_t type;
+	uint8_t code_min, code_max;
+};
+
+
+
 /* libebtc.c */
 
 extern struct ebt_u_table *ebt_tables;
@@ -300,10 +309,16 @@ void ebt_print_mac_and_mask(const unsigned char *mac, const unsigned char *mask)
 int ebt_get_mac_and_mask(const char *from, unsigned char *to, unsigned char *mask);
 void ebt_parse_ip_address(char *address, uint32_t *addr, uint32_t *msk);
 char *ebt_mask_to_dotted(uint32_t mask);
-void ebt_parse_ip6_address(char *address, struct in6_addr *addr, 
+void ebt_parse_ip6_address(char *address, struct in6_addr *addr,
 						   struct in6_addr *msk);
 char *ebt_ip6_to_numeric(const struct in6_addr *addrp);
 
+int ebt_parse_icmp(const struct ebt_icmp_names *icmp_codes, size_t n_codes,
+		   const char *icmptype, uint8_t type[], uint8_t code[]);
+void ebt_print_icmp_type(const struct ebt_icmp_names *icmp_codes,
+			 size_t n_codes, uint8_t *type, uint8_t *code);
+void ebt_print_icmp_types(const struct ebt_icmp_names *icmp_codes,
+			  size_t n_codes);
 
 int do_command(int argc, char *argv[], int exec_style,
                struct ebt_u_replace *replace_);
