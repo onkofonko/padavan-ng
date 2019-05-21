@@ -4,6 +4,7 @@
 #include <linux/mii.h>
 #include <linux/if_vlan.h>
 #include <linux/skbuff.h>
+#include <linux/interrupt.h>
 
 #include <asm/rt2880/rt_mmap.h>
 #include <asm/rt2880/surfboard.h>
