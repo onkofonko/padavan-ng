@@ -546,9 +546,6 @@ EOF
 # Custom user conf file for OpenVPN server
 # Please add needed params only!
 
-### Negotiable Crypto Parameters
-ncp-disable
-
 ### Max clients limit
 max-clients 10
 
@@ -580,9 +577,6 @@ EOF
 			cat > "$user_ovpncli_conf" <<EOF
 # Custom user conf file for OpenVPN client
 # Please add needed params only!
-
-### Negotiable Crypto Parameters
-ncp-disable
 
 ### If your server certificates with the nsCertType field set to "server"
 remote-cert-tls server
