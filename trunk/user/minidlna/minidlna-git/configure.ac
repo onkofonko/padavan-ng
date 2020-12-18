@@ -561,6 +561,23 @@ AC_ARG_ENABLE(tivo,
 	]
 )
 
+AC_MSG_CHECKING([whether to enable ASUS support])
+AC_ARG_ENABLE(asus,
+	[  --enable-asus           enable ASUS support],[
+	if test "$enableval" = "yes"; then
+		AC_DEFINE(ASUS_SUPPORT, 1, [Define to 1 if you want to enable ASUS support])
+		AM_CONDITIONAL(ASUS_SUPPORT, true)
+		AC_MSG_RESULT([yes])
+	else
+		AM_CONDITIONAL(ASUS_SUPPORT, false)
+		AC_MSG_RESULT([no])
+	fi
+	],[
+		AM_CONDITIONAL(ASUS_SUPPORT, false)
+		AC_MSG_RESULT([no])
+	]
+)
+
 AC_MSG_CHECKING([whether to enable generic NETGEAR device support])
 AC_ARG_ENABLE(netgear,
 	[  --enable-netgear        enable generic NETGEAR device support],[
