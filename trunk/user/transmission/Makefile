@@ -20,7 +20,7 @@ config_test:
 
 configure:
 	( cd $(SRC_NAME) ; \
-	./autogen.sh ; \
+	autoreconf -fi ; \
 	./configure \
 		--prefix=/usr \
 		--enable-daemon \

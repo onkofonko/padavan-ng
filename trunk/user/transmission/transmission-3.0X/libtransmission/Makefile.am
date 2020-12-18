@@ -42,7 +42,6 @@ libtransmission_a_SOURCES = \
   magnet.c \
   makemeta.c \
   metainfo.c \
-  natpmp.c \
   net.c \
   peer-io.c \
   peer-mgr.c \
@@ -68,7 +67,6 @@ libtransmission_a_SOURCES = \
   tr-utp.c \
   tr-getopt.c \
   trevent.c \
-  upnp.c \
   utils.c \
   variant.c \
   variant-benc.c \
@@ -139,7 +137,6 @@ noinst_HEADERS = \
   magnet.h \
   makemeta.h \
   metainfo.h \
-  natpmp_local.h \
   net.h \
   peer-common.h \
   peer-io.h \

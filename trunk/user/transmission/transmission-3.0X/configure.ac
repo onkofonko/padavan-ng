@@ -458,9 +458,9 @@ LIBS="$ac_save_LIBS"
 AC_MSG_RESULT([$upnp_version])
 AM_CONDITIONAL([BUILD_MINIUPNP],[test "x$upnp_version" = "xnone"])
 if test "x$upnp_version" = "xnone" ; then
-    LIBUPNP_CFLAGS="-I\$(top_builddir)/third-party/miniupnpc/include"
-    LIBUPNP_LIBS="\$(top_builddir)/third-party/miniupnpc/libminiupnp.a"
-    LIBUPNP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/libminiupnp.a"
+    LIBUPNP_CFLAGS=""
+    LIBUPNP_LIBS=""
+    LIBUPNP_LIBS_QT=""
 else
     AC_DEFINE([SYSTEM_MINIUPNP])
     LIBUPNP_CFLAGS="" 
@@ -478,9 +478,9 @@ dnl ----------------------------------------------------------------------------
 dnl
 dnl  Allow usage of system natpmp library 
 
-LIBNATPMP_CFLAGS="-I\$(top_srcdir)/third-party/libnatpmp/" 
-LIBNATPMP_LIBS="\$(top_builddir)/third-party/libnatpmp/libnatpmp.a" 
-LIBNATPMP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/libnatpmp.a" 
+LIBNATPMP_CFLAGS="" 
+LIBNATPMP_LIBS="" 
+LIBNATPMP_LIBS_QT="" 
 build_bundled_natpmp="yes" 
 AC_ARG_ENABLE([external-natpmp], 
               AS_HELP_STRING([--enable-external-natpmp],[Use system external-natpmp]), 
@@ -649,7 +649,6 @@ dnl
 dnl  Generate the output
 
 AC_CONFIG_FILES([Makefile
-                 transmission-gtk.spec
                  cli/Makefile
                  daemon/Makefile
                  extras/Makefile
@@ -658,12 +657,6 @@ AC_CONFIG_FILES([Makefile
                  third-party/dht/Makefile
                  third-party/libb64/Makefile
                  third-party/libutp/Makefile
-                 third-party/libnatpmp/Makefile
-                 third-party/miniupnpc/Makefile
-                 macosx/Makefile
-                 gtk/Makefile
-                 gtk/icons/Makefile
-                 qt/config.pri
                  web/Makefile
                  web/images/Makefile
                  web/style/Makefile

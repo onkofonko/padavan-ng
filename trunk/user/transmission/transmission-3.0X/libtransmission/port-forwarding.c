@@ -13,7 +13,6 @@
 #include <event2/event.h>
 
 #include "transmission.h"
-#include "natpmp_local.h"
 #include "log.h"
 #include "net.h"
 #include "peer-mgr.h"
@@ -21,7 +20,6 @@
 #include "session.h"
 #include "torrent.h"
 #include "tr-assert.h"
-#include "upnp.h"
 #include "utils.h"
 
 static char const* getKey(void)
@@ -38,8 +36,6 @@ struct tr_shared
     tr_port_forwarding natpmpStatus;
     tr_port_forwarding upnpStatus;
 
-    tr_upnp* upnp;
-    tr_natpmp* natpmp;
     tr_session* session;
 
     struct event* timer;
@@ -72,6 +68,7 @@ static char const* getNatStateStr(int state)
 
 static void natPulse(tr_shared* s, bool do_check)
 {
+#if 0
     int oldStatus;
     int newStatus;
     tr_port public_peer_port;
@@ -106,6 +103,10 @@ static void natPulse(tr_shared* s, bool do_check)
         tr_logAddNamedInfo(getKey(), _("State changed from \"%1$s\" to \"%2$s\""), getNatStateStr(oldStatus),
             getNatStateStr(newStatus));
     }
+#else
+    s->natpmpStatus = TR_PORT_UNMAPPED;
+    s->upnpStatus = TR_PORT_UNMAPPED;
+#endif
 }
 
 static void set_evtimer_from_status(tr_shared* s)
@@ -196,6 +197,7 @@ static void stop_forwarding(tr_shared* s)
     tr_logAddNamedInfo(getKey(), "%s", _("Stopped"));
     natPulse(s, false);
 
+#if 0
     tr_natpmpClose(s->natpmp);
     s->natpmp = NULL;
     s->natpmpStatus = TR_PORT_UNMAPPED;
@@ -203,6 +205,10 @@ static void stop_forwarding(tr_shared* s)
     tr_upnpClose(s->upnp);
     s->upnp = NULL;
     s->upnpStatus = TR_PORT_UNMAPPED;
+#else
+    s->natpmpStatus = TR_PORT_UNMAPPED;
+    s->upnpStatus = TR_PORT_UNMAPPED;
+#endif;
 
     stop_timer(s);
 }

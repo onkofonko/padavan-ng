@@ -8,12 +8,6 @@ if !WIN32
   DAEMON_DIR = daemon
 endif
 endif
-if BUILD_GTK
-  GTK_DIR = gtk po
-endif
-if BUILD_MAC
-  MAC_DIR = macosx
-endif
 
 SUBDIRS = \
   extras \
@@ -32,8 +26,7 @@ EXTRA_DIST = \
   COPYING \
   README.md \
   autogen.sh \
-  update-version-h.sh \
-  Transmission.xcodeproj/project.pbxproj
+  update-version-h.sh
 
 EXTRA_DIST += \
   CMakeLists.txt \
