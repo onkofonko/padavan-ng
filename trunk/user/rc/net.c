@@ -780,10 +780,15 @@ reload_nat_modules(void)
 	if (sfe_loaded && !sfe_enable) {
 		module_smart_unload("fast_classifier", 1);
 		sfe_loaded = 0;
+		fput_int("/proc/sys/net/netfilter/nf_conntrack_tcp_be_liberal", 1);
+		fput_int("/proc/sys/net/netfilter/nf_conntrack_tcp_no_window_check", 1);
 	}
 	if (sfe_enable && !sfe_loaded) {
 		module_smart_load("fast_classifier", NULL);
 		sfe_loaded = 1;
+		fput_int("/proc/sys/net/netfilter/nf_conntrack_tcp_be_liberal", 0);
+		fput_int("/proc/sys/net/netfilter/nf_conntrack_tcp_no_window_check", 0);
+
 	}
 	if (sfe_loaded && ((sfe_enable == 1) || (sfe_enable == 2 ))) {
 			fput_int("/sys/fast_classifier/skip_to_bridge_ingress", sfe_enable - 1);
