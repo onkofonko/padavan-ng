@@ -1402,6 +1402,7 @@ fe_delivery_system_t dvb_delsys(int aid, int fd, fe_delivery_system_t *sys)
 	return (fe_delivery_system_t)rv;
 }
 
+#ifndef OLD_SIGNAL_API
 // returns the strength and SNR between 0 .. 65535
 
 void get_signal(adapter *ad, int *status, uint32_t *ber, uint16_t *strength, uint16_t *snr)
@@ -1576,6 +1577,143 @@ void dvb_get_signal(adapter *ad)
 		adapter_unlock(ad->id);
 	}
 }
+
+#else
+
+void get_signal(int fd, uint32_t * status, uint32_t * ber, uint16_t * strength, uint16_t * snr)
+{
+	*status = *ber = *snr = *strength = 0;
+
+	if (ioctl(fd, FE_READ_STATUS, status) < 0)
+	{
+		LOG("ioctl FE_READ_STATUS failed (%s)", strerror (errno));
+		*status = 0;
+		return;
+	}
+//	*status = (*status & FE_HAS_LOCK) ? 1 : 0;
+	if (*status)
+	{
+		if (ioctl(fd, FE_READ_BER, ber) < 0)
+			LOG("ioctl FE_READ_BER failed (%s)", strerror (errno));
+
+		if (ioctl(fd, FE_READ_SIGNAL_STRENGTH, strength) < 0)
+			LOG("ioctl FE_READ_SIGNAL_STRENGTH failed (%s)", strerror (errno));
+
+		if (ioctl(fd, FE_READ_SNR, snr) < 0)
+			LOG("ioctl FE_READ_SNR failed (%s)", strerror (errno));
+	}
+}
+
+int get_signal_new(int fd, uint32_t * status, uint32_t * ber, uint16_t * strength, uint16_t * snr)
+{
+
+	*status = *snr = *ber = *strength = 0;
+
+#if DVBAPIVERSION >= 0x050A
+	int err = 0;
+	static struct dtv_property enum_cmdargs[] =
+	{
+		{ .cmd = DTV_STAT_SIGNAL_STRENGTH, .u.data = 0 },
+		{ .cmd = DTV_STAT_CNR, .u.data = 0 },
+		{ .cmd = DTV_STAT_ERROR_BLOCK_COUNT, .u.data = 0 },
+	};
+	static struct dtv_properties enum_cmdseq =
+	{ .num = sizeof(enum_cmdargs) / sizeof(struct dtv_property), .props =
+				enum_cmdargs };
+
+	if (ioctl(fd, FE_GET_PROPERTY, &enum_cmdseq) < 0)
+	{
+		LOG("get_signal_new: unable to query frontend %d: %s", fd,
+						strerror (errno));
+		err = 100;
+	}
+
+	if (enum_cmdargs[0].u.st.stat[0].scale == FE_SCALE_RELATIVE)
+		*strength = enum_cmdargs[0].u.st.stat[0].uvalue;
+	else if (enum_cmdargs[0].u.st.stat[0].scale == FE_SCALE_DECIBEL)
+		*strength = enum_cmdargs[0].u.st.stat[0].uvalue;
+	else
+		err++;
+
+	if (enum_cmdargs[1].u.st.stat[0].scale == FE_SCALE_RELATIVE)
+		*snr = enum_cmdargs[1].u.st.stat[0].uvalue;
+	else if (enum_cmdargs[1].u.st.stat[0].scale == FE_SCALE_DECIBEL)
+		*snr = enum_cmdargs[1].u.st.stat[0].uvalue;
+	else
+		err++;
+
+	*ber = enum_cmdargs[2].u.st.stat[0].uvalue & 0xFFFF;
+
+	if (err)
+		LOG(
+			"get_signal_new returned: Signal (%d): %llu, SNR(%d): %llu, BER: %llu, err %d",
+			enum_cmdargs[0].u.st.stat[0].scale,
+			enum_cmdargs[0].u.st.stat[0].uvalue,
+			enum_cmdargs[1].u.st.stat[0].scale,
+			enum_cmdargs[1].u.st.stat[0].uvalue,
+			enum_cmdargs[2].u.st.stat[0].uvalue, err);
+	if (err)
+		return err;
+
+	if (ioctl(fd, FE_READ_STATUS, status) < 0)
+	{
+		LOG("ioctl FE_READ_STATUS failed (%s)", strerror (errno));
+		*status = 0;
+		return -1;
+	}
+
+	if (*status && !*strength)
+		return -1;
+	return 0;
+#else
+	return -1;
+#endif
+}
+
+void dvb_get_signal(adapter *ad)
+{
+	int new_gs = 1;
+	uint16_t strength = 0, snr = 0;
+	uint32_t status = 0, ber = 0;
+	if (ad->new_gs == 0 && (new_gs = get_signal_new(ad->fe, &status, &ber, &strength, &snr)))
+		get_signal(ad->fe, &status, &ber, &strength, &snr);
+	else if (new_gs)
+		get_signal(ad->fe, &status, &ber, &strength, &snr);
+
+	if (status > 0 && new_gs != 0) // we have signal but no new stats, don't try to get them from now on until adapter close
+		ad->new_gs = 1;
+
+	if (ad->max_strength <= strength)
+		ad->max_strength = (strength > 0) ? strength : 1;
+	if (ad->max_snr <= snr)
+		ad->max_snr = (snr > 0) ? snr : 1;
+	if (snr > 4096)
+		new_gs = 0;
+	if (new_gs)
+	{
+		strength = strength * 255.0 / ad->max_strength;
+		snr = snr * 255.0 / ad->max_snr;
+	}
+	else
+	{
+		strength = strength >> 8;
+		snr = snr >> 8;
+	}
+	// keep the assignment at the end for the signal thread to get the right values as no locking is done on the adapter
+	ad->snr = snr;
+	ad->strength = strength;
+	ad->status = status;
+	ad->ber = ber;
+
+	if(ad->status == 0 && ((ad->tp.diseqc_param.switch_type == SWITCH_JESS) || (ad->tp.diseqc_param.switch_type == SWITCH_UNICABLE)))
+	{
+		adapter_lock(ad->id);
+		setup_switch(ad);
+		adapter_unlock(ad->id);
+	}
+
+}
+#endif
 
 void dvb_commit(adapter *a)
 {

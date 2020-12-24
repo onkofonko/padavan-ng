@@ -1,4 +1,4 @@
-
+CFLAGS += -DOLD_SIGNAL_API
 AUTOMAKE_OPTIONS = foreign
 BUILDDIR := ../build
 TARGET:=../minisatip
