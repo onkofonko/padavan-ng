@@ -1979,6 +1979,8 @@ VOID UpdateBasicRateBitmap(RTMP_ADAPTER *pAdapter)
         return;
     }
 
+	bitmap = pAdapter->CommonCfg.BasicRateBitmap;  /* renew bitmap value */
+
     for(i=0; i<MAX_LEN_OF_SUPPORTED_RATES; i++)
     {
         sup_p[i] &= 0x7f;
