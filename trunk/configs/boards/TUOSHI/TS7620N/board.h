@@ -11,7 +11,7 @@
 #define BOARD_GPIO_BTN_RESET    1
 #undef  BOARD_GPIO_BTN_WPS
 #undef  BOARD_GPIO_LED_ALL
-#define BOARD_GPIO_LED_WIFI	44	/* hw led */
+#define BOARD_GPIO_LED_WIFI	72	/* hw led */
 #undef  BOARD_GPIO_LED_SW2G
 #undef  BOARD_GPIO_LED_SW5G
 #undef  BOARD_GPIO_LED_POWER
