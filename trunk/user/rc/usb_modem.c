@@ -331,7 +331,7 @@ get_qmi_handle(const char *fn)
 }
 
 static int
-qmi_control_network(const char* control_node, int is_start)
+qmi_control_network(const char* control_node, const char *ndis_ifname, int is_start)
 {
 	int qmi_client_id = -1;
 
@@ -350,7 +350,21 @@ qmi_control_network(const char* control_node, int is_start)
 		/* set interface format as 802.3 */
 		doSystem("%s -d /dev/%s %s %s",
 			"/bin/uqmi", control_node, "--set-data-format", "802.3");
-		
+
+		/* also set via wda service */
+		doSystem("%s -d /dev/%s %s %s",
+			"/bin/uqmi", control_node, "--wda-set-data-format", "802.3");
+
+		if (!doSystem("%s -c \"%s -d /dev/%s %s | %s \"%s\"\"",
+			"/bin/sh", "/bin/uqmi", control_node, "--wda-get-data-format", "grep", "raw-ip")) {
+			logmessage(LOGNAME, "Modem does not support 802.3 mode. Switch to raw-ip only for %s", ndis_ifname);
+			if (snprintf(auth_cmd, sizeof(auth_cmd), "/sys/class/net/%s/qmi/raw_ip", ndis_ifname) != -1) {
+				doSystem("ifconfig %s down", ndis_ifname);
+				fput_string(auth_cmd, "Y");
+				doSystem("ifconfig %s up", ndis_ifname);
+			}
+		}
+
 		/* setup network modes */
 		qmi_nets = "all";
 		switch (nvram_get_int("modem_nets"))
@@ -512,7 +526,7 @@ ndis_control_network(char *ndis_ifname, int devnum, int is_start)
 
 	if (strlen(control_node_wdm) > 0) {
 		if (is_usbnet_has_module(ndis_ifname, "qmi_wwan"))
-			return qmi_control_network(control_node_wdm, is_start);
+			return qmi_control_network(control_node_wdm, ndis_ifname, is_start);
 		
 		if (is_usbnet_has_module(ndis_ifname, "cdc_mbim"))
 			return mbim_control_network(control_node_wdm, is_start);

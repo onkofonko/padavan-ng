@@ -45,7 +45,6 @@
 #include <stdbool.h>
 
 #include "list.h"
-#include "list_compat.h"
 
 /* Support for OLSR.org linker symbol export */
 #define EXPORT(sym) sym
@@ -62,7 +61,7 @@ struct avl_node {
    * this must be the first element of an avl_node to
    * make casting for lists easier
    */
-  struct list_entity list;
+  struct list_head list;
 
   /**
    * Pointer to parent node in tree, NULL if root node
@@ -113,7 +112,7 @@ struct avl_tree {
    * Head of linked list node for supporting easy iteration
    * and multiple elments with the same key.
    */
-  struct list_entity list_head;
+  struct list_head list_head;
 
   /**
    * pointer to the root node of the avl tree, NULL if tree is empty
@@ -153,6 +152,18 @@ enum avl_find_mode {
   AVL_FIND_LESSEQUAL,
   AVL_FIND_GREATEREQUAL
 };
+
+#define AVL_TREE_INIT(_name, _comp, _allow_dups, _cmp_ptr)	\
+	{							\
+		.list_head = LIST_HEAD_INIT(_name.list_head),	\
+		.comp = _comp,					\
+		.allow_dups = _allow_dups,			\
+		.cmp_ptr = _cmp_ptr				\
+	}
+
+#define AVL_TREE(_name, _comp, _allow_dups, _cmp_ptr)		\
+	struct avl_tree _name =					\
+		AVL_TREE_INIT(_name, _comp, _allow_dups, _cmp_ptr)
 
 void EXPORT(avl_init)(struct avl_tree *, avl_tree_comp, bool, void *);
 struct avl_node *EXPORT(avl_find)(const struct avl_tree *, const void *);
@@ -227,7 +238,7 @@ __avl_find_element(const struct avl_tree *tree, const void *key, size_t offset, 
  *    NULL if no element was found
  */
 #define avl_find_element(tree, key, element, node_element) \
-  ((typeof(*(element)) *)__avl_find_element(tree, key, offsetof(typeof(*(element)), node_element), AVL_FIND_EQUAL))
+  ((__typeof__(*(element)) *)__avl_find_element(tree, key, offsetof(typeof(*(element)), node_element), AVL_FIND_EQUAL))
 
 /**
  * @param tree pointer to avl-tree
@@ -240,7 +251,7 @@ __avl_find_element(const struct avl_tree *tree, const void *key, size_t offset, 
  *    NULL if no element was found
  */
 #define avl_find_le_element(tree, key, element, node_element) \
-  ((typeof(*(element)) *)__avl_find_element(tree, key, offsetof(typeof(*(element)), node_element), AVL_FIND_LESSEQUAL))
+  ((__typeof__(*(element)) *)__avl_find_element(tree, key, offsetof(typeof(*(element)), node_element), AVL_FIND_LESSEQUAL))
 
 /**
  * @param tree pointer to avl-tree
@@ -253,7 +264,7 @@ __avl_find_element(const struct avl_tree *tree, const void *key, size_t offset, 
  *    NULL if no element was found
  */
 #define avl_find_ge_element(tree, key, element, node_element) \
-  ((typeof(*(element)) *)__avl_find_element(tree, key, offsetof(typeof(*(element)), node_element), AVL_FIND_GREATEREQUAL))
+  ((__typeof__(*(element)) *)__avl_find_element(tree, key, offsetof(typeof(*(element)), node_element), AVL_FIND_GREATEREQUAL))
 
 /**
  * This function must not be called for an empty tree
@@ -267,7 +278,7 @@ __avl_find_element(const struct avl_tree *tree, const void *key, size_t offset, 
  *    (automatically converted to type 'element')
  */
 #define avl_first_element(tree, element, node_member) \
-  container_of((tree)->list_head.next, typeof(*(element)), node_member.list)
+  container_of((tree)->list_head.next, __typeof__(*(element)), node_member.list)
 
 /**
  * @param tree pointer to tree
@@ -279,7 +290,7 @@ __avl_find_element(const struct avl_tree *tree, const void *key, size_t offset, 
  *    (automatically converted to type 'element')
  */
 #define avl_last_element(tree, element, node_member) \
-  container_of((tree)->list_head.prev, typeof(*(element)), node_member.list)
+  container_of((tree)->list_head.prev, __typeof__(*(element)), node_member.list)
 
 /**
  * This function must not be called for the last element of
@@ -292,7 +303,7 @@ __avl_find_element(const struct avl_tree *tree, const void *key, size_t offset, 
  *    (automatically converted to type 'element')
  */
 #define avl_next_element(element, node_member) \
-  container_of((&(element)->node_member.list)->next, typeof(*(element)), node_member.list)
+  container_of((&(element)->node_member.list)->next, __typeof__(*(element)), node_member.list)
 
 /**
  * This function must not be called for the first element of
@@ -305,7 +316,7 @@ __avl_find_element(const struct avl_tree *tree, const void *key, size_t offset, 
  *    (automatically converted to type 'element')
  */
 #define avl_prev_element(element, node_member) \
-  container_of((&(element)->node_member.list)->prev, typeof(*(element)), node_member.list)
+  container_of((&(element)->node_member.list)->prev, __typeof__(*(element)), node_member.list)
 
 /**
  * Loop over a block of elements of a tree, used similar to a for() command.
@@ -534,7 +545,7 @@ __avl_find_element(const struct avl_tree *tree, const void *key, size_t offset, 
 #define avl_remove_all_elements(tree, element, node_member, ptr) \
   for (element = avl_first_element(tree, element, node_member), \
        ptr = avl_next_element(element, node_member), \
-       list_init_head(&(tree)->list_head), \
+       INIT_LIST_HEAD(&(tree)->list_head), \
        (tree)->root = NULL; \
        (tree)->count > 0; \
        element = ptr, ptr = avl_next_element(ptr, node_member), (tree)->count--)

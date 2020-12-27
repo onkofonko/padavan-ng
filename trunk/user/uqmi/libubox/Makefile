@@ -1,7 +1,7 @@
-CFLAGS += -DEXT_SIGINT
+CFLAGS += -DEXT_SIGINT -DJSONC -I$(STAGEDIR)/include/json-c
 TARGET = libubox.a
 
-OBJS = avl.o avl-cmp.o blob.o blobmsg.o uloop.o usock.o ustream.o ustream-fd.o vlist.o utils.o safe_list.o
+OBJS = avl.o avl-cmp.o blob.o blobmsg.o blobmsg_json.o uloop.o usock.o ustream.o ustream-fd.o vlist.o utils.o safe_list.o runqueue.o md5.o kvlist.o ulog.o base64.o
 
 all: $(TARGET)
 

@@ -1,5 +1,7 @@
 /*
- * Copyright (C) 2011-2013 Felix Fietkau <nbd@openwrt.org>
+ * ulog - simple logging functions
+ *
+ * Copyright (C) 2015 Jo-Philipp Wich <jow@openwrt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,18 +16,28 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef __LIST_COMPAT_H
-#define __LIST_COMPAT_H
+#ifndef __LIBUBOX_ULOG_H
+#define __LIBUBOX_ULOG_H
 
-#define list_entity				list_head
+#include <syslog.h>
 
-#define list_init_head(_list)			INIT_LIST_HEAD(_list)
-#define list_add_head(_head, _list)		list_add(_list, _head)
-#define list_add_after(_after, _list)		list_add(_list, _after)
-#define list_add_before(_before, _list)		list_add_tail(_list, _before)
-#define list_remove(_list)			list_del(_list)
-#define list_is_empty(_list)			list_empty(_list)
-#define list_next_element(_element, _member)	list_entry((_element)->_member.next, typeof(*(_element)), _member)
+enum {
+	ULOG_KMSG   = (1 << 0),
+	ULOG_SYSLOG = (1 << 1),
+	ULOG_STDIO  = (1 << 2)
+};
 
+void ulog_open(int channels, int facility, const char *ident);
+void ulog_close(void);
+
+void ulog_threshold(int threshold);
+
+void ulog(int priority, const char *fmt, ...)
+	__attribute__ ((format (printf, 2, 3)));
+
+#define ULOG_INFO(fmt, ...) ulog(LOG_INFO, fmt, ## __VA_ARGS__)
+#define ULOG_NOTE(fmt, ...) ulog(LOG_NOTICE, fmt, ## __VA_ARGS__)
+#define ULOG_WARN(fmt, ...) ulog(LOG_WARNING, fmt, ## __VA_ARGS__)
+#define ULOG_ERR(fmt, ...) ulog(LOG_ERR, fmt, ## __VA_ARGS__)
 
 #endif

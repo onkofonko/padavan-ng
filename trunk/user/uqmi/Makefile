@@ -1,13 +1,13 @@
 CFLAGS  += -I. -Werror -Wmissing-declarations
 CFLAGS  += -ffunction-sections -fdata-sections -fvisibility=hidden
 #CFLAGS += -DDEBUG_PACKET -DDEBUG -g3
-LDFLAGS += -Llibubox -lubox
+LDFLAGS += -Llibubox -lubox -ljson-c
 LDFLAGS += -Wl,--gc-sections
 
 TARGET = uqmi
-SOURCES = main.c dev.c commands.c qmi-message.c
+SOURCES = main.c dev.c commands.c qmi-message.c mbim.c
 
-service_sources = $(foreach service,ctl dms nas pds wds wms,qmi-message-$(service).c)
+service_sources = $(foreach service,ctl dms nas pds uim wda wds wms,qmi-message-$(service).c)
 service_headers = $(service_sources:.c=.h)
 
 SOURCES += $(service_sources)
