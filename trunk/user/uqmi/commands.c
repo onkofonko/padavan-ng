@@ -26,7 +26,6 @@
 #include <unistd.h>
 
 #include <libubox/blobmsg.h>
-#include <libubox/blobmsg_json.h>
 
 #include "uqmi.h"
 #include "commands.h"
@@ -198,17 +197,22 @@ void uqmi_add_command(char *arg, int cmd)
 
 static void uqmi_print_result(struct blob_attr *data)
 {
-	char *str;
+	struct blob_attr *cur;
+	int rem;
 
-	if (!blob_len(data))
-		return;
-
-	str = blobmsg_format_json_indent(blob_data(data), false, single_line ? -1 : 0);
-	if (!str)
-		return;
-
-	printf("%s\n", str);
-	free(str);
+	blob_for_each_attr(cur, data, rem) {
+		switch (blobmsg_type(cur)) {
+		case BLOBMSG_TYPE_STRING:
+			printf("%s=%s\n", blobmsg_name(cur), (char *) blobmsg_data(cur));
+			break;
+		case BLOBMSG_TYPE_INT32:
+			printf("%s=%d\n", blobmsg_name(cur), (int32_t) blobmsg_get_u32(cur));
+			break;
+		case BLOBMSG_TYPE_INT8:
+			printf("%s=%s\n", blobmsg_name(cur), blobmsg_get_u8(cur) ? "true" : "false");
+			break;
+		}
+	}
 }
 
 static bool __uqmi_run_commands(struct qmi_dev *qmi, bool option)

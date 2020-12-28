@@ -1,7 +1,7 @@
 CFLAGS  += -I. -Werror -Wmissing-declarations
 CFLAGS  += -ffunction-sections -fdata-sections -fvisibility=hidden
 #CFLAGS += -DDEBUG_PACKET -DDEBUG -g3
-LDFLAGS += -Llibubox -lubox -ljson-c
+LDFLAGS += -Llibubox -lubox
 LDFLAGS += -Wl,--gc-sections
 
 TARGET = uqmi
