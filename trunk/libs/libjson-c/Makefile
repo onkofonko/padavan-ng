@@ -14,6 +14,7 @@ config_test:
 
 configure:
 	( cd $(SRC_NAME) ; \
+	autoreconf -f ; \
 	./configure \
 		--prefix= \
 		--enable-static \
