@@ -102,6 +102,10 @@ load_wireless_modules(void)
 	module_smart_load("mt76x2_ap", NULL);
 #endif
 
+#if defined (USE_MT7615_AP)
+	module_smart_load("mt7615_ap", NULL);
+#endif
+
 #if defined (USE_RT3090_AP)
 	module_smart_load("rt3090_ap", NULL);
 #elif defined (USE_RT5392_AP)
@@ -470,8 +474,8 @@ nvram_convert_misc_values(void)
 	if (strlen(nvram_wlan_get(1, "gmode")) < 1)
 		nvram_wlan_set_int(1, "gmode", 4); // a/n/ac Mixed
 
-	if (nvram_wlan_get_int(1, "HT_BW") > 2)
-		nvram_wlan_set_int(1, "HT_BW", 2);
+	if (nvram_wlan_get_int(1, "HT_BW") > 3)
+		nvram_wlan_set_int(1, "HT_BW", 3);
 #else
 	if (strlen(nvram_wlan_get(1, "gmode")) < 1)
 		nvram_wlan_set_int(1, "gmode", 2); // a/n Mixed

@@ -103,11 +103,11 @@ choice
 
 	config RT_FIRST_IF_EEPROM_EFUSE
 	bool "eFUSE on-die"
-	depends on !(RT_FIRST_IF_RT2860 || RT_FIRST_IF_MT7620 || RT_FIRST_IF_MT7628)
+	depends on !(RT_FIRST_IF_RT2860 || RT_FIRST_IF_MT7620 || RT_FIRST_IF_MT7628 || RT_FIRST_IF_MT7615E)
 
 	config RT_FIRST_IF_EEPROM_PROM
 	bool "EEPROM chip"
-	depends on !(RT_FIRST_IF_RT2860 || RT_FIRST_IF_MT7620 || RT_FIRST_IF_MT7628)
+	depends on !(RT_FIRST_IF_RT2860 || RT_FIRST_IF_MT7620 || RT_FIRST_IF_MT7628 || RT_FIRST_IF_MT7615E)
 endchoice
 
 config  RT_FIRST_IF_RF_OFFSET
@@ -331,6 +331,12 @@ endif
 if (RT_FIRST_IF_MT7603E || RT_SECOND_IF_MT7603E)
 menu "AP MODE MediaTek MT7603E PCIe Wireless driver"
 source "drivers/net/wireless/ralink/mt76x3_ap/Kconfig"
+endmenu
+endif
+
+if (RT_FIRST_IF_MT7615E || RT_SECOND_IF_MT7615E)
+menu "AP MODE MediaTek MT7615E PCIe Wireless driver"
+source "drivers/net/wireless/ralink/mt7615_ap/Kconfig"
 endmenu
 endif
 
