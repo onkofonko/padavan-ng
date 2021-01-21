@@ -2340,7 +2340,7 @@ RTMP_STRING *GetAuthMode(CHAR auth)
         		3.) UI needs to prepare at least 4096bytes to get the results
     ==========================================================================
 */
-#define	LINE_LEN	(4+33+20+23+9+7+7+3)	/* Channel+SSID+Bssid+Security+Signal+WiressMode+ExtCh+NetworkType*/
+#define	LINE_LEN	(4+33+20+23+9+9+7+3)	/* Channel+SSID+Bssid+Security+Signal+WiressMode+ExtCh+NetworkType*/
 #ifdef AIRPLAY_SUPPORT
 #define IS_UNICODE_SSID_LEN  (4)
 #endif /* AIRPLAY_SUPPORT */
@@ -2510,17 +2510,17 @@ VOID RTMPCommSiteSurveyData(
 		wireless_mode = NetworkTypeInUseSanity(pBss);
 		if (wireless_mode == Ndis802_11FH ||
 			wireless_mode == Ndis802_11DS)
-			sprintf(msg+strlen(msg),"%-7s", "11b");
+			sprintf(msg+strlen(msg),"%-9s", "11b");
 		else if (wireless_mode == Ndis802_11OFDM5)
-			sprintf(msg+strlen(msg),"%-7s", "11a");
+			sprintf(msg+strlen(msg),"%-9s", "11a");
 		else if (wireless_mode == Ndis802_11OFDM5_N)
-			sprintf(msg+strlen(msg),"%-7s", "11a/n");
+			sprintf(msg+strlen(msg),"%-9s", "11a/n");
 		else if (wireless_mode == Ndis802_11OFDM24)
-			sprintf(msg+strlen(msg),"%-7s", "11b/g");
+			sprintf(msg+strlen(msg),"%-9s", "11b/g");
 		else if (wireless_mode == Ndis802_11OFDM24_N)
-			sprintf(msg+strlen(msg),"%-7s", "11b/g/n");
+			sprintf(msg+strlen(msg),"%-9s", "11b/g/n");
 		else
-			sprintf(msg+strlen(msg),"%-7s", "unknow");
+			sprintf(msg+strlen(msg),"%-9s", "unknow");
 
 		/* Ext Channel*/
 		if (pBss->AddHtInfoLen > 0)
@@ -2560,6 +2560,8 @@ VOID RTMPIoctlGetSiteSurvey(
     INT         max_len = LINE_LEN;		
 	BSS_ENTRY *pBss;
 	UINT32 TotalLen, BufLen = IW_SCAN_MAX_DATA;
+	BSS_TABLE *pScanTab;
+	pScanTab = &pAdapter->ScanTab;
 #ifdef AIRPLAY_SUPPORT
 	UCHAR TargetSsid[MAX_LEN_OF_SSID+1];
 	UCHAR TargetSsidLen = 0;
@@ -2608,7 +2610,7 @@ VOID RTMPIoctlGetSiteSurvey(
 		sprintf(msg+strlen(msg),"%-4s%-33s%-4s%-20s%-23s%-9s%-7s%-7s%-3s\n",
 			"Ch", "SSID", "UN", "BSSID", "Security", "Signal(%)", "W-Mode", " ExtCH"," NT");
 #else
-	sprintf(msg+strlen(msg),"%-4s%-33s%-20s%-23s%-9s%-7s%-7s%-3s\n",
+	sprintf(msg+strlen(msg),"%-4s%-33s%-20s%-23s%-9s%-9s%-7s%-3s\n",
 	    "Ch", "SSID", "BSSID", "Security", "Signal(%)", "W-Mode", " ExtCH"," NT");	
 #endif /* AIRPLAY_SUPPORT */
 
@@ -2622,6 +2624,8 @@ VOID RTMPIoctlGetSiteSurvey(
 
 	while ((ScanRunning(pAdapter) == TRUE) && (WaitCnt++ < 200))
 		OS_WAIT(500);	
+
+	BssTableSortByRssi(pScanTab,FALSE);
 
 	for(i=0; i<pAdapter->ScanTab.BssNr ;i++)
 	{

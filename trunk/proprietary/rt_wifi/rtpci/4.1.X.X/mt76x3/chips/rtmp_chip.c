@@ -30,13 +30,13 @@
 #include "rt_config.h"
 
 
-BOOLEAN rt28xx_eeprom_read16(RTMP_ADAPTER *pAd, USHORT offset, USHORT *value) 
+BOOLEAN rt28xx_eeprom_read16(RTMP_ADAPTER *pAd, USHORT offset, USHORT *value)
 {
     if (pAd->chipOps.eeread) {
         return pAd->chipOps.eeread(pAd, offset, value);
     } else {
         return FALSE;
-    }    
+    }
 }
 
 
