@@ -149,6 +149,11 @@ rm -rf "$dir_wifi_dst/mt7610"
 rm -rf "$dir_wifi_dst/mt76x2"
 rm -rf "$dir_wifi_dst/mt76x3"
 rm -rf "$dir_wifi_dst/mt7628"
+rm -rf "$dir_wifi_dst/mt7615"
+
+mkdir -p "$dir_wifi_dst/mt7615/embedded"
+cp -f "$dir_wifi_src/rtpci/4.4.2.1/mt7615/embedded/Kconfig" "$dir_wifi_dst/mt7615/embedded/Kconfig"
+
 if [ -n "$CONFIG_RT2860V2_AP" ] ; then
 	dir_wifi_ver="2.7.X.X"
 	if [ "$CONFIG_RALINK_RT3883" = "y" ] && [ "$CONFIG_FIRMWARE_WIFI5_DRIVER" = "2.4" ] ; then
@@ -211,7 +216,12 @@ if [ -n "$CONFIG_MT7628_AP" ] ; then
 	cp -rfL "$dir_wifi_src/rtsoc/$dir_wifi_ver/mt7628_ap" "$dir_wifi_dst/"
 fi
 if [ -n "$CONFIG_MT7615_AP" ] ; then
-	dir_wifi_ver="5.0.4.0"
+	dir_wifi_ver="4.4.2.1"
+	if [ "$CONFIG_FIRMWARE_WIFI_DRIVER" = "5.0.4.0" ] || \
+		[ "$CONFIG_FIRMWARE_WIFI2_DRIVER" = "5.0.4.0" ] || \
+		[ "$CONFIG_FIRMWARE_WIFI5_DRIVER" = "5.0.4.0" ]; then
+		dir_wifi_ver="5.0.4.0"
+	fi
 	cp -rfL "$dir_wifi_src/rtpci/$dir_wifi_ver/mt7615" "$dir_wifi_dst/"
 	cp -rfL "$dir_wifi_src/rtpci/$dir_wifi_ver/mt7615_ap" "$dir_wifi_dst/"
 fi
