@@ -167,6 +167,7 @@ struct myoption {
 #define LOPT_IGNORE_CLID   358
 #define LOPT_SINGLE_PORT   359
 #define LOPT_SCRIPT_TIME   360
+#define LOPT_PXE_VENDOR    361
  
 #ifdef HAVE_GETOPT_LONG
 static const struct option opts[] =  
@@ -270,6 +271,7 @@ static const struct myoption opts[] =
     { "dhcp-circuitid", 1, 0, LOPT_CIRCUIT },
     { "dhcp-remoteid", 1, 0, LOPT_REMOTE },
     { "dhcp-subscrid", 1, 0, LOPT_SUBSCR },
+    { "dhcp-pxe-vendor", 1, 0, LOPT_PXE_VENDOR },
     { "interface-name", 1, 0, LOPT_INTNAME },
     { "dhcp-hostsfile", 1, 0, LOPT_DHCP_HOST },
     { "dhcp-optsfile", 1, 0, LOPT_DHCP_OPTS },
@@ -383,6 +385,7 @@ static struct {
   { LOPT_CIRCUIT, ARG_DUP, "set:<tag>,<circuit>", gettext_noop("Map RFC3046 circuit-id to tag."), NULL },
   { LOPT_REMOTE, ARG_DUP, "set:<tag>,<remote>", gettext_noop("Map RFC3046 remote-id to tag."), NULL },
   { LOPT_SUBSCR, ARG_DUP, "set:<tag>,<remote>", gettext_noop("Map RFC3993 subscriber-id to tag."), NULL },
+  { LOPT_PXE_VENDOR, ARG_DUP, "<vendor>[,...]", gettext_noop("Specify vendor class to match for PXE requests."), NULL },
   { 'J', ARG_DUP, "tag:<tag>...", gettext_noop("Don't do DHCP for hosts with tag set."), NULL },
   { LOPT_BROADCAST, ARG_DUP, "[=tag:<tag>...]", gettext_noop("Force broadcast replies for hosts with tag set."), NULL }, 
   { 'k', OPT_NO_FORK, NULL, gettext_noop("Do NOT fork into the background, do NOT run in debug mode."), NULL },
@@ -770,10 +773,8 @@ static char *parse_mysockaddr(char *arg, union mysockaddr *addr)
 {
   if (inet_pton(AF_INET, arg, &addr->in.sin_addr) > 0)
     addr->sa.sa_family = AF_INET;
-#ifdef HAVE_IPV6
   else if (inet_pton(AF_INET6, arg, &addr->in6.sin6_addr) > 0)
     addr->sa.sa_family = AF_INET6;
-#endif
   else
     return _("bad address");
    
@@ -785,10 +786,8 @@ char *parse_server(char *arg, union mysockaddr *addr, union mysockaddr *source_a
   int source_port = 0, serv_port = NAMESERVER_PORT;
   char *portno, *source;
   char *interface_opt = NULL;
-#ifdef HAVE_IPV6
   int scope_index = 0;
   char *scope_id;
-#endif
   
   if (!arg || strlen(arg) == 0)
     {
@@ -806,9 +805,7 @@ char *parse_server(char *arg, union mysockaddr *addr, union mysockaddr *source_a
       !atoi_check16(portno, &serv_port))
     return _("bad port");
   
-#ifdef HAVE_IPV6
   scope_id = split_chr(arg, '%');
-#endif
   
   if (source) {
     interface_opt = split_chr(source, '@');
@@ -852,7 +849,6 @@ char *parse_server(char *arg, union mysockaddr *addr, union mysockaddr *source_a
 	    }
 	}
     }
-#ifdef HAVE_IPV6
   else if (inet_pton(AF_INET6, arg, &addr->in6.sin6_addr) > 0)
     {
       if (scope_id && (scope_index = if_nametoindex(scope_id)) == 0)
@@ -887,7 +883,6 @@ char *parse_server(char *arg, union mysockaddr *addr, union mysockaddr *source_a
 	    }
 	}
     }
-#endif
   else
     return _("bad address");
 
@@ -2075,10 +2070,8 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
 	  unhide_metas(arg);
 	  if (inet_pton(AF_INET, arg, &new->addr.in.sin_addr) > 0)
 	    new->addr.sa.sa_family = AF_INET;
-#ifdef HAVE_IPV6
 	  else if (inet_pton(AF_INET6, arg, &new->addr.in6.sin6_addr) > 0)
 	    new->addr.sa.sa_family = AF_INET6;
-#endif
 	  else
 	    {
 	      char *fam = split_chr(arg, '/');
@@ -2088,10 +2081,8 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
 		{
 		  if (strcmp(fam, "4") == 0)
 		    new->addr.sa.sa_family = AF_INET;
-#ifdef HAVE_IPV6
 		  else if (strcmp(fam, "6") == 0)
 		    new->addr.sa.sa_family = AF_INET6;
-#endif
 		  else
 		  {
 		    free(new->name);
@@ -2160,14 +2151,12 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
 		subnet->prefixlen = (prefixlen == 0) ? 24 : prefixlen;
 		subnet->flags = ADDRLIST_LITERAL;
 	      }
-#ifdef HAVE_IPV6
 	    else if (inet_pton(AF_INET6, arg, &addr.addr6))
 	      {
 		subnet = opt_malloc(sizeof(struct addrlist));
 		subnet->prefixlen = (prefixlen == 0) ? 64 : prefixlen;
 		subnet->flags = ADDRLIST_LITERAL | ADDRLIST_IPV6;
 	      }
-#endif
 	    else 
 	      {
 		struct auth_name_list *name =  opt_malloc(sizeof(struct auth_name_list));
@@ -2179,10 +2168,8 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
 		  {
 		    if (prefixlen == 4)
 		      name->flags &= ~AUTH6;
-#ifdef HAVE_IPV6
 		    else if (prefixlen == 6)
 		      name->flags &= ~AUTH4;
-#endif
 		    else
 		      ret_err(gen_err);
 		  }
@@ -2303,7 +2290,6 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
 				}
 			    }
 			}
-#ifdef HAVE_IPV6
 		      else if (inet_pton(AF_INET6, comma, &new->start6))
 			{
 			  u64 mask = (1LLU << (128 - msize)) - 1LLU;
@@ -2347,7 +2333,6 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
 				}
 			    }
 			}
-#endif
 		      else
 			ret_err_free(gen_err, new);
 		    }
@@ -2365,7 +2350,6 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
 			  else if (!inet_pton(AF_INET, arg, &new->end))
 			    ret_err_free(gen_err, new);
 			}
-#ifdef HAVE_IPV6
 		      else if (inet_pton(AF_INET6, comma, &new->start6))
 			{
 			  new->is6 = 1;
@@ -2374,7 +2358,6 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
 			  else if (!inet_pton(AF_INET6, arg, &new->end6))
 			    ret_err_free(gen_err, new);
 			}
-#endif
 		      else 
 			ret_err_free(gen_err, new);
 
@@ -2533,7 +2516,6 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
 	    new->addr.in.sin_len = sizeof(new->addr.in);
 #endif
 	  }
-#ifdef HAVE_IPV6
 	else if (arg && inet_pton(AF_INET6, arg, &new->addr.in6.sin6_addr) > 0)
 	  {
 	    new->addr.sa.sa_family = AF_INET6;
@@ -2544,7 +2526,6 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
 	    new->addr.in6.sin6_len = sizeof(new->addr.in6);
 #endif
 	  }
-#endif
 	else
 	  ret_err_free(gen_err, new);
 
@@ -2581,12 +2562,6 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
 	    while (rebind || (end = split_chr(arg, '/')))
 	      {
 		char *domain = NULL;
-		char *regex = NULL;
-		char *real_end = arg + strlen(arg);
-		if (*arg == ':' && *(real_end - 1) == ':'){
-			*(real_end - 1) = '\0';
-			regex = arg + 1;
-		}else{
 		/* elide leading dots - they are implied in the search algorithm */
 		while (*arg == '.') arg++;
 		/* # matches everything and becomes a zero length domain string */
@@ -2594,27 +2569,12 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
 		  domain = "";
 		else if (strlen (arg) != 0 && !(domain = canonicalise_opt(arg)))
 		  ret_err(gen_err);
-		}
 		serv = opt_malloc(sizeof(struct server));
 		memset(serv, 0, sizeof(struct server));
 		serv->next = newlist;
 		newlist = serv;
 		serv->domain = domain;
-		serv->flags = domain || regex ? SERV_HAS_DOMAIN : SERV_FOR_NODOTS;
-		if (regex){
-#ifdef HAVE_REGEX
-			const char *error;
-			int erroff;
-			serv->regex = pcre_compile(regex, 0, &error, &erroff, NULL);
-
-			if (!serv->regex)
-				ret_err(error);
-			serv->flags |= SERV_IS_REGEX;
-			serv->pextra = pcre_study(serv->regex, 0, &error);
-#else
-			ret_err("Using a regex while server was configured without regex support!");
-#endif
-		}
+		serv->flags = domain ? SERV_HAS_DOMAIN : SERV_FOR_NODOTS;
 		arg = end;
 		if (rebind)
 		  break;
@@ -2684,9 +2644,7 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
 	int size;
 	struct server *serv;
 	struct in_addr addr4;
-#ifdef HAVE_IPV6
 	struct in6_addr addr6;
-#endif
  
 	unhide_metas(arg);
 	if (!arg)
@@ -2703,10 +2661,8 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
 	    if (!serv)
 	      ret_err(_("bad prefix"));
 	  }
-#ifdef HAVE_IPV6
 	else if (inet_pton(AF_INET6, arg, &addr6))
 	  serv = add_rev6(&addr6, size);
-#endif
 	else
 	  ret_err(gen_err);
  
@@ -2740,30 +2696,6 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
 	     while ((end = split_chr(arg, '/'))) 
 	       {
 		 char *domain = NULL;
-		 char *real_end = arg + strlen(arg);
-		 if (*arg == ':' && *(real_end - 1) == ':'){
-#ifdef HAVE_REGEX
-#ifdef HAVE_REGEX_IPSET
-			 const char *error;
-			 int erroff;
-			 char *regex = NULL;
-			 *(real_end - 1) = '\0';
-			 regex = arg + 1;
-
-			 ipsets->next = opt_malloc(sizeof(struct ipsets));
-			 ipsets = ipsets->next;
-			 memset(ipsets, 0, sizeof(struct ipsets));
-			 ipsets->regex = pcre_compile(regex, 0, &error, &erroff, NULL);
-
-			 if (!ipsets->regex)
-				 ret_err(error);
-			 ipsets->pextra = pcre_study(ipsets->regex, 0, &error);
-			 ipsets->domain_type = IPSET_IS_REGEX;
-#endif
-#else
-			 ret_err("Using a regex while server was configured without regex support!");
-#endif
-		 }else{
 		 /* elide leading dots - they are implied in the search algorithm */
 		 while (*arg == '.')
 		   arg++;
@@ -2776,12 +2708,6 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
 		 ipsets = ipsets->next;
 		 memset(ipsets, 0, sizeof(struct ipsets));
 		 ipsets->domain = domain;
-#ifdef HAVE_REGEX
-#ifdef HAVE_REGEX_IPSET
-		 ipsets->domain_type = IPSET_IS_DOMAIN;
-#endif
-#endif
-		 }
 		 arg = end;
 	       }
 	   } 
@@ -2790,11 +2716,6 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
 	     ipsets->next = opt_malloc(sizeof(struct ipsets));
 	     ipsets = ipsets->next;
 	     memset(ipsets, 0, sizeof(struct ipsets));
-#ifdef HAVE_REGEX
-#ifdef HAVE_REGEX_IPSET
-	     ipsets->domain_type = IPSET_IS_DOMAIN;
-#endif
-#endif
 	     ipsets->domain = "";
 	   }
 	 
@@ -3754,8 +3675,8 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
 	     new->val = opt_malloc(new->len);
 	     memcpy(new->val + 1, arg, new->len - 1);
 	     
-	     new->u.vendor_class = (unsigned char *)"PXEClient";
-	     new->flags = DHOPT_VENDOR;
+	     new->u.vendor_class = NULL;
+	     new->flags = DHOPT_VENDOR | DHOPT_VENDOR_PXE;
 	     
 	     if (comma && atoi_check(comma, &timeout))
 	       *(new->val) = timeout;
@@ -4017,6 +3938,19 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
 	new->next = daemon->override_relays;
 	daemon->override_relays = new;
 	arg = comma;
+	}
+	  break;
+
+    case LOPT_PXE_VENDOR: /* --dhcp-pxe-vendor */
+      {
+        while (arg) {
+	  struct dhcp_pxe_vendor *new = opt_malloc(sizeof(struct dhcp_pxe_vendor));
+	  comma = split(arg);
+          new->data = opt_string_alloc(arg);
+	  new->next = daemon->dhcp_pxe_vendors;
+	  daemon->dhcp_pxe_vendors = new;
+	  arg = comma;
+	}
       }
       break;
 
@@ -4165,10 +4099,8 @@ err:
 	  {
 	    if (strcmp(arg, "4") == 0)
 	      new->family = AF_INET;
-#ifdef HAVE_IPV6
 	    else if (strcmp(arg, "6") == 0)
 	      new->family = AF_INET6;
-#endif
 	    else
 	      ret_err_free(gen_err, new);
 	  } 
@@ -4492,13 +4424,11 @@ err:
 		new->addr = addr.addr4;
 		new->flags |= HR_4;
 	      }
-#ifdef HAVE_IPV6
 	    else if (inet_pton(AF_INET6, arg, &addr.addr6))
 	      {
 		new->addr6 = addr.addr6;
 		new->flags |= HR_6;
 	      }
-#endif
 	    else
 	      {
 		int nomem;
@@ -5225,10 +5155,8 @@ void read_opts(int argc, char **argv, char *compile_opts)
 	  {
 	    if (tmp->source_addr.sa.sa_family == AF_INET)
 	      tmp->source_addr.in.sin_port = htons(daemon->query_port);
-#ifdef HAVE_IPV6
 	    else if (tmp->source_addr.sa.sa_family == AF_INET6)
 	      tmp->source_addr.in6.sin6_port = htons(daemon->query_port);
-#endif 
 	  }
     } 
   
@@ -5289,10 +5217,8 @@ void read_opts(int argc, char **argv, char *compile_opts)
       for(tmp = daemon->if_addrs; tmp; tmp = tmp->next)
 	if (tmp->addr.sa.sa_family == AF_INET)
 	  tmp->addr.in.sin_port = htons(daemon->port);
-#ifdef HAVE_IPV6
 	else if (tmp->addr.sa.sa_family == AF_INET6)
 	  tmp->addr.in6.sin6_port = htons(daemon->port);
-#endif /* IPv6 */
     }
 	
   /* create default, if not specified */
@@ -5301,6 +5227,13 @@ void read_opts(int argc, char **argv, char *compile_opts)
       strcpy(buff, "hostmaster.");
       strcat(buff, daemon->authserver);
       daemon->hostmaster = opt_string_alloc(buff);
+    }
+
+  if (!daemon->dhcp_pxe_vendors)
+    {
+      daemon->dhcp_pxe_vendors = opt_malloc(sizeof(struct dhcp_pxe_vendor));
+      daemon->dhcp_pxe_vendors->data = opt_string_alloc(DHCP_PXE_DEF_VENDOR);
+      daemon->dhcp_pxe_vendors->next = NULL;
     }
   
   /* only one of these need be specified: the other defaults to the host-name */
