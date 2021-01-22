@@ -149,6 +149,7 @@ rm -rf "$dir_wifi_dst/mt7610"
 rm -rf "$dir_wifi_dst/mt76x2"
 rm -rf "$dir_wifi_dst/mt76x3"
 rm -rf "$dir_wifi_dst/mt7628"
+rm -rf "$dir_wifi_dst/mt7615"
 if [ -n "$CONFIG_RT2860V2_AP" ] ; then
 	dir_wifi_ver="2.7.X.X"
 	if [ "$CONFIG_RALINK_RT3883" = "y" ] && [ "$CONFIG_FIRMWARE_WIFI5_DRIVER" = "2.4" ] ; then
