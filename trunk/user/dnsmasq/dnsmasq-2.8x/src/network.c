@@ -1304,8 +1304,10 @@ int local_bind(int fd, union mysockaddr *addr, char *intname, unsigned int ifind
  
   if (addr_copy.sa.sa_family == AF_INET)
     port = addr_copy.in.sin_port;
+#ifdef HAVE_IPV6
   else
     port = addr_copy.in6.sin6_port;
+#endif
 
   /* cannot set source _port_ for TCP connections. */
   if (is_tcp)

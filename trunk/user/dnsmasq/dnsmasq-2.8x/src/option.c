@@ -936,6 +936,7 @@ static struct server *add_rev4(struct in_addr addr, int msize)
 
 }
 
+#ifdef HAVE_IPV6
 static struct server *add_rev6(struct in6_addr *addr, int msize)
 {
   struct server *serv = opt_malloc(sizeof(struct server));
@@ -958,6 +959,7 @@ static struct server *add_rev6(struct in6_addr *addr, int msize)
   
   return serv;
 }
+#endif
 
 #ifdef HAVE_DHCP
 
