@@ -34,6 +34,11 @@ config BACKGROUND_SCAN_SUPPORT
 	bool "Background Scan Support"
 	default y
 
+config MT7615_AP_CARRIER
+	bool "Carrier Detection support"
+	depends on MT7615_AP
+	default n
+
 config MT7615_AP_SMART_CARRIER_SENSE
 	bool "Smart Carrier Sense Support"
 	default y
@@ -46,11 +51,6 @@ config OFFCHANNEL_SCAN_FEATURE
 	bool "Channel Quality Monitor"
 	depends on MT7615_AP
 	default n
-
-#config WFA_VHT_R2_PF
-#    bool "WFA VHT R2 Plugfest"
-#    depends on DOT11_VHT_AC
-#    default n
 
 config DBDC_MODE
 	bool "dbdc mode support"
@@ -77,11 +77,6 @@ config MT7615_AP_TXBF
 	bool "Tx Bean Forming Support"
 	default y
 
-config FAST_NAT_SUPPORT
-	bool "Fast-NAT support"
-	depends on RA_HW_NAT_WIFI
-	default n
-
 config WHNAT_SUPPORT
 	tristate "Wifi Hardware NAT support"
 	depends on WLAN_HOOK
@@ -92,15 +87,6 @@ config MT7615_AP_LLTD
 	bool "LLTD (Link Layer Topology Discovery Protocol)"
 	depends on MT7615_AP
 	default n
-
-#config QOS_DLS_SUPPORT
-#	bool "802.11e DLS ((Direct-Link Setup) Support"
-#	depends on MT7615_AP
-#	default n
-
-#config WAPI_SUPPORT
-#	bool "WAPI Support"
-#	default n
 
 config FTM_SUPPORT
 	bool "FTM Support"
@@ -115,10 +101,6 @@ config MBO_SUPPORT
 	select DOT11R_FT_SUPPORT
 	select DOT11W_PMF_SUPPORT
 	default n
-
-#config CARRIER_DETECTION_SUPPORT
-#	bool "Carrier Detect"
-#	default n
 
 #config BLOCK_NET_IF
 #	bool "NETIF Block"
@@ -150,15 +132,6 @@ config MBO_SUPPORT
 
 #config IDS_SUPPORT
 #	bool "IDS (Intrusion Detection System) Support"
-#	depends on MT7615_AP
-#	default n
-
-#config WIFI_WORK_QUEUE
-#	bool "Work Queue"
-#	default n
-
-#config WIFI_SKB_RECYCLE
-#	bool "SKB Recycle(Linux)"
 #	depends on MT7615_AP
 #	default n
 
@@ -233,25 +206,8 @@ endchoice
 #### PA_LNA_Type choice END 
 
 
-#if CHIP_MT7615E
-#	config MT_MAC
-#		bool
-#		default y
-#		select RATE_ADAPTION
-#		select RATE_ADAPT_AGBS_SUPPORT
-#		select DOT11_N_SUPPORT
-#		select DOT11_VHT_AC
-#		select HDR_TRANS_TX_SUPPORT
-#		select HDR_TRANS_RX_SUPPORT
-#endif
-
-
 config MT7615_AP
 	tristate "MT7615 AP support"
-#	depends on NET_RADIO
-	select WIRELESS_EXT
-	select WEXT_SPY
-	select WEXT_PRIV
 
 config MT7615_AP_WDS
 	bool "WDS"
@@ -435,28 +391,10 @@ config MT7615_AP_LLTD
 	bool "LLTD (Link Layer Topology Discovery Protocol)"
 	depends on MT7615_AP
 
-#config COC_SUPPORT
-#	bool "CoC Support"
-#	depends on MT7615_AP
-#	default n
-
-#config EXT_BUILD_CHANNEL_LIST
-#	bool "Extension Channel List"
-#	depends on MT7615_AP
-
-#config AUTO_CH_SELECT_ENHANCE
-#	bool "Auto Channel Selection Enhancement"
-#	depends on MT7615_AP
-
 config VOW_SUPPORT
 	bool "MediaAir(VOW) support"
 	depends on MT7615_AP
 	default y
-
-#config AIRPLAY_SUPPORT
-#	bool "AIRPLAY Support"
-#	depends on MT7615_AP
-#	default n
 
 config LED_CONTROL_SUPPORT
 	bool "LED Control Support"
@@ -514,10 +452,6 @@ config WNM_SUPPORT
 #	bool "Roaming Enhance Support"
 #	depends on MT7615_AP
 #	depends on MT7615_AP_APCLI
-#	default n
-
-#config WIFI_FWD_SUPPORT
-#	bool "WiFi Forwarding Support"
 #	default n
 
 config WPA3_SUPPORT

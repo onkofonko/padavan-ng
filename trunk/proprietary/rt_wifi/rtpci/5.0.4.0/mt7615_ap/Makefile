@@ -136,9 +136,9 @@ rate_objs := $(SRC_DIR)/rate_ctrl/ra_ctrl_mt.o\
 #    rate_objs += $(SRC_DIR)/rate_ctrl/ra_table.o
 #endif
 
-ifeq ($(CONFIG_RATE_ADAPT_AGBS_SUPPORT),y)
-	EXTRA_CFLAGS += -DRATE_ADAPT_AGBS_SUPPORT
-endif
+#ifeq ($(CONFIG_RATE_ADAPT_AGBS_SUPPORT),y)
+#	EXTRA_CFLAGS += -DRATE_ADAPT_AGBS_SUPPORT
+#endif
 
 ########################################################
 # ASIC related files
@@ -202,18 +202,6 @@ ifeq ($(CONFIG_DOT11_VHT_AC),y)
 	ifeq ($(CONFIG_WFA_VHT_R2_PF),y)
 		EXTRA_CFLAGS += -DWFA_VHT_R2_PF
 	endif
-endif
-
-# WAPI
-ifeq ($(CONFIG_WAPI_SUPPORT),y)
-    EXTRA_CFLAGS += -DWAPI_SUPPORT
-    ifeq ($(CONFIG_RALINK_RT3052),y)
-        EXTRA_CFLAGS += -DSOFT_ENCRYPT
-    endif
-
-  spec_objs += $(SRC_EMBEDDED_DIR)/security/wapi.o\
-                $(SRC_EMBEDDED_DIR)/security/wapi_sms4.o\
-		$(SRC_EMBEDDED_DIR)/security/wapi_crypt.o
 endif
 
 # WPA3
@@ -516,7 +504,10 @@ ifeq ($(CONFIG_BLOCK_NET_IF),y)
     func_objs += $(SRC_EMBEDDED_DIR)/common/netif_block.o
 endif
 
-ifeq ($(CONFIG_RT_SINGLE_SKU),y)
+ifeq ($(CONFIG_MT7615_AP_CARRIER),y)
+    EXTRA_CFLAGS += -DCARRIER_DETECTION_SUPPORT
+
+    spec_objs += $(SRC_EMBEDDED_DIR)/common/cmm_cs.o
 endif
 
 ifeq ($(CONFIG_MT7615_AP_SMART_CARRIER_SENSE),y)
@@ -617,12 +608,6 @@ ifeq ($(CONFIG_NINTENDO_AP),y)
     ap_objs += $(SRC_EMBEDDED_DIR)/ap/ap_nintendo.o
 endif
 
-#ifeq ($(CONFIG_COC_SUPPORT),y)
-#   EXTRA_CFLAGS += -DGREENAP_SUPPORT -DCOC_SUPPORT
-#
-#    ap_objs += $(SRC_DIR)/../hw_ctrl/greenap.o
-#endif
-
 ifeq ($(CONFIG_GREENAP_SUPPORT),y)
    EXTRA_CFLAGS += -DGREENAP_SUPPORT
 
@@ -667,10 +652,6 @@ endif
 
 ifeq ($(CONFIG_RF_LOCKDOWN_SUPPORT),y)
     EXTRA_CFLAGS += -DRF_LOCKDOWN
-endif
-
-ifeq ($(CONFIG_LINK_TEST_SUPPORT),y)
-    EXTRA_CFLAGS += -DLINK_TEST_SUPPORT
 endif
 
 ifeq ($(CONFIG_RTMP_TEMPERATURE_TX_ALC),y)
@@ -955,7 +936,7 @@ EXTRA_CFLAGS += -DCONFIG_AP_SUPPORT -DSCAN_SUPPORT -DAP_SCAN_SUPPORT
 EXTRA_CFLAGS += -DDOT11_N_SUPPORT -DDOT11N_DRAFT3 -DSTATS_COUNT_SUPPORT -DIAPP_SUPPORT -DDOT1X_SUPPORT
 #EXTRA_CFLAGS += -DRALINK_ATE -DRALINK_QA -DCONFIG_RT2880_ATE_CMD_NEW
 
-ifeq ($(CONFIG_FAST_NAT_SUPPORT),y)
+ifeq ($(CONFIG_RA_NAT_HW),y)
 EXTRA_CFLAGS += -DCONFIG_FAST_NAT_SUPPORT
 endif
 
@@ -984,7 +965,7 @@ ifeq ($(CONFIG_RALINK_MT7621),y)
 EXTRA_CFLAGS += -DRACTRL_LIMIT_MAX_PHY_RATE=1300
 endif
 
-ifeq ($(CONFIG_FAST_NAT_SUPPORT),y)
+ifeq ($(CONFIG_RA_NAT_HW),y)
 ifeq ($(CONFIG_WLAN_HOOK),y)
 ifeq ($(CONFIG_WHNAT_SUPPORT),y)
 EXTRA_CFLAGS += -DWHNAT_SUPPORT
