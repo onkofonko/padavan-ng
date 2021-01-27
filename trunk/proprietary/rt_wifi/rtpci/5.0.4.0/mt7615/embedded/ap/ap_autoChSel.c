@@ -442,10 +442,10 @@ static inline UCHAR SelectClearChannelCCA(RTMP_ADAPTER *pAd)
 	AutoChannelSkipListSetDirty(pAd);
 
 	printk("=====================================================\n");
-	for (channel_idx = 0; channel_idx < pAd->ChannelListNum; channel_idx++)
+	for (channel_idx = 0; channel_idx < pChCtrl->ChListNum; channel_idx++)
 	{
 		printk("Channel %d : Dirty = %ld, False CCA = %u, Busy Time = %u, Skip Channel = %s\n",
-					pAd->ChannelList[channel_idx].Channel,
+					pChCtrl->ChList[channel_idx].Channel,
 					pChannelInfo->dirtyness[channel_idx],
 					pChannelInfo->FalseCCA[channel_idx],
 					pChannelInfo->chanbusytime[channel_idx],
