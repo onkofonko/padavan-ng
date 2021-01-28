@@ -102,6 +102,21 @@ config MBO_SUPPORT
 	select DOT11W_PMF_SUPPORT
 	default n
 
+config PRE_CAL_TRX_SET1_SUPPORT
+	bool "Calibration To Flash/BinFile Support"
+	depends on WIFI_DRIVER
+	default y
+
+config RLM_CAL_CACHE_SUPPORT
+	bool "RlmCalibrationCache Support"
+	depends on WIFI_DRIVER
+	default y
+
+config PRE_CAL_TRX_SET2_SUPPORT
+	bool "Pre-calibration to Flash Support"
+	depends on WIFI_DRIVER
+	default y
+
 #config BLOCK_NET_IF
 #	bool "NETIF Block"
 #	depends on MT7615_AP
