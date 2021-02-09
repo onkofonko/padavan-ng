@@ -217,7 +217,7 @@ openvpn_add_auth(FILE *fp, int auth_idx)
 }
 
 static void
-openvpn_add_cipher(FILE *fp, int cipher_idx)
+openvpn_add_cipher(FILE *fp, int cipher_idx, char *ncp_clist)
 {
 	char *cipher_str;
 
@@ -276,6 +276,8 @@ openvpn_add_cipher(FILE *fp, int cipher_idx)
 	}
 
 	fprintf(fp, "cipher %s\n", cipher_str);
+	if (ncp_clist)
+		fprintf(fp, "data-ciphers %s\n", ncp_clist);
 }
 
 static void
@@ -438,7 +440,7 @@ openvpn_create_server_conf(const char *conf_file, int is_tun)
 	}
 
 	openvpn_add_auth(fp, nvram_get_int("vpns_ov_mdig"));
-	openvpn_add_cipher(fp, nvram_get_int("vpns_ov_ciph"));
+	openvpn_add_cipher(fp, nvram_get_int("vpns_ov_ciph"), nvram_get("vpns_ov_ncp_clist"));
 	openvpn_add_compress(fp, nvram_get_int("vpns_ov_compress"), 1);
 
 	i_items = 0;
@@ -594,7 +596,7 @@ openvpn_create_client_conf(const char *conf_file, int is_tun)
 	}
 
 	openvpn_add_auth(fp, nvram_get_int("vpnc_ov_mdig"));
-	openvpn_add_cipher(fp, nvram_get_int("vpnc_ov_ciph"));
+	openvpn_add_cipher(fp, nvram_get_int("vpnc_ov_ciph"), nvram_get("vpnc_ov_ncp_clist"));
 	openvpn_add_compress(fp, nvram_get_int("vpnc_ov_compress"), 0);
 
 	if (i_auth == 1) {
@@ -1104,7 +1106,7 @@ ovpn_server_expcli_main(int argc, char **argv)
 	fprintf(fp, "persist-key\n");
 	fprintf(fp, "persist-tun\n");
 	openvpn_add_auth(fp, nvram_get_int("vpns_ov_mdig"));
-	openvpn_add_cipher(fp, nvram_get_int("vpns_ov_ciph"));
+	openvpn_add_cipher(fp, nvram_get_int("vpnc_ov_ciph"), nvram_get("vpnc_ov_ncp_clist"));
 	openvpn_add_compress(fp, nvram_get_int("vpns_ov_compress"), 0);
 	fprintf(fp, "nice %d\n", 0);
 	fprintf(fp, "verb %d\n", 3);
