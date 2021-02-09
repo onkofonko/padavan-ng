@@ -60,8 +60,6 @@ function applyRule(){
 function validForm(){
 	var m = document.form.wl_mode_x.value;
 	if (m == "3" || m == "4") {
-		if(!validate_string_ssid(document.form.wl_sta_ssid))
-			return false;
 		if(document.form.wl_sta_ssid.value == "") {
 			document.form.wl_sta_ssid.focus();
 			return false;
@@ -272,7 +270,7 @@ function hideClients_Block(){
     <input type="hidden" name="wl_channel_org" value="<% nvram_get_x("","wl_channel"); %>">
     <input type="hidden" name="wl_wdsnum_x_0" value="<% nvram_get_x("", "wl_wdsnum_x"); %>" readonly="1">
     <input type="hidden" name="wl_sta_auto" value="<% nvram_get_x("", "wl_sta_auto"); %>" />
-    <input type="hidden" name="wl_sta_ssid_org" value="<% nvram_char_to_ascii("", "wl_sta_ssid"); %>">
+    <input type="hidden" name="wl_sta_ssid_org" value="<% nvram_get_x("", "wl_sta_ssid"); %>">
     <input type="hidden" name="wl_sta_wpa_mode" value="<% nvram_get_x("","wl_sta_wpa_mode"); %>">
     <input type="hidden" name="wl_sta_wpa_psk_org" value="<% nvram_char_to_ascii("", "wl_sta_wpa_psk"); %>">
 

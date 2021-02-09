@@ -195,9 +195,6 @@ function validForm(){
         }
     }
 
-	if(!validate_string_ssid(document.form.wl_ssid))
-		return false;
-
 	if(document.form.wl_ssid.value == "")
 		document.form.wl_ssid.value = "ASUS_5G";
 
@@ -283,7 +280,7 @@ function validate_wlphrase(s, v, obj){
     <input type="hidden" name="wl_radio_date_x" value="<% nvram_get_x("","wl_radio_date_x"); %>">
     <input type="hidden" name="wl_radio_time_x" value="<% nvram_get_x("","wl_radio_time_x"); %>">
     <input type="hidden" name="wl_radio_time2_x" value="<% nvram_get_x("","wl_radio_time2_x"); %>">
-    <input type="hidden" name="wl_ssid2" value="<% nvram_char_to_ascii("",  "wl_ssid"); %>">
+    <input type="hidden" name="wl_ssid2" value="<% nvram_get_x("",  "wl_ssid"); %>">
     <input type="hidden" name="wl_wpa_mode" value="<% nvram_get_x("","wl_wpa_mode"); %>">
     <input type="hidden" name="wl_wpa_psk_org" value="<% nvram_char_to_ascii("", "wl_wpa_psk"); %>">
     <input type="hidden" name="wl_key1_org" value="<% nvram_char_to_ascii("", "wl_key1"); %>">

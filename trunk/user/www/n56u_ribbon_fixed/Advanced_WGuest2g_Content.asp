@@ -110,9 +110,6 @@ function validForm(){
 
 	var mode = document.form.rt_guest_auth_mode.value;
 
-	if(!validate_string_ssid(document.form.rt_guest_ssid))
-		return false;
-
 	if(!validate_timerange(document.form.rt_guest_time_x_starthour, 0)
 			|| !validate_timerange(document.form.rt_guest_time_x_startmin, 1)
 			|| !validate_timerange(document.form.rt_guest_time_x_endhour, 2)
@@ -252,7 +249,7 @@ function change_guest_auth_mode(mflag) {
 
     <input type="hidden" name="rt_gmode" value="<% nvram_get_x("","rt_gmode"); %>" readonly="1">
     <input type="hidden" name="rt_country_code" value="<% nvram_get_x("","rt_country_code"); %>">
-    <input type="hidden" name="rt_guest_ssid_org" value="<% nvram_char_to_ascii("", "rt_guest_ssid"); %>">
+    <input type="hidden" name="rt_guest_ssid_org" value="<% nvram_get_x("", "rt_guest_ssid"); %>">
     <input type="hidden" name="rt_guest_wpa_mode" value="<% nvram_get_x("","rt_guest_wpa_mode"); %>">
     <input type="hidden" name="rt_guest_wpa_psk_org" value="<% nvram_char_to_ascii("", "rt_guest_wpa_psk"); %>">
     <input type="hidden" name="rt_guest_date_x" value="<% nvram_get_x("","rt_guest_date_x"); %>">

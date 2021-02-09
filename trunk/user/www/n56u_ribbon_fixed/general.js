@@ -410,21 +410,6 @@ function validate_ssidchar(ch) {
     return false;
 }
 
-function validate_string_ssid(o) {
-    var i,c;
-    for (i = 0; i < o.value.length; ++i) {
-        c = o.value.charCodeAt(i);
-        if (!validate_ssidchar(c)) {
-            alert("<#JS_validSSID1#> " + o.value.charAt(i) + " <#JS_validSSID2#>");
-            o.value = "";
-            o.focus();
-            o.select();
-            return false;
-        }
-    }
-    return true;
-}
-
 function is_number(o,e) {
     e = e || event;
     if (is_control_key(e))
