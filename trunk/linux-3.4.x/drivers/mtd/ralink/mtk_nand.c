@@ -25,7 +25,7 @@
 
 #include "ralink-flash.h"
 
-static const char *part_probes[] __initdata = { "mtdsplitter", NULL };
+static const char *part_probes[] __devinitdata = { "mtdsplitter", NULL };
 static struct mtd_partition *mtd_parts = NULL;
 static int part_num;
 
@@ -2267,7 +2267,7 @@ static struct mtd_partition *mtd_part_find_by_name(const char *name, int8_t *idx
 	return NULL;
 }
 
-static int mtk_nand_probe(struct platform_device *pdev)
+static int __devinit mtk_nand_probe(struct platform_device *pdev)
 {
 	struct mtk_nand_host *host;
 	struct mtk_nand_host_hw *hw;
@@ -2459,7 +2459,7 @@ out_err:
 	return err;
 }
 
-static int mtk_nand_remove(struct platform_device *pdev)
+static int __devexit mtk_nand_remove(struct platform_device *pdev)
 {
 	struct mtk_nand_host *host = platform_get_drvdata(pdev);
 	struct mtd_info *mtd;
