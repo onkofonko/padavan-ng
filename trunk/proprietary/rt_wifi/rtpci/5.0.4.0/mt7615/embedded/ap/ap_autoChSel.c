@@ -1795,7 +1795,7 @@ static inline UCHAR SelectClearChannelBusyTime(
 */
 	printk("=====================================================\n");
 	for (ChannelIdx = 0; ChannelIdx < pAutoChCtrl->AutoChSelCtrl.ChListNum; ChannelIdx++) {
-		printk("Channel %3d : Busy Time = %6u, Skip Channel = %s\n, BwCap = %s\n",
+		printk("Channel %3d : Busy Time = %6u, Skip Channel = %s, BwCap = %s\n",
 				 pAutoChCtrl->AutoChSelCtrl.AutoChSelChList[ChannelIdx].Channel, pChannelInfo->chanbusytime[ChannelIdx],
 				 (pAutoChCtrl->AutoChSelCtrl.AutoChSelChList[ChannelIdx].SkipChannel == TRUE) ? "TRUE" : "FALSE",
 				 (pAutoChCtrl->AutoChSelCtrl.AutoChSelChList[ChannelIdx].BwCap == TRUE)?"TRUE" : "FALSE");
