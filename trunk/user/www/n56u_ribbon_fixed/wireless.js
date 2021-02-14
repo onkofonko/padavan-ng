@@ -477,7 +477,10 @@ function insertChannelOption() {
     var orig = document.form.wl_channel.value;
     free_options(document.form.wl_channel);
 
-    if (country == "AL" ||
+    if (country == "RU")
+        channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64, 132, 136, 140, 144, 149, 153, 157, 161, 165); //Region 0
+
+    else if (country == "AL" ||
         country == "DZ" ||
         country == "AU" ||
         country == "BH" ||
@@ -508,7 +511,6 @@ function insertChannelOption() {
         country == "PR" ||
         country == "QA" ||
         country == "RO" ||
-        country == "RU" ||
         country == "SA" ||
         country == "SG" ||
         country == "SY" ||
@@ -519,7 +521,7 @@ function insertChannelOption() {
         country == "VN" ||
         country == "YE" ||
         country == "ZW")
-        channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64, 132, 136, 140, 144, 149, 153, 157, 161, 165); //Region 0
+        channels = new Array(0, 36, 40, 44, 48, 149, 153, 157, 161, 165); //Region 0
 
     else if (country == "AT" ||
         country == "BE" ||
