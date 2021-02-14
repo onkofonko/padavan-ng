@@ -404,12 +404,6 @@ function is_string2(o,e) {
     return false;
 }
 
-function validate_ssidchar(ch) {
-    if (ch >= 32 && ch <= 126)
-        return true;
-    return false;
-}
-
 function is_number(o,e) {
     e = e || event;
     if (is_control_key(e))
