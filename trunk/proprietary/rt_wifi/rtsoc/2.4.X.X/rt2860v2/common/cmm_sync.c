@@ -80,6 +80,7 @@ UCHAR A_BAND_REGION_18_CHANNEL_LIST[]={36, 40, 44, 48, 52, 56, 60, 64, 100, 104,
 UCHAR A_BAND_REGION_19_CHANNEL_LIST[]={56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140, 149, 153, 157, 161};
 UCHAR A_BAND_REGION_20_CHANNEL_LIST[]={36, 40, 44, 48, 52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 149, 153, 157, 161};
 UCHAR A_BAND_REGION_21_CHANNEL_LIST[]={36, 40, 44, 48, 52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140, 149, 153, 157, 161};
+UCHAR A_BAND_REGION_36_CHANNEL_LIST[]={36, 40, 44, 48, 52, 56, 60, 64, 132, 136, 140, 149, 153, 157, 165};
 
 
 //BaSizeArray follows the 802.11n definition as MaxRxFactor.  2^(13+factor) bytes. When factor =0, it's about Ba buffer size =8.
@@ -253,6 +254,10 @@ VOID BuildChannelList(
 			case REGION_21_A_BAND:
 				num = sizeof(A_BAND_REGION_21_CHANNEL_LIST)/sizeof(UCHAR);
 				pChannelList = A_BAND_REGION_21_CHANNEL_LIST;
+				break;
+			case REGION_36_A_BAND:
+				num = sizeof(A_BAND_REGION_36_CHANNEL_LIST)/sizeof(UCHAR);
+				pChannelList = A_BAND_REGION_36_CHANNEL_LIST;
 				break;
 			default:            // Error. should never happen
 				DBGPRINT(RT_DEBUG_WARN,("countryregion=%d not support", pAd->CommonCfg.CountryRegionForABand));

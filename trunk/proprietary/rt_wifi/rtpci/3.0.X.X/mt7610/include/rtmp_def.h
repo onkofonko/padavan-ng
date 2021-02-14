@@ -1496,6 +1496,7 @@ enum WIFI_MODE{
 #define REGION_20_A_BAND                  20
 #define REGION_21_A_BAND                  21
 #define REGION_22_A_BAND                  22
+#define REGION_36_A_BAND                  36	/* 36, 40, 44, 48, 52, 56, 60, 64, 132, 136, 140, 144, 149, 153, 157, 161, 165 - special for Russia*/
 #define REGION_MAXIMUM_A_BAND             37
 
 /* The security mode definition in MAC register */
