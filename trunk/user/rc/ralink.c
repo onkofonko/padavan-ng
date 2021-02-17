@@ -1278,7 +1278,7 @@ gen_ralink_config(int is_soc_ap, int is_aband, int disable_autoscan)
 #if !defined (USE_MT7615_AP)
 		fprintf(fp, "VHT_LDPC=%d\n", i_val);
 #else
-		fprintf(fp, "VHT_LDPC=%d;%d\n", i_val);
+		fprintf(fp, "VHT_LDPC=%d;%d\n", i_val, i_val);
 #endif
 	}
 #endif
