@@ -699,7 +699,7 @@ struct nvram_pair router_defaults[] = {
 #else
 	{ "nf_max_conn", "8192" },
 #endif
-	{ "nf_alg_ftp0", "21" },
+	{ "nf_alg_ftp0", "" },
 	{ "nf_alg_ftp1", "" },
 	{ "nf_alg_pptp", "0" },
 	{ "nf_alg_h323", "0" },
