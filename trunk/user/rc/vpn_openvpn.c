@@ -1106,7 +1106,7 @@ ovpn_server_expcli_main(int argc, char **argv)
 	fprintf(fp, "persist-key\n");
 	fprintf(fp, "persist-tun\n");
 	openvpn_add_auth(fp, nvram_get_int("vpns_ov_mdig"));
-	openvpn_add_cipher(fp, nvram_get_int("vpnc_ov_ciph"), nvram_get("vpnc_ov_ncp_clist"));
+	openvpn_add_cipher(fp, nvram_get_int("vpns_ov_ciph"), nvram_get("vpns_ov_ncp_clist"));
 	openvpn_add_compress(fp, nvram_get_int("vpns_ov_compress"), 0);
 	fprintf(fp, "nice %d\n", 0);
 	fprintf(fp, "verb %d\n", 3);
