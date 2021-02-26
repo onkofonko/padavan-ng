@@ -1296,3 +1296,21 @@ function showhide_div(e, sh) {
     else if (document.layers)
         document.layers[e].display = status;
 }
+
+function decodeSSID(s) {
+    var out, len, i;
+    out = "";
+    len = s.length;
+    i = 2;
+
+    if (s[0] == "0" && s[1] == "x") {
+        while(i < len) {
+            out += "%";
+            out += s[i++];
+            out += s[i++];
+        }
+        return decodeURIComponent(out);
+    }
+
+    return decodeURIComponent(s);
+}
