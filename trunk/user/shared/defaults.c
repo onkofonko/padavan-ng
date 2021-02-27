@@ -216,7 +216,7 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_stream_rx", STR(BOARD_NUM_ANT_5G_RX) },
 	{ "wl_preamble", "1" },
 	{ "wl_greenap", "0" },
-	{ "wl_ldpc", "2" },
+	{ "wl_ldpc", "0" },
 	{ "wl_HT_RDG", "0" },
 	{ "wl_HT_AMSDU", "0" },
 	{ "wl_HT_MpduDensity", "5" },
