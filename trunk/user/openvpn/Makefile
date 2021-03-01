@@ -1,4 +1,4 @@
-SRC_NAME=openvpn-2.5.1
+SRC_NAME=openvpn-2.5.x
 
 CFLAGS += -ffunction-sections -fdata-sections -fvisibility=hidden
 LDFLAGS += -Wl,--gc-sections
