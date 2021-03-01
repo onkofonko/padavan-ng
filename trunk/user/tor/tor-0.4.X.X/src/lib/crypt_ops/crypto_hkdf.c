@@ -1,7 +1,7 @@
 /* Copyright (c) 2001, Matej Pfajfar.
  * Copyright (c) 2001-2004, Roger Dingledine.
  * Copyright (c) 2004-2006, Roger Dingledine, Nick Mathewson.
- * Copyright (c) 2007-2019, The Tor Project, Inc. */
+ * Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 /**
@@ -109,7 +109,7 @@ crypto_expand_key_material_rfc5869_sha256_openssl(
   return 0;
 }
 
-#else /* !(defined(HAVE_OPENSSL_HKDF)) */
+#else /* !defined(HAVE_OPENSSL_HKDF) */
 
 /**
  * Perform RFC5869 HKDF computation using our own legacy implementation.
@@ -191,7 +191,7 @@ crypto_expand_key_material_rfc5869_sha256(
                                              salt_in_len, info_in,
                                              info_in_len,
                                              key_out, key_out_len);
-#else /* !(defined(HAVE_OPENSSL_HKDF)) */
+#else /* !defined(HAVE_OPENSSL_HKDF) */
   return crypto_expand_key_material_rfc5869_sha256_legacy(key_in,
                                                key_in_len, salt_in,
                                                salt_in_len, info_in,

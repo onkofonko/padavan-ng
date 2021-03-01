@@ -1,6 +1,6 @@
 /* Copyright (c) 2003, Roger Dingledine
  * Copyright (c) 2004-2006, Roger Dingledine, Nick Mathewson.
- * Copyright (c) 2007-2019, The Tor Project, Inc. */
+ * Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 /**
@@ -199,7 +199,7 @@ process_unix_exec(process_t *process)
                "Cannot find maximum file descriptor, assuming: %d", max_fd);
     }
   }
-#else /* !(defined(_SC_OPEN_MAX)) */
+#else /* !defined(_SC_OPEN_MAX) */
   max_fd = DEFAULT_MAX_FD;
 #endif /* defined(_SC_OPEN_MAX) */
 
@@ -253,22 +253,15 @@ process_unix_exec(process_t *process)
     process_environment_t *env = process_get_environment(process);
 
     /* Call the requested program. */
-    retval = execve(argv[0], argv, env->unixoid_environment_block);
+    execve(argv[0], argv, env->unixoid_environment_block);
 
     /* If we made it here it is because execve failed :-( */
-    if (-1 == retval)
-      fprintf(stderr, "Call to execve() failed: %s", strerror(errno));
-
     tor_free(argv);
     process_environment_free(env);
 
-    tor_assert_unreached();
-
  error:
-    /* LCOV_EXCL_START */
     fprintf(stderr, "Error from child process: %s", strerror(errno));
     _exit(1);
-    /* LCOV_EXCL_STOP */
   }
 
   /* We are in the parent process. */
@@ -425,7 +418,7 @@ process_unix_write(process_t *process, buf_t *buffer)
   /* We have data to write and the kernel have told us to write it. */
   return buf_flush_to_pipe(buffer,
                            process_get_unix_process(process)->stdin_handle.fd,
-                           max_to_write, &buffer_flush_len);
+                           max_to_write);
 }
 
 /** Read data from the given process's standard output and put it into

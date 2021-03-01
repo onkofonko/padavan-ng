@@ -1,6 +1,6 @@
 /* Copyright (c) 2004, Roger Dingledine.
  * Copyright (c) 2004-2006, Roger Dingledine, Nick Mathewson.
- * Copyright (c) 2007-2019, The Tor Project, Inc. */
+ * Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 /**
@@ -29,11 +29,11 @@
 
 #ifdef HAVE_ZSTD
 #ifdef HAVE_CFLAG_WUNUSED_CONST_VARIABLE
-DISABLE_GCC_WARNING(unused-const-variable)
+DISABLE_GCC_WARNING("-Wunused-const-variable")
 #endif
 #include <zstd.h>
 #ifdef HAVE_CFLAG_WUNUSED_CONST_VARIABLE
-ENABLE_GCC_WARNING(unused-const-variable)
+ENABLE_GCC_WARNING("-Wunused-const-variable")
 #endif
 #endif /* defined(HAVE_ZSTD) */
 
@@ -93,7 +93,7 @@ tor_zstd_get_version_str(void)
                           ZSTD_versionNumber());
 
   return version_str;
-#else /* !(defined(HAVE_ZSTD)) */
+#else /* !defined(HAVE_ZSTD) */
   return NULL;
 #endif /* defined(HAVE_ZSTD) */
 }
@@ -317,7 +317,7 @@ tor_zstd_compress_new(int compress,
   tor_free(result);
   return NULL;
   // LCOV_EXCL_STOP
-#else /* !(defined(HAVE_ZSTD)) */
+#else /* !defined(HAVE_ZSTD) */
   (void)compress;
   (void)method;
   (void)level;
@@ -454,7 +454,7 @@ tor_zstd_compress_process(tor_zstd_compress_state_t *state,
       return TOR_COMPRESS_OK;
   }
 
-#else /* !(defined(HAVE_ZSTD)) */
+#else /* !defined(HAVE_ZSTD) */
   (void)state;
   (void)out;
   (void)out_len;

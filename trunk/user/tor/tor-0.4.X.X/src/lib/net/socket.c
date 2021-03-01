@@ -1,6 +1,6 @@
 /* Copyright (c) 2003-2004, Roger Dingledine
  * Copyright (c) 2004-2006, Roger Dingledine, Nick Mathewson.
- * Copyright (c) 2007-2019, The Tor Project, Inc. */
+ * Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 /**
@@ -9,7 +9,6 @@
  *    sockets.
  **/
 
-#define SOCKET_PRIVATE
 #include "lib/net/socket.h"
 #include "lib/net/socketpair.h"
 #include "lib/net/address.h"
@@ -84,7 +83,7 @@ check_network_configuration(bool server_mode)
                "so your relay makes it harder to figure out how busy it is.");
     }
   }
-#else /* !(defined(__FreeBSD__)) */
+#else /* !defined(__FreeBSD__) */
   (void) server_mode;
 #endif /* defined(__FreeBSD__) */
 }
@@ -206,7 +205,7 @@ mark_socket_closed(tor_socket_t s)
     bitarray_clear(open_sockets, s);
   }
 }
-#else /* !(defined(DEBUG_SOCKET_COUNTING)) */
+#else /* !defined(DEBUG_SOCKET_COUNTING) */
 #define mark_socket_open(s) ((void) (s))
 #define mark_socket_closed(s) ((void) (s))
 #endif /* defined(DEBUG_SOCKET_COUNTING) */
@@ -308,7 +307,7 @@ tor_open_socket_with_extensions(int domain, int type, int protocol,
       return TOR_INVALID_SOCKET;
     }
   }
-#else /* !(defined(FD_CLOEXEC)) */
+#else /* !defined(FD_CLOEXEC) */
   (void)cloexec;
 #endif /* defined(FD_CLOEXEC) */
 
@@ -418,7 +417,7 @@ tor_accept_socket_with_extensions(tor_socket_t sockfd, struct sockaddr *addr,
       return TOR_INVALID_SOCKET;
     }
   }
-#else /* !(defined(FD_CLOEXEC)) */
+#else /* !defined(FD_CLOEXEC) */
   (void)cloexec;
 #endif /* defined(FD_CLOEXEC) */
 

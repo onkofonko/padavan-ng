@@ -4,9 +4,11 @@ dnl Copyright (c) 2007-2019, The Tor Project, Inc.
 dnl See LICENSE for licensing information
 
 AC_PREREQ([2.63])
-AC_INIT([tor],[0.4.1.6])
+AC_INIT([tor],[0.4.5.6])
 AC_CONFIG_SRCDIR([src/app/main/tor_main.c])
 AC_CONFIG_MACRO_DIR([m4])
+
+configure_flags="$*"
 
 # DO NOT EDIT THIS DEFINITION BY HAND UNLESS YOU KNOW WHAT YOU'RE DOING.
 #
@@ -14,13 +16,18 @@ AC_CONFIG_MACRO_DIR([m4])
 # version number changes.  Tor uses it to make sure that it
 # only shuts down for missing "required protocols" when those protocols
 # are listed as required by a consensus after this date.
-AC_DEFINE(APPROX_RELEASE_DATE, ["2019-09-17"], # for 0.4.1.6
+AC_DEFINE(APPROX_RELEASE_DATE, ["2021-02-15"], # for 0.4.5.6
           [Approximate date when this software was released. (Updated when the version changes.)])
 
 # "foreign" means we don't follow GNU package layout standards
 # "1.11" means we require automake version 1.11 or newer
 # "subdir-objects" means put .o files in the same directory as the .c files
 AM_INIT_AUTOMAKE([foreign 1.11 subdir-objects -Wall -Werror])
+
+tor_ac_n_warnings=0
+tor_incr_n_warnings() {
+  tor_ac_n_warnings=`expr $tor_ac_n_warnings + 1`
+}
 
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AC_CONFIG_HEADERS([orconfig.h])
@@ -29,6 +36,18 @@ AC_USE_SYSTEM_EXTENSIONS
 AC_CANONICAL_HOST
 
 PKG_PROG_PKG_CONFIG
+if test "x$PKG_CONFIG" = "x" ; then
+    pkg_config_user_action="install pkg-config, and check the PKG_CONFIG_PATH environment variable"
+    AC_MSG_NOTICE([Some libraries need pkg-config, including systemd, nss, lzma, zstd, and custom mallocs.])
+    AC_MSG_NOTICE([To use those libraries, $pkg_config_user_action.])
+else
+    pkg_config_user_action="check the PKG_CONFIG_PATH environment variable"
+fi
+
+if test "x$PKG_CONFIG_PATH" = "x" && test "x$prefix" != "xNONE" && test "$host" != "$build"; then
+   export PKG_CONFIG_PATH=$prefix/lib/pkgconfig
+   AC_MSG_NOTICE([set PKG_CONFIG_PATH=$PKG_CONFIG_PATH to support cross-compiling])
+fi
 
 AC_ARG_ENABLE(openbsd-malloc,
    AS_HELP_STRING(--enable-openbsd-malloc, [use malloc code from OpenBSD.  Linux only. Deprecated: see --with-malloc]))
@@ -67,6 +86,24 @@ AC_ARG_ENABLE(nss,
 AC_ARG_ENABLE(pic,
    AS_HELP_STRING(--enable-pic, [Build Tor's binaries as position-independent code, suitable to link as a library.]))
 
+AC_ARG_ENABLE(missing-doc-warnings,
+   AS_HELP_STRING(--enable-missing-doc-warnings, [Tell doxygen to warn about missing documentation. Makes doxygen warnings nonfatal.]))
+
+if test "$enable_missing_doc_warnings" = "yes"; then
+   DOXYGEN_FATAL_WARNINGS=NO
+   DOXYGEN_WARN_ON_MISSING=YES
+elif test "$enable_fatal_warnings" = "yes"; then
+   # Fatal warnings from doxygen are nice, but not if we're warning about
+   # missing documentation.
+   DOXYGEN_FATAL_WARNINGS=YES
+   DOXYGEN_WARN_ON_MISSING=NO
+else
+   DOXYGEN_FATAL_WARNINGS=NO
+   DOXYGEN_WARN_ON_MISSING=NO
+fi
+AC_SUBST(DOXYGEN_FATAL_WARNINGS)
+AC_SUBST(DOXYGEN_WARN_ON_MISSING)
+
 if test "x$enable_coverage" != "xyes" -a "x$enable_asserts_in_tests" = "xno" ; then
     AC_MSG_ERROR([Can't disable assertions outside of coverage build])
 fi
@@ -92,8 +129,9 @@ if test "$enable_static_tor" = "yes"; then
   enable_static_libevent="yes";
   enable_static_openssl="yes";
   enable_static_zlib="yes";
-  CFLAGS="$CFLAGS -static"
+  TOR_STATIC_LDFLAGS="-static"
 fi
+AC_SUBST(TOR_STATIC_LDFLAGS)
 
 if test "$enable_system_torrc" = "no"; then
   AC_DEFINE(DISABLE_SYSTEM_TORRC, 1,
@@ -104,6 +142,12 @@ if test "$enable_memory_sentinels" = "no"; then
   AC_DEFINE(DISABLE_MEMORY_SENTINELS, 1,
            [Defined if we're turning off memory safety code to look for bugs])
 fi
+
+AC_ARG_ENABLE(manpage,
+              AS_HELP_STRING(--disable-manpage, [Disable manpage generation.]))
+
+AC_ARG_ENABLE(html-manual,
+              AS_HELP_STRING(--disable-html-manual, [Disable HTML documentation.]))
 
 AC_ARG_ENABLE(asciidoc,
      AS_HELP_STRING(--disable-asciidoc, [don't use asciidoc (disables building of manpages)]),
@@ -154,13 +198,13 @@ if test "x$have_systemd" = "xyes"; then
     TOR_SYSTEMD_CFLAGS="${SYSTEMD_CFLAGS}"
     TOR_SYSTEMD_LIBS="${SYSTEMD_LIBS}"
     PKG_CHECK_MODULES(LIBSYSTEMD209, [libsystemd >= 209],
-         [AC_DEFINE(HAVE_SYSTEMD_209,1,[Have systemd v209 or more])], [])
+         [AC_DEFINE(HAVE_SYSTEMD_209,1,[Have systemd v209 or greater])], [])
 fi
 AC_SUBST(TOR_SYSTEMD_CFLAGS)
 AC_SUBST(TOR_SYSTEMD_LIBS)
 
 if test "x$enable_systemd" = "xyes" -a "x$have_systemd" != "xyes" ; then
-    AC_MSG_ERROR([Explicitly requested systemd support, but systemd not found])
+    AC_MSG_ERROR([Explicitly requested systemd support, but systemd not found, $pkg_config_user_action, or set SYSTEMD_CFLAGS and SYSTEMD_LIBS.])
 fi
 
 case "$host" in
@@ -190,6 +234,13 @@ if test "x$enable_expensive_hardening" = "xyes" || test "x$enable_fragile_harden
   AC_DEFINE(DEBUG_SMARTLIST, 1, [Enable smartlist debugging])
 fi
 
+AC_ARG_ENABLE(all-bugs-are-fatal,
+   AS_HELP_STRING(--enable-all-bugs-are-fatal, [force all soft asserts in Tor codebase (tor_assert_nonfatal(), BUG(), etc.) to act as hard asserts (tor_assert() and equivalents); makes Tor fragile; only recommended for dev builds]))
+
+if test "x$enable_all_bugs_are_fatal" = "xyes"; then
+  AC_DEFINE(ALL_BUGS_ARE_FATAL, 1, [All assert failures are fatal])
+fi
+
 dnl Linker hardening options
 dnl Currently these options are ELF specific - you can't use this with MacOSX
 AC_ARG_ENABLE(linker-hardening,
@@ -211,15 +262,83 @@ AC_ARG_ENABLE(seccomp,
 AC_ARG_ENABLE(libscrypt,
      AS_HELP_STRING(--disable-libscrypt, [do not attempt to use libscrypt]))
 
-dnl Enable event tracing which are transformed to debug log statement.
-AC_ARG_ENABLE(event-tracing-debug,
-     AS_HELP_STRING(--enable-event-tracing-debug, [build with event tracing to debug log]))
-AM_CONDITIONAL([USE_EVENT_TRACING_DEBUG], [test "x$enable_event_tracing_debug" = "xyes"])
+dnl --- Tracing Options. ---
 
-if test x$enable_event_tracing_debug = xyes; then
-  AC_DEFINE([USE_EVENT_TRACING_DEBUG], [1], [Tracing framework to log debug])
-  AC_DEFINE([TOR_EVENT_TRACING_ENABLED], [1], [Compile the event tracing instrumentation])
+TOR_TRACE_LIBS=
+
+dnl LTTng instrumentation option.
+AC_ARG_ENABLE(tracing-instrumentation-lttng,
+              AS_HELP_STRING([--enable-tracing-instrumentation-lttng],
+                             [build with LTTng-UST instrumentation]))
+AM_CONDITIONAL([USE_TRACING_INSTRUMENTATION_LTTNG],
+               [test "x$enable_tracing_instrumentation_lttng" = "xyes"])
+
+if test "x$enable_tracing_instrumentation_lttng" = "xyes"; then
+  AC_CHECK_HEADERS([lttng/tracepoint.h], [],
+                   [AC_MSG_ERROR([LTTng instrumentation headers not found.
+                                  On Debian, apt install liblttng-ust-dev"])], [])
+  AC_DEFINE([USE_TRACING_INSTRUMENTATION_LTTNG], [1], [Using LTTng instrumentation])
+  TOR_TRACE_LIBS="-llttng-ust -ldl"
+  have_tracing=1
 fi
+
+dnl USDT instrumentation option.
+AC_ARG_ENABLE(tracing-instrumentation-usdt,
+              AS_HELP_STRING([--enable-tracing-instrumentation-usdt],
+                             [build with tracing USDT instrumentation]))
+AM_CONDITIONAL([USE_TRACING_INSTRUMENTATION_USDT],
+               [test "x$enable_tracing_instrumentation_usdt" = "xyes"])
+
+if test "x$enable_tracing_instrumentation_usdt" = "xyes"; then
+  AC_CHECK_HEADERS([sys/sdt.h], [],
+                   [AC_MSG_ERROR([USDT instrumentation requires sys/sdt.h header.
+                                  On Debian, apt install systemtap-sdt-dev])], [])
+  AC_MSG_CHECKING([STAP_PROBEV()])
+  AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
+    #define SDT_USE_VARIADIC
+    #include <sys/sdt.h>
+    void test(void)
+    {
+      STAP_PROBEV(p, n, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+    }
+  ]])], [
+    AC_MSG_RESULT([yes])
+    dnl LTTng generates USDT probes if the UST library was built with
+    dnl --with-sdt. There is unfortunately no way to check that so we always
+    dnl build the USDT probes even though LTTng instrumentation was requested.
+    AC_DEFINE([USE_TRACING_INSTRUMENTATION_USDT], [1], [Using USDT instrumentation])
+    have_tracing=1
+  ], [
+    AC_MSG_RESULT([no])
+    AC_MSG_ERROR([USDT tracing support requires STAP_PROBEV()])
+  ])
+fi
+
+dnl Tracepoints event to debug logs.
+AC_ARG_ENABLE(tracing-instrumentation-log-debug,
+     AS_HELP_STRING([--enable-tracing-instrumentation-log-debug],
+                    [build with tracing event to debug log]),
+     AC_DEFINE([USE_TRACING_INSTRUMENTATION_LOG_DEBUG], [1],
+               [Tracepoints to log debug]), [])
+AM_CONDITIONAL([USE_TRACING_INSTRUMENTATION_LOG_DEBUG],
+               [test "x$enable_tracing_instrumentation_log_debug" = "xyes"])
+if test "x$enable_tracing_instrumentation_log_debug" = "xyes"; then
+  have_tracing=1
+fi
+
+dnl Define that tracing is supported if any instrumentation is used.
+AM_COND_IF([USE_TRACING_INSTRUMENTATION_LOG_DEBUG],
+           AC_DEFINE([HAVE_TRACING], [1], [Compiled with tracing support]))
+AM_COND_IF([USE_TRACING_INSTRUMENTATION_USDT],
+           AC_DEFINE([HAVE_TRACING], [1], [Compiled with tracing support]))
+AM_COND_IF([USE_TRACING_INSTRUMENTATION_LTTNG],
+           AC_DEFINE([HAVE_TRACING], [1], [Compiled with tracing support]))
+AM_CONDITIONAL([USE_TRACING], [test "x$have_tracing" = x1 ])
+
+dnl Finally, define the trace libs.
+AC_SUBST([TOR_TRACE_LIBS])
+
+dnl -- End Tracing Options. --
 
 dnl Enable Android only features.
 AC_ARG_ENABLE(android,
@@ -229,10 +348,6 @@ AM_CONDITIONAL([USE_ANDROID], [test "x$enable_android" = "xyes"])
 if test "x$enable_android" = "xyes"; then
   AC_DEFINE([USE_ANDROID], [1], [Compile with Android specific features enabled])
 
-  dnl Check if the Android log library is available.
-  AC_CHECK_HEADERS([android/log.h])
-  AC_SEARCH_LIBS(__android_log_write, [log])
-
 fi
 
 dnl ---
@@ -240,16 +355,39 @@ dnl Tor modules options. These options are namespaced with --disable-module-XXX
 dnl ---
 
 dnl All our modules.
-m4_define(MODULES, dirauth)
+m4_define(MODULES, relay dirauth dircache)
+
+# Some modules are only disabled through another option. For those, we don't
+# want to print the help in the summary at the end of the configure. Any entry
+# in the following set will not print the "--disable-module-NAME" command in
+# the summary.
+m4_set_add_all([MODULES_WITH_NO_OPTIONS], [dircache])
+
+dnl Relay module.
+AC_ARG_ENABLE([module-relay],
+              AS_HELP_STRING([--disable-module-relay],
+                             [Build tor without the Relay modules: tor can not run as a relay, bridge, or authority. Implies --disable-module-dirauth]))
+AM_CONDITIONAL(BUILD_MODULE_RELAY, [test "x$enable_module_relay" != "xno"])
+AM_COND_IF(BUILD_MODULE_RELAY,
+           AC_DEFINE([HAVE_MODULE_RELAY], [1],
+                     [Compile with Relay feature support]))
+
+dnl Dircache module.  (This cannot be enabled or disabled independently of
+dnl the relay module.  It is not listed by --list-modules for this reason.)
+AM_CONDITIONAL(BUILD_MODULE_DIRCACHE,
+               [test "x$enable_module_relay" != "xno"])
+AM_COND_IF(BUILD_MODULE_DIRCACHE,
+           AC_DEFINE([HAVE_MODULE_DIRCACHE], [1],
+                     [Compile with directory cache support]))
 
 dnl Directory Authority module.
 AC_ARG_ENABLE([module-dirauth],
               AS_HELP_STRING([--disable-module-dirauth],
-                             [Do not build tor with the dirauth module]),
-              [], dnl Action if-given
-              AC_DEFINE([HAVE_MODULE_DIRAUTH], [1],
-                        [Compile with Directory Authority feature support]))
-AM_CONDITIONAL(BUILD_MODULE_DIRAUTH, [test "x$enable_module_dirauth" != "xno"])
+                             [Build tor without the Directory Authority module: tor can not run as a directory authority or bridge authority]))
+AM_CONDITIONAL(BUILD_MODULE_DIRAUTH,[test "x$enable_module_dirauth" != "xno" && test "x$enable_module_relay" != "xno"])
+AM_COND_IF(BUILD_MODULE_DIRAUTH,
+           AC_DEFINE([HAVE_MODULE_DIRAUTH], [1],
+                     [Compile with Directory Authority feature support]))
 
 dnl Helper variables.
 TOR_MODULES_ALL_ENABLED=
@@ -299,19 +437,27 @@ AC_PATH_PROG([ASCIIDOC], [asciidoc], none)
 AC_PATH_PROGS([A2X], [a2x a2x.py], none)
 
 AM_CONDITIONAL(USE_ASCIIDOC, test "x$asciidoc" = "xtrue")
+AM_CONDITIONAL(BUILD_MANPAGE, [test "x$enable_manpage" != "xno"])
+AM_CONDITIONAL(BUILD_HTML_DOCS, [test "x$enable_html_manual" != "xno"])
 
 AM_PROG_CC_C_O
 AC_PROG_CC_C99
 
-AC_ARG_VAR([PYTHON], [path to Python binary])
-AC_CHECK_PROGS(PYTHON, [ \
+AC_CACHE_CHECK([for Python 3], [tor_cv_PYTHON],
+   [AC_PATH_PROGS_FEATURE_CHECK([PYTHON], [ \
 	python3 \
 	python3.8 python3.7 python3.6 python3.5 python3.4 \
-	python \
-	python2 python2.7])
+	python ],
+   [["$ac_path_PYTHON" -c 'import sys; sys.exit(sys.version_info[0]<3)' && tor_cv_PYTHON="$ac_path_PYTHON" ac_path_PYTHON_found=:]] )])
+AC_SUBST([PYTHON], [$tor_cv_PYTHON])
+
+PYTHON="$tor_cv_PYTHON"
+
 if test "x$PYTHON" = "x"; then
-  AC_MSG_WARN([Python unavailable; some tests will not be run.])
+  tor_incr_n_warnings
+  AC_MSG_WARN([Python 3 unavailable; some tests will not be run.])
 fi
+
 AM_CONDITIONAL(USEPYTHON, [test "x$PYTHON" != "x"])
 
 dnl List all external rust crates we depend on here. Include the version
@@ -363,6 +509,22 @@ AC_CACHE_CHECK([for working C99 designated initializers],
 
 if test "$tor_cv_c_c99_designated_init" != "yes"; then
   AC_MSG_ERROR([Your compiler doesn't support c99 designated initializers. This is required as of Tor 0.2.6.x])
+fi
+
+saved_CFLAGS="$CFLAGS"
+CFLAGS="$CFLAGS -Werror"
+AC_CACHE_CHECK([for __attribute__((fallthrough))],
+      tor_cv_c_attr_fallthrough,
+      [AC_COMPILE_IFELSE(
+         [AC_LANG_PROGRAM([extern int x; void fn(void) ;],
+	       [[ switch (x) { case 1: fn(); __attribute__((fallthrough));
+                               case 2: fn(); break; } ]])],
+	 [tor_cv_c_attr_fallthrough=yes],
+	 [tor_cv_c_attr_fallthrough=no] )])
+CFLAGS="$saved_CFLAGS"
+
+if test "$tor_cv_c_attr_fallthrough" = "yes"; then
+  AC_DEFINE(HAVE_ATTR_FALLTHROUGH, [1], [defined if we have the fallthrough attribute.])
 fi
 
 TORUSER=_tor
@@ -419,14 +581,14 @@ fi
 
 AH_BOTTOM([
 #ifdef _WIN32
-/* Defined to access windows functions and definitions for >=WinXP */
+/* Defined to access windows functions and definitions for >=WinVista */
 # ifndef WINVER
-#  define WINVER 0x0501
+#  define WINVER 0x0600
 # endif
 
-/* Defined to access _other_ windows functions and definitions for >=WinXP */
+/* Defined to access _other_ windows functions and definitions for >=WinVista */
 # ifndef _WIN32_WINNT
-#  define _WIN32_WINNT 0x0501
+#  define _WIN32_WINNT 0x0600
 # endif
 
 /* Defined to avoid including some windows headers as part of Windows.h */
@@ -550,8 +712,8 @@ if test "x$enable_rust" = "xyes"; then
   if test "x$RUSTC_VERSION_MAJOR" = "x" -o "x$RUSTC_VERSION_MINOR" = "x"; then
     AC_MSG_ERROR([rustc version couldn't be identified])
   fi
-  if test "$RUSTC_VERSION_MAJOR" -lt 2 -a "$RUSTC_VERSION_MINOR" -lt 14; then
-    AC_MSG_ERROR([rustc must be at least version 1.14])
+  if test "$RUSTC_VERSION_MAJOR" -lt 2 -a "$RUSTC_VERSION_MINOR" -lt 31; then
+    AC_MSG_ERROR([rustc must be at least version 1.31.0])
   fi
   AC_MSG_RESULT([$RUSTC_VERSION])
 fi
@@ -587,18 +749,17 @@ AC_CHECK_FUNCS(
 	explicit_bzero \
 	timingsafe_memcmp \
 	flock \
+	fsync \
 	ftime \
 	get_current_dir_name \
 	getaddrinfo \
 	getdelim \
 	getifaddrs \
 	getline \
-	getpass \
 	getrlimit \
 	gettimeofday \
 	gmtime_r \
 	gnu_get_libc_version \
-	htonll \
 	inet_aton \
 	ioctl \
 	issetugid \
@@ -707,6 +868,8 @@ fi
 AM_CONDITIONAL(BUILD_READPASSPHRASE_C,
   test "x$ac_cv_func_readpassphrase" = "xno" && test "$bwin32" = "false")
 
+AC_CHECK_FUNCS(glob)
+
 AC_MSG_CHECKING([whether free(NULL) works])
 AC_RUN_IFELSE([AC_LANG_PROGRAM([
   #include <stdlib.h>
@@ -728,10 +891,13 @@ dnl Where do you live, libevent?  And how do we call you?
 if test "$bwin32" = "true"; then
   TOR_LIB_WS32=-lws2_32
   TOR_LIB_IPHLPAPI=-liphlpapi
+  TOR_LIB_SHLWAPI=-lshlwapi
   # Some of the cargo-cults recommend -lwsock32 as well, but I don't
   # think it's actually necessary.
   TOR_LIB_GDI=-lgdi32
   TOR_LIB_USERENV=-luserenv
+  TOR_LIB_BCRYPT=-lbcrypt
+  TOR_LIB_CRYPT32=-lcrypt32
 else
   TOR_LIB_WS32=
   TOR_LIB_GDI=
@@ -740,6 +906,9 @@ fi
 AC_SUBST(TOR_LIB_WS32)
 AC_SUBST(TOR_LIB_GDI)
 AC_SUBST(TOR_LIB_IPHLPAPI)
+AC_SUBST(TOR_LIB_BCRYPT)
+AC_SUBST(TOR_LIB_CRYPT32)
+AC_SUBST(TOR_LIB_SHLWAPI)
 AC_SUBST(TOR_LIB_USERENV)
 
 tor_libevent_pkg_redhat="libevent"
@@ -756,7 +925,7 @@ if test "$enable_static_libevent" = "yes"; then
     fi
 fi
 
-TOR_SEARCH_LIBRARY(libevent, $trylibeventdir, [-levent $STATIC_LIBEVENT_FLAGS $TOR_LIB_WS32], [
+TOR_SEARCH_LIBRARY(libevent, $trylibeventdir, [-levent $STATIC_LIBEVENT_FLAGS $TOR_LIB_IPHLPAPI $TOR_LIB_BCRYPT $TOR_LIB_WS32], [
 #ifdef _WIN32
 #include <winsock2.h>
 #endif
@@ -862,7 +1031,7 @@ if test "x$enable_nss" = "xyes"; then
   PKG_CHECK_MODULES(NSS,
      [nss],
      [have_nss=yes],
-     [have_nss=no; AC_MSG_ERROR([You asked for NSS but I can't find it.])])
+     [have_nss=no; AC_MSG_ERROR([You asked for NSS but I can't find it, $pkg_config_user_action, or set NSS_CFLAGS and NSS_LIBS.])])
   AC_SUBST(NSS_CFLAGS)
   AC_SUBST(NSS_LIBS)
 fi
@@ -887,7 +1056,7 @@ AC_ARG_WITH(ssl-dir,
   ])
 
 AC_MSG_NOTICE([Now, we'll look for OpenSSL >= 1.0.1])
-TOR_SEARCH_LIBRARY(openssl, $tryssldir, [-lssl -lcrypto $TOR_LIB_GDI $TOR_LIB_WS32],
+TOR_SEARCH_LIBRARY(openssl, $tryssldir, [-lssl -lcrypto $TOR_LIB_GDI $TOR_LIB_WS32 $TOR_LIB_CRYPT32],
     [#include <openssl/ssl.h>
      char *getenv(const char *);],
     [struct ssl_cipher_st;
@@ -902,20 +1071,18 @@ TOR_SEARCH_LIBRARY(openssl, $tryssldir, [-lssl -lcrypto $TOR_LIB_GDI $TOR_LIB_WS
     [if (getenv("THIS_SHOULDNT_BE_SET_X201803")) SSL_CIPHER_get_id((void *)0);], [],
     [/usr/local/opt/openssl /usr/local/openssl /usr/lib/openssl /usr/local/ssl /usr/lib/ssl /usr/local /opt/openssl])
 
-dnl XXXX check for OPENSSL_VERSION_NUMBER == SSLeay()
-
 if test "$enable_static_openssl" = "yes"; then
    if test "$tor_cv_library_openssl_dir" = "(system)"; then
      AC_MSG_ERROR("You must specify an explicit --with-openssl-dir=x option when using --enable-static-openssl")
    else
-     TOR_OPENSSL_LIBS="$TOR_LIBDIR_openssl/libssl.a $TOR_LIBDIR_openssl/libcrypto.a"
+     TOR_OPENSSL_LIBS="$TOR_LIBDIR_openssl/libssl.a $TOR_LIBDIR_openssl/libcrypto.a $TOR_LIB_WS32 $TOR_LIB_CRYPT32 $TOR_LIB_BCRYPT"
    fi
 else
      TOR_OPENSSL_LIBS="-lssl -lcrypto"
 fi
 AC_SUBST(TOR_OPENSSL_LIBS)
 
-dnl Now check for particular openssl functions.
+dnl Now validate openssl, and check for particular openssl functions.
 save_LIBS="$LIBS"
 save_LDFLAGS="$LDFLAGS"
 save_CPPFLAGS="$CPPFLAGS"
@@ -923,13 +1090,30 @@ LIBS="$TOR_OPENSSL_LIBS $LIBS"
 LDFLAGS="$TOR_LDFLAGS_openssl $LDFLAGS"
 CPPFLAGS="$TOR_CPPFLAGS_openssl $CPPFLAGS"
 
+dnl Tor currently uses a number of APIs that are deprecated in OpenSSL 3.0.0
+dnl and later.  We want to migrate away from them, but that will be a lot of
+dnl work. (See ticket tor#40166.)  For now, we disable the deprecation
+dnl warnings.
+
+AC_MSG_CHECKING([for OpenSSL >= 3.0.0])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#include <openssl/opensslv.h>
+#if !defined(LIBRESSL_VERSION_NUMBER) && OPENSSL_VERSION_NUMBER <= 0x30000000L
+#error "you_have_version_3"
+#endif
+   ]], [[]])],
+   [ AC_MSG_RESULT([no]) ],
+   [ AC_MSG_RESULT([yes]);
+     AC_DEFINE(OPENSSL_SUPPRESS_DEPRECATED, 1, [disable openssl deprecated-function warnings]) ])
+
+AC_MSG_CHECKING([for OpenSSL < 1.0.1])
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #include <openssl/opensslv.h>
 #if !defined(LIBRESSL_VERSION_NUMBER) && OPENSSL_VERSION_NUMBER < 0x1000100fL
 #error "too old"
 #endif
    ]], [[]])],
-   [ : ],
+   [ AC_MSG_RESULT([no]) ],
    [ AC_MSG_ERROR([OpenSSL is too old. We require 1.0.1 or later. You can specify a path to a newer one with --with-openssl-dir.]) ])
 
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
@@ -945,6 +1129,28 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
    [ : ],
    [ AC_MSG_ERROR([OpenSSL is built without full ECC support, including curves P256 and P224. You can specify a path to one with ECC support with --with-openssl-dir.]) ])
 
+dnl Let's see if we have a version mismatch between includes and libs.
+AC_MSG_CHECKING([for significant mismatch between openssl headers and libraries])
+ac_retval=foo
+AC_RUN_IFELSE([AC_LANG_SOURCE([AC_LANG_PROGRAM([[
+ #include <openssl/opensslv.h>
+ #include <openssl/crypto.h>
+]], [[
+  /* Include major, minor, and fix, but not patch or status. */
+  unsigned long mask = 0xfffff000;
+  unsigned long linking = OpenSSL_version_num() & mask;
+  unsigned long running = OPENSSL_VERSION_NUMBER & mask;
+  return !(linking==running);
+]])])], [openssl_ver_mismatch=no], [
+   # This is a kludge to figure out whether compilation failed, or whether
+   # running the program failed.
+   if test "$ac_retval" == "1"; then
+      openssl_ver_mismatch=inconclusive
+   else
+      openssl_ver_mismatch=yes
+   fi], [openssl_ver_mismatch=cross])
+AC_MSG_RESULT([$openssl_ver_mismatch])
+
 AC_CHECK_MEMBERS([struct ssl_method_st.get_cipher_by_char], , ,
 [#include <openssl/ssl.h>
 ])
@@ -956,7 +1162,6 @@ dnl to them.
 AC_CHECK_FUNCS([ \
 		ERR_load_KDF_strings \
 		EVP_PBE_scrypt \
-		EVP_sha3_256 \
 		SSL_CIPHER_find \
 		SSL_CTX_set1_groups_list \
 		SSL_CTX_set_security_level \
@@ -1054,10 +1259,10 @@ dnl Where we do we find lzma?
 AC_ARG_ENABLE(lzma,
       AS_HELP_STRING(--enable-lzma, [enable support for the LZMA compression scheme.]),
       [case "${enableval}" in
-        "yes") lzma=true ;;
-        "no")  lzma=false ;;
+        "yes") ;;
+        "no")  ;;
         * ) AC_MSG_ERROR(bad value for --enable-lzma) ;;
-      esac], [lzma=auto])
+      esac], [enable_lzma=auto])
 
 if test "x$enable_lzma" = "xno"; then
     have_lzma=no;
@@ -1068,7 +1273,8 @@ else
                       have_lzma=no)
 
     if test "x$have_lzma" = "xno" ; then
-        AC_MSG_WARN([Unable to find liblzma.])
+        tor_incr_n_warnings
+        AC_MSG_WARN([Unable to find liblzma, $pkg_config_user_action, or set LZMA_CFLAGS and LZMA_LIBS.])
     fi
 fi
 
@@ -1086,10 +1292,10 @@ dnl Where we do we find zstd?
 AC_ARG_ENABLE(zstd,
       AS_HELP_STRING(--enable-zstd, [enable support for the Zstandard compression scheme.]),
       [case "${enableval}" in
-        "yes") zstd=true ;;
-        "no")  zstd=false ;;
+        "yes") ;;
+        "no")  ;;
         * ) AC_MSG_ERROR(bad value for --enable-zstd) ;;
-      esac], [zstd=auto])
+      esac], [enable_zstd=auto])
 
 if test "x$enable_zstd" = "xno"; then
     have_zstd=no;
@@ -1100,7 +1306,8 @@ else
                       have_zstd=no)
 
     if test "x$have_zstd" = "xno" ; then
-        AC_MSG_WARN([Unable to find libzstd.])
+        tor_incr_n_warnings
+        AC_MSG_WARN([Unable to find libzstd, $pkg_config_user_action, or set ZSTD_CFLAGS and ZSTD_LIBS.])
     fi
 fi
 
@@ -1188,11 +1395,23 @@ m4_ifdef([AS_VAR_IF],[
        TOR_CHECK_LDFLAGS(-pie, "$all_ldflags_for_check", "$all_libs_for_check")
     fi
     TOR_TRY_COMPILE_WITH_CFLAGS(-fwrapv, also_link, CFLAGS_FWRAPV="-fwrapv", true)
+
+   AC_MSG_CHECKING([whether we can run hardened binaries])
+   AC_RUN_IFELSE([AC_LANG_PROGRAM([], [return 0;])],
+        [AC_MSG_RESULT([yes])],
+        [AC_MSG_RESULT([no])
+         AC_MSG_ERROR([dnl
+ We can link with compiler hardening options, but we can't run with them.
+ That's a bad sign! If you must, you can pass --disable-gcc-hardening to
+ configure, but it would be better to figure out what the underlying problem
+ is.])],
+        [AC_MSG_RESULT([cross])])
 fi
 
 if test "$fragile_hardening" = "yes"; then
     TOR_TRY_COMPILE_WITH_CFLAGS(-ftrapv, also_link, CFLAGS_FTRAPV="-ftrapv", true)
    if test "$tor_cv_cflags__ftrapv" = "yes" && test "$tor_can_link__ftrapv" != "yes"; then
+      tor_incr_n_warnings
       AC_MSG_WARN([The compiler supports -ftrapv, but for some reason I was not able to link with -ftrapv. Are you missing run-time support? Run-time hardening will not work as well as it should.])
    fi
 
@@ -1293,7 +1512,7 @@ dnl These cflags add bunches of branches, and we haven't been able to
 dnl persuade ourselves that they're suitable for code that needs to be
 dnl constant time.
 AC_SUBST(CFLAGS_BUGTRAP)
-dnl These cflags are variant ones sutable for code that needs to be
+dnl These cflags are variant ones suitable for code that needs to be
 dnl constant-time.
 AC_SUBST(CFLAGS_CONSTTIME)
 
@@ -1472,8 +1691,6 @@ AC_CHECK_HEADERS([errno.h \
 		  mach/vm_inherit.h \
 		  machine/limits.h \
 		  malloc.h \
-		  malloc/malloc.h \
-		  malloc_np.h \
 		  netdb.h \
 		  netinet/in.h \
 		  netinet/in6.h \
@@ -1494,14 +1711,14 @@ AC_CHECK_HEADERS([errno.h \
 		  sys/statvfs.h \
 		  sys/syscall.h \
 		  sys/sysctl.h \
-		  sys/syslimits.h \
 		  sys/time.h \
 		  sys/types.h \
 		  sys/un.h \
 		  sys/utime.h \
 		  sys/wait.h \
 		  syslog.h \
-		  utime.h])
+		  utime.h \
+		  glob.h])
 
 AC_CHECK_HEADERS(sys/param.h)
 
@@ -1735,6 +1952,7 @@ void try_atomic_init(struct x *xx)
 if test "$tor_cv_stdatomic_works" = "yes"; then
    AC_DEFINE(STDATOMIC_WORKS, 1, [Set to 1 if we can compile a simple stdatomic example.])
 elif test "$ac_cv_header_stdatomic_h" = "yes"; then
+   tor_incr_n_warnings
    AC_MSG_WARN([Your compiler provides the stdatomic.h header, but it doesn't seem to work.  I'll pretend it isn't there. If you are using Clang on Debian, maybe this is because of https://bugs.debian.org/903709 ])
 fi
 
@@ -1868,8 +2086,7 @@ if test "$tor_cv_uint8_uchar" = "no"; then
 fi
 
 AC_ARG_WITH(tcmalloc,
-AS_HELP_STRING(--with-tcmalloc, [use tcmalloc memory allocation library. Deprecated; see --with-malloc]),
-[ tcmalloc=yes ], [ tcmalloc=no ])
+AS_HELP_STRING(--with-tcmalloc, [use tcmalloc memory allocation library. Deprecated; see --with-malloc]))
 
 default_malloc=system
 
@@ -1878,7 +2095,7 @@ if test "x$enable_openbsd_malloc" = "xyes" ; then
   default_malloc=openbsd
 fi
 
-if test "x$tcmalloc" = "xyes"; then
+if test "x$with_tcmalloc" = "xyes"; then
   AC_MSG_NOTICE([The --with-tcmalloc argument is deprecated; use --with-malloc=tcmalloc instead.])
   default_malloc=tcmalloc
 fi
@@ -1896,7 +2113,7 @@ AS_CASE([$malloc],
 			have_tcmalloc=no)
 
       if test "x$have_tcmalloc" = "xno" ; then
-          AC_MSG_ERROR([Unable to find tcmalloc requested by --with-malloc.])
+          AC_MSG_ERROR([Unable to find tcmalloc requested by --with-malloc, $pkg_config_user_action, or set TCMALLOC_CFLAGS and TCMALLOC_LIBS.])
       fi
 
       CFLAGS="$CFLAGS $TCMALLOC_CFLAGS"
@@ -1909,8 +2126,8 @@ AS_CASE([$malloc],
 			have_jemalloc=yes,
 			have_jemalloc=no)
 
-      if test "x$have_tcmalloc" = "xno" ; then
-          AC_MSG_ERROR([Unable to find jemalloc requested by --with-malloc.])
+      if test "x$have_jemalloc" = "xno" ; then
+          AC_MSG_ERROR([Unable to find jemalloc requested by --with-malloc, $pkg_config_user_action, or set JEMALLOC_CFLAGS and JEMALLOC_LIBS.])
       fi
 
       CFLAGS="$CFLAGS $JEMALLOC_CFLAGS"
@@ -1919,6 +2136,7 @@ AS_CASE([$malloc],
   ],
 
   [openbsd], [
+    tor_incr_n_warnings
     AC_MSG_WARN([The openbsd malloc port is deprecated in Tor 0.3.5 and will be removed in a future version.])
     enable_openbsd_malloc=yes
   ],
@@ -2447,6 +2665,7 @@ TOR_TRY_COMPILE_WITH_CFLAGS([@warning_flags], [],
 if test "$enable_coverage" = "yes" && test "$have_clang" = "no"; then
    case "$host_os" in
     darwin*)
+      tor_incr_n_warnings
       AC_MSG_WARN([Tried to enable coverage on OSX without using the clang compiler. This might not work! If coverage fails, use CC=clang when configuring with --enable-coverage.])
    esac
 fi
@@ -2458,8 +2677,6 @@ AC_CONFIG_FILES([
 	Makefile
 	config.rust
 	contrib/operator-tools/tor.logrotate
-	contrib/dist/torctl
-	contrib/dist/tor.service
 	src/config/torrc.sample
 	src/config/torrc.minimal
 	src/rust/.cargo/config
@@ -2468,7 +2685,7 @@ AC_CONFIG_FILES([
 ])
 
 if test "x$asciidoc" = "xtrue" && test "$ASCIIDOC" = "none"; then
-  regular_mans="doc/tor doc/tor-gencert doc/tor-resolve doc/torify"
+  regular_mans="doc/man/tor doc/man/tor-gencert doc/man/tor-resolve doc/man/torify"
   for file in $regular_mans ; do
     if ! [[ -f "$srcdir/$file.1.in" ]] || ! [[ -f "$srcdir/$file.html.in" ]] ; then
       echo "==================================";
@@ -2486,6 +2703,7 @@ if test "x$asciidoc" = "xtrue" && test "$ASCIIDOC" = "none"; then
 fi
 
 if test "$fragile_hardening" = "yes"; then
+  tor_incr_n_warnings
   AC_MSG_WARN([
 
 ============
@@ -2495,9 +2713,182 @@ other kinds of attacks easier. A Tor instance build with this option will be
 somewhat less vulnerable to remote code execution, arithmetic overflow, or
 out-of-bounds read/writes... but at the cost of becoming more vulnerable to
 denial of service attacks. For more information, see
-https://trac.torproject.org/projects/tor/wiki/doc/TorFragileHardening
+https://gitlab.torproject.org/tpo/core/team/-/wikis/TorFragileHardening
 ============
   ])
 fi
 
 AC_OUTPUT
+
+if test "$openssl_ver_mismatch" = "yes"; then
+   tor_incr_n_warnings
+   AC_MSG_WARN([
+============
+Warning! The version OpenSSL headers we get from compiling with
+    "${TOR_CPPFLAGS_OPENSSL:-(no extra options)}"
+do not match version of the OpenSSL library we get when linking with
+    "$TOR_LDFLAGS_OPENSSL $TOR_OPENSSL_LIBS".
+This might cause compilation to fail. Try using --with-openssl-dir to specify
+the exact OpenSSL path you want.
+============
+])
+fi
+
+#
+# Mini-report on what will be built.
+#
+
+PPRINT_INIT
+PPRINT_SET_INDENT(1)
+PPRINT_SET_TS(65)
+
+AS_ECHO
+AS_ECHO("Tor Version: ${PPRINT_COLOR_BLDBLU}Tor $PACKAGE_VERSION $PPRINT_COLOR_RST")
+AS_ECHO
+
+PPRINT_SUBTITLE([Build Features])
+
+PPRINT_PROP_STRING([Compiler], [$CC])
+PPRINT_PROP_STRING([Host OS], [$host_os])
+AS_ECHO
+
+test "x$enable_fatal_warnings" = "xyes" && value=1 || value=0
+PPRINT_PROP_BOOL([Warnings are fatal (--enable-fatal-warnings)], $value)
+
+test "x$enable_rust" = "xyes" && value=1 || value=0
+PPRINT_PROP_BOOL([Rust support (--enable-rust)], $value)
+
+test "x$enable_cargo_online_mode" = "xyes" && value=1 || value=0
+PPRINT_PROP_BOOL([Cargo Online Fetch (--enable-cargo-online-mode)], $value)
+
+test "x$enable_android" = "xyes" && value=1 || value=0
+PPRINT_PROP_BOOL([Android support (--enable-android)], $value)
+
+AS_ECHO
+PPRINT_SUBTITLE([Static Build])
+
+test "x$enable_static_tor" = "xyes" && value=1 || value=0
+PPRINT_PROP_BOOL([tor (--enable-static-tor)], $value)
+
+if test "x$enable_static_libevent" = "xyes"; then
+  PPRINT_PROP_STRING([libevent], [$TOR_LIBDIR_libevent])
+else
+  PPRINT_PROP_BOOL([libevent (--enable-static-libevent)], $value)
+fi
+
+if test "x$enable_static_openssl" = "xyes"; then
+  PPRINT_PROP_STRING([libssl], [$TOR_LIBDIR_openssl])
+else
+  PPRINT_PROP_BOOL([libssl (--enable-static-openssl)], $value)
+fi
+
+if test "x$enable_static_zlib" = "xyes"; then
+  PPRINT_PROP_STRING([zlib1g], [$TOR_LIBDIR_zlib])
+else
+  PPRINT_PROP_BOOL([zlib1g (--enable-static-zlib)], $value)
+fi
+
+AS_ECHO
+PPRINT_SUBTITLE([Optional Libraries])
+
+test "x$enable_nss" = "xyes" && value=1 || value=0
+PPRINT_PROP_BOOL([libnss (--enable-nss)], $value)
+
+test "x$enable_seccomp" != "xno" && value=1 || value=0
+PPRINT_PROP_BOOL([libseccomp (--disable-seccomp)], $value)
+
+test "x$enable_libscrypt" != "xno" && value=1 || value=0
+PPRINT_PROP_BOOL([libscrypt (--disable-libscrypt)], $value)
+
+test "x$enable_systemd" = "xyes" && value=1 || value=0
+PPRINT_PROP_BOOL([Systemd support (--enable-systemd)], $value)
+
+test "x$enable_lzma" = "xyes" && value=1 || value=0
+PPRINT_PROP_BOOL([liblzma (--enable-lzma)], $value)
+
+test "x$enable_zstd" = "xyes" && value=1 || value=0
+PPRINT_PROP_BOOL([libzstd (--enable-zstd)], $value)
+
+AS_ECHO
+PPRINT_SUBTITLE([Hardening])
+
+test "x$enable_gcc_hardening" != "xno" && value=1 || value=0
+PPRINT_PROP_BOOL([Compiler Hardening (--disable-gcc-hardening)], $value)
+
+test "x$enable_linker_hardening" != "xno" && value=1 || value=0
+PPRINT_PROP_BOOL([Linker Hardening (--disable-linker-hardening)], $value)
+
+test "x$fragile_hardening" = "xyes" && value=1 || value=0
+PPRINT_PROP_BOOL([Fragile Hardening (--enable-fragile-hardening, dev only)], $value)
+
+AS_ECHO
+PPRINT_SUBTITLE([Modules])
+
+m4_foreach_w([mname], MODULES,
+  [
+    AM_COND_IF(m4_join([], [BUILD_MODULE_], m4_toupper([]mname[])), value=1, value=0)
+    m4_set_contains([MODULES_WITH_NO_OPTIONS], mname,
+                    PPRINT_PROP_BOOL([mname], $value),
+                    PPRINT_PROP_BOOL([mname (--disable-module-mname)], $value))
+  ]
+)
+
+AS_ECHO
+PPRINT_SUBTITLE([Documentation])
+
+test "x$enable_asciidoc" != "xno" && value=1 || value=0
+PPRINT_PROP_BOOL([AsciiDoc (--disable-asciidoc)], $value)
+
+test "x$enable_manpage" != "xno" && value=1 || value=0
+PPRINT_PROP_BOOL([Man Pages (--disable-manpage)], $value)
+
+test "x$enable_html_manual" != "xno" && value=1 || value=0
+PPRINT_PROP_BOOL([HTML Manual (--disable-html-manual)], $value)
+
+AS_ECHO
+PPRINT_SUBTITLE([Tests])
+
+test "x$enable_unittests" != "xno" && value=1 || value=0
+PPRINT_PROP_BOOL([Unit tests (--disable-unittests)], $value)
+
+test "x$enable_asserts_in_tests" = "xno" && value=1 || value=0
+PPRINT_PROP_BOOL([assert()s enabled (--enable-asserts-in-tests, dev only)], $value)
+
+test "x$enable_coverage" = "xyes" && value=1 || value=0
+PPRINT_PROP_BOOL([Code Coverage (--enable-coverage)], $value)
+
+test "x$enable_libfuzzer" = "xyes" && value=1 || value=0
+PPRINT_PROP_BOOL([libFuzzer support (--enable-libfuzzer)], $value)
+
+test "x$enable_oss_fuzz" = "xyes" && value=1 || value=0
+PPRINT_PROP_BOOL([OSS-Fuzz support (--enable-oss-fuzz)], $value)
+
+AS_ECHO
+PPRINT_SUBTITLE([Tracing (--enable-tracing-instrumentation-<type>)])
+
+test "x$enable_tracing_instrumentation_log_debug" = "xyes" && value=1 || value=0
+PPRINT_PROP_BOOL([Tracepoints to log_debug() (log-debug)], $value)
+
+test "x$enable_tracing_instrumentation_usdt" = "xyes" && value=1 || value=0
+PPRINT_PROP_BOOL([USDT Instrumentation (usdt)], $value)
+
+test "x$enable_tracing_instrumentation_lttng" = "xyes" && value=1 || value=0
+PPRINT_PROP_BOOL([LTTng Instrumentation (lttng)], $value)
+
+AS_ECHO
+PPRINT_SUBTITLE([Install Directories])
+
+report_mandir="`eval eval echo $mandir`"
+PPRINT_PROP_STRING([Binaries], [$BINDIR])
+PPRINT_PROP_STRING([Configuration], [$CONFDIR])
+PPRINT_PROP_STRING([Man Pages], [$report_mandir])
+
+AS_ECHO
+AS_ECHO(["Configure Line: ./configure $configure_flags"])
+
+if test "$tor_ac_n_warnings" != "0"; then
+  AS_ECHO
+  PPRINT_WARN([
+Encountered $tor_ac_n_warnings warning(s). See messages above for more info.
+  ])
+fi

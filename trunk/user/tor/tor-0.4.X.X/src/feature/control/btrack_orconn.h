@@ -1,4 +1,4 @@
-/* Copyright (c) 2007-2019, The Tor Project, Inc. */
+/* Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 /**
@@ -8,6 +8,8 @@
 
 #ifndef TOR_BTRACK_ORCONN_H
 #define TOR_BTRACK_ORCONN_H
+
+#include "lib/pubsub/pubsub.h"
 
 #ifdef BTRACK_ORCONN_PRIVATE
 
@@ -33,6 +35,7 @@ typedef struct bt_orconn_t {
 #endif /* defined(BTRACK_ORCONN_PRIVATE) */
 
 int btrack_orconn_init(void);
+int btrack_orconn_add_pubsub(pubsub_connector_t *);
 void btrack_orconn_fini(void);
 
 #endif /* !defined(TOR_BTRACK_ORCONN_H) */

@@ -1,6 +1,6 @@
 /* Copyright (c) 2003-2004, Roger Dingledine
  * Copyright (c) 2004-2006, Roger Dingledine, Nick Mathewson.
- * Copyright (c) 2007-2019, The Tor Project, Inc. */
+ * Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 /**
@@ -77,7 +77,7 @@ static inline void smartlist_set(smartlist_t *sl, int idx, void *val) {
   raw_assert(sl->num_used > idx);
   sl->list[idx] = val;
 }
-#else /* !(defined(DEBUG_SMARTLIST)) */
+#else /* !defined(DEBUG_SMARTLIST) */
 #define smartlist_len(sl) ((sl)->num_used)
 #define smartlist_get(sl, idx) ((sl)->list[idx])
 #define smartlist_set(sl, idx, val) ((sl)->list[idx] = (val))

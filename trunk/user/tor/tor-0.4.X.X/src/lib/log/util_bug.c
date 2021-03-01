@@ -1,6 +1,6 @@
 /* Copyright (c) 2003, Roger Dingledine
  * Copyright (c) 2004-2006, Roger Dingledine, Nick Mathewson.
- * Copyright (c) 2007-2019, The Tor Project, Inc. */
+ * Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 /**
@@ -11,6 +11,7 @@
 #include "lib/log/util_bug.h"
 #include "lib/log/log.h"
 #include "lib/err/backtrace.h"
+#include "lib/err/torerr.h"
 #ifdef TOR_UNIT_TESTS
 #include "lib/smartlist_core/smartlist_core.h"
 #include "lib/smartlist_core/smartlist_foreach.h"
@@ -63,14 +64,13 @@ tor_set_failed_assertion_callback(void (*fn)(void))
 {
   failed_assertion_cb = fn;
 }
-#else /* !(defined(TOR_UNIT_TESTS)) */
+#else /* !defined(TOR_UNIT_TESTS) */
 #define capturing_bugs() (0)
 #define add_captured_bug(s) do { } while (0)
 #endif /* defined(TOR_UNIT_TESTS) */
 
 /** Helper for tor_assert: report the assertion failure. */
 void
-CHECK_PRINTF(5, 6)
 tor_assertion_failed_(const char *fname, unsigned int line,
                       const char *func, const char *expr,
                       const char *fmt, ...)
@@ -103,7 +103,6 @@ tor_assertion_failed_(const char *fname, unsigned int line,
 
 /** Helper for tor_assert_nonfatal: report the assertion failure. */
 void
-CHECK_PRINTF(6, 7)
 tor_bug_occurred_(const char *fname, unsigned int line,
                   const char *func, const char *expr,
                   int once, const char *fmt, ...)
@@ -161,16 +160,18 @@ tor_bug_occurred_(const char *fname, unsigned int line,
 }
 
 /**
- * Call the abort() function to kill the current process with a fatal
- * error.
+ * Call the tor_raw_abort_() function to close raw logs, then kill the current
+ * process with a fatal error. But first, close the file-based log file
+ * descriptors, so error messages are written before process termination.
  *
  * (This is a separate function so that we declare it in util_bug.h without
- * including stdlib in all the users of util_bug.h)
+ * including torerr.h in all the users of util_bug.h)
  **/
 void
 tor_abort_(void)
 {
-  abort();
+  logs_flush_sigsafe();
+  tor_raw_abort_();
 }
 
 #ifdef _WIN32

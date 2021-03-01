@@ -1,5 +1,5 @@
 /* Copyright (c) 2004-2006, Roger Dingledine, Nick Mathewson.
- * Copyright (c) 2007-2019, The Tor Project, Inc. */
+ * Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 /**
@@ -13,19 +13,22 @@
 
 #include "core/or/or.h"
 #include "app/config/config.h"
-#include "app/config/confparse.h"
+#include "lib/confmgt/confmgt.h"
 #include "app/main/main.h"
 #include "core/mainloop/connection.h"
 #include "core/or/circuitbuild.h"
 #include "core/or/circuitlist.h"
 #include "core/or/circuituse.h"
 #include "core/or/connection_edge.h"
+#include "core/or/circuitstats.h"
+#include "core/or/extendinfo.h"
 #include "feature/client/addressmap.h"
 #include "feature/client/dnsserv.h"
 #include "feature/client/entrynodes.h"
 #include "feature/control/control.h"
 #include "feature/control/control_auth.h"
 #include "feature/control/control_cmd.h"
+#include "feature/control/control_hs.h"
 #include "feature/control/control_events.h"
 #include "feature/control/control_getinfo.h"
 #include "feature/control/control_proto.h"
@@ -53,6 +56,8 @@
 #include "feature/rend/rend_authorized_client_st.h"
 #include "feature/rend/rend_encoded_v2_service_descriptor_st.h"
 #include "feature/rend/rend_service_descriptor_st.h"
+
+#include "src/app/config/statefile.h"
 
 static int control_setconf_helper(control_connection_t *conn,
                                   const control_cmd_args_t *args,
@@ -288,26 +293,23 @@ handle_control_getconf(control_connection_t *conn,
   const smartlist_t *questions = args->args;
   smartlist_t *answers = smartlist_new();
   smartlist_t *unrecognized = smartlist_new();
-  char *msg = NULL;
-  size_t msg_len;
   const or_options_t *options = get_options();
-  int i, len;
 
   SMARTLIST_FOREACH_BEGIN(questions, const char *, q) {
     if (!option_is_recognized(q)) {
-      smartlist_add(unrecognized, (char*) q);
+      control_reply_add_printf(unrecognized, 552,
+                               "Unrecognized configuration key \"%s\"", q);
     } else {
       config_line_t *answer = option_get_assignment(options,q);
       if (!answer) {
         const char *name = option_get_canonical_name(q);
-        smartlist_add_asprintf(answers, "250-%s\r\n", name);
+        control_reply_add_one_kv(answers, 250, KV_OMIT_VALS, name, "");
       }
 
       while (answer) {
         config_line_t *next;
-        smartlist_add_asprintf(answers, "250-%s=%s\r\n",
-                     answer->key, answer->value);
-
+        control_reply_add_one_kv(answers, 250, KV_RAW, answer->key,
+                                 answer->value);
         next = answer->next;
         tor_free(answer->key);
         tor_free(answer->value);
@@ -317,30 +319,16 @@ handle_control_getconf(control_connection_t *conn,
     }
   } SMARTLIST_FOREACH_END(q);
 
-  if ((len = smartlist_len(unrecognized))) {
-    for (i=0; i < len-1; ++i)
-      control_printf_midreply(conn, 552,
-                              "Unrecognized configuration key \"%s\"",
-                              (char*)smartlist_get(unrecognized, i));
-    control_printf_endreply(conn, 552,
-                            "Unrecognized configuration key \"%s\"",
-                            (char*)smartlist_get(unrecognized, len-1));
-  } else if ((len = smartlist_len(answers))) {
-    char *tmp = smartlist_get(answers, len-1);
-    tor_assert(strlen(tmp)>4);
-    tmp[3] = ' ';
-    msg = smartlist_join_strings(answers, "", 0, &msg_len);
-    connection_buf_add(msg, msg_len, TO_CONN(conn));
+  if (smartlist_len(unrecognized)) {
+    control_write_reply_lines(conn, unrecognized);
+  } else if (smartlist_len(answers)) {
+    control_write_reply_lines(conn, answers);
   } else {
     send_control_done(conn);
   }
 
-  SMARTLIST_FOREACH(answers, char *, cp, tor_free(cp));
-  smartlist_free(answers);
-  smartlist_free(unrecognized);
-
-  tor_free(msg);
-
+  control_reply_free(answers);
+  control_reply_free(unrecognized);
   return 0;
 }
 
@@ -590,7 +578,7 @@ control_setconf_helper(control_connection_t *conn,
   const unsigned flags =
     CAL_CLEAR_FIRST | (use_defaults ? CAL_USE_DEFAULTS : 0);
 
-  // We need a copy here, since confparse.c wants to canonicalize cases.
+  // We need a copy here, since confmgt.c wants to canonicalize cases.
   config_line_t *lines = config_lines_dup(args->kwargs);
 
   opt_err = options_trial_assign(lines, flags, &errstring);
@@ -705,9 +693,8 @@ handle_control_mapaddress(control_connection_t *conn,
     connection_buf_add(r, sz, TO_CONN(conn));
     tor_free(r);
   } else {
-    const char *response =
-      "512 syntax error: not enough arguments to mapaddress.\r\n";
-    connection_buf_add(response, strlen(response), TO_CONN(conn));
+    control_write_endreply(conn, 512, "syntax error: "
+                           "not enough arguments to mapaddress.");
   }
 
   SMARTLIST_FOREACH(reply, char *, cp, tor_free(cp));
@@ -847,7 +834,7 @@ handle_control_extendcircuit(control_connection_t *conn,
                "addresses that are allowed by the firewall configuration; "
                "circuit marked for closing.");
       circuit_mark_for_close(TO_CIRCUIT(circ), -END_CIRC_REASON_CONNECTFAILED);
-      connection_write_str_to_buf("551 Couldn't start circuit\r\n", conn);
+      control_write_endreply(conn, 551, "Couldn't start circuit");
       goto done;
     }
     circuit_append_new_exit(circ, info);
@@ -994,8 +981,7 @@ handle_control_attachstream(control_connection_t *conn,
     edge_conn->end_reason = 0;
     if (tmpcirc)
       circuit_detach_stream(tmpcirc, edge_conn);
-    CONNECTION_AP_EXPECT_NONPENDING(ap_conn);
-    TO_CONN(edge_conn)->state = AP_CONN_STATE_CONTROLLER_WAIT;
+    connection_entry_set_controller_wait(ap_conn);
   }
 
   if (circ && (circ->base_.state != CIRCUIT_STATE_OPEN)) {
@@ -1257,6 +1243,66 @@ static const control_cmd_syntax_t protocolinfo_syntax = {
   .max_args = UINT_MAX
 };
 
+/** Return a comma-separated list of authentication methods for
+    handle_control_protocolinfo().  Caller must free this string. */
+static char *
+get_authmethods(const or_options_t *options)
+{
+  int cookies = options->CookieAuthentication;
+  char *methods;
+  int passwd = (options->HashedControlPassword != NULL ||
+                options->HashedControlSessionPassword != NULL);
+  smartlist_t *mlist = smartlist_new();
+
+  if (cookies) {
+    smartlist_add(mlist, (char*)"COOKIE");
+    smartlist_add(mlist, (char*)"SAFECOOKIE");
+  }
+  if (passwd)
+    smartlist_add(mlist, (char*)"HASHEDPASSWORD");
+  if (!cookies && !passwd)
+    smartlist_add(mlist, (char*)"NULL");
+  methods = smartlist_join_strings(mlist, ",", 0, NULL);
+  smartlist_free(mlist);
+
+  return methods;
+}
+
+/** Return escaped cookie filename.  Caller must free this string.
+    Return NULL if cookie authentication is disabled. */
+static char *
+get_esc_cfile(const or_options_t *options)
+{
+  char *cfile = NULL, *abs_cfile = NULL, *esc_cfile = NULL;
+
+  if (!options->CookieAuthentication)
+    return NULL;
+
+  cfile = get_controller_cookie_file_name();
+  abs_cfile = make_path_absolute(cfile);
+  esc_cfile = esc_for_log(abs_cfile);
+  tor_free(cfile);
+  tor_free(abs_cfile);
+  return esc_cfile;
+}
+
+/** Compose the auth methods line of a PROTOCOLINFO reply. */
+static void
+add_authmethods(smartlist_t *reply)
+{
+  const or_options_t *options = get_options();
+  char *methods = get_authmethods(options);
+  char *esc_cfile = get_esc_cfile(options);
+
+  control_reply_add_str(reply, 250, "AUTH");
+  control_reply_append_kv(reply, "METHODS", methods);
+  if (esc_cfile)
+    control_reply_append_kv(reply, "COOKIEFILE", esc_cfile);
+
+  tor_free(methods);
+  tor_free(esc_cfile);
+}
+
 /** Called when we get a PROTOCOLINFO command: send back a reply. */
 static int
 handle_control_protocolinfo(control_connection_t *conn,
@@ -1264,6 +1310,7 @@ handle_control_protocolinfo(control_connection_t *conn,
 {
   const char *bad_arg = NULL;
   const smartlist_t *args = cmd_args->args;
+  smartlist_t *reply = NULL;
 
   conn->have_sent_protocolinfo = 1;
 
@@ -1281,45 +1328,17 @@ handle_control_protocolinfo(control_connection_t *conn,
     /* Don't tolerate bad arguments when not authenticated. */
     if (!STATE_IS_OPEN(TO_CONN(conn)->state))
       connection_mark_for_close(TO_CONN(conn));
-    goto done;
-  } else {
-    const or_options_t *options = get_options();
-    int cookies = options->CookieAuthentication;
-    char *cfile = get_controller_cookie_file_name();
-    char *abs_cfile;
-    char *esc_cfile;
-    char *methods;
-    abs_cfile = make_path_absolute(cfile);
-    esc_cfile = esc_for_log(abs_cfile);
-    {
-      int passwd = (options->HashedControlPassword != NULL ||
-                    options->HashedControlSessionPassword != NULL);
-      smartlist_t *mlist = smartlist_new();
-      if (cookies) {
-        smartlist_add(mlist, (char*)"COOKIE");
-        smartlist_add(mlist, (char*)"SAFECOOKIE");
-      }
-      if (passwd)
-        smartlist_add(mlist, (char*)"HASHEDPASSWORD");
-      if (!cookies && !passwd)
-        smartlist_add(mlist, (char*)"NULL");
-      methods = smartlist_join_strings(mlist, ",", 0, NULL);
-      smartlist_free(mlist);
-    }
-
-    control_write_midreply(conn, 250, "PROTOCOLINFO 1");
-    control_printf_midreply(conn, 250, "AUTH METHODS=%s%s%s", methods,
-                            cookies?" COOKIEFILE=":"",
-                            cookies?esc_cfile:"");
-    control_printf_midreply(conn, 250, "VERSION Tor=%s", escaped(VERSION));
-    send_control_done(conn);
-
-    tor_free(methods);
-    tor_free(cfile);
-    tor_free(abs_cfile);
-    tor_free(esc_cfile);
+    return 0;
   }
- done:
+  reply = smartlist_new();
+  control_reply_add_str(reply, 250, "PROTOCOLINFO 1");
+  add_authmethods(reply);
+  control_reply_add_str(reply, 250, "VERSION");
+  control_reply_append_kv(reply, "Tor", escaped(VERSION));
+  control_reply_add_done(reply);
+
+  control_write_reply_lines(conn, reply);
+  control_reply_free(reply);
   return 0;
 }
 
@@ -1380,6 +1399,34 @@ handle_control_dropguards(control_connection_t *conn,
   return 0;
 }
 
+static const control_cmd_syntax_t droptimeouts_syntax = {
+  .max_args = 0,
+};
+
+/** Implementation for the DROPTIMEOUTS command. */
+static int
+handle_control_droptimeouts(control_connection_t *conn,
+                          const control_cmd_args_t *args)
+{
+  (void) args; /* We don't take arguments. */
+
+  static int have_warned = 0;
+  if (! have_warned) {
+    log_warn(LD_CONTROL, "DROPTIMEOUTS is dangerous; make sure you understand "
+             "the risks before using it. It may be removed in a future "
+             "version of Tor.");
+    have_warned = 1;
+  }
+
+  circuit_build_times_reset(get_circuit_build_times_mutable());
+  send_control_done(conn);
+  or_state_mark_dirty(get_or_state(), 0);
+  cbt_control_event_buildtimeout_set(get_circuit_build_times(),
+                                     BUILDTIMEOUT_SET_EVENT_RESET);
+
+  return 0;
+}
+
 static const char *hsfetch_keywords[] = {
   "SERVER", NULL,
 };
@@ -1414,7 +1461,7 @@ handle_control_hsfetch(control_connection_t *conn,
              rend_valid_descriptor_id(arg1 + v2_str_len) &&
              base32_decode(digest, sizeof(digest), arg1 + v2_str_len,
                            REND_DESC_ID_V2_LEN_BASE32) ==
-                REND_DESC_ID_V2_LEN_BASE32) {
+                sizeof(digest)) {
     /* We have a well formed version 2 descriptor ID. Keep the decoded value
      * of the id. */
     desc_id = digest;
@@ -1746,16 +1793,10 @@ handle_control_add_onion(control_connection_t *conn,
         goto out;
 
     } else if (!strcasecmp(arg->key, "ClientAuth")) {
-      char *err_msg = NULL;
       int created = 0;
       rend_authorized_client_t *client =
-        add_onion_helper_clientauth(arg->value,
-                                    &created, &err_msg);
+        add_onion_helper_clientauth(arg->value, &created, conn);
       if (!client) {
-        if (err_msg) {
-          connection_write_str_to_buf(err_msg, conn);
-          tor_free(err_msg);
-        }
         goto out;
       }
 
@@ -1820,19 +1861,13 @@ handle_control_add_onion(control_connection_t *conn,
   add_onion_secret_key_t pk = { NULL };
   const char *key_new_alg = NULL;
   char *key_new_blob = NULL;
-  char *err_msg = NULL;
 
   const char *onionkey = smartlist_get(args->args, 0);
   if (add_onion_helper_keyarg(onionkey, discard_pk,
                               &key_new_alg, &key_new_blob, &pk, &hs_version,
-                              &err_msg) < 0) {
-    if (err_msg) {
-      connection_write_str_to_buf(err_msg, conn);
-      tor_free(err_msg);
-    }
+                              conn) < 0) {
     goto out;
   }
-  tor_assert(!err_msg);
 
   /* Hidden service version 3 don't have client authentication support so if
    * ClientAuth was given, send back an error. */
@@ -1878,8 +1913,8 @@ handle_control_add_onion(control_connection_t *conn,
         char *encoded = rend_auth_encode_cookie(ac->descriptor_cookie,
                                                 auth_type);
         tor_assert(encoded);
-        connection_printf_to_buf(conn, "250-ClientAuth=%s:%s\r\n",
-                                 ac->client_name, encoded);
+        control_printf_midreply(conn, 250, "ClientAuth=%s:%s",
+                                ac->client_name, encoded);
         memwipe(encoded, 0, strlen(encoded));
         tor_free(encoded);
       });
@@ -1900,7 +1935,7 @@ handle_control_add_onion(control_connection_t *conn,
   case RSAE_BADAUTH:
     control_write_endreply(conn, 512, "Invalid client authorization");
     break;
-  case RSAE_INTERNAL: /* FALLSTHROUGH */
+  case RSAE_INTERNAL: FALLTHROUGH;
   default:
     control_write_endreply(conn, 551, "Failed to add Onion Service");
   }
@@ -1932,27 +1967,30 @@ handle_control_add_onion(control_connection_t *conn,
  * ADD_ONION command. Return a new crypto_pk_t and if a new key was generated
  * and the private key not discarded, the algorithm and serialized private key,
  * or NULL and an optional control protocol error message on failure.  The
- * caller is responsible for freeing the returned key_new_blob and err_msg.
+ * caller is responsible for freeing the returned key_new_blob.
  *
  * Note: The error messages returned are deliberately vague to avoid echoing
  * key material.
+ *
+ * Note: conn is only used for writing control replies. For testing
+ * purposes, it can be NULL if control_write_reply() is appropriately
+ * mocked.
  */
 STATIC int
 add_onion_helper_keyarg(const char *arg, int discard_pk,
                         const char **key_new_alg_out, char **key_new_blob_out,
                         add_onion_secret_key_t *decoded_key, int *hs_version,
-                        char **err_msg_out)
+                        control_connection_t *conn)
 {
   smartlist_t *key_args = smartlist_new();
   crypto_pk_t *pk = NULL;
   const char *key_new_alg = NULL;
   char *key_new_blob = NULL;
-  char *err_msg = NULL;
   int ret = -1;
 
   smartlist_split_string(key_args, arg, ":", SPLIT_IGNORE_BLANK, 0);
   if (smartlist_len(key_args) != 2) {
-    err_msg = tor_strdup("512 Invalid key type/blob\r\n");
+    control_write_endreply(conn, 512, "Invalid key type/blob");
     goto err;
   }
 
@@ -1969,55 +2007,57 @@ add_onion_helper_keyarg(const char *arg, int discard_pk,
     /* "RSA:<Base64 Blob>" - Loading a pre-existing RSA1024 key. */
     pk = crypto_pk_base64_decode_private(key_blob, strlen(key_blob));
     if (!pk) {
-      err_msg = tor_strdup("512 Failed to decode RSA key\r\n");
+      control_write_endreply(conn, 512, "Failed to decode RSA key");
       goto err;
     }
     if (crypto_pk_num_bits(pk) != PK_BYTES*8) {
       crypto_pk_free(pk);
-      err_msg = tor_strdup("512 Invalid RSA key size\r\n");
+      control_write_endreply(conn, 512, "Invalid RSA key size");
       goto err;
     }
     decoded_key->v2 = pk;
     *hs_version = HS_VERSION_TWO;
   } else if (!strcasecmp(key_type_ed25519_v3, key_type)) {
+    /* parsing of private ed25519 key */
     /* "ED25519-V3:<Base64 Blob>" - Loading a pre-existing ed25519 key. */
     ed25519_secret_key_t *sk = tor_malloc_zero(sizeof(*sk));
     if (base64_decode((char *) sk->seckey, sizeof(sk->seckey), key_blob,
                       strlen(key_blob)) != sizeof(sk->seckey)) {
       tor_free(sk);
-      err_msg = tor_strdup("512 Failed to decode ED25519-V3 key\r\n");
+      control_write_endreply(conn, 512, "Failed to decode ED25519-V3 key");
       goto err;
     }
     decoded_key->v3 = sk;
     *hs_version = HS_VERSION_THREE;
   } else if (!strcasecmp(key_type_new, key_type)) {
     /* "NEW:<Algorithm>" - Generating a new key, blob as algorithm. */
-    if (!strcasecmp(key_type_rsa1024, key_blob) ||
-        !strcasecmp(key_type_best, key_blob)) {
+    if (!strcasecmp(key_type_rsa1024, key_blob)) {
       /* "RSA1024", RSA 1024 bit, also currently "BEST" by default. */
       pk = crypto_pk_new();
       if (crypto_pk_generate_key(pk)) {
-        tor_asprintf(&err_msg, "551 Failed to generate %s key\r\n",
-                     key_type_rsa1024);
+        control_printf_endreply(conn, 551, "Failed to generate %s key",
+                                key_type_rsa1024);
         goto err;
       }
       if (!discard_pk) {
         if (crypto_pk_base64_encode_private(pk, &key_new_blob)) {
           crypto_pk_free(pk);
-          tor_asprintf(&err_msg, "551 Failed to encode %s key\r\n",
-                       key_type_rsa1024);
+          control_printf_endreply(conn, 551, "Failed to encode %s key",
+                                  key_type_rsa1024);
           goto err;
         }
         key_new_alg = key_type_rsa1024;
       }
       decoded_key->v2 = pk;
       *hs_version = HS_VERSION_TWO;
-    } else if (!strcasecmp(key_type_ed25519_v3, key_blob)) {
+    } else if (!strcasecmp(key_type_ed25519_v3, key_blob) ||
+               !strcasecmp(key_type_best, key_blob)) {
+      /* "ED25519-V3", ed25519 key, also currently "BEST" by default. */
       ed25519_secret_key_t *sk = tor_malloc_zero(sizeof(*sk));
       if (ed25519_secret_key_generate(sk, 1) < 0) {
         tor_free(sk);
-        tor_asprintf(&err_msg, "551 Failed to generate %s key\r\n",
-                     key_type_ed25519_v3);
+        control_printf_endreply(conn, 551, "Failed to generate %s key",
+                                key_type_ed25519_v3);
         goto err;
       }
       if (!discard_pk) {
@@ -2027,8 +2067,8 @@ add_onion_helper_keyarg(const char *arg, int discard_pk,
                           sizeof(sk->seckey), 0) != (len - 1)) {
           tor_free(sk);
           tor_free(key_new_blob);
-          tor_asprintf(&err_msg, "551 Failed to encode %s key\r\n",
-                       key_type_ed25519_v3);
+          control_printf_endreply(conn, 551, "Failed to encode %s key",
+                                  key_type_ed25519_v3);
           goto err;
         }
         key_new_alg = key_type_ed25519_v3;
@@ -2036,11 +2076,11 @@ add_onion_helper_keyarg(const char *arg, int discard_pk,
       decoded_key->v3 = sk;
       *hs_version = HS_VERSION_THREE;
     } else {
-      err_msg = tor_strdup("513 Invalid key type\r\n");
+      control_write_endreply(conn, 513, "Invalid key type");
       goto err;
     }
   } else {
-    err_msg = tor_strdup("513 Invalid key type\r\n");
+    control_write_endreply(conn, 513, "Invalid key type");
     goto err;
   }
 
@@ -2054,11 +2094,6 @@ add_onion_helper_keyarg(const char *arg, int discard_pk,
   });
   smartlist_free(key_args);
 
-  if (err_msg_out) {
-    *err_msg_out = err_msg;
-  } else {
-    tor_free(err_msg);
-  }
   *key_new_alg_out = key_new_alg;
   *key_new_blob_out = key_new_blob;
 
@@ -2068,27 +2103,30 @@ add_onion_helper_keyarg(const char *arg, int discard_pk,
 /** Helper function to handle parsing a ClientAuth argument to the
  * ADD_ONION command.  Return a new rend_authorized_client_t, or NULL
  * and an optional control protocol error message on failure.  The
- * caller is responsible for freeing the returned auth_client and err_msg.
+ * caller is responsible for freeing the returned auth_client.
  *
  * If 'created' is specified, it will be set to 1 when a new cookie has
  * been generated.
+ *
+ * Note: conn is only used for writing control replies. For testing
+ * purposes, it can be NULL if control_write_reply() is appropriately
+ * mocked.
  */
 STATIC rend_authorized_client_t *
-add_onion_helper_clientauth(const char *arg, int *created, char **err_msg)
+add_onion_helper_clientauth(const char *arg, int *created,
+                            control_connection_t *conn)
 {
   int ok = 0;
 
   tor_assert(arg);
   tor_assert(created);
-  tor_assert(err_msg);
-  *err_msg = NULL;
 
   smartlist_t *auth_args = smartlist_new();
   rend_authorized_client_t *client =
     tor_malloc_zero(sizeof(rend_authorized_client_t));
   smartlist_split_string(auth_args, arg, ":", 0, 0);
   if (smartlist_len(auth_args) < 1 || smartlist_len(auth_args) > 2) {
-    *err_msg = tor_strdup("512 Invalid ClientAuth syntax\r\n");
+    control_write_endreply(conn, 512, "Invalid ClientAuth syntax");
     goto err;
   }
   client->client_name = tor_strdup(smartlist_get(auth_args, 0));
@@ -2098,7 +2136,7 @@ add_onion_helper_clientauth(const char *arg, int *created, char **err_msg)
                                 client->descriptor_cookie,
                                 NULL, &decode_err_msg) < 0) {
       tor_assert(decode_err_msg);
-      tor_asprintf(err_msg, "512 %s\r\n", decode_err_msg);
+      control_write_endreply(conn, 512, decode_err_msg);
       tor_free(decode_err_msg);
       goto err;
     }
@@ -2109,7 +2147,7 @@ add_onion_helper_clientauth(const char *arg, int *created, char **err_msg)
   }
 
   if (!rend_valid_client_name(client->client_name)) {
-    *err_msg = tor_strdup("512 Invalid name in ClientAuth\r\n");
+    control_write_endreply(conn, 512, "Invalid name in ClientAuth");
     goto err;
   }
 
@@ -2259,12 +2297,13 @@ typedef struct control_cmd_def_t {
  */
 #define CMD_FL_WIPE (1u<<0)
 
+#ifndef COCCI
 /** Macro: declare a command with a one-line argument, a given set of flags,
  * and a syntax definition.
  **/
 #define ONE_LINE(name, flags)                                   \
   {                                                             \
-    #name,                                                      \
+    (#name),                                                    \
       handle_control_ ##name,                                   \
       flags,                                                    \
       &name##_syntax,                                           \
@@ -2275,7 +2314,7 @@ typedef struct control_cmd_def_t {
  * flags.
  **/
 #define MULTLINE(name, flags)                                   \
-  { "+"#name,                                                   \
+  { ("+"#name),                                                 \
       handle_control_ ##name,                                   \
       flags,                                                    \
       &name##_syntax                                            \
@@ -2291,6 +2330,7 @@ typedef struct control_cmd_def_t {
       0,                                        \
       &obsolete_syntax,                         \
   }
+#endif /* !defined(COCCI) */
 
 /**
  * An array defining all the recognized controller commands.
@@ -2322,10 +2362,14 @@ static const control_cmd_def_t CONTROL_COMMANDS[] =
   ONE_LINE(protocolinfo, 0),
   ONE_LINE(authchallenge, CMD_FL_WIPE),
   ONE_LINE(dropguards, 0),
+  ONE_LINE(droptimeouts, 0),
   ONE_LINE(hsfetch, 0),
   MULTLINE(hspost, 0),
   ONE_LINE(add_onion, CMD_FL_WIPE),
   ONE_LINE(del_onion, CMD_FL_WIPE),
+  ONE_LINE(onion_client_auth_add, CMD_FL_WIPE),
+  ONE_LINE(onion_client_auth_remove, 0),
+  ONE_LINE(onion_client_auth_view, 0),
 };
 
 /**

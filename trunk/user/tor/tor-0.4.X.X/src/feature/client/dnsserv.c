@@ -1,4 +1,4 @@
-/* Copyright (c) 2007-2019, The Tor Project, Inc. */
+/* Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 /**
@@ -238,7 +238,7 @@ dnsserv_launch_request(const char *name, int reverse,
     TO_CONN(conn)->port = control_conn->base_.port;
     TO_CONN(conn)->address = tor_addr_to_str_dup(&control_conn->base_.addr);
   }
-#else /* !(defined(AF_UNIX)) */
+#else /* !defined(AF_UNIX) */
   TO_CONN(conn)->port = control_conn->base_.port;
   TO_CONN(conn)->address = tor_addr_to_str_dup(&control_conn->base_.addr);
 #endif /* defined(AF_UNIX) */

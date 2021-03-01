@@ -1,13 +1,19 @@
 /* Copyright (c) 2001, Matej Pfajfar.
  * Copyright (c) 2001-2004, Roger Dingledine.
  * Copyright (c) 2004-2006, Roger Dingledine, Nick Mathewson.
- * Copyright (c) 2007-2018, The Tor Project, Inc. */
+ * Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 #ifndef TOR_DISPATCH_CFG_H
 #define TOR_DISPATCH_CFG_H
 
+/**
+ * @file dispatch_cfg.h
+ * @brief Header for distpach_cfg.c
+ **/
+
 #include "lib/dispatch/msgtypes.h"
+#include "lib/testsupport/testsupport.h"
 
 /**
  * A "dispatch_cfg" is the configuration used to set up a dispatcher.
@@ -35,5 +41,10 @@ int dcfg_add_recv(dispatch_cfg_t *cfg, message_id_t msg,
   FREE_AND_NULL(dispatch_cfg_t, dcfg_free_, (cfg))
 
 void dcfg_free_(dispatch_cfg_t *cfg);
+
+#ifdef DISPATCH_NEW_PRIVATE
+struct smartlist_t;
+STATIC int max_in_u16_sl(const struct smartlist_t *sl, int dflt);
+#endif
 
 #endif /* !defined(TOR_DISPATCH_CFG_H) */

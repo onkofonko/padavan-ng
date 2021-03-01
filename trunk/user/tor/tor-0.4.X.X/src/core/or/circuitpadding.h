@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2019, The Tor Project, Inc. */
+ * Copyright (c) 2017-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 /**
@@ -51,7 +51,7 @@ typedef enum {
   CIRCPAD_EVENT_INFINITY = 4,
   /* All histogram bins are empty (we are out of tokens) */
   CIRCPAD_EVENT_BINS_EMPTY = 5,
-  /* just a counter of the events above */
+  /* This state has used up its cell count */
   CIRCPAD_EVENT_LENGTH_COUNT = 6
 } circpad_event_t;
 #define CIRCPAD_NUM_EVENTS ((int)CIRCPAD_EVENT_LENGTH_COUNT+1)
@@ -79,7 +79,7 @@ typedef uint32_t circpad_delay_t;
  * An infinite padding cell delay means don't schedule any padding --
  * simply wait until a different event triggers a transition.
  *
- * This means that the maximum delay we can scedule is UINT32_MAX-1
+ * This means that the maximum delay we can schedule is UINT32_MAX-1
  * microseconds, or about 4300 seconds (1.25 hours).
  * XXX: Is this enough if we want to simulate light, intermittent
  * activity on an onion service?
@@ -106,8 +106,8 @@ typedef uint32_t circpad_delay_t;
  *
  * If any of these elements is set, then the circuit will be tested against
  * that specific condition. If an element is unset, then we don't test it.
- * (E.g. If neither NO_STREAMS or STREAMS are set, then we will not care
- * whether a circuit has streams attached when we apply a state machine)
+ * (E.g., if neither NO_STREAMS or STREAMS are set, then we will not care
+ * whether a circuit has streams attached when we apply a state machine.)
  *
  * The helper function circpad_circuit_state() converts circuit state
  * flags into this more compact representation.
@@ -173,11 +173,21 @@ typedef struct circpad_machine_conditions_t {
 
   /** Only apply the machine *if* the circuit's state matches any of
    *  the bits set in this bitmask. */
-  circpad_circuit_state_t state_mask;
+  circpad_circuit_state_t apply_state_mask;
 
   /** Only apply a machine *if* the circuit's purpose matches one
    *  of the bits set in this bitmask */
-  circpad_purpose_mask_t purpose_mask;
+  circpad_purpose_mask_t apply_purpose_mask;
+
+  /** Keep a machine if any of the circuits's state machine's match
+   *  the bits set in this bitmask, but don't apply new machines if
+   *  they match this mask. */
+  circpad_circuit_state_t keep_state_mask;
+
+  /** Keep a machine if any of the circuits's state machine's match
+   *  the bits set in this bitmask, but don't apply new machines if
+   *  they match this mask. */
+  circpad_purpose_mask_t keep_purpose_mask;
 
 } circpad_machine_conditions_t;
 
@@ -255,8 +265,9 @@ typedef struct circpad_distribution_t {
 typedef uint16_t circpad_statenum_t;
 #define  CIRCPAD_STATENUM_MAX   (UINT16_MAX)
 
-/** A histogram is used to sample padding delays given a machine state.  This
- *  constant defines the maximum histogram width (i.e. the max number of bins).
+/** A histogram can be used to sample padding delays given a machine state.
+ * This constant defines the maximum histogram width (i.e. the max number of
+ * bins).
  *
  * The current limit is arbitrary and could be raised if there is a need,
  * however too many bins will be hard to serialize in the future.
@@ -275,10 +286,10 @@ typedef uint16_t circpad_statenum_t;
  * happen. The mutable information that gets updated in runtime are carried in
  * a circpad_machine_runtime_t.
  *
- * This struct describes the histograms and parameters of a single
- * state in the adaptive padding machine. Instances of this struct
- * exist in global circpad machine definitions that come from torrc
- * or the consensus.
+ * This struct describes the histograms and/or probability distributions, as
+ * well as parameters of a single state in the adaptive padding machine.
+ * Instances of this struct exist in global circpad machine definitions that
+ * come from torrc or the consensus.
  */
 typedef struct circpad_state_t {
   /**
@@ -300,7 +311,7 @@ typedef struct circpad_state_t {
    *         |    |    |     |     |         |               |
    *         |    |    |     |     |         |               |
    *       0 +----+----+-----+-----+---------+---------------+
-   *         0   100  200   350   500      1000              ∞  microseconds
+   *         0   100  200   350   500      1000             inf  microseconds
    *
    * would be specified the following way:
    *    histogram_len = 6;
@@ -387,7 +398,7 @@ typedef struct circpad_state_t {
    *
    * States are allowed to transition to themselves, which means re-schedule
    * a new padding timer. They are also allowed to temporarily "transition"
-   * to the "IGNORE" and "CANCEL" pseudo-states. See #defines below
+   * to the "IGNORE" and "CANCEL" pseudo-states. See defines below
    * for details on state behavior and meaning.
    */
   circpad_statenum_t next_state[CIRCPAD_NUM_EVENTS];
@@ -564,6 +575,13 @@ typedef struct circpad_machine_runtime_t {
   /** What state is this machine in? */
   circpad_statenum_t current_state;
 
+  /** Machine counter, for shutdown sync.
+   *
+   *  Set from circuit_t.padding_machine_ctr, which is incremented each
+   *  padding machine instantiation.
+   */
+  uint32_t machine_ctr;
+
   /**
    * True if we have scheduled a timer for padding.
    *
@@ -725,13 +743,19 @@ signed_error_t circpad_handle_padding_negotiated(struct circuit_t *circ,
 signed_error_t circpad_negotiate_padding(struct origin_circuit_t *circ,
                           circpad_machine_num_t machine,
                           uint8_t target_hopnum,
-                          uint8_t command);
+                          uint8_t command,
+                          uint32_t machine_ctr);
 bool circpad_padding_negotiated(struct circuit_t *circ,
                            circpad_machine_num_t machine,
                            uint8_t command,
-                           uint8_t response);
+                           uint8_t response,
+                           uint32_t machine_ctr);
 
 circpad_purpose_mask_t circpad_circ_purpose_to_mask(uint8_t circ_purpose);
+
+int circpad_check_received_cell(cell_t *cell, circuit_t *circ,
+                                crypt_path_t *layer_hint,
+                                const relay_header_t *rh);
 
 MOCK_DECL(circpad_decision_t,
 circpad_machine_schedule_padding,(circpad_machine_runtime_t *));

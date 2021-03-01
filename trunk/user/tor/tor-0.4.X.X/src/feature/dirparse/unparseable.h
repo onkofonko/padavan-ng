@@ -1,7 +1,7 @@
 /* Copyright (c) 2001 Matej Pfajfar.
  * Copyright (c) 2001-2004, Roger Dingledine.
  * Copyright (c) 2004-2006, Roger Dingledine, Nick Mathewson.
- * Copyright (c) 2007-2019, The Tor Project, Inc. */
+ * Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 /**
@@ -26,7 +26,7 @@ void dump_desc_init(void);
   log_debug(LD_MM, "Area for %s has %lu allocated; using %lu.",   \
             name, (unsigned long)alloc, (unsigned long)used);     \
   STMT_END
-#else /* !(defined(DEBUG_AREA_ALLOC)) */
+#else /* !defined(DEBUG_AREA_ALLOC) */
 #define DUMP_AREA(a,name) STMT_NIL
 #endif /* defined(DEBUG_AREA_ALLOC) */
 

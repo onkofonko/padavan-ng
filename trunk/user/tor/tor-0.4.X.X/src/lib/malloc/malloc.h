@@ -1,6 +1,6 @@
 /* Copyright (c) 2003-2004, Roger Dingledine
  * Copyright (c) 2004-2006, Roger Dingledine, Nick Mathewson.
- * Copyright (c) 2007-2019, The Tor Project, Inc. */
+ * Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 /**
@@ -48,7 +48,7 @@ void tor_free_(void *mem);
     raw_free(*tor_free__tmpvar);                               \
     *tor_free__tmpvar=NULL;                                    \
   STMT_END
-#else /* !(defined(__GNUC__)) */
+#else /* !defined(__GNUC__) */
 #define tor_free(p) STMT_BEGIN                                 \
   raw_free(p);                                                 \
   (p)=NULL;                                                    \

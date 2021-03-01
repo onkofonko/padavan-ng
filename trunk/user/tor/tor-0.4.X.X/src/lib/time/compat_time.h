@@ -1,6 +1,6 @@
 /* Copyright (c) 2003-2004, Roger Dingledine
  * Copyright (c) 2004-2006, Roger Dingledine, Nick Mathewson.
- * Copyright (c) 2007-2019, The Tor Project, Inc. */
+ * Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 /**
@@ -60,7 +60,7 @@
  *
  * Q: So, what backends is monotime_coarse using?
  *
- * A: Generally speaking, it uses "whatever monotonic-ish time implemenation
+ * A: Generally speaking, it uses "whatever monotonic-ish time implementation
  * does not require a context switch."  The various implementations provide
  * this by having a view of the current time in a read-only memory page that
  * is updated with a frequency corresponding to the kernel's tick count.
@@ -259,7 +259,7 @@ void monotime_coarse_get(monotime_coarse_t *out);
 uint64_t monotime_coarse_absolute_nsec(void);
 uint64_t monotime_coarse_absolute_usec(void);
 uint64_t monotime_coarse_absolute_msec(void);
-#else /* !(defined(MONOTIME_COARSE_FN_IS_DIFFERENT)) */
+#else /* !defined(MONOTIME_COARSE_FN_IS_DIFFERENT) */
 #define monotime_coarse_get monotime_get
 #define monotime_coarse_absolute_nsec monotime_absolute_nsec
 #define monotime_coarse_absolute_usec monotime_absolute_usec
@@ -304,7 +304,7 @@ void monotime_coarse_zero(monotime_coarse_t *out);
 int monotime_coarse_is_zero(const monotime_coarse_t *val);
 void monotime_coarse_add_msec(monotime_coarse_t *out,
                               const monotime_coarse_t *val, uint32_t msec);
-#else /* !(defined(MONOTIME_COARSE_TYPE_IS_DIFFERENT)) */
+#else /* !defined(MONOTIME_COARSE_TYPE_IS_DIFFERENT) */
 #define monotime_coarse_diff_nsec monotime_diff_nsec
 #define monotime_coarse_diff_usec monotime_diff_usec
 #define monotime_coarse_diff_msec monotime_diff_msec

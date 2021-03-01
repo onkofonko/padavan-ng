@@ -1,4 +1,4 @@
-/* Copyright (c) 2016-2019, The Tor Project, Inc. */
+/* Copyright (c) 2016-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 /**
@@ -12,6 +12,7 @@
 #include "test/test.h"
 #include "test/test_helpers.h"
 #include "test/log_test_helpers.h"
+#include "test/resolve_test_helpers.h"
 
 #include "app/config/config.h"
 #include "feature/hs/hs_common.h"
@@ -61,8 +62,9 @@ test_invalid_service(void *arg)
     setup_full_capture_of_logs(LOG_WARN);
     ret = helper_config_service(conf, 1);
     tt_int_op(ret, OP_EQ, -1);
-    expect_log_msg_containing("HiddenServiceAllowUnknownPorts must be "
-                              "between 0 and 1, not 2");
+    expect_log_msg_containing("Could not parse "
+                              "HiddenServiceAllowUnknownPorts: Unrecognized "
+                              "value 2. Allowed values are 0 and 1.");
     teardown_capture_of_logs();
   }
 
@@ -75,8 +77,9 @@ test_invalid_service(void *arg)
     setup_full_capture_of_logs(LOG_WARN);
     ret = helper_config_service(conf, 1);
     tt_int_op(ret, OP_EQ, -1);
-    expect_log_msg_containing("HiddenServiceDirGroupReadable must be "
-                              "between 0 and 1, not 2");
+    expect_log_msg_containing("Could not parse "
+                              "HiddenServiceDirGroupReadable: "
+                              "Unrecognized value 2.");
     teardown_capture_of_logs();
   }
 
@@ -89,8 +92,9 @@ test_invalid_service(void *arg)
     setup_full_capture_of_logs(LOG_WARN);
     ret = helper_config_service(conf, 1);
     tt_int_op(ret, OP_EQ, -1);
-    expect_log_msg_containing("HiddenServiceMaxStreamsCloseCircuit must "
-                              "be between 0 and 1, not 2");
+    expect_log_msg_containing("Could not parse "
+                              "HiddenServiceMaxStreamsCloseCircuit: "
+                              "Unrecognized value 2");
     teardown_capture_of_logs();
   }
 
@@ -227,8 +231,8 @@ test_invalid_service_v2(void *arg)
     setup_full_capture_of_logs(LOG_WARN);
     ret = helper_config_service(conf, validate_only);
     tt_int_op(ret, OP_EQ, -1);
-    expect_log_msg_containing("HiddenServiceNumIntroductionPoints should "
-                              "be between 0 and 10, not 11");
+    expect_log_msg_containing("HiddenServiceNumIntroductionPoints must "
+                              "be between 0 and 10, not 11.");
     teardown_capture_of_logs();
   }
 
@@ -242,8 +246,9 @@ test_invalid_service_v2(void *arg)
     setup_full_capture_of_logs(LOG_WARN);
     ret = helper_config_service(conf, validate_only);
     tt_int_op(ret, OP_EQ, -1);
-    expect_log_msg_containing("HiddenServiceNumIntroductionPoints should "
-                              "be between 0 and 10, not -1");
+    expect_log_msg_containing("Could not parse "
+                              "HiddenServiceNumIntroductionPoints: "
+                              "Integer -1 is malformed or out of bounds.");
     teardown_capture_of_logs();
   }
 
@@ -272,6 +277,7 @@ test_valid_service_v2(void *arg)
   int ret;
 
   (void) arg;
+  mock_hostname_resolver();
 
   /* Valid complex configuration. Basic client authorization. */
   {
@@ -314,7 +320,7 @@ test_valid_service_v2(void *arg)
   }
 
  done:
-  ;
+  unmock_hostname_resolver();
 }
 
 static void
@@ -392,6 +398,7 @@ test_valid_service_v3(void *arg)
   int ret;
 
   (void) arg;
+  mock_hostname_resolver();
 
   /* Valid complex configuration. */
   {
@@ -448,7 +455,7 @@ test_valid_service_v3(void *arg)
   }
 
  done:
-  ;
+  unmock_hostname_resolver();
 }
 
 static void
@@ -489,6 +496,114 @@ test_staging_service_v3(void *arg)
   hs_free_all();
 }
 
+static void
+test_dos_parameters(void *arg)
+{
+  int ret;
+
+  (void) arg;
+
+  hs_init();
+
+  /* Valid configuration. */
+  {
+    const char *conf =
+      "HiddenServiceDir /tmp/tor-test-hs-RANDOM/hs3\n"
+      "HiddenServiceVersion 3\n"
+      "HiddenServicePort 22 1.1.1.1:22\n"
+      "HiddenServiceEnableIntroDoSDefense 1\n"
+      "HiddenServiceEnableIntroDoSRatePerSec 42\n"
+      "HiddenServiceEnableIntroDoSBurstPerSec 87\n";
+
+    setup_full_capture_of_logs(LOG_INFO);
+    ret = helper_config_service(conf, 0);
+    tt_int_op(ret, OP_EQ, 0);
+    expect_log_msg_containing("Service INTRO2 DoS defenses rate set to: 42");
+    expect_log_msg_containing("Service INTRO2 DoS defenses burst set to: 87");
+    teardown_capture_of_logs();
+  }
+
+  /* Invalid rate. Value of 2^37. Max allowed is 2^31. */
+  {
+    const char *conf =
+      "HiddenServiceDir /tmp/tor-test-hs-RANDOM/hs3\n"
+      "HiddenServiceVersion 3\n"
+      "HiddenServicePort 22 1.1.1.1:22\n"
+      "HiddenServiceEnableIntroDoSDefense 1\n"
+      "HiddenServiceEnableIntroDoSRatePerSec 137438953472\n"
+      "HiddenServiceEnableIntroDoSBurstPerSec 87\n";
+
+    setup_full_capture_of_logs(LOG_WARN);
+    ret = helper_config_service(conf, 0);
+    tt_int_op(ret, OP_EQ, -1);
+    expect_log_msg_containing("Could not parse "
+                              "HiddenServiceEnableIntroDoSRatePerSec: "
+                              "Integer 137438953472 is malformed or out of "
+                              "bounds.");
+    teardown_capture_of_logs();
+  }
+
+  /* Invalid burst. Value of 2^38. Max allowed is 2^31. */
+  {
+    const char *conf =
+      "HiddenServiceDir /tmp/tor-test-hs-RANDOM/hs3\n"
+      "HiddenServiceVersion 3\n"
+      "HiddenServicePort 22 1.1.1.1:22\n"
+      "HiddenServiceEnableIntroDoSDefense 1\n"
+      "HiddenServiceEnableIntroDoSRatePerSec 42\n"
+      "HiddenServiceEnableIntroDoSBurstPerSec 274877906944\n";
+
+    setup_full_capture_of_logs(LOG_WARN);
+    ret = helper_config_service(conf, 0);
+    tt_int_op(ret, OP_EQ, -1);
+    expect_log_msg_containing("Could not parse "
+                              "HiddenServiceEnableIntroDoSBurstPerSec: "
+                              "Integer 274877906944 is malformed or out "
+                              "of bounds.");
+    teardown_capture_of_logs();
+  }
+
+  /* Burst is smaller than rate. */
+  {
+    const char *conf =
+      "HiddenServiceDir /tmp/tor-test-hs-RANDOM/hs3\n"
+      "HiddenServiceVersion 3\n"
+      "HiddenServicePort 22 1.1.1.1:22\n"
+      "HiddenServiceEnableIntroDoSDefense 1\n"
+      "HiddenServiceEnableIntroDoSRatePerSec 42\n"
+      "HiddenServiceEnableIntroDoSBurstPerSec 27\n";
+
+    setup_full_capture_of_logs(LOG_WARN);
+    ret = helper_config_service(conf, 0);
+    tt_int_op(ret, OP_EQ, -1);
+    expect_log_msg_containing("Hidden service DoS defenses burst (27) can "
+                              "not be smaller than the rate value (42).");
+    teardown_capture_of_logs();
+  }
+
+  /* Negative value. */
+  {
+    const char *conf =
+      "HiddenServiceDir /tmp/tor-test-hs-RANDOM/hs3\n"
+      "HiddenServiceVersion 3\n"
+      "HiddenServicePort 22 1.1.1.1:22\n"
+      "HiddenServiceEnableIntroDoSDefense 1\n"
+      "HiddenServiceEnableIntroDoSRatePerSec -1\n"
+      "HiddenServiceEnableIntroDoSBurstPerSec 42\n";
+
+    setup_full_capture_of_logs(LOG_WARN);
+    ret = helper_config_service(conf, 0);
+    tt_int_op(ret, OP_EQ, -1);
+    expect_log_msg_containing("Could not parse "
+                              "HiddenServiceEnableIntroDoSRatePerSec: "
+                              "Integer -1 is malformed or out of bounds.");
+    teardown_capture_of_logs();
+  }
+
+ done:
+  hs_free_all();
+}
+
 struct testcase_t hs_config_tests[] = {
   /* Invalid service not specific to any version. */
   { "invalid_service", test_invalid_service, TT_FORK,
@@ -512,6 +627,9 @@ struct testcase_t hs_config_tests[] = {
   { "staging_service_v3", test_staging_service_v3, TT_FORK,
     NULL, NULL },
 
+  /* Test HS DoS parameters. */
+  { "dos_parameters", test_dos_parameters, TT_FORK,
+    NULL, NULL },
+
   END_OF_TESTCASES
 };
-

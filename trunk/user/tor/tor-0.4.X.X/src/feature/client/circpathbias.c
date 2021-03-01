@@ -1,7 +1,7 @@
 /* Copyright (c) 2001 Matej Pfajfar.
  * Copyright (c) 2001-2004, Roger Dingledine.
  * Copyright (c) 2004-2006, Roger Dingledine, Nick Mathewson.
- * Copyright (c) 2007-2019, The Tor Project, Inc. */
+ * Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 /**
@@ -303,7 +303,7 @@ pathbias_is_new_circ_attempt(origin_circuit_t *circ)
   return circ->cpath &&
          circ->cpath->next != circ->cpath &&
          circ->cpath->next->state == CPATH_STATE_AWAITING_KEYS;
-#else /* !(defined(N2N_TAGGING_IS_POSSIBLE)) */
+#else /* !defined(N2N_TAGGING_IS_POSSIBLE) */
   /* If tagging attacks are no longer possible, we probably want to
    * count bias from the first hop. However, one could argue that
    * timing-based tagging is still more useful than per-hop failure.
@@ -683,7 +683,7 @@ pathbias_mark_use_success(origin_circuit_t *circ)
 }
 
 /**
- * If a stream ever detatches from a circuit in a retriable way,
+ * If a stream ever detaches from a circuit in a retriable way,
  * we need to mark this circuit as still needing either another
  * successful stream, or in need of a probe.
  *
@@ -825,6 +825,11 @@ pathbias_send_usable_probe(circuit_t *circ)
               sizeof(ocirc->pathbias_probe_nonce));
   ocirc->pathbias_probe_nonce &= 0x00ffffff;
   probe_nonce = tor_dup_ip(ocirc->pathbias_probe_nonce);
+
+  if (!probe_nonce) {
+    log_err(LD_BUG, "Failed to generate nonce");
+    return -1;
+  }
 
   tor_snprintf(payload,RELAY_PAYLOAD_SIZE, "%s:25", probe_nonce);
   payload_len = (int)strlen(payload)+1;

@@ -1,6 +1,11 @@
 /* Copyright (c) 2003-2004, Roger Dingledine
  * Copyright (c) 2004-2006, Roger Dingledine, Nick Mathewson.
- * Copyright (c) 2007-2019, The Tor Project, Inc. */
+ * Copyright (c) 2007-2020, The Tor Project, Inc. */
+
+/**
+ * @file socketpair.c
+ * @brief Replacement socketpair() for systems that lack it
+ **/
 
 #include "lib/cc/torint.h"
 #include "lib/net/socketpair.h"
@@ -22,7 +27,7 @@
 #include <windows.h>
 #define socket_errno() (WSAGetLastError())
 #define SOCKET_EPROTONOSUPPORT WSAEPROTONOSUPPORT
-#else /* !(defined(_WIN32)) */
+#else /* !defined(_WIN32) */
 #define closesocket(x) close(x)
 #define socket_errno() (errno)
 #define SOCKET_EPROTONOSUPPORT EPROTONOSUPPORT

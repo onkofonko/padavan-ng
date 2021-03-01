@@ -1,7 +1,7 @@
 /* Copyright (c) 2001 Matej Pfajfar.
  * Copyright (c) 2001-2004, Roger Dingledine.
  * Copyright (c) 2004-2006, Roger Dingledine, Nick Mathewson.
- * Copyright (c) 2007-2019, The Tor Project, Inc. */
+ * Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 /**
@@ -13,8 +13,10 @@
 
 #include "app/config/config.h"
 #include "app/config/statefile.h"
+#include "app/config/quiet_level.h"
 #include "app/main/main.h"
 #include "app/main/ntmain.h"
+#include "app/main/risky_options.h"
 #include "app/main/shutdown.h"
 #include "app/main/subsysmgr.h"
 #include "core/mainloop/connection.h"
@@ -41,6 +43,7 @@
 #include "feature/dircache/consdiffmgr.h"
 #include "feature/dirparse/routerparse.h"
 #include "feature/hibernate/hibernate.h"
+#include "feature/hs/hs_dos.h"
 #include "feature/nodelist/authcert.h"
 #include "feature/nodelist/networkstatus.h"
 #include "feature/nodelist/routerlist.h"
@@ -51,21 +54,23 @@
 #include "feature/rend/rendcache.h"
 #include "feature/rend/rendservice.h"
 #include "feature/stats/predict_ports.h"
+#include "feature/stats/bwhist.h"
 #include "feature/stats/rephist.h"
 #include "lib/compress/compress.h"
 #include "lib/buf/buffers.h"
 #include "lib/crypt_ops/crypto_rand.h"
 #include "lib/crypt_ops/crypto_s2k.h"
 #include "lib/net/resolve.h"
+#include "lib/trace/trace.h"
 
 #include "lib/process/waitpid.h"
 #include "lib/pubsub/pubsub_build.h"
 
 #include "lib/meminfo/meminfo.h"
 #include "lib/osinfo/uname.h"
+#include "lib/osinfo/libc.h"
 #include "lib/sandbox/sandbox.h"
 #include "lib/fs/lockfile.h"
-#include "lib/net/resolve.h"
 #include "lib/tls/tortls.h"
 #include "lib/evloop/compat_libevent.h"
 #include "lib/encoding/confline.h"
@@ -106,16 +111,6 @@ void rust_log_welcome_string(void);
 static void dumpmemusage(int severity);
 static void dumpstats(int severity); /* log stats */
 static void process_signal(int sig);
-
-/********* START VARIABLES **********/
-
-/** Decides our behavior when no logs are configured/before any
- * logs have been configured.  For 0, we log notice to stdout as normal.
- * For 1, we log warnings only.  For 2, we log nothing.
- */
-int quiet_level = 0;
-
-/********* END VARIABLES ************/
 
 /** Called when we get a SIGHUP: reload configuration files and keys,
  * retry all connections, and so on. */
@@ -303,6 +298,19 @@ process_signal(int sig)
   }
 }
 
+#ifdef _WIN32
+/** Activate SIGINT on receiving a control signal in console. */
+static BOOL WINAPI
+process_win32_console_ctrl(DWORD ctrl_type)
+{
+  /* Ignore type of the ctrl signal */
+  (void) ctrl_type;
+
+  activate_signal(SIGINT);
+  return TRUE;
+}
+#endif
+
 /**
  * Write current memory usage information to the log.
  */
@@ -332,15 +340,11 @@ dumpstats(int severity)
   SMARTLIST_FOREACH_BEGIN(get_connection_array(), connection_t *, conn) {
     int i = conn_sl_idx;
     tor_log(severity, LD_GENERAL,
-        "Conn %d (socket %d) type %d (%s), state %d (%s), created %d secs ago",
-        i, (int)conn->s, conn->type, conn_type_to_string(conn->type),
-        conn->state, conn_state_to_string(conn->type, conn->state),
+        "Conn %d (socket %d) is a %s, created %d secs ago",
+        i, (int)conn->s,
+        connection_describe(conn),
         (int)(now - conn->timestamp_created));
     if (!connection_is_listener(conn)) {
-      tor_log(severity,LD_GENERAL,
-          "Conn %d is to %s:%d.", i,
-          safe_str_client(conn->address),
-          conn->port);
       tor_log(severity,LD_GENERAL,
           "Conn %d: %d bytes waiting on inbuf (len %d, last read %d secs ago)",
           i,
@@ -423,6 +427,7 @@ dumpstats(int severity)
 
   rep_hist_dump_stats(now,severity);
   rend_service_dump_stats(severity);
+  hs_service_dump_stats(severity);
 }
 
 #ifdef _WIN32
@@ -505,6 +510,13 @@ handle_signals(void)
                       &signal_handlers[i].signal_value);
     }
   }
+
+#ifdef _WIN32
+    /* Windows lacks traditional POSIX signals but WinAPI provides a function
+     * to handle control signals like Ctrl+C in the console, we can use this to
+     * simulate the SIGINT signal */
+    if (enabled) SetConsoleCtrlHandler(process_win32_console_ctrl, TRUE);
+#endif
 }
 
 /* Cause the signal handler for signal_num to be called in the event loop. */
@@ -527,7 +539,8 @@ int
 tor_init(int argc, char *argv[])
 {
   char progname[256];
-  int quiet = 0;
+  quiet_level_t quiet = QUIET_NONE;
+  bool running_tor = false;
 
   time_of_process_start = time(NULL);
   tor_init_connection_lists();
@@ -537,6 +550,7 @@ tor_init(int argc, char *argv[])
 
   /* Initialize the history structures. */
   rep_hist_init();
+  bwhist_init();
   /* Initialize the service cache. */
   rend_cache_init();
   addressmap_init(); /* Init the client dns cache. Do it always, since it's
@@ -546,50 +560,27 @@ tor_init(int argc, char *argv[])
   hs_init();
 
   {
-  /* We search for the "quiet" option first, since it decides whether we
-   * will log anything at all to the command line. */
-    config_line_t *opts = NULL, *cmdline_opts = NULL;
-    const config_line_t *cl;
-    (void) config_parse_commandline(argc, argv, 1, &opts, &cmdline_opts);
-    for (cl = cmdline_opts; cl; cl = cl->next) {
-      if (!strcmp(cl->key, "--hush"))
-        quiet = 1;
-      if (!strcmp(cl->key, "--quiet") ||
-          !strcmp(cl->key, "--dump-config"))
-        quiet = 2;
-      /* The following options imply --hush */
-      if (!strcmp(cl->key, "--version") || !strcmp(cl->key, "--digests") ||
-          !strcmp(cl->key, "--list-torrc-options") ||
-          !strcmp(cl->key, "--library-versions") ||
-          !strcmp(cl->key, "--list-modules") ||
-          !strcmp(cl->key, "--hash-password") ||
-          !strcmp(cl->key, "-h") || !strcmp(cl->key, "--help")) {
-        if (quiet < 1)
-          quiet = 1;
-      }
+    /* We check for the "quiet"/"hush" settings first, since they decide
+       whether we log anything at all to stdout. */
+    parsed_cmdline_t *cmdline;
+    cmdline = config_parse_commandline(argc, argv, 1);
+    if (cmdline) {
+      quiet = cmdline->quiet_level;
+      running_tor = (cmdline->command == CMD_RUN_TOR);
     }
-    config_free_lines(opts);
-    config_free_lines(cmdline_opts);
+    parsed_cmdline_free(cmdline);
   }
 
  /* give it somewhere to log to initially */
-  switch (quiet) {
-    case 2:
-      /* no initial logging */
-      break;
-    case 1:
-      add_temp_log(LOG_WARN);
-      break;
-    default:
-      add_temp_log(LOG_NOTICE);
-  }
+  add_default_log_for_quiet_level(quiet);
   quiet_level = quiet;
 
   {
     const char *version = get_version();
 
     log_notice(LD_GENERAL, "Tor %s running on %s with Libevent %s, "
-               "%s %s, Zlib %s, Liblzma %s, and Libzstd %s.", version,
+               "%s %s, Zlib %s, Liblzma %s, Libzstd %s and %s %s as libc.",
+               version,
                get_uname(),
                tor_libevent_get_version_str(),
                crypto_get_library_name(),
@@ -599,7 +590,10 @@ tor_init(int argc, char *argv[])
                tor_compress_supports_method(LZMA_METHOD) ?
                  tor_compress_version_str(LZMA_METHOD) : "N/A",
                tor_compress_supports_method(ZSTD_METHOD) ?
-                 tor_compress_version_str(ZSTD_METHOD) : "N/A");
+                 tor_compress_version_str(ZSTD_METHOD) : "N/A",
+               tor_libc_get_name() ?
+                 tor_libc_get_name() : "Unknown",
+               tor_libc_get_version_str());
 
     log_notice(LD_GENERAL, "Tor can't help you if you use it wrong! "
                "Learn how to be safe at "
@@ -609,12 +603,21 @@ tor_init(int argc, char *argv[])
       log_notice(LD_GENERAL, "This version is not a stable Tor release. "
                  "Expect more bugs than usual.");
 
+    if (strlen(risky_option_list) && running_tor) {
+      log_warn(LD_GENERAL, "This build of Tor has been compiled with one "
+               "or more options that might make it less reliable or secure! "
+               "They are:%s", risky_option_list);
+    }
+
     tor_compress_log_init_warnings();
   }
 
 #ifdef HAVE_RUST
   rust_log_welcome_string();
 #endif /* defined(HAVE_RUST) */
+
+  /* Warn _if_ the tracing subsystem is built in. */
+  tracing_log_warning();
 
   int init_rv = options_init_from_torrc(argc,argv);
   if (init_rv < 0) {
@@ -626,9 +629,6 @@ tor_init(int argc, char *argv[])
     return 1;
   }
 
-  /* The options are now initialised */
-  const or_options_t *options = get_options();
-
   /* Initialize channelpadding and circpad parameters to defaults
    * until we get a consensus */
   channelpadding_new_consensus_params(NULL);
@@ -636,6 +636,10 @@ tor_init(int argc, char *argv[])
 
   /* Initialize circuit padding to defaults+torrc until we get a consensus */
   circpad_machines_init();
+
+  /* Initialize hidden service DoS subsystem. We need to do this once the
+   * configuration object has been set because it can be accessed. */
+  hs_dos_init();
 
   /* Initialize predicted ports list after loading options */
   predicted_ports_init();
@@ -645,17 +649,6 @@ tor_init(int argc, char *argv[])
     log_warn(LD_GENERAL,"You are running Tor as root. You don't need to, "
              "and you probably shouldn't.");
 #endif
-
-  if (crypto_global_init(options->HardwareAccel,
-                         options->AccelName,
-                         options->AccelDir)) {
-    log_err(LD_BUG, "Unable to initialize OpenSSL. Exiting.");
-    return -1;
-  }
-
-  if (tor_init_libevent_rng() < 0) {
-    log_warn(LD_NET, "Problem initializing libevent RNG.");
-  }
 
   /* Scan/clean unparseable descriptors; after reading config */
   routerparse_init();
@@ -799,12 +792,14 @@ do_dump_config(void)
   if (!strcmp(arg, "short")) {
     how = OPTIONS_DUMP_MINIMAL;
   } else if (!strcmp(arg, "non-builtin")) {
-    how = OPTIONS_DUMP_DEFAULTS;
+    // Deprecated since 0.4.5.1-alpha.
+    fprintf(stderr, "'non-builtin' is deprecated; use 'short' instead.\n");
+    how = OPTIONS_DUMP_MINIMAL;
   } else if (!strcmp(arg, "full")) {
     how = OPTIONS_DUMP_ALL;
   } else {
     fprintf(stderr, "No valid argument to --dump-config found!\n");
-    fprintf(stderr, "Please select 'short', 'non-builtin', or 'full'.\n");
+    fprintf(stderr, "Please select 'short' or 'full'.\n");
 
     return -1;
   }
@@ -819,8 +814,7 @@ do_dump_config(void)
 static void
 init_addrinfo(void)
 {
-  if (! server_mode(get_options()) ||
-      (get_options()->Address && strlen(get_options()->Address) > 0)) {
+  if (! server_mode(get_options()) || get_options()->Address) {
     /* We don't need to seed our own hostname, because we won't be calling
      * resolve_my_address on it.
      */
@@ -846,6 +840,9 @@ sandbox_init_filter(void)
 #define OPEN(name)                              \
   sandbox_cfg_allow_open_filename(&cfg, tor_strdup(name))
 
+#define OPENDIR(dir)                            \
+  sandbox_cfg_allow_opendir_dirname(&cfg, tor_strdup(dir))
+
 #define OPEN_DATADIR(name)                      \
   sandbox_cfg_allow_open_filename(&cfg, get_datadir_fname(name))
 
@@ -862,8 +859,10 @@ sandbox_init_filter(void)
     OPEN_DATADIR2(name, name2 suffix);                  \
   } while (0)
 
+// KeyDirectory is a directory, but it is only opened in check_private_dir
+// which calls open instead of opendir
 #define OPEN_KEY_DIRECTORY() \
-  sandbox_cfg_allow_open_filename(&cfg, tor_strdup(options->KeyDirectory))
+  OPEN(options->KeyDirectory)
 #define OPEN_CACHEDIR(name)                      \
   sandbox_cfg_allow_open_filename(&cfg, get_cachedir_fname(name))
 #define OPEN_CACHEDIR_SUFFIX(name, suffix) do {  \
@@ -877,6 +876,8 @@ sandbox_init_filter(void)
     OPEN_KEYDIR(name suffix);                    \
   } while (0)
 
+  // DataDirectory is a directory, but it is only opened in check_private_dir
+  // which calls open instead of opendir
   OPEN(options->DataDirectory);
   OPEN_KEY_DIRECTORY();
 
@@ -924,7 +925,11 @@ sandbox_init_filter(void)
   }
 
   SMARTLIST_FOREACH(options->FilesOpenedByIncludes, char *, f, {
-    OPEN(f);
+    if (file_status(f) == FN_DIR) {
+      OPENDIR(f);
+    } else {
+      OPEN(f);
+    }
   });
 
 #define RENAME_SUFFIX(name, suffix)        \
@@ -1037,7 +1042,7 @@ sandbox_init_filter(void)
      * directory that holds it. */
     char *dirname = tor_strdup(port->unix_addr);
     if (get_parent_directory(dirname) == 0) {
-      OPEN(dirname);
+      OPENDIR(dirname);
     }
     tor_free(dirname);
     sandbox_cfg_allow_chmod_filename(&cfg, tor_strdup(port->unix_addr));
@@ -1078,12 +1083,14 @@ sandbox_init_filter(void)
 
     OPEN_DATADIR("approved-routers");
     OPEN_DATADIR_SUFFIX("fingerprint", ".tmp");
+    OPEN_DATADIR_SUFFIX("fingerprint-ed25519", ".tmp");
     OPEN_DATADIR_SUFFIX("hashed-fingerprint", ".tmp");
     OPEN_DATADIR_SUFFIX("router-stability", ".tmp");
 
     OPEN("/etc/resolv.conf");
 
     RENAME_SUFFIX("fingerprint", ".tmp");
+    RENAME_SUFFIX("fingerprint-ed25519", ".tmp");
     RENAME_KEYDIR_SUFFIX("secret_onion_key_ntor", ".tmp");
 
     RENAME_KEYDIR_SUFFIX("secret_id_key", ".tmp");
@@ -1236,7 +1243,7 @@ run_tor_main_loop(void)
 }
 
 /** Install the publish/subscribe relationships for all the subsystems. */
-static void
+void
 pubsub_install(void)
 {
     pubsub_builder_t *builder = pubsub_builder_new();
@@ -1248,7 +1255,7 @@ pubsub_install(void)
 
 /** Connect the mainloop to its publish/subscribe message delivery events if
  * appropriate, and configure the global channels appropriately. */
-static void
+void
 pubsub_connect(void)
 {
   if (get_options()->command == CMD_RUN_TOR) {
@@ -1256,6 +1263,8 @@ pubsub_connect(void)
     /* XXXX For each pubsub channel, its delivery strategy should be set at
      * this XXXX point, using tor_mainloop_set_delivery_strategy().
      */
+    tor_mainloop_set_delivery_strategy("orconn", DELIV_IMMEDIATE);
+    tor_mainloop_set_delivery_strategy("ocirc", DELIV_IMMEDIATE);
   }
 }
 
@@ -1281,15 +1290,10 @@ tor_run_main(const tor_main_configuration_t *tor_cfg)
     memcpy(argv + tor_cfg->argc, tor_cfg->argv_owned,
            tor_cfg->argc_owned*sizeof(char*));
 
-#ifdef NT_SERVICE
-  {
-     int done = 0;
-     result = nt_service_parse_options(argc, argv, &done);
-     if (done) {
-       goto done;
-     }
-  }
-#endif /* defined(NT_SERVICE) */
+  int done = 0;
+  result = nt_service_parse_options(argc, argv, &done);
+  if (POSSIBLE(done))
+    goto done;
 
   pubsub_install();
 
@@ -1324,9 +1328,7 @@ tor_run_main(const tor_main_configuration_t *tor_cfg)
 
   switch (get_options()->command) {
   case CMD_RUN_TOR:
-#ifdef NT_SERVICE
     nt_service_set_state(SERVICE_RUNNING);
-#endif
     result = run_tor_main_loop();
     break;
   case CMD_KEYGEN:
@@ -1344,7 +1346,7 @@ tor_run_main(const tor_main_configuration_t *tor_cfg)
     result = 0;
     break;
   case CMD_VERIFY_CONFIG:
-    if (quiet_level == 0)
+    if (quiet_level == QUIET_NONE)
       printf("Configuration was valid\n");
     result = 0;
     break;
@@ -1352,6 +1354,7 @@ tor_run_main(const tor_main_configuration_t *tor_cfg)
     result = do_dump_config();
     break;
   case CMD_RUN_UNITTESTS: /* only set by test.c */
+  case CMD_IMMEDIATE: /* Handled in config.c */
   default:
     log_warn(LD_BUG,"Illegal command number %d: internal error.",
              get_options()->command);

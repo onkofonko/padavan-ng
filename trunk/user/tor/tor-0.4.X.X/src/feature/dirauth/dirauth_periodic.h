@@ -1,8 +1,13 @@
 /* Copyright (c) 2001 Matej Pfajfar.
  * Copyright (c) 2001-2004, Roger Dingledine.
  * Copyright (c) 2004-2006, Roger Dingledine, Nick Mathewson.
- * Copyright (c) 2007-2019, The Tor Project, Inc. */
+ * Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
+
+/**
+ * @file dirauth_periodic.h
+ * @brief Header for dirauth_periodic.c
+ **/
 
 #ifndef DIRVOTE_PERIODIC_H
 #define DIRVOTE_PERIODIC_H
@@ -12,7 +17,7 @@
 void dirauth_register_periodic_events(void);
 void reschedule_dirvote(const or_options_t *options);
 
-#else /* !(defined(HAVE_MODULE_DIRAUTH)) */
+#else /* !defined(HAVE_MODULE_DIRAUTH) */
 
 static inline void
 reschedule_dirvote(const or_options_t *options)

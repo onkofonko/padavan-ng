@@ -1,5 +1,5 @@
 /* Copyright (c) 2004-2006, Roger Dingledine, Nick Mathewson.
- * Copyright (c) 2007-2019, The Tor Project, Inc. */
+ * Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 /**
@@ -151,12 +151,8 @@ handle_control_authchallenge(control_connection_t *conn,
     goto fail;
   }
   if (args->kwargs == NULL || args->kwargs->next != NULL) {
-    /*    connection_write_str_to_buf("512 AUTHCHALLENGE requires exactly "
-                                "2 arguments.\r\n", conn);
-    */
-    control_printf_endreply(conn, 512,
-                            "AUTHCHALLENGE dislikes argument list %s",
-                            escaped(args->raw_body));
+    control_write_endreply(conn, 512,
+                           "Wrong number of arguments for AUTHCHALLENGE");
     goto fail;
   }
   if (strcmp(args->kwargs->key, "")) {

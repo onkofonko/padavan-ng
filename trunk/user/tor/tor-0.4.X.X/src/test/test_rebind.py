@@ -1,4 +1,7 @@
+# Future imports for Python 2.7, mandatory in 3.0
+from __future__ import division
 from __future__ import print_function
+from __future__ import unicode_literals
 
 import errno
 import logging
@@ -32,15 +35,17 @@ def wait_for_log(s):
     cutoff = time.time() + LOG_TIMEOUT
     while time.time() < cutoff:
         l = tor_process.stdout.readline()
-        l = l.decode('utf8')
+        l = l.decode('utf8', 'backslashreplace')
         if s in l:
             logging.info('Tor logged: "{}"'.format(l.strip()))
             return
-        logging.info('Tor logged: "{}", waiting for "{}"'.format(l.strip(), s))
         # readline() returns a blank string when there is no output
         # avoid busy-waiting
-        if len(s) == 0:
+        if len(l) == 0:
+            logging.debug('Tor has not logged anything, waiting for "{}"'.format(s))
             time.sleep(LOG_WAIT)
+        else:
+            logging.info('Tor logged: "{}", waiting for "{}"'.format(l.strip(), s))
     fail('Could not find "{}" in logs after {} seconds'.format(s, LOG_TIMEOUT))
 
 def pick_random_port():
@@ -111,7 +116,7 @@ tor_process = subprocess.Popen([tor_path,
 if tor_process == None:
     fail('ERROR: running tor failed')
 
-wait_for_log('Opened Control listener on')
+wait_for_log('Opened Control listener')
 
 try_connecting_to_socksport()
 
@@ -120,18 +125,18 @@ if control_socket.connect_ex(('127.0.0.1', control_port)):
     tor_process.terminate()
     fail('Cannot connect to ControlPort')
 
-control_socket.sendall('AUTHENTICATE \r\n'.encode('utf8'))
-control_socket.sendall('SETCONF SOCKSPort=0.0.0.0:{}\r\n'.format(socks_port).encode('utf8'))
+control_socket.sendall('AUTHENTICATE \r\n'.encode('ascii'))
+control_socket.sendall('SETCONF SOCKSPort=0.0.0.0:{}\r\n'.format(socks_port).encode('ascii'))
 wait_for_log('Opened Socks listener')
 
 try_connecting_to_socksport()
 
-control_socket.sendall('SETCONF SOCKSPort=127.0.0.1:{}\r\n'.format(socks_port).encode('utf8'))
+control_socket.sendall('SETCONF SOCKSPort=127.0.0.1:{}\r\n'.format(socks_port).encode('ascii'))
 wait_for_log('Opened Socks listener')
 
 try_connecting_to_socksport()
 
-control_socket.sendall('SIGNAL HALT\r\n'.encode('utf8'))
+control_socket.sendall('SIGNAL HALT\r\n'.encode('ascii'))
 
 wait_for_log('exiting cleanly')
 logging.info('OK')

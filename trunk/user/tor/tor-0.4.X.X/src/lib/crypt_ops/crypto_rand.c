@@ -1,7 +1,7 @@
 /* Copyright (c) 2001, Matej Pfajfar.
  * Copyright (c) 2001-2004, Roger Dingledine.
  * Copyright (c) 2004-2006, Roger Dingledine, Nick Mathewson.
- * Copyright (c) 2007-2019, The Tor Project, Inc. */
+ * Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 /**
@@ -43,10 +43,10 @@
 #endif
 
 #ifdef ENABLE_OPENSSL
-DISABLE_GCC_WARNING(redundant-decls)
+DISABLE_GCC_WARNING("-Wredundant-decls")
 #include <openssl/rand.h>
 #include <openssl/sha.h>
-ENABLE_GCC_WARNING(redundant-decls)
+ENABLE_GCC_WARNING("-Wredundant-decls")
 #endif /* defined(ENABLE_OPENSSL) */
 
 #ifdef ENABLE_NSS
@@ -248,7 +248,7 @@ crypto_strongest_rand_fallback(uint8_t *out, size_t out_len)
   (void)out;
   (void)out_len;
   return -1;
-#else /* !(defined(_WIN32)) */
+#else /* !defined(_WIN32) */
   static const char *filenames[] = {
     "/dev/srandom", "/dev/urandom", "/dev/random", NULL
   };
@@ -520,7 +520,7 @@ crypto_rand_unmocked(char *to, size_t n)
 
 #undef BUFLEN
   }
-#else /* !(defined(ENABLE_NSS)) */
+#else /* !defined(ENABLE_NSS) */
   int r = RAND_bytes((unsigned char*)to, (int)n);
   /* We consider a PRNG failure non-survivable. Let's assert so that we get a
    * stack trace about where it happened.

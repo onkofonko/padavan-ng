@@ -1,7 +1,7 @@
 /* Copyright (c) 2001 Matej Pfajfar.
  * Copyright (c) 2001-2004, Roger Dingledine.
  * Copyright (c) 2004-2006, Roger Dingledine, Nick Mathewson.
- * Copyright (c) 2007-2019, The Tor Project, Inc. */
+ * Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 #ifndef OR_CIRCUIT_ST_H
@@ -11,6 +11,8 @@
 
 #include "core/or/circuit_st.h"
 #include "core/or/crypt_path_st.h"
+
+#include "lib/evloop/token_bucket.h"
 
 struct onion_queue_t;
 
@@ -25,7 +27,7 @@ struct or_circuit_t {
   /** Pointer to a workqueue entry, if this circuit has given an onionskin to
    * a cpuworker and is waiting for a response. Used to decide whether it is
    * safe to free a circuit or if it is still in use by a cpuworker. */
-  struct workqueue_entry_s *workqueue_entry;
+  struct workqueue_entry_t *workqueue_entry;
 
   /** The circuit_id used in the previous (backward) hop of this circuit. */
   circid_t p_circ_id;
@@ -69,6 +71,19 @@ struct or_circuit_t {
    * exit-ward queues of this circuit; reset every time when writing
    * buffer stats to disk. */
   uint64_t total_cell_waiting_time;
+
+  /** If set, the DoS defenses are enabled on this circuit meaning that the
+   * introduce2_bucket is initialized and used. */
+  unsigned int introduce2_dos_defense_enabled : 1;
+  /** If set, the DoS defenses were explicitly enabled through the
+   * ESTABLISH_INTRO cell extension. If unset, the consensus is used to learn
+   * if the defenses can be enabled or not. */
+  unsigned int introduce2_dos_defense_explicit : 1;
+
+  /** INTRODUCE2 cell bucket controlling how much can go on this circuit. Only
+   * used if this is a service introduction circuit at the intro point
+   * (purpose = CIRCUIT_PURPOSE_INTRO_POINT). */
+  token_bucket_ctr_t introduce2_bucket;
 };
 
 #endif /* !defined(OR_CIRCUIT_ST_H) */

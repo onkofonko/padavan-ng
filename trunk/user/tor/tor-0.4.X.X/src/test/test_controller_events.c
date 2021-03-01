@@ -1,12 +1,13 @@
-/* Copyright (c) 2013-2019, The Tor Project, Inc. */
+/* Copyright (c) 2013-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 #define CONNECTION_PRIVATE
-#define TOR_CHANNEL_INTERNAL_
+#define CHANNEL_OBJECT_PRIVATE
 #define CONTROL_PRIVATE
 #define CONTROL_EVENTS_PRIVATE
 #define OCIRC_EVENT_PRIVATE
 #define ORCONN_EVENT_PRIVATE
+#include "app/main/subsysmgr.h"
 #include "core/or/or.h"
 #include "core/or/channel.h"
 #include "core/or/channeltls.h"
@@ -15,10 +16,15 @@
 #include "core/or/orconn_event.h"
 #include "core/mainloop/connection.h"
 #include "feature/control/control_events.h"
+#include "feature/control/control_fmt.h"
 #include "test/test.h"
+#include "test/test_helpers.h"
+#include "test/log_test_helpers.h"
 
+#include "core/or/entry_connection_st.h"
 #include "core/or/or_circuit_st.h"
 #include "core/or/origin_circuit_st.h"
+#include "core/or/socks_request_st.h"
 
 static void
 add_testing_cell_stats_entry(circuit_t *circ, uint8_t command,
@@ -394,38 +400,104 @@ test_cntev_dirboot_defer_orconn(void *arg)
 }
 
 static void
-setup_orconn_state(orconn_event_msg_t *msg, uint64_t gid, uint64_t chan,
-                   int proxy_type)
+test_cntev_signal(void *arg)
 {
-  msg->type = ORCONN_MSGTYPE_STATE;
-  msg->u.state.gid = gid;
-  msg->u.state.chan = chan;
-  msg->u.state.proxy_type = proxy_type;
+  (void)arg;
+  int rv;
+
+  MOCK(queue_control_event_string, mock_queue_control_event_string);
+
+  /* Nothing is listening for signals, so no event should be queued. */
+  rv = control_event_signal(SIGHUP);
+  tt_int_op(0, OP_EQ, rv);
+  tt_ptr_op(saved_event_str, OP_EQ, NULL);
+
+  /* Now try with signals included in the event mask. */
+  control_testing_set_global_event_mask(EVENT_MASK_(EVENT_GOT_SIGNAL));
+  rv = control_event_signal(SIGHUP);
+  tt_int_op(0, OP_EQ, rv);
+  tt_str_op(saved_event_str, OP_EQ, "650 SIGNAL RELOAD\r\n");
+
+  rv = control_event_signal(SIGACTIVE);
+  tt_int_op(0, OP_EQ, rv);
+  tt_str_op(saved_event_str, OP_EQ, "650 SIGNAL ACTIVE\r\n");
+
+  /* Try a signal that doesn't exist. */
+  setup_full_capture_of_logs(LOG_WARN);
+  tor_free(saved_event_str);
+  rv = control_event_signal(99999);
+  tt_int_op(-1, OP_EQ, rv);
+  tt_ptr_op(saved_event_str, OP_EQ, NULL);
+  expect_single_log_msg_containing("Unrecognized signal 99999");
+
+ done:
+  tor_free(saved_event_str);
+ teardown_capture_of_logs();
+  UNMOCK(queue_control_event_string);
 }
 
 static void
-send_orconn_state(orconn_event_msg_t *msg, uint8_t state)
+test_cntev_log_fmt(void *arg)
 {
-  msg->u.state.state = state;
-  orconn_event_publish(msg);
+  (void) arg;
+  char *result = NULL;
+#define CHECK(pre, post) \
+  do {                                            \
+    result = tor_strdup((pre));                   \
+    control_logmsg_strip_newlines(result);        \
+    tt_str_op(result, OP_EQ, (post));             \
+    tor_free(result);                             \
+  } while (0)
+
+  CHECK("There is a ", "There is a");
+  CHECK("hello", "hello");
+  CHECK("", "");
+  CHECK("Put    spaces at the end   ", "Put    spaces at the end");
+  CHECK("         ", "");
+  CHECK("\n\n\n", "");
+  CHECK("Testing\r\n", "Testing");
+  CHECK("T e s t\ni n g\n", "T e s t i n g");
+
+ done:
+  tor_free(result);
+#undef CHECK
+}
+
+static void
+setup_orconn_state(orconn_state_msg_t *msg, uint64_t gid, uint64_t chan,
+                   int proxy_type)
+{
+  msg->gid = gid;
+  msg->chan = chan;
+  msg->proxy_type = proxy_type;
+}
+
+static void
+send_orconn_state(const orconn_state_msg_t *msg_in, uint8_t state)
+{
+  orconn_state_msg_t *msg = tor_malloc(sizeof(*msg));
+
+  *msg = *msg_in;
+  msg->state = state;
+  orconn_state_publish(msg);
 }
 
 static void
 send_ocirc_chan(uint32_t gid, uint64_t chan, bool onehop)
 {
-  ocirc_event_msg_t msg;
+  ocirc_chan_msg_t *msg = tor_malloc(sizeof(*msg));
 
-  msg.type = OCIRC_MSGTYPE_CHAN;
-  msg.u.chan.gid = gid;
-  msg.u.chan.chan = chan;
-  msg.u.chan.onehop = onehop;
-  ocirc_event_publish(&msg);
+  msg->gid = gid;
+  msg->chan = chan;
+  msg->onehop = onehop;
+  ocirc_chan_publish(msg);
 }
 
 static void
 test_cntev_orconn_state(void *arg)
 {
-  orconn_event_msg_t conn;
+  orconn_state_msg_t conn;
+  memset(&conn, 0, sizeof(conn));
 
   (void)arg;
   MOCK(queue_control_event_string, mock_queue_control_event_string);
@@ -442,8 +514,8 @@ test_cntev_orconn_state(void *arg)
   send_orconn_state(&conn, OR_CONN_STATE_OPEN);
   assert_bootmsg("15 TAG=handshake_done");
 
-  conn.u.state.gid = 2;
-  conn.u.state.chan = 2;
+  conn.gid = 2;
+  conn.chan = 2;
   send_orconn_state(&conn, OR_CONN_STATE_CONNECTING);
   /* It doesn't know it's an origin circuit yet */
   assert_bootmsg("15 TAG=handshake_done");
@@ -464,7 +536,8 @@ test_cntev_orconn_state(void *arg)
 static void
 test_cntev_orconn_state_pt(void *arg)
 {
-  orconn_event_msg_t conn;
+  orconn_state_msg_t conn;
+  memset(&conn, 0, sizeof(conn));
 
   (void)arg;
   MOCK(queue_control_event_string, mock_queue_control_event_string);
@@ -484,8 +557,8 @@ test_cntev_orconn_state_pt(void *arg)
   assert_bootmsg("15 TAG=handshake_done");
 
   send_ocirc_chan(2, 2, false);
-  conn.u.state.gid = 2;
-  conn.u.state.chan = 2;
+  conn.gid = 2;
+  conn.chan = 2;
   send_orconn_state(&conn, OR_CONN_STATE_CONNECTING);
   assert_bootmsg("76 TAG=ap_conn_pt");
   send_orconn_state(&conn, OR_CONN_STATE_PROXY_HANDSHAKING);
@@ -499,7 +572,8 @@ test_cntev_orconn_state_pt(void *arg)
 static void
 test_cntev_orconn_state_proxy(void *arg)
 {
-  orconn_event_msg_t conn;
+  orconn_state_msg_t conn;
+  memset(&conn, 0, sizeof(conn));
 
   (void)arg;
   MOCK(queue_control_event_string, mock_queue_control_event_string);
@@ -519,8 +593,8 @@ test_cntev_orconn_state_proxy(void *arg)
   assert_bootmsg("15 TAG=handshake_done");
 
   send_ocirc_chan(2, 2, false);
-  conn.u.state.gid = 2;
-  conn.u.state.chan = 2;
+  conn.gid = 2;
+  conn.chan = 2;
   send_orconn_state(&conn, OR_CONN_STATE_CONNECTING);
   assert_bootmsg("78 TAG=ap_conn_proxy");
   send_orconn_state(&conn, OR_CONN_STATE_PROXY_HANDSHAKING);
@@ -531,18 +605,151 @@ test_cntev_orconn_state_proxy(void *arg)
   UNMOCK(queue_control_event_string);
 }
 
+static void
+test_cntev_format_stream(void *arg)
+{
+  entry_connection_t *ec = NULL;
+  char *conndesc = NULL;
+  (void)arg;
+
+  ec = entry_connection_new(CONN_TYPE_AP, AF_INET);
+
+  char *username = tor_strdup("jeremy");
+  char *password = tor_strdup("letmein");
+  ec->socks_request->username = username; // steal reference
+  ec->socks_request->usernamelen = strlen(username);
+  ec->socks_request->password = password; // steal reference
+  ec->socks_request->passwordlen = strlen(password);
+  conndesc = entry_connection_describe_status_for_controller(ec);
+  tt_assert(strstr(conndesc, "SOCKS_USERNAME=\"jeremy\""));
+  tt_assert(strstr(conndesc, "SOCKS_PASSWORD=\"letmein\""));
+  tor_free(conndesc);
+
+  ec->socks_request->listener_type = CONN_TYPE_AP_LISTENER;
+  ec->socks_request->socks_version = 4;
+  conndesc = entry_connection_describe_status_for_controller(ec);
+  tt_assert(strstr(conndesc, "CLIENT_PROTOCOL=SOCKS4"));
+  tor_free(conndesc);
+
+  ec->socks_request->listener_type = CONN_TYPE_AP_LISTENER;
+  ec->socks_request->socks_version = 5;
+  conndesc = entry_connection_describe_status_for_controller(ec);
+  tt_assert(strstr(conndesc, "CLIENT_PROTOCOL=SOCKS5"));
+  tor_free(conndesc);
+
+  ec->socks_request->listener_type = CONN_TYPE_AP_LISTENER;
+  ec->socks_request->socks_version = 6;
+  conndesc = entry_connection_describe_status_for_controller(ec);
+  tt_assert(strstr(conndesc, "CLIENT_PROTOCOL=UNKNOWN"));
+  tor_free(conndesc);
+
+  ec->socks_request->listener_type = CONN_TYPE_AP_TRANS_LISTENER;
+  conndesc = entry_connection_describe_status_for_controller(ec);
+  tt_assert(strstr(conndesc, "CLIENT_PROTOCOL=TRANS"));
+  tor_free(conndesc);
+
+  ec->socks_request->listener_type = CONN_TYPE_AP_NATD_LISTENER;
+  conndesc = entry_connection_describe_status_for_controller(ec);
+  tt_assert(strstr(conndesc, "CLIENT_PROTOCOL=NATD"));
+  tor_free(conndesc);
+
+  ec->socks_request->listener_type = CONN_TYPE_AP_DNS_LISTENER;
+  conndesc = entry_connection_describe_status_for_controller(ec);
+  tt_assert(strstr(conndesc, "CLIENT_PROTOCOL=DNS"));
+  tor_free(conndesc);
+
+  ec->socks_request->listener_type = CONN_TYPE_AP_HTTP_CONNECT_LISTENER;
+  conndesc = entry_connection_describe_status_for_controller(ec);
+  tt_assert(strstr(conndesc, "CLIENT_PROTOCOL=HTTPCONNECT"));
+  tor_free(conndesc);
+
+  ec->socks_request->listener_type = CONN_TYPE_OR;
+  conndesc = entry_connection_describe_status_for_controller(ec);
+  tt_assert(strstr(conndesc, "CLIENT_PROTOCOL=UNKNOWN"));
+  tor_free(conndesc);
+
+  ec->nym_epoch = 1337;
+  conndesc = entry_connection_describe_status_for_controller(ec);
+  tt_assert(strstr(conndesc, "NYM_EPOCH=1337"));
+  tor_free(conndesc);
+
+  ec->entry_cfg.session_group = 4321;
+  conndesc = entry_connection_describe_status_for_controller(ec);
+  tt_assert(strstr(conndesc, "SESSION_GROUP=4321"));
+  tor_free(conndesc);
+
+  ec->entry_cfg.isolation_flags = ISO_DESTPORT;
+  conndesc = entry_connection_describe_status_for_controller(ec);
+  tt_assert(strstr(conndesc, "ISO_FIELDS=DESTPORT"));
+  tt_assert(!strstr(conndesc, "ISO_FIELDS=DESTPORT,"));
+  tor_free(conndesc);
+
+  ec->entry_cfg.isolation_flags = ISO_DESTADDR;
+  conndesc = entry_connection_describe_status_for_controller(ec);
+  tt_assert(strstr(conndesc, "ISO_FIELDS=DESTADDR"));
+  tt_assert(!strstr(conndesc, "ISO_FIELDS=DESTADDR,"));
+  tor_free(conndesc);
+
+  ec->entry_cfg.isolation_flags = ISO_SOCKSAUTH;
+  conndesc = entry_connection_describe_status_for_controller(ec);
+  tt_assert(strstr(conndesc, "ISO_FIELDS=SOCKS_USERNAME,SOCKS_PASSWORD"));
+  tt_assert(!strstr(conndesc, "ISO_FIELDS=SOCKS_USERNAME,SOCKS_PASSWORD,"));
+  tor_free(conndesc);
+
+  ec->entry_cfg.isolation_flags = ISO_CLIENTPROTO;
+  conndesc = entry_connection_describe_status_for_controller(ec);
+  tt_assert(strstr(conndesc, "ISO_FIELDS=CLIENT_PROTOCOL"));
+  tt_assert(!strstr(conndesc, "ISO_FIELDS=CLIENT_PROTOCOL,"));
+  tor_free(conndesc);
+
+  ec->entry_cfg.isolation_flags = ISO_CLIENTADDR;
+  conndesc = entry_connection_describe_status_for_controller(ec);
+  tt_assert(strstr(conndesc, "ISO_FIELDS=CLIENTADDR"));
+  tt_assert(!strstr(conndesc, "ISO_FIELDS=CLIENTADDR,"));
+  tor_free(conndesc);
+
+  ec->entry_cfg.isolation_flags = ISO_SESSIONGRP;
+  conndesc = entry_connection_describe_status_for_controller(ec);
+  tt_assert(strstr(conndesc, "ISO_FIELDS=SESSION_GROUP"));
+  tt_assert(!strstr(conndesc, "ISO_FIELDS=SESSION_GROUP,"));
+  tor_free(conndesc);
+
+  ec->entry_cfg.isolation_flags = ISO_NYM_EPOCH;
+  conndesc = entry_connection_describe_status_for_controller(ec);
+  tt_assert(strstr(conndesc, "ISO_FIELDS=NYM_EPOCH"));
+  tt_assert(!strstr(conndesc, "ISO_FIELDS=NYM_EPOCH,"));
+  tor_free(conndesc);
+
+  ec->entry_cfg.isolation_flags = ISO_DESTPORT | ISO_SOCKSAUTH | ISO_NYM_EPOCH;
+  conndesc = entry_connection_describe_status_for_controller(ec);
+  tt_assert(strstr(conndesc,
+    "ISO_FIELDS=DESTPORT,SOCKS_USERNAME,SOCKS_PASSWORD,NYM_EPOCH"));
+  tt_assert(!strstr(conndesc,
+    "ISO_FIELDS=DESTPORT,SOCKS_USERNAME,SOCKS_PASSWORD,NYM_EPOCH,"));
+
+ done:
+  tor_free(conndesc);
+  connection_free_minimal(ENTRY_TO_CONN(ec));
+}
+
 #define TEST(name, flags)                               \
   { #name, test_cntev_ ## name, flags, 0, NULL }
+
+#define T_PUBSUB(name, setup)                                           \
+  { #name, test_cntev_ ## name, TT_FORK, &helper_pubsub_setup, NULL }
 
 struct testcase_t controller_event_tests[] = {
   TEST(sum_up_cell_stats, TT_FORK),
   TEST(append_cell_stats, TT_FORK),
   TEST(format_cell_stats, TT_FORK),
   TEST(event_mask, TT_FORK),
-  TEST(dirboot_defer_desc, TT_FORK),
-  TEST(dirboot_defer_orconn, TT_FORK),
-  TEST(orconn_state, TT_FORK),
-  TEST(orconn_state_pt, TT_FORK),
-  TEST(orconn_state_proxy, TT_FORK),
+  TEST(format_stream, TT_FORK),
+  TEST(signal, TT_FORK),
+  TEST(log_fmt, 0),
+  T_PUBSUB(dirboot_defer_desc, TT_FORK),
+  T_PUBSUB(dirboot_defer_orconn, TT_FORK),
+  T_PUBSUB(orconn_state, TT_FORK),
+  T_PUBSUB(orconn_state_pt, TT_FORK),
+  T_PUBSUB(orconn_state_proxy, TT_FORK),
   END_OF_TESTCASES
 };

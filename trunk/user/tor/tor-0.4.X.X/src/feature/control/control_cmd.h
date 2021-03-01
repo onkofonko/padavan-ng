@@ -1,7 +1,7 @@
 /* Copyright (c) 2001 Matej Pfajfar.
  * Copyright (c) 2001-2004, Roger Dingledine.
  * Copyright (c) 2004-2006, Roger Dingledine, Nick Mathewson.
- * Copyright (c) 2007-2019, The Tor Project, Inc. */
+ * Copyright (c) 2007-2020, The Tor Project, Inc. */
 /* See LICENSE for licensing information */
 
 /**
@@ -91,10 +91,11 @@ STATIC int add_onion_helper_keyarg(const char *arg, int discard_pk,
                                    const char **key_new_alg_out,
                                    char **key_new_blob_out,
                                    add_onion_secret_key_t *decoded_key,
-                                   int *hs_version, char **err_msg_out);
+                                   int *hs_version,
+                                   control_connection_t *conn);
 
 STATIC rend_authorized_client_t *add_onion_helper_clientauth(const char *arg,
-                                   int *created, char **err_msg_out);
+                                   int *created, control_connection_t *conn);
 
 STATIC control_cmd_args_t *control_cmd_parse_args(
                                    const char *command,
