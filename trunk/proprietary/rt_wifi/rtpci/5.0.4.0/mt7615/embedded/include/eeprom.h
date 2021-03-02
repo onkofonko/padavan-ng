@@ -116,7 +116,6 @@
 typedef struct eeprom_flash_info_t {
 	UINT	offset;
 	UINT	size;
-	RTMP_STRING	bin_name[L1PROFILE_ATTRNAME_LEN];
 } eeprom_flash_info;
 
 
