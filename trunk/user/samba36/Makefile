@@ -44,7 +44,6 @@ configure:
 	samba_cv_zlib_1_2_3=no \
 	ac_cv_path_PYTHON="" \
 	ac_cv_path_PYTHON_CONFIG="" \
-	PKG_CONFIG_PATH="$(STAGEDIR)/lib/pkgconfig" \
 	CPPFLAGS="$(SMBCPPFLAGS)" \
 	CFLAGS="$(SMBCFLAGS)" LDFLAGS="$(SMBLDFLAGS)" \
 	./configure \

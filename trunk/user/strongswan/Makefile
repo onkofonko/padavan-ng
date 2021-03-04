@@ -29,7 +29,6 @@ config_test:
 
 configure:
 	( cd $(SRC_NAME) ; \
-	PKG_CONFIG_PATH=$(STAGEDIR)/lib/pkgconfig \
 	./configure \
 		--with-sysroot=$(STAGEDIR) \
 		--prefix=/usr \

@@ -20,7 +20,6 @@ configure:
 	( cd $(SRC_NAME) ; \
 	ac_cv_func_setpgrp_void=yes \
 	ac_cv_lib_FLAC_FLAC__metadata_chain_read=yes \
-	PKG_CONFIG_PATH=$(STAGEDIR)/lib/pkgconfig \
 	./configure \
 		--prefix= \
 		--enable-iconv \
