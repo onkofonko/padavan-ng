@@ -48,18 +48,25 @@ CFLAGS += -DRUNSTATEDIR="\"$(RUNSTATEDIR)\""
 ifeq ($(DEBUG),yes)
 CFLAGS += -g
 endif
-WIREGUARD_TOOLS_VERSION = $(patsubst v%,%,$(shell GIT_CEILING_DIRECTORIES="$(PWD)/../.." git describe --dirty 2>/dev/null))
+WIREGUARD_TOOLS_VERSION = $(patsubst v%,%,$(shell GIT_DIR="$(PWD)/../.git" git describe --dirty 2>/dev/null))
 ifneq ($(WIREGUARD_TOOLS_VERSION),)
 CFLAGS += -D'WIREGUARD_TOOLS_VERSION="$(WIREGUARD_TOOLS_VERSION)"'
+endif
+ifeq ($(PLATFORM),freebsd)
+LDLIBS += -lnv
 endif
 ifeq ($(PLATFORM),haiku)
 LDLIBS += -lnetwork -lbsd
 endif
 ifeq ($(PLATFORM),windows)
 CC := x86_64-w64-mingw32-gcc
-CFLAGS += -Iwincompat/include -include wincompat/compat.h
-LDLIBS += -lws2_32
-wg: wincompat/libc.o wincompat/init.o
+WINDRES := x86_64-w64-mingw32-windres
+CFLAGS += -Iwincompat/include -include wincompat/compat.h -DWINVER=0x0601 -D_WIN32_WINNT=0x0601 -flto
+LDLIBS += -lws2_32 -flto
+VERSION := $(patsubst "%",%,$(filter "%",$(file < version.h)))
+wg: wincompat/libc.o wincompat/init.o wincompat/resources.o
+wincompat/resources.o: wincompat/resources.rc wincompat/manifest.xml
+	$(WINDRES) -DVERSION_STR=$(VERSION) -O coff -c 65001 -i $< -o $@
 endif
 
 ifneq ($(V),1)
