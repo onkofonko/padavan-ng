@@ -9,21 +9,15 @@
 #include <linux/kconfig.h>
 #include <linux/version.h>
 #include <linux/types.h>
-#include <linux/netdevice.h>
 #include <generated/utsrelease.h>
-
-#define ISPADAVAN
 
 #ifdef RHEL_MAJOR
 #if RHEL_MAJOR == 7
 #define ISRHEL7
-#if RHEL_MINOR == 8
-#define ISCENTOS7
-#endif
 #elif RHEL_MAJOR == 8
 #define ISRHEL8
-#if RHEL_MINOR == 2
-#define ISCENTOS8
+#if RHEL_MINOR == 4
+#define ISCENTOS8S
 #endif
 #endif
 #endif
@@ -41,10 +35,8 @@
 #endif
 #endif
 
-#ifndef ISPADAVAN
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3, 10, 0)
 #error "WireGuard requires Linux >= 3.10"
-#endif
 #endif
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 6, 0)
@@ -99,15 +91,8 @@
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3, 17, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 16, 83)
 #define ipv6_dst_lookup_flow(a, b, c, d) ipv6_dst_lookup_flow(b, c, d)
-#elif (LINUX_VERSION_CODE < KERNEL_VERSION(5, 4, 5) && LINUX_VERSION_CODE >= KERNEL_VERSION(5, 4, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(5, 3, 18) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 20, 0) && !defined(ISUBUNTU1904)) || (!defined(ISRHEL8) && !defined(ISDEBIAN) && !defined(ISUBUNTU1804) && LINUX_VERSION_CODE < KERNEL_VERSION(4, 19, 119) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(4, 14, 181) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 10, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(4, 9, 224) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 5, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(4, 4, 224) && !defined(ISUBUNTU1604) && (!defined(ISRHEL7) || defined(ISCENTOS7)))
+#elif (LINUX_VERSION_CODE < KERNEL_VERSION(5, 4, 5) && LINUX_VERSION_CODE >= KERNEL_VERSION(5, 4, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(5, 3, 18) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 20, 0) && !defined(ISUBUNTU1904)) || (!defined(ISRHEL8) && !defined(ISDEBIAN) && !defined(ISUBUNTU1804) && LINUX_VERSION_CODE < KERNEL_VERSION(4, 19, 119) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(4, 14, 181) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 10, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(4, 9, 224) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 5, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(4, 4, 224) && !defined(ISUBUNTU1604) && !defined(ISRHEL7))
 #define ipv6_dst_lookup_flow(a, b, c, d) ipv6_dst_lookup(a, b, &dst, c) + (void *)0 ?: dst
-#endif
-
-#if LINUX_VERSION_CODE < KERNEL_VERSION(3,14,0)
-#ifndef ISPADAVAN
-#define prandom_u32()				net_random()
-#endif
-#define prandom_bytes(x, y)			get_random_bytes(x, y)
 #endif
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3, 12, 0) && IS_ENABLED(CONFIG_IPV6) && !defined(ISRHEL7)
@@ -148,7 +133,6 @@ static inline u32 __compat_get_random_u32(void)
 {
 	static siphash_key_t key;
 	static u32 counter = 0;
-	unsigned int r;
 #if LINUX_VERSION_CODE < KERNEL_VERSION(4, 4, 0)
 	static bool has_seeded = false;
 	if (unlikely(!has_seeded)) {
@@ -158,8 +142,7 @@ static inline u32 __compat_get_random_u32(void)
 #else
 	get_random_once(&key, sizeof(key));
 #endif
-	get_random_bytes(&r, sizeof(r));
-	return siphash_2u32(counter++, r, &key);
+	return siphash_2u32(counter++, get_random_int(), &key);
 }
 #define get_random_u32 __compat_get_random_u32
 #endif
@@ -174,17 +157,11 @@ static inline void netif_keep_dst(struct net_device *dev)
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3, 14, 0) && !defined(ISRHEL7)
 #include <linux/netdevice.h>
-#if defined(ISPADAVAN)
-#define pcpu_sw_netstats pcpu_tstats
-#endif
 #ifndef netdev_alloc_pcpu_stats
 #define pcpu_sw_netstats pcpu_tstats
 #endif
 #ifndef netdev_alloc_pcpu_stats
 #define netdev_alloc_pcpu_stats alloc_percpu
-#endif
-#ifndef NAPI_POLL_WEIGHT
-#define NAPI_POLL_WEIGHT 64
 #endif
 #elif LINUX_VERSION_CODE < KERNEL_VERSION(3, 15, 0) && !defined(ISRHEL7)
 #include <linux/netdevice.h>
@@ -291,9 +268,7 @@ static inline u32 __compat_prandom_u32_max(u32 ep_ro)
 #endif
 #endif
 
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(3, 17, 3) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 17, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(3, 16, 35) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 15, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(3, 14, 24) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 13, 0) && !defined(ISUBUNTU1404)) || (LINUX_VERSION_CODE < KERNEL_VERSION(3, 12, 33) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 11, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(3, 10, 60) && !defined(ISRHEL7)) && !defined(ISPADAVAN)
-/* Making this static may very well invalidate its usefulness,
- * but so it goes with compat code. */
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3, 17, 3) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 17, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(3, 16, 35) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 15, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(3, 14, 24) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 13, 0) && !defined(ISUBUNTU1404)) || (LINUX_VERSION_CODE < KERNEL_VERSION(3, 12, 33) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 11, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(3, 10, 60) && !defined(ISRHEL7))
 static inline void memzero_explicit(void *s, size_t count)
 {
 	memset(s, 0, count);
@@ -782,7 +757,7 @@ static inline void crypto_xor_cpy(u8 *dst, const u8 *src1, const u8 *src2,
 #define hlist_add_behind(a, b) hlist_add_after(b, a)
 #endif
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0)
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0) && !defined(ISCENTOS8S)
 #define totalram_pages() totalram_pages
 #endif
 
@@ -809,24 +784,6 @@ struct __kernel_timespec {
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5, 1, 0) && !defined(ISRHEL8)
 #include <linux/skbuff.h>
-
-#if defined(ISPADAVAN)
-#define MODULE_ALIAS_NET_PF_PROTO_NAME(pf, proto, name) MODULE_ALIAS("net-pf-" __stringify(pf) "-proto-" __stringify(proto) name)
-#define MODULE_ALIAS_GENL_FAMILY(family) MODULE_ALIAS_NET_PF_PROTO_NAME(PF_NETLINK, NETLINK_GENERIC, "-family-" family)
-//#include <net/flow_keys.h>
-static inline void skb_probe_transport_header(struct sk_buff *skb,
-					      const int offset_hint)
-{
-//	struct flow_keys keys;
-	if (skb->ip_summed == CHECKSUM_PARTIAL)
-	    skb_set_transport_header(skb, skb_checksum_start_offset(skb));
-//	else if (skb_flow_dissect(skb, &keys))
-//	    skb_set_transport_header(skb, keys.thoff);
-	else
-	    skb_set_transport_header(skb, offset_hint);
-
-}
-#endif
 #define skb_probe_transport_header(a) skb_probe_transport_header(a, 0)
 #endif
 
@@ -866,7 +823,7 @@ static __always_inline void old_rcu_barrier(void)
 #define COMPAT_CANNOT_DEPRECIATE_BH_RCU
 #endif
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 19, 10) && !defined(ISRHEL8)
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(4, 19, 10) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0) && !defined(ISRHEL8) && !defined(ISUBUNTU1804)) || LINUX_VERSION_CODE < KERNEL_VERSION(4, 14, 217)
 static inline void skb_mark_not_on_list(struct sk_buff *skb)
 {
 	skb->next = NULL;
@@ -975,12 +932,12 @@ static inline int skb_ensure_writable(struct sk_buff *skb, int write_len)
 }
 #endif
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 6, 0)
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 6, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(5, 5, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(5, 4, 102) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 20, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(4, 19, 178) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(4, 14, 223) && LINUX_VERSION_CODE > KERNEL_VERSION(4, 10, 0)) || LINUX_VERSION_CODE < KERNEL_VERSION(4, 9, 259) || defined(ISRHEL8) || defined(ISUBUNTU1804)
+#include <linux/icmpv6.h>
+#include <net/icmp.h>
 #if IS_ENABLED(CONFIG_NF_NAT)
 #include <linux/ip.h>
-#include <linux/icmpv6.h>
 #include <net/ipv6.h>
-#include <net/icmp.h>
 #include <net/netfilter/nf_conntrack.h>
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5, 1, 0) && !defined(ISRHEL8)
 #include <net/netfilter/nf_nat_core.h>
@@ -994,6 +951,7 @@ static inline void __compat_icmp_ndo_send(struct sk_buff *skb_in, int type, int 
 
 	ct = nf_ct_get(skb_in, &ctinfo);
 	if (!ct || !(ct->status & IPS_SRC_NAT)) {
+		memset(skb_in->cb, 0, sizeof(skb_in->cb));
 		icmp_send(skb_in, type, code, info);
 		return;
 	}
@@ -1009,13 +967,12 @@ static inline void __compat_icmp_ndo_send(struct sk_buff *skb_in, int type, int 
 
 	orig_ip = ip_hdr(skb_in)->saddr;
 	ip_hdr(skb_in)->saddr = ct->tuplehash[0].tuple.src.u3.ip;
+	memset(skb_in->cb, 0, sizeof(skb_in->cb));
 	icmp_send(skb_in, type, code, info);
 	ip_hdr(skb_in)->saddr = orig_ip;
 out:
 	consume_skb(cloned_skb);
 }
-
-#if IS_ENABLED(CONFIG_IPV6)
 static inline void __compat_icmpv6_ndo_send(struct sk_buff *skb_in, u8 type, u8 code, __u32 info)
 {
 	struct sk_buff *cloned_skb = NULL;
@@ -1025,6 +982,7 @@ static inline void __compat_icmpv6_ndo_send(struct sk_buff *skb_in, u8 type, u8 
 
 	ct = nf_ct_get(skb_in, &ctinfo);
 	if (!ct || !(ct->status & IPS_SRC_NAT)) {
+		memset(skb_in->cb, 0, sizeof(skb_in->cb));
 		icmpv6_send(skb_in, type, code, info);
 		return;
 	}
@@ -1040,29 +998,33 @@ static inline void __compat_icmpv6_ndo_send(struct sk_buff *skb_in, u8 type, u8 
 
 	orig_ip = ipv6_hdr(skb_in)->saddr;
 	ipv6_hdr(skb_in)->saddr = ct->tuplehash[0].tuple.src.u3.in6;
+	memset(skb_in->cb, 0, sizeof(skb_in->cb));
 	icmpv6_send(skb_in, type, code, info);
 	ipv6_hdr(skb_in)->saddr = orig_ip;
 out:
 	consume_skb(cloned_skb);
 }
-#endif
 #else
-#define __compat_icmp_ndo_send icmp_send
-#if IS_ENABLED(CONFIG_IPV6)
-#define __compat_icmpv6_ndo_send icmpv6_send
-#endif
+static inline void __compat_icmp_ndo_send(struct sk_buff *skb_in, int type, int code, __be32 info)
+{
+	memset(skb_in->cb, 0, sizeof(skb_in->cb));
+	icmp_send(skb_in, type, code, info);
+}
+static inline void __compat_icmpv6_ndo_send(struct sk_buff *skb_in, u8 type, u8 code, __u32 info)
+{
+	memset(skb_in->cb, 0, sizeof(skb_in->cb));
+	icmpv6_send(skb_in, type, code, info);
+}
 #endif
 #define icmp_ndo_send __compat_icmp_ndo_send
-#if IS_ENABLED(CONFIG_IPV6)
 #define icmpv6_ndo_send __compat_icmpv6_ndo_send
-#endif
 #endif
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(4, 10, 0)
 #define COMPAT_CANNOT_USE_MAX_MTU
 #endif
 
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 5, 14) && LINUX_VERSION_CODE >= KERNEL_VERSION(5, 5, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(5, 4, 29) && !defined(ISUBUNTU1910) && !defined(ISUBUNTU1904) && (!defined(ISRHEL8) || defined(ISCENTOS8)))
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 5, 14) && LINUX_VERSION_CODE >= KERNEL_VERSION(5, 5, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(5, 4, 29) && !defined(ISUBUNTU1910) && !defined(ISUBUNTU1904) && !defined(ISRHEL8))
 #include <linux/skbuff.h>
 #include <net/sch_generic.h>
 static inline void skb_reset_redirect(struct sk_buff *skb)
@@ -1118,6 +1080,22 @@ static const struct header_ops ip_tunnel_header_ops = { .parse_protocol = ip_tun
 #define kfree_sensitive(a) kzfree(a)
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 3, 0) && !defined(ISRHEL7)
+#define xchg_release xchg
+#endif
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3, 14, 0) && !defined(ISRHEL7)
+#include <asm/barrier.h>
+#ifndef smp_load_acquire
+#define smp_load_acquire(p)                                            \
+({                                                                     \
+       typeof(*p) ___p1 = ACCESS_ONCE(*p);                             \
+       smp_mb();                                                       \
+       ___p1;                                                          \
+})
+#endif
+#endif
+
 #if defined(ISUBUNTU1604) || defined(ISRHEL7)
 #include <linux/siphash.h>
 #ifndef _WG_LINUX_SIPHASH_H
@@ -1160,148 +1138,6 @@ static const struct header_ops ip_tunnel_header_ops = { .parse_protocol = ip_tun
 #define timer_setup(a, b, c) setup_timer(a, ((void (*)(unsigned long))b), ((unsigned long)a))
 #undef from_timer
 #define from_timer(var, callback_timer, timer_fieldname) container_of((struct timer_list *)callback_timer, typeof(*var), timer_fieldname)
-#endif
-
-#if defined(ISPADAVAN)
-#include <net/inet_ecn.h>
-/*
- * RFC 6080 4.2
- *  To decapsulate the inner header at the tunnel egress, a compliant
- *  tunnel egress MUST set the outgoing ECN field to the codepoint at the
- *  intersection of the appropriate arriving inner header (row) and outer
- *  header (column) in Figure 4
- *
- *      +---------+------------------------------------------------+
- *      |Arriving |            Arriving Outer Header               |
- *      |   Inner +---------+------------+------------+------------+
- *      |  Header | Not-ECT | ECT(0)     | ECT(1)     |     CE     |
- *      +---------+---------+------------+------------+------------+
- *      | Not-ECT | Not-ECT |Not-ECT(!!!)|Not-ECT(!!!)| <drop>(!!!)|
- *      |  ECT(0) |  ECT(0) | ECT(0)     | ECT(1)     |     CE     |
- *      |  ECT(1) |  ECT(1) | ECT(1) (!) | ECT(1)     |     CE     |
- *      |    CE   |      CE |     CE     |     CE(!!!)|     CE     |
- *      +---------+---------+------------+------------+------------+
- *
- *             Figure 4: New IP in IP Decapsulation Behaviour
- *
- *  returns 0 on success
- *          1 if something is broken and should be logged (!!! above)
- *          2 if packet should be dropped
- */
-static inline int INET_ECN_decapsulate(struct sk_buff *skb,
-				       __u8 outer, __u8 inner)
-{
-	if (INET_ECN_is_not_ect(inner)) {
-		switch (outer & INET_ECN_MASK) {
-		case INET_ECN_NOT_ECT:
-			return 0;
-		case INET_ECN_ECT_0:
-		case INET_ECN_ECT_1:
-			return 1;
-		case INET_ECN_CE:
-			return 2;
-		}
-	}
-
-	if (INET_ECN_is_ce(outer))
-		INET_ECN_set_ce(skb);
-
-	return 0;
-}
-
-static inline int IP_ECN_decapsulate(const struct iphdr *oiph,
-				     struct sk_buff *skb)
-{
-	__u8 inner;
-
-	if (skb->protocol == htons(ETH_P_IP))
-		inner = ip_hdr(skb)->tos;
-	else if (skb->protocol == htons(ETH_P_IPV6))
-		inner = ipv6_get_dsfield(ipv6_hdr(skb));
-	else
-		return 0;
-
-	return INET_ECN_decapsulate(skb, oiph->tos, inner);
-}
-
-static inline bool __ipv6_addr_needs_scope_id(int type)
-{
-	return type & IPV6_ADDR_LINKLOCAL ||
-	       (type & IPV6_ADDR_MULTICAST &&
-		(type & (IPV6_ADDR_LOOPBACK|IPV6_ADDR_LINKLOCAL)));
-}
-
-static inline __u32 ipv6_iface_scope_id(const struct in6_addr *addr, int iface)
-{
-	return __ipv6_addr_needs_scope_id(__ipv6_addr_type(addr)) ? iface : 0;
-}
-
-static inline int sg_nents(struct scatterlist *sg)
-{
-	int nents;
-	for (nents = 0; sg; sg = sg_next(sg))
-		nents++;
-	return nents;
-}
-
-static inline void ip6_flow_hdr(struct ipv6hdr *hdr, unsigned int tclass,
-				__be32 flowlabel)
-{
-	*(__be32 *)hdr = htonl(0x60000000 | (tclass << 20)) | flowlabel;
-}
-
-#endif
-
-#ifndef hlist_entry_safe
-#undef hlist_for_each_entry
-#undef hlist_for_each_entry_rcu
-#undef hlist_for_each_entry_safe
-#undef hlist_for_each_entry_rcu_bh
-
-#define hlist_entry_safe(ptr, type, member) \
-	({ typeof(ptr) ____ptr = (ptr); \
-	   ____ptr ? hlist_entry(____ptr, type, member) : NULL; \
-	})
-
-#define hlist_for_each_entry(pos, head, member)				\
-	for (pos = hlist_entry_safe((head)->first, typeof(*(pos)), member);\
-	     pos;							\
-	     pos = hlist_entry_safe((pos)->member.next, typeof(*(pos)), member))
-
-#define hlist_for_each_entry_rcu(pos, head, member)			\
-	for (pos = hlist_entry_safe (rcu_dereference_raw(hlist_first_rcu(head)),\
-			typeof(*(pos)), member);			\
-		pos;							\
-		pos = hlist_entry_safe(rcu_dereference_raw(hlist_next_rcu(\
-			&(pos)->member)), typeof(*(pos)), member))
-
-/**
- * hlist_for_each_entry_safe - iterate over list of given type safe against removal of list entry
- * @pos:	the type * to use as a loop cursor.
- * @n:		another &struct hlist_node to use as temporary storage
- * @head:	the head for your list.
- * @member:	the name of the hlist_node within the struct.
- */
-#define hlist_for_each_entry_safe(pos, n, head, member) 		\
-	for (pos = hlist_entry_safe((head)->first, typeof(*pos), member);\
-	     pos && ({ n = pos->member.next; 1; });			\
-	     pos = hlist_entry_safe(n, typeof(*pos), member))
-
-
-#define hlist_for_each_entry_rcu_bh(pos, head, member)			\
-	for (pos = hlist_entry_safe(rcu_dereference_bh(hlist_first_rcu(head)),\
-			typeof(*(pos)), member);			\
-		pos;							\
-		pos = hlist_entry_safe(rcu_dereference_bh(hlist_next_rcu(\
-			&(pos)->member)), typeof(*(pos)), member))
-
-#endif
-
-#ifndef DECLARE_DEFERRABLE_WORK
-#include <linux/timer.h>
-#include <linux/workqueue.h>
-#define DECLARE_DEFERRABLE_WORK(n, f)					\
-	struct delayed_work n = __DELAYED_WORK_INITIALIZER(n, f)
 #endif
 
 #endif /* _WG_COMPAT_H */

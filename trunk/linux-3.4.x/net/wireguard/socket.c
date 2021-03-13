@@ -53,7 +53,7 @@ static int send4(struct wg_device *wg, struct sk_buff *skb,
 		if (unlikely(!inet_confirm_addr(sock_net(sock), NULL, 0,
 						fl.saddr, RT_SCOPE_HOST))) {
 			endpoint->src4.s_addr = 0;
-			*(__force __be32 *)&endpoint->src_if4 = 0;
+			endpoint->src_if4 = 0;
 			fl.saddr = 0;
 			if (cache)
 				dst_cache_reset(cache);
@@ -63,7 +63,7 @@ static int send4(struct wg_device *wg, struct sk_buff *skb,
 			     PTR_ERR(rt) == -EINVAL) || (!IS_ERR(rt) &&
 			     rt->dst.dev->ifindex != endpoint->src_if4)))) {
 			endpoint->src4.s_addr = 0;
-			*(__force __be32 *)&endpoint->src_if4 = 0;
+			endpoint->src_if4 = 0;
 			fl.saddr = 0;
 			if (cache)
 				dst_cache_reset(cache);
@@ -71,7 +71,7 @@ static int send4(struct wg_device *wg, struct sk_buff *skb,
 				ip_rt_put(rt);
 			rt = ip_route_output_flow(sock_net(sock), &fl, sock);
 		}
-		if (unlikely(IS_ERR(rt))) {
+		if (IS_ERR(rt)) {
 			ret = PTR_ERR(rt);
 			net_dbg_ratelimited("%s: No route to %pISpfsc, error %d\n",
 					    wg->dev->name, &endpoint->addr, ret);
@@ -138,7 +138,7 @@ static int send6(struct wg_device *wg, struct sk_buff *skb,
 		}
 		dst = ipv6_stub->ipv6_dst_lookup_flow(sock_net(sock), sock, &fl,
 						      NULL);
-		if (unlikely(IS_ERR(dst))) {
+		if (IS_ERR(dst)) {
 			ret = PTR_ERR(dst);
 			net_dbg_ratelimited("%s: No route to %pISpfsc, error %d\n",
 					    wg->dev->name, &endpoint->addr, ret);
@@ -194,9 +194,7 @@ int wg_socket_send_buffer_to_peer(struct wg_peer *peer, void *buffer,
 		return -ENOMEM;
 
 	skb_reserve(skb, SKB_HEADER_LEN);
-#ifndef ISPADAVAN
 	skb_set_inner_network_header(skb, 0);
-#endif
 	skb_put_data(skb, buffer, len);
 	return wg_socket_send_skb_to_peer(peer, skb, ds);
 }
@@ -219,9 +217,7 @@ int wg_socket_send_buffer_as_reply_to_skb(struct wg_device *wg,
 	if (unlikely(!skb))
 		return -ENOMEM;
 	skb_reserve(skb, SKB_HEADER_LEN);
-#ifndef ISPADAVAN
 	skb_set_inner_network_header(skb, 0);
-#endif
 	skb_put_data(skb, buffer, len);
 
 	if (endpoint.addr.sa_family == AF_INET)
@@ -338,9 +334,7 @@ static void sock_free(struct sock *sock)
 {
 	if (unlikely(!sock))
 		return;
-#ifndef ISPADAVAN
 	sk_clear_memalloc(sock);
-#endif
 	udp_tunnel_sock_release(sock->sk_socket);
 }
 
@@ -348,9 +342,7 @@ static void set_sock_opts(struct socket *sock)
 {
 	sock->sk->sk_allocation = GFP_ATOMIC;
 	sock->sk->sk_sndbuf = INT_MAX;
-#ifndef ISPADAVAN
 	sk_set_memalloc(sock->sk);
-#endif
 }
 
 int wg_socket_init(struct wg_device *wg, u16 port)
