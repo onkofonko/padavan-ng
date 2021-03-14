@@ -2437,6 +2437,7 @@ PNDIS_PACKET RtmpOsPktIappMakeUp(
 #endif /* IAPP_SUPPORT */
 
 
+#if 0
 #ifdef CONFIG_FAST_NAT_SUPPORT
 VOID RtmpOsPktNatMagicTag(IN PNDIS_PACKET pNetPkt)
 {
@@ -2445,7 +2446,7 @@ VOID RtmpOsPktNatMagicTag(IN PNDIS_PACKET pNetPkt)
 	FOE_MAGIC_TAG(pRxPkt) = FOE_MAGIC_EXTIF;
 }
 #endif /*CONFIG_FAST_NAT_SUPPORT*/
-
+#endif
 /*
  * ========================================================================
  * Routine Description:
