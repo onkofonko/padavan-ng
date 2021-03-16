@@ -1,5 +1,9 @@
 cfg={}
 
+cfg.ui_auth_file='auth.txt'
+
+cfg.ui_session_file='/tmp/xupnpd.session'
+
 -- multicast interface for SSDP exchange, 'eth0', 'br0', 'br-lan' for example
 cfg.ssdp_interface='br0'
 
@@ -78,6 +82,7 @@ cfg.playlists_update_interval=0
 -- playlist (m3u file path or path with alias
 playlist=
 {
+--    { './playlists/mozhay.m3u', 'Mozhay.tv' },
 --    { '/media', 'Local Media Files' }
 --    { '/media', 'Private Media Files', '127.0.0.1;192.168.1.1' }  -- only for 127.0.0.1 and 192.168.1.1
 }
@@ -85,16 +90,16 @@ playlist=
 -- feeds list (plugin, feed name, feed type)
 feeds=
 {
-    { 'vimeo',          'channel/hd',           'Vimeo HD Channel' },
-    { 'vimeo',          'channel/hdxs',         'Vimeo Xtreme sports' },
-    { 'vimeo',          'channel/mtb',          'Vimeo MTB Channel' },
-    { 'youtube',        'channel/top_rated',    'YouTube Top Rated' },
-    { 'youtube',        'Drift0r',              'Drift0r' },
-    { 'youtube',        'XboxAhoy',             'XboxAhoy' },
-    { 'ag',             'videos',               'AG - New' },
-    { 'ivi',            'new',                  'IVI - New' },
-    { 'gametrailers',   'ps3',                   'GT - PS3' },
-    { 'giantbomb',      'all',                  'GiantBomb - All' },
+--    { 'vimeo',          'channel/hd',           'Vimeo HD Channel' },
+--    { 'vimeo',          'channel/hdxs',         'Vimeo Xtreme sports' },
+--    { 'vimeo',          'channel/mtb',          'Vimeo MTB Channel' },
+--    { 'youtube',        'channel/top_rated',    'YouTube Top Rated' },
+--    { 'youtube',        'Drift0r',              'Drift0r' },
+--    { 'youtube',        'XboxAhoy',             'XboxAhoy' },
+--    { 'ag',             'videos',               'AG - New' },
+--    { 'ivi',            'new',                  'IVI - New' },
+--    { 'gametrailers',   'ps3',                  'GT - PS3' },
+--    { 'giantbomb',      'all',                  'GiantBomb - All' },
 --    { 'dreambox',       'http://192.168.0.1:8001/','Dreambox1' },
 }
 
@@ -110,6 +115,6 @@ cfg.plugin_path='/etc/storage/xupnpd/plugins/'
 cfg.playlists_path='/etc/storage/xupnpd/playlists/'
 cfg.profiles='/etc/storage/xupnpd/profiles/'      -- device profiles feature
 cfg.feeds_path='/tmp/xupnpd-feeds/'
-cfg.drive=''                    		-- reload playlists only if drive state=active/idle, example: cfg.drive='/dev/sda'
+cfg.drive=''                    -- reload playlists only if drive state=active/idle, example: cfg.drive='/dev/sda'
 
 dofile('xupnpd_main.lua')

@@ -635,7 +635,7 @@ static int lua_m3u_parse(lua_State* L)
                         if(len!=(off64_t)-1)
                         {
                             lua_pushstring(L,"length");
-                            lua_pushnumber(L,len);
+                            lua_pushinteger(L,len);
                             lua_rawset(L,-3);
                         }
                         close(fd);
@@ -721,15 +721,15 @@ static int lua_m3u_scan(lua_State* L)
 
                     if(strcmp(de->d_name,"lost+found"))
                     {
-                    lua_pushinteger(L,idx++);
+                        lua_pushinteger(L,idx++);
 
-                    lua_getglobal(L,"m3u");
-                    lua_getfield(L,-1,"scan");
-                    lua_remove(L,-2);
-                    lua_pushstring(L,track_url);
-                    lua_call(L,1,1);
+                        lua_getglobal(L,"m3u");
+                        lua_getfield(L,-1,"scan");
+                        lua_remove(L,-2);
+                        lua_pushstring(L,track_url);
+                        lua_call(L,1,1);
 
-                    lua_rawset(L,-3);       // element
+                        lua_rawset(L,-3);       // element
                     }
                 }else
                 {
@@ -765,7 +765,7 @@ static int lua_m3u_scan(lua_State* L)
                             if(len!=(off64_t)-1)
                             {
                                 lua_pushstring(L,"length");
-                                lua_pushnumber(L,len);
+                                lua_pushinteger(L,len);
                                 lua_rawset(L,-3);
                             }
 
@@ -882,7 +882,7 @@ static int lua_util_geturlinfo(lua_State* L)
             if(len!=(off64_t)-1)
             {
                 lua_pushstring(L,"length");
-                lua_pushnumber(L,len);
+                lua_pushinteger(L,len);
                 lua_rawset(L,-3);
             }
             type="file";
@@ -985,7 +985,7 @@ static int lua_util_getflen(lua_State* L)
         {
             off64_t len=lseek64(fd,0,SEEK_END);
             if(len!=(off64_t)-1)
-                lua_pushnumber(L,len);
+                lua_pushinteger(L,len);
             close(fd);
         }else
             lua_pushnil(L);

@@ -18,7 +18,7 @@ SRC = \
 
 embedded:
 	$(CC) $(CFLAGS) -c -o md5.o md5c.c
-	$(CC) -Os $(CPPFLAGS) $(LDFLAGS) -DWITH_URANDOM -o xupnpd $(SRC) md5.o -llua -lm -ldl -lssl -lcrypto
+	$(CC) $(CPPFLAGS) $(LDFLAGS) -DWITH_URANDOM -o xupnpd $(SRC) md5.o -llua -lm -ldl -lssl -lcrypto
 
 clean:
 	rm -f md5.o

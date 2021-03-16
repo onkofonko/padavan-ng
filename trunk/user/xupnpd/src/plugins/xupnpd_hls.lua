@@ -25,10 +25,6 @@ function hls_get_index(url,t)
     return fseq,seq-1
 end
 
-function hls_sleep(n)
-  os.execute("sleep " .. tonumber(n))
-end
-
 function hls_sendurl(url,range)
 
     local t={}
@@ -65,7 +61,7 @@ function hls_sendurl(url,range)
 
             seq=seq+1
 
-            if delay>0 then hls_sleep(delay) end
+            if delay>0 then util.sleep(delay) end
         else
             util.sleep(1)
         end

@@ -16,7 +16,7 @@ profiles['LG']=
 
     ['options']=
     {
-	['content_disp']=true
+        ['content_disp']=true
     },
 
     ['replace_mime_types']=true,

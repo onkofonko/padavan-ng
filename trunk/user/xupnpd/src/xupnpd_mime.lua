@@ -12,7 +12,8 @@ upnp_type=
 upnp_class=
 {
     ['video']     = 'object.item.videoItem',
-    ['audio']     = 'object.item.audioItem.musicTrack'
+    ['audio']     = 'object.item.audioItem.musicTrack',
+    ['image']     = 'object.item.imageItem'
 }
 
 
@@ -32,10 +33,16 @@ upnp_proto=
     ['3gp']   = 'http-get:*:video/3gpp:',
     ['flv']   = 'http-get:*:video/x-flv:',
     ['aac']   = 'http-get:*:audio/x-aac:',
+    ['m4a']   = 'http-get:*:audio/x-aac:',
     ['ac3']   = 'http-get:*:audio/x-ac3:',
     ['mp3']   = 'http-get:*:audio/mpeg:',
     ['ogg']   = 'http-get:*:audio/x-ogg:',
-    ['wma']   = 'http-get:*:audio/x-ms-wma:'
+    ['wma']   = 'http-get:*:audio/x-ms-wma:',
+    ['jpeg']  = 'http-get:*:image/jpeg:',
+    ['png']   = 'http-get:*:image/png:',
+    ['gif']   = 'http-get:*:image/gif:',
+    ['tiff']  = 'http-get:*:image/tiff:',
+    ['bmp']   = 'http-get:*:image/bmp:'
 }
 
 -- DLNA.ORG_PN, DLNA.ORG_OP, DLNA.ORG_CI, DLNA.ORG_FLAGS
@@ -83,24 +90,32 @@ dlna_org_extras=
 
 mime=
 {
-    ['avi']   = { upnp_type.video, upnp_class.video, 'video/avi',       upnp_proto.avi,   dlna_org_extras.divx5 },
-    ['asf']   = { upnp_type.video, upnp_class.video, 'video/x-ms-asf',  upnp_proto.asf,   dlna_org_extras.asf_mpeg4_sp },
-    ['wmv']   = { upnp_type.video, upnp_class.video, 'video/x-ms-wmv',  upnp_proto.wmv,   dlna_org_extras.wmv_med_full },
-    ['mp4']   = { upnp_type.video, upnp_class.video, 'video/mp4',       upnp_proto.mp4,   dlna_org_extras.none },
-    ['mpeg']  = { upnp_type.video, upnp_class.video, 'video/mpeg',      upnp_proto.mpeg,  dlna_org_extras.mpeg_ps_pal },        -- video/x-mpeg
+    ['avi']    = { upnp_type.video, upnp_class.video, 'video/avi',       upnp_proto.avi,   dlna_org_extras.divx5 },
+    ['asf']    = { upnp_type.video, upnp_class.video, 'video/x-ms-asf',  upnp_proto.asf,   dlna_org_extras.asf_mpeg4_sp },
+    ['wmv']    = { upnp_type.video, upnp_class.video, 'video/x-ms-wmv',  upnp_proto.wmv,   dlna_org_extras.wmv_med_full },
+    ['mp4']    = { upnp_type.video, upnp_class.video, 'video/mp4',       upnp_proto.mp4,   dlna_org_extras.none },
+    ['mpeg']   = { upnp_type.video, upnp_class.video, 'video/mpeg',      upnp_proto.mpeg,  dlna_org_extras.mpeg_ps_pal },        -- video/x-mpeg
     ['mpeg_ts']= { upnp_type.video, upnp_class.video, 'video/mpeg',      upnp_proto.mpeg,  dlna_org_extras.mpeg_ts_sd },         -- for Sharp
-    ['mpeg1'] = { upnp_type.video, upnp_class.video, 'video/mpeg',      upnp_proto.mpeg,  dlna_org_extras.mpeg1 },
-    ['mpeg2'] = { upnp_type.video, upnp_class.video, 'video/mpeg2',     upnp_proto.mpeg2, dlna_org_extras.mpeg_ps_pal },
-    ['ts']    = { upnp_type.video, upnp_class.video, 'video/mp2t',      upnp_proto.mp2t,  dlna_org_extras.mpeg_ts_hd },
-    ['mp2t']  = { upnp_type.video, upnp_class.video, 'video/mp2t',      upnp_proto.mp2t,  dlna_org_extras.mpeg_ts_hd },
-    ['mp2p']  = { upnp_type.video, upnp_class.video, 'video/mp2p',      upnp_proto.mp2p,  dlna_org_extras.mpeg_ps_pal },
-    ['mov']   = { upnp_type.video, upnp_class.video, 'video/quicktime', upnp_proto.mov,   dlna_org_extras.none },
+    ['mpeg1']  = { upnp_type.video, upnp_class.video, 'video/mpeg',      upnp_proto.mpeg,  dlna_org_extras.mpeg1 },
+    ['mpeg2']  = { upnp_type.video, upnp_class.video, 'video/mpeg2',     upnp_proto.mpeg2, dlna_org_extras.mpeg_ps_pal },
+    ['ts']     = { upnp_type.video, upnp_class.video, 'video/mp2t',      upnp_proto.mp2t,  dlna_org_extras.mpeg_ts_hd },
+    ['mp2t']   = { upnp_type.video, upnp_class.video, 'video/mp2t',      upnp_proto.mp2t,  dlna_org_extras.mpeg_ts_hd },
+    ['mp2p']   = { upnp_type.video, upnp_class.video, 'video/mp2p',      upnp_proto.mp2p,  dlna_org_extras.mpeg_ps_pal },
+    ['mov']    = { upnp_type.video, upnp_class.video, 'video/quicktime', upnp_proto.mov,   dlna_org_extras.none },
     ['mkv']    = { upnp_type.video, upnp_class.video, 'video/x-mkv',     upnp_proto.mkv,   dlna_org_extras.none },               -- video/x-matroska
-    ['3gp']   = { upnp_type.video, upnp_class.video, 'video/3gpp',      upnp_proto['3gp'],dlna_org_extras.none },
-    ['flv']   = { upnp_type.video, upnp_class.video, 'video/x-flv',     upnp_proto.flv,   dlna_org_extras.none },
-    ['aac']   = { upnp_type.audio, upnp_class.audio, 'audio/x-aac',     upnp_proto.aac,   dlna_org_extras.none },
-    ['ac3']   = { upnp_type.audio, upnp_class.audio, 'audio/x-ac3',     upnp_proto.ac3,   dlna_org_extras.ac3 },
-    ['mp3']   = { upnp_type.audio, upnp_class.audio, 'audio/mpeg',      upnp_proto.mp3,   dlna_org_extras.mp3 },
-    ['ogg']   = { upnp_type.audio, upnp_class.audio, 'application/ogg', upnp_proto.ogg,   dlna_org_extras.none },
-    ['wma']   = { upnp_type.audio, upnp_class.audio, 'audio/x-ms-wma',  upnp_proto.wma,   dlna_org_extras.wma_full }
+    ['3gp']    = { upnp_type.video, upnp_class.video, 'video/3gpp',      upnp_proto['3gp'],dlna_org_extras.none },
+    ['flv']    = { upnp_type.video, upnp_class.video, 'video/x-flv',     upnp_proto.flv,   dlna_org_extras.none },
+    ['aac']    = { upnp_type.audio, upnp_class.audio, 'audio/x-aac',     upnp_proto.aac,   dlna_org_extras.none },
+    ['m4a']    = { upnp_type.audio, upnp_class.audio, 'audio/x-aac',     upnp_proto.aac,   dlna_org_extras.none },
+    ['ac3']    = { upnp_type.audio, upnp_class.audio, 'audio/x-ac3',     upnp_proto.ac3,   dlna_org_extras.ac3 },
+    ['mp3']    = { upnp_type.audio, upnp_class.audio, 'audio/mpeg',      upnp_proto.mp3,   dlna_org_extras.mp3 },
+    ['ogg']    = { upnp_type.audio, upnp_class.audio, 'application/ogg', upnp_proto.ogg,   dlna_org_extras.none },
+    ['wma']    = { upnp_type.audio, upnp_class.audio, 'audio/x-ms-wma',  upnp_proto.wma,   dlna_org_extras.wma_full },
+    ['jpeg']   = { upnp_type.image, upnp_class.image, 'image/jpeg',      upnp_proto.jpeg,  dlna_org_extras.none },
+    ['jpg']   =  { upnp_type.image, upnp_class.image, 'image/jpeg',      upnp_proto.jpeg,  dlna_org_extras.none },
+    ['png']   =  { upnp_type.image, upnp_class.image, 'image/png',       upnp_proto.png,   dlna_org_extras.none },
+    ['gif']   =  { upnp_type.image, upnp_class.image, 'image/gif',       upnp_proto.gif,   dlna_org_extras.none },
+    ['tiff']  =  { upnp_type.image, upnp_class.image, 'image/tiff',      upnp_proto.tiff,  dlna_org_extras.none },
+    ['tif']   =  { upnp_type.image, upnp_class.image, 'image/tiff',      upnp_proto.tiff,  dlna_org_extras.none },
+    ['bmp']   =  { upnp_type.image, upnp_class.image, 'image/bmp',       upnp_proto.bmp,   dlna_org_extras.none }
 }
