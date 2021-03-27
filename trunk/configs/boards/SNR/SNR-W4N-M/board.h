@@ -2,7 +2,7 @@
 
 #define BOARD_PID		"SNR-W4N-M"
 #define BOARD_NAME		"SNR-W4N-M"
-#define BOARD_DESC		"SNR-W4N-M Wireless Router""
+#define BOARD_DESC		"SNR-W4N-M Wireless Router"
 #define BOARD_VENDOR_NAME	"SNR"
 #define BOARD_VENDOR_URL	"https://nag.ru/"
 #define BOARD_MODEL_URL		"https://wikidevi.wi-cat.ru/NAG_SNR-CPE-W4N_(rev.M)"
