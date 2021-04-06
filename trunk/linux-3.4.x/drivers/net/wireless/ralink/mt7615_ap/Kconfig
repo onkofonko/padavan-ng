@@ -74,7 +74,7 @@ config DOT11W_PMF_SUPPORT
 	default y
 
 config MT7615_AP_TXBF
-	bool "Tx Bean Forming Support"
+	bool "Tx Beam Forming Support"
 	default y
 
 config WHNAT_SUPPORT
