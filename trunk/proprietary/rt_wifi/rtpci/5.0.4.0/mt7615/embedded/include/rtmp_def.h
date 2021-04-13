@@ -2073,51 +2073,15 @@ typedef struct _WIFI_NODE_TYPE {
 #define IS_OPMODE_AP(_x)		((_x)->OpMode == OPMODE_AP)
 #define IS_OPMODE_STA(_x)		((_x)->OpMode == OPMODE_STA)
 
-#if defined(ANDROID_SUPPORT) || defined(RT_CFG80211_SUPPORT)
-#if defined(CONFIG_SUPPORT_OPENWRT)
-#define INF_MAIN_DEV_NAME       "rai"
-#define INF_MBSSID_DEV_NAME     "rai"
-#else
-#if CONFIG_RTPCI_AP_RF_OFFSET == 0x48000
-#define INF_MAIN_DEV_NAME		"wlani"
-#define INF_MBSSID_DEV_NAME		"wlani"
-#else
-#define INF_MAIN_DEV_NAME		"wlan"
-#define INF_MBSSID_DEV_NAME		"wlan"
-#endif
-#endif /* CONFIG_SUPPORT_OPENWRT */
-#else /* !ANDROID_SUPPORT || RT_CFG80211_SUPPORT */
-#if defined(BB_SOC) && !defined(MULTI_INF_SUPPORT)
-#define INF_MAIN_DEV_NAME		"rai0"
-#define INF_MBSSID_DEV_NAME		"rai"
-#else
-//#if CONFIG_RTPCI_AP_RF_OFFSET == 0x48000
-//#define INF_MAIN_DEV_NAME		"rai"
-//#define INF_MBSSID_DEV_NAME		"rai"
-//#else
+
 #define INF_MAIN_DEV_NAME		"ra0"
 #define INF_MBSSID_DEV_NAME		"ra"
-//#endif
-#endif /* BB_SOC */
-#endif /* ANDROID_SUPPORT */
-
 #define INF_MSTA_DEV_NAME		"ra"
-
-
-//#if CONFIG_RTPCI_AP_RF_OFFSET == 0x48000
-//#define INF_WDS_DEV_NAME		"wdsi"
-//#define INF_APCLI_DEV_NAME		"apclii"
-//#define INF_MESH_DEV_NAME		"meshi"
-//#define INF_P2P_DEV_NAME		"p2pi"
-//#define INF_MONITOR_DEV_NAME	"moni"
-//#else
 #define INF_WDS_DEV_NAME		"wds"
 #define INF_APCLI_DEV_NAME		"apcli"
 #define INF_MESH_DEV_NAME		"mesh"
 #define INF_P2P_DEV_NAME		"p2p"
-#define INF_MONITOR_DEV_NAME	"mon"
-//#endif
-
+#define INF_MONITOR_DEV_NAME		"mon"
 
 
 /* WEP Key TYPE */

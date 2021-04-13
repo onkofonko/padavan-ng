@@ -65,7 +65,11 @@
 #define EEPROM_SIZE					0x400
 #else
 /* #define EEPROM_SIZE					0x200 */
+#if defined(PRE_CAL_TRX_SET1_SUPPORT) || defined(PRE_CAL_TRX_SET2_SUPPORT) || defined(RLM_CAL_CACHE_SUPPORT)
+#define EEPROM_SIZE					0x4000
+#else
 #define EEPROM_SIZE					0x400
+#endif /* PRE_CAL_TRX_SET1_SUPPORT */
 #endif /* defined(RTMP_MAC_USB) || defined(RT3883) */
 
 #define EEPROM_DEFULT_BIN_FILE	"RT30xxEEPROM.bin"

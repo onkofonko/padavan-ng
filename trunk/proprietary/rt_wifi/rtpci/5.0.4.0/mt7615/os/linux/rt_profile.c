@@ -45,7 +45,6 @@
 #define BSSID_WCID_TO_REMOVE 1
 
 struct l1profile_info_t {
-	RTMP_STRING profile_index[L1PROFILE_INDEX_LEN];
 	RTMP_STRING profile_path[L2PROFILE_PATH_LEN];
 	eeprom_flash_info ee_info;
 	struct dev_type_name_map_t dev_name_map[MAX_INT_TYPES+1];
@@ -60,67 +59,43 @@ int (*wf_ra_sw_nat_hook_tx_bkup)(struct sk_buff *skb, int gmac_no);
 int (*wf_ra_sw_nat_hook_rx_bkup)(struct sk_buff *skb);
 #endif /*CONFIG_FAST_NAT_SUPPORT*/
 #endif
-#ifdef INTELP6_SUPPORT
-#define SECOND_INF_MAIN_DEV_NAME	"ra8"
-#define SECOND_INF_MBSSID_DEV_NAME	"ra"
-#else
-#if defined(RT_CFG80211_SUPPORT)
-#define SECOND_INF_MAIN_DEV_NAME		"wlani"
-#define SECOND_INF_MBSSID_DEV_NAME	"wlani"
-#else
-#define SECOND_INF_MAIN_DEV_NAME		"rai0"
+
+#define SECOND_INF_MAIN_DEV_NAME	"rai0"
 #define SECOND_INF_MBSSID_DEV_NAME	"rai"
-#endif
-#endif
 #define SECOND_INF_WDS_DEV_NAME		"wdsi"
 #define SECOND_INF_APCLI_DEV_NAME	"apclii"
-#define SECOND_INF_MESH_DEV_NAME		"meshi"
+#define SECOND_INF_MESH_DEV_NAME	"meshi"
 #define SECOND_INF_P2P_DEV_NAME		"p2pi"
-#define SECOND_INF_MONITOR_DEV_NAME		"moni"
-#define SECOND_INF_MSTA_DEV_NAME    "rai"
+#define SECOND_INF_MONITOR_DEV_NAME	"moni"
+#define SECOND_INF_MSTA_DEV_NAME	"rai"
 
-#if defined(RT_CFG80211_SUPPORT)
-#define THIRD_INF_MAIN_DEV_NAME		"wlane"
-#define THIRD_INF_MBSSID_DEV_NAME	"wlane"
-#else
 #define THIRD_INF_MAIN_DEV_NAME		"rae0"
 #define THIRD_INF_MBSSID_DEV_NAME	"rae"
-#endif
 #define THIRD_INF_WDS_DEV_NAME		"wdse"
 #define THIRD_INF_APCLI_DEV_NAME	"apclie"
 #define THIRD_INF_MESH_DEV_NAME		"meshe"
 #define THIRD_INF_P2P_DEV_NAME		"p2pe"
-#define THIRD_INF_MONITOR_DEV_NAME		"mone"
-#define THIRD_INF_MSTA_DEV_NAME    "rae"
+#define THIRD_INF_MONITOR_DEV_NAME	"mone"
+#define THIRD_INF_MSTA_DEV_NAME		"rae"
 
 
 #define xdef_to_str(s)   def_to_str(s)
 #define def_to_str(s)    #s
 
 #define FIRST_EEPROM_FILE_PATH	"/etc_ro/Wireless/RT2860/"
-#ifdef INTELP6_SUPPORT
-#define FIRST_AP_PROFILE_PATH	"/tmp/mt76xx_24.dat"
-#else
-#define FIRST_AP_PROFILE_PATH		"/etc/Wireless/RT2860/RT2860AP.dat"
-#endif
-#define FIRST_STA_PROFILE_PATH      "/etc/Wireless/RT2860/RT2860STA.dat"
-#define FIRST_CHIP_ID	xdef_to_str(CONFIG_RT_FIRST_CARD)
+#define FIRST_AP_PROFILE_PATH	"/etc/Wireless/RT2860/RT2860AP.dat"
+#define FIRST_STA_PROFILE_PATH	"/etc/Wireless/RT2860/RT2860STA.dat"
+#define FIRST_CHIP_ID		xdef_to_str(CONFIG_RT_FIRST_CARD)
 
 #define SECOND_EEPROM_FILE_PATH	"/etc_ro/Wireless/iNIC/"
-#ifdef INTELP6_SUPPORT
-#define SECOND_AP_PROFILE_PATH	"/tmp/mt76xx_5.dat"
-#else
 #define SECOND_AP_PROFILE_PATH	"/etc/Wireless/iNIC/iNIC_ap.dat"
-#endif
-#define SECOND_STA_PROFILE_PATH "/etc/Wireless/iNIC/iNIC_sta.dat"
-
-#define SECOND_CHIP_ID	xdef_to_str(CONFIG_RT_SECOND_CARD)
+#define SECOND_STA_PROFILE_PATH	"/etc/Wireless/iNIC/iNIC_sta.dat"
+#define SECOND_CHIP_ID		xdef_to_str(CONFIG_RT_SECOND_CARD)
 
 #define THIRD_EEPROM_FILE_PATH	"/etc_ro/Wireless/WIFI3/"
 #define THIRD_AP_PROFILE_PATH	"/etc/Wireless/WIFI3/RT2870AP.dat"
-#define THIRD_STA_PROFILE_PATH "/etc/Wireless/WIFI3/RT2870STA.dat"
-
-//#define THIRD_CHIP_ID	xdef_to_str(CONFIG_RT_THIRD_CARD)
+#define THIRD_STA_PROFILE_PATH	"/etc/Wireless/WIFI3/RT2870STA.dat"
+//#define THIRD_CHIP_ID		xdef_to_str(CONFIG_RT_THIRD_CARD)
 
 #ifndef CONFIG_RT_FIRST_IF_RF_OFFSET
 #define CONFIG_RT_FIRST_IF_RF_OFFSET DEFAULT_RF_OFFSET
@@ -137,51 +112,51 @@ int (*wf_ra_sw_nat_hook_rx_bkup)(struct sk_buff *skb);
 #define MAX_L1PROFILE_INDEX	10
 
 static struct l1profile_info_t l1profile[MAX_NUM_OF_INF] = {
-{{0}, FIRST_AP_PROFILE_PATH, {CONFIG_RT_FIRST_IF_RF_OFFSET, EEPROM_SIZE}, {{INT_MAIN, INF_MAIN_DEV_NAME},
-									   {INT_MBSSID, INF_MBSSID_DEV_NAME},
-									   {INT_WDS, INF_WDS_DEV_NAME},
-									   {INT_APCLI,	INF_APCLI_DEV_NAME},
-									   {INT_MESH, INF_MESH_DEV_NAME},
-									   {INT_P2P, INF_P2P_DEV_NAME},
-									   {INT_MONITOR, INF_MONITOR_DEV_NAME},
-									   {INT_MSTA, INF_MSTA_DEV_NAME},
-									   {0} }
+{FIRST_AP_PROFILE_PATH, {CONFIG_RT_FIRST_IF_RF_OFFSET, EEPROM_SIZE}, {{INT_MAIN, INF_MAIN_DEV_NAME},
+								     {INT_MBSSID, INF_MBSSID_DEV_NAME},
+								     {INT_WDS, INF_WDS_DEV_NAME},
+								     {INT_APCLI, INF_APCLI_DEV_NAME},
+								     {INT_MESH, INF_MESH_DEV_NAME},
+								     {INT_P2P, INF_P2P_DEV_NAME},
+								     {INT_MONITOR, INF_MONITOR_DEV_NAME},
+								     {INT_MSTA, INF_MSTA_DEV_NAME},
+								     {0} }
 #ifdef SINGLE_SKU_V2
-									   , {SINGLE_SKU_TABLE_FILE_NAME}
-									   , {BF_SKU_TABLE_FILE_NAME}
+								     , {SINGLE_SKU_TABLE_FILE_NAME}
+								     , {BF_SKU_TABLE_FILE_NAME}
 #endif /* SINGLE_SKU_V2 */
-										},
+									},
 #if defined(CONFIG_RT_SECOND_CARD)
-{{0}, SECOND_AP_PROFILE_PATH, {CONFIG_RT_SECOND_IF_RF_OFFSET, EEPROM_SIZE}, {{INT_MAIN,	SECOND_INF_MAIN_DEV_NAME},
-									   {INT_MBSSID,	SECOND_INF_MBSSID_DEV_NAME},
-									   {INT_WDS, SECOND_INF_WDS_DEV_NAME},
-									   {INT_APCLI, SECOND_INF_APCLI_DEV_NAME},
-									   {INT_MESH, SECOND_INF_MESH_DEV_NAME},
-									   {INT_P2P, SECOND_INF_P2P_DEV_NAME},
-									   {INT_MONITOR, SECOND_INF_MONITOR_DEV_NAME},
-									   {INT_MSTA, SECOND_INF_MSTA_DEV_NAME},
-									   {0} }
+{SECOND_AP_PROFILE_PATH, {CONFIG_RT_SECOND_IF_RF_OFFSET, EEPROM_SIZE}, {{INT_MAIN, SECOND_INF_MAIN_DEV_NAME},
+								     {INT_MBSSID, SECOND_INF_MBSSID_DEV_NAME},
+								     {INT_WDS, SECOND_INF_WDS_DEV_NAME},
+								     {INT_APCLI, SECOND_INF_APCLI_DEV_NAME},
+								     {INT_MESH, SECOND_INF_MESH_DEV_NAME},
+								     {INT_P2P, SECOND_INF_P2P_DEV_NAME},
+								     {INT_MONITOR, SECOND_INF_MONITOR_DEV_NAME},
+								     {INT_MSTA, SECOND_INF_MSTA_DEV_NAME},
+								     {0} }
 #ifdef SINGLE_SKU_V2
-									   , {SINGLE_SKU_TABLE_FILE_NAME}
-									   , {BF_SKU_TABLE_FILE_NAME}
+								     , {SINGLE_SKU_TABLE_FILE_NAME}
+								     , {BF_SKU_TABLE_FILE_NAME}
 #endif /* SINGLE_SKU_V2 */
-										},
+									},
 #endif	/* CONFIG_RT_SECOND_CARD */
 #if defined(CONFIG_RT_THIRD_CARD)
-{{0}, THIRD_AP_PROFILE_PATH, {CONFIG_RT_THIRD_IF_RF_OFFSET, EEPROM_SIZE}, {{INT_MAIN, THIRD_INF_MAIN_DEV_NAME},
-									   {INT_MBSSID, THIRD_INF_MBSSID_DEV_NAME},
-									   {INT_WDS, THIRD_INF_WDS_DEV_NAME},
-									   {INT_APCLI, THIRD_INF_APCLI_DEV_NAME},
-									   {INT_MESH, THIRD_INF_MESH_DEV_NAME},
-									   {INT_P2P, THIRD_INF_P2P_DEV_NAME},
-									   {INT_MONITOR, THIRD_INF_MONITOR_DEV_NAME},
-									   {INT_MSTA, THIRD_INF_MSTA_DEV_NAME},
-									   {0} }
+{THIRD_AP_PROFILE_PATH, {CONFIG_RT_THIRD_IF_RF_OFFSET, EEPROM_SIZE}, {{INT_MAIN, THIRD_INF_MAIN_DEV_NAME},
+								     {INT_MBSSID, THIRD_INF_MBSSID_DEV_NAME},
+								     {INT_WDS, THIRD_INF_WDS_DEV_NAME},
+								     {INT_APCLI, THIRD_INF_APCLI_DEV_NAME},
+								     {INT_MESH, THIRD_INF_MESH_DEV_NAME},
+								     {INT_P2P, THIRD_INF_P2P_DEV_NAME},
+								     {INT_MONITOR, THIRD_INF_MONITOR_DEV_NAME},
+								     {INT_MSTA, THIRD_INF_MSTA_DEV_NAME},
+								     {0} }
 #ifdef SINGLE_SKU_V2
-									   , {SINGLE_SKU_TABLE_FILE_NAME},
-									   {BF_SKU_TABLE_FILE_NAME}
+								     , {SINGLE_SKU_TABLE_FILE_NAME}
+								     , {BF_SKU_TABLE_FILE_NAME}
 #endif /* SINGLE_SKU_V2 */
-										},
+									},
 #endif	/* CONFIG_RT_THIRD_CARD */
 };
 
