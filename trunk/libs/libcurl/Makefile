@@ -44,7 +44,6 @@ configure:
 		--without-gnutls \
 		--without-ca-path \
 		--without-ca-fallback \
-		--without-ca-bundle \
 		--without-cyassl \
 		--without-darwinssl \
 		--without-default-ssl-backend \
@@ -68,6 +67,7 @@ configure:
 		--with-random=/dev/urandom \
 		--with-zlib=$(STAGEDIR) \
 		--with-ssl=$(STAGEDIR) \
+		--with-ca-bundle=/etc/ssl/cert.pem \
 		--host=$(HOST_TARGET) \
 		--build=$(HOST_BUILD) ; \
 	)
