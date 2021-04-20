@@ -1,4 +1,4 @@
-SRC_NAME=libtirpc-1.2.6
+SRC_NAME=libtirpc-1.3.1
 
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
