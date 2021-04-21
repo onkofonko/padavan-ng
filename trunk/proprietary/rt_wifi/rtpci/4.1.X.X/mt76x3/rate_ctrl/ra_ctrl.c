@@ -880,7 +880,16 @@ VOID APMlmeSetTxRate(
 	UCHAR tx_mode = pTxRate->Mode;
 #ifdef DOT11_VHT_AC
 	UCHAR tx_bw = pTxRate->BW;
+#endif /* DOT11_VHT_AC */
+       ULONG TxErrorRatio = 0, TxTotalCnt = 0, TxSuccess = 0, TxRetransmit = 0, TxFailCount = 0;
 
+       /* fix drop to CCK or legacy OFDM modes in 5GHz if not supported by config. 5GHz support only OFDM mode */
+       if (tx_mode == MODE_CCK && (pAd->LatchRfRegs.Channel > 14 || !WMODE_EQUAL(pAd->CommonCfg.PhyMode, WMODE_B)))
+               tx_mode = MODE_OFDM;
+       else if (tx_mode == MODE_OFDM && (pAd->LatchRfRegs.Channel > 14 && WMODE_HT_ONLY(pAd->CommonCfg.PhyMode)))
+               tx_mode = MODE_HTMIX;
+
+#ifdef DOT11_VHT_AC
 	if ((pAd->chipCap.phy_caps & fPHY_CAP_VHT) && 
 		((pEntry->pTable == RateTableVht2S) || (pEntry->pTable == RateTableVht1S) ||
 		 (pEntry->pTable == RateTableVht1S_MCS9) ||
