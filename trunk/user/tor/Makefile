@@ -21,6 +21,7 @@ configure:
 		--host=$(HOST_TARGET) \
 		--build=$(HOST_BUILD) \
 		--sysconfdir=/etc/storage \
+		--disable-unittests \
 		--disable-android \
 		--disable-tool-name-check \
 		--disable-gcc-hardening \
