@@ -166,6 +166,8 @@ enum ks_auth_state {
 struct key_state
 {
     int state;
+    /** The state of the auth-token sent from the client */
+    int auth_token_state_flags;
 
     /**
      * Key id for this key_state,  inherited from struct tls_session.
@@ -479,6 +481,19 @@ struct tls_session
  */
 #define KEY_SCAN_SIZE 3
 
+
+/* client authentication state, CAS_SUCCEEDED must be 0 since
+ * non multi code path still checks this variable but does not initialise it
+ * so the code depends on zero initialisation */
+enum client_connect_status {
+    CAS_SUCCEEDED=0,
+    CAS_PENDING,
+    CAS_PENDING_DEFERRED,
+    CAS_PENDING_DEFERRED_PARTIAL,   /**< at least handler succeeded, no result yet*/
+    CAS_FAILED,
+};
+
+
 /**
  * Security parameter state for a single VPN tunnel.
  * @ingroup control_processor
@@ -519,6 +534,7 @@ struct tls_multi
 
     int n_sessions;             /**< Number of sessions negotiated thus
                                  *   far. */
+    enum client_connect_status multi_state;
 
     /*
      * Number of errors.
@@ -568,8 +584,6 @@ struct tls_multi
      * OpenVPN 3 clients sometimes wipes or replaces the username with a
      * username hint from their config.
      */
-    int auth_token_state_flags;
-    /**< The state of the auth-token sent from the client last time */
 
     /* For P_DATA_V2 */
     uint32_t peer_id;

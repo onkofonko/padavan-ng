@@ -3328,14 +3328,8 @@ check_file_access_chroot(const char *chroot, const int type, const char *file, c
     {
         struct gc_arena gc = gc_new();
         struct buffer chroot_file;
-        int len = 0;
 
-        /* Build up a new full path including chroot directory */
-        len = strlen(chroot) + strlen(PATH_SEPARATOR_STR) + strlen(file) + 1;
-        chroot_file = alloc_buf_gc(len, &gc);
-        buf_printf(&chroot_file, "%s%s%s", chroot, PATH_SEPARATOR_STR, file);
-        ASSERT(chroot_file.len > 0);
-
+        chroot_file = prepend_dir(chroot, file, &gc);
         ret = check_file_access(type, BSTR(&chroot_file), mode, opt);
         gc_free(&gc);
     }
@@ -3598,6 +3592,9 @@ pre_pull_save(struct options *o)
             o->pre_pull->client_nat_defined = true;
         }
 
+        o->pre_pull->route_default_gateway = o->route_default_gateway;
+        o->pre_pull->route_ipv6_default_gateway = o->route_ipv6_default_gateway;
+
         /* Ping related options should be reset to the config values on reconnect */
         o->pre_pull->ping_rec_timeout = o->ping_rec_timeout;
         o->pre_pull->ping_rec_timeout_action = o->ping_rec_timeout_action;
@@ -3636,6 +3633,9 @@ pre_pull_restore(struct options *o, struct gc_arena *gc)
         {
             o->routes_ipv6 = NULL;
         }
+
+        o->route_default_gateway = pp->route_default_gateway;
+        o->route_ipv6_default_gateway = pp->route_ipv6_default_gateway;
 
         if (pp->client_nat_defined)
         {
