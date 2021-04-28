@@ -22,7 +22,6 @@ configure:
 		--disable-shared \
 		--enable-lib-only \
 		--disable-debug \
-		--disable-tests \
 		--host=$(HOST_TARGET) \
 		--build=$(HOST_BUILD) ; \
 	)
