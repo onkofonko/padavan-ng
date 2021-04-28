@@ -1,7 +1,7 @@
 SRC_NAME=https_dns_proxy-git
 
 CFLAGS  += -O2 -ffunction-sections -fdata-sections -fvisibility=hidden -fPIC
-LDFLAGS += -Wl,--gc-sections,-rpath-link,$(STAGEDIR)/lib -lcurl -lnghttp2 -lssl -lcrypto -lz
+LDFLAGS += -Wl,--gc-sections,-rpath-link,$(STAGEDIR)/lib -lcurl -lssl -lcrypto -lz
 
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)/build
