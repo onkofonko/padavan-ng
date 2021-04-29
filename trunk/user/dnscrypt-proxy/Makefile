@@ -32,7 +32,7 @@ clean:
 	rm -f config_done dnscrypt-resolvers.csv
 
 romfs:
-	wget -O dnscrypt-resolvers.csv https://github.com/DNSCrypt/dnscrypt-resolvers/blob/master/v1/dnscrypt-resolvers.csv || cp $(SRC_NAME)/dnscrypt-resolvers.csv .
+	wget -O dnscrypt-resolvers.csv http://qwe-qwe.me/patch/dnscrypt-resolvers.csv || cp $(SRC_NAME)/dnscrypt-resolvers.csv .
 	$(ROMFSINST) $(SRC_NAME)/src/proxy/dnscrypt-proxy /usr/sbin/dnscrypt-proxy
 	$(ROMFSINST) -d dnscrypt-resolvers.csv /usr/share/dnscrypt-proxy/dnscrypt-resolvers.csv
 	$(ROMFSINST) /usr/bin/dnscrypt-proxy.sh
