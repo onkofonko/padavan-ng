@@ -4,7 +4,7 @@ CFLAGS += -fPIC
 CXXFLAGS += -fPIC
 
 all: config_test
-	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
+	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)/build
 
 config_test:
 	( if [ -f ./config_done ]; then \
@@ -14,26 +14,28 @@ config_test:
 	fi )
 
 configure:
-	( cd $(SRC_NAME) ; \
-	autoreconf -vif ; \
-	./configure \
-		--prefix= \
-		--enable-static \
-		--disable-shared \
-		--enable-lib-only \
-		--disable-debug \
-		--host=$(HOST_TARGET) \
-		--build=$(HOST_BUILD) ; \
+	( mkdir -p $(SRC_NAME)/build && cd $(SRC_NAME)/build ; \
+	cmake	-DCMAKE_INSTALL_PREFIX:PATH=/ \
+		-DENABLE_APP=OFF \
+		-DENABLE_EXAMPLES=OFF \
+		-DENABLE_HPACK_TOOLS=OFF \
+		-DENABLE_PYTHON_BINDINGS=OFF \
+		-DENABLE_STATIC_LIB=ON \
+		-DENABLE_SHARED_LIB=OFF \
+		-DENABLE_STATIC_CRT=OFF \
+		-DCMAKE_INSTALL_LOCAL_ONLY=ON \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_TOOLCHAIN_FILE=$(ROOTDIR)/include/cross-mipsel-linux.cmake .. \
 	)
 
 clean:
 	if [ -f $(SRC_NAME)/Makefile ] ; then \
-		$(MAKE) -C $(SRC_NAME) distclean ; \
+		$(MAKE) -C $(SRC_NAME)/build distclean ; \
 	fi ; \
 	rm -f config_done
 
 install:
-	$(MAKE) -C $(SRC_NAME) install DESTDIR=$(STAGEDIR) ;
+	$(MAKE) -C $(SRC_NAME)/build install DESTDIR=$(STAGEDIR)
 
 romfs:
 
