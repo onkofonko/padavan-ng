@@ -6,8 +6,12 @@
 #  cmake .. -DCMAKE_TOOLCHAIN_FILE=$(ROOTDIR)/cross-mipsel-linux.cmake
 
 set(CROSS_PATH $ENV{CONFIG_TOOLCHAIN_DIR})
+set(CMAKE_INSTALL_BINDIR "/bin")
+set(CMAKE_INSTALL_LIBDIR "/lib")
+set(CMAKE_INSTALL_INCLUDEDIR "/include")
+set(CMAKE_INSTALL_DATADIR "/share")
+set(CMAKE_INSTALL_MANDIR "/share/man")
 #set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:$ENV{STAGEDIR}/lib/pkgconfig")
-#set(CMAKE_INSTALL_LIBDIR "/lib")
 # Target operating system name.
 set(CMAKE_SYSTEM_NAME Linux)
 
