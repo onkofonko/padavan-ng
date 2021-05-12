@@ -1,0 +1,45 @@
+diff -urNw wpa_supplicant-2.6-ref/Makefile wpa_supplicant-2.6/Makefile
+--- wpa_supplicant-2.6-ref/Makefile	1970-01-01 03:00:00.000000000 +0300
++++ wpa_supplicant-2.6/Makefile	2017-12-29 22:28:15.000000000 +0300
+@@ -0,0 +1,20 @@
++SRC_NAME=wpa_supplicant
++
++
++all:
++	cp -f $(SRC_NAME)/.config.def $(SRC_NAME)/.config
++ifeq ($(CONFIG_FIRMWARE_INCLUDE_EAP_PEAP),y)
++	echo CONFIG_EAP_TTLS=y >> $(SRC_NAME)/.config
++	echo CONFIG_EAP_PEAP=y >> $(SRC_NAME)/.config
++	echo CONFIG_EAP_MSCHAPV2=y >> $(SRC_NAME)/.config
++endif
++	$(MAKE) -C $(SRC_NAME)
++
++clean:
++	$(MAKE) -C $(SRC_NAME) clean
++
++romfs:
++	$(STRIP) $(SRC_NAME)/wpa_supplicant
++	$(STRIP) $(SRC_NAME)/wpa_cli
++	cd $(SRC_NAME) && $(ROMFSINST) /usr/sbin/wpa_cli
++	cd $(SRC_NAME) && $(ROMFSINST) /usr/sbin/wpa_supplicant
+diff -urNw wpa_supplicant-2.6-ref/wpa_supplicant/.config.def wpa_supplicant-2.6/wpa_supplicant/.config.def
+--- wpa_supplicant-2.6-ref/wpa_supplicant/.config.def	1970-01-01 03:00:00.000000000 +0300
++++ wpa_supplicant-2.6/wpa_supplicant/.config.def	2017-12-29 22:28:15.000000000 +0300
+@@ -0,0 +1,17 @@
++CONFIG_DRIVER_WIRED=y
++
++CONFIG_IEEE8021X_EAPOL=y
++CONFIG_EAP_MD5=y
++CONFIG_NO_WPA=y
++CONFIG_NO_WPA2=y
++CONFIG_NO_WPA_PASSPHRASE=y
++CONFIG_NO_AES_EXTRAS=y
++CONFIG_BACKEND=file
++
++CONFIG_CTRL_IFACE=unix
++
++CONFIG_NO_STDOUT_DEBUG=y
++CONFIG_NO_SCAN_PROCESSING=y
++CONFIG_NO_CONFIG_WRITE=y
++CONFIG_NO_CONFIG_BLOBS=y
++

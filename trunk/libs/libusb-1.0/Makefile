@@ -1,7 +1,19 @@
-SRC_NAME=libusb-1.0.X
+SRC_NAME=libusb-1.0.24
+SRC_URL=https://github.com/libusb/libusb/releases/download/v1.0.24/libusb-1.0.24.tar.bz2
 
+#all: download_test extract_test config_test
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
+
+download_test:
+	( if [ ! -f $(SRC_NAME).tar.bz2 ]; then \
+		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.bz2 $(SRC_URL); \
+	fi )
+
+extract_test:
+	( if [ ! -d $(SRC_NAME) ]; then \
+		tar jxf $(SRC_NAME).tar.bz2; \
+	fi )
 
 config_test:
 	( if [ -f ./config_done ]; then \
@@ -12,16 +24,12 @@ config_test:
 
 configure:
 	( cd $(SRC_NAME) ; \
-	autoreconf ; \
 	ac_cv_lib_rt_clock_gettime=no \
 	./configure \
 		--prefix= \
 		--disable-static \
 		--disable-log \
 		--disable-udev \
-		--disable-timerfd \
-		--disable-examples-build \
-		--disable-tests-build \
 		--host=$(HOST_TARGET) \
 		--build=$(HOST_BUILD) ; \
 	)

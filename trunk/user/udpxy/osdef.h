@@ -31,11 +31,6 @@
 #define HAS_SETLINEBUF
 #define HAS_VARRUN
 #define HAS_VARTMP
-#define USE_SELECT_READY
-#define USE_BLOCKING_SOCKET
-#ifdef SO_RCVLOWAT
-    #define HAS_SO_RCVLOWAT
-#endif
 
 #ifdef __hpux
     #undef HAS_SOCKLEN
@@ -46,10 +41,6 @@
 #if defined(__CYGWIN__)
     #define NO_INET6_SUPPORT
     #define NO_SOCKADDR_SA_LEN
-    #define NO_MCAST_BIND
-    #undef HAS_VARRUN
-    #undef HAS_VARTMP
-    #undef HAS_SO_RCVLOWAT
 #endif
 
 #if defined(__linux)
@@ -72,8 +63,6 @@
     #define PIDFILE_DIR     "/var/run"
 #elif defined(HAS_VARTMP)
     #define PIDFILE_DIR     "/var/tmp"
-#else
-    #define PIDFILE_DIR     "."
 #endif
 
 #endif /* UDPXY_OSDEFH_0101082158 */

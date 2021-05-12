@@ -1,0 +1,906 @@
+Determining if the function res_servicename exists failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_33417/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_33417.dir/build.make CMakeFiles/cmTC_33417.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_33417.dir/CheckFunctionExists.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc   -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -DCHECK_FUNCTION_EXISTS=res_servicename   -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_33417.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
+Linking C executable cmTC_33417
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_33417.dir/link.txt --verbose=1
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -DCHECK_FUNCTION_EXISTS=res_servicename  -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections  -rdynamic CMakeFiles/cmTC_33417.dir/CheckFunctionExists.c.o  -o cmTC_33417 
+/opt/padavan-ng/toolchain/out/lib/gcc/mipsel-linux-uclibc/7.5.0/../../../../mipsel-linux-uclibc/bin/ld: CMakeFiles/cmTC_33417.dir/CheckFunctionExists.c.o: in function `main':
+CheckFunctionExists.c:(.text.startup.main+0x10): undefined reference to `res_servicename'
+/opt/padavan-ng/toolchain/out/lib/gcc/mipsel-linux-uclibc/7.5.0/../../../../mipsel-linux-uclibc/bin/ld: CheckFunctionExists.c:(.text.startup.main+0x28): undefined reference to `res_servicename'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_33417.dir/build.make:97: recipe for target 'cmTC_33417' failed
+make[5]: *** [cmTC_33417] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_33417/fast' failed
+make[4]: *** [cmTC_33417/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function res_servicename exists in the resolv failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_cc653/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_cc653.dir/build.make CMakeFiles/cmTC_cc653.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_cc653.dir/CheckFunctionExists.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc   -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -DCHECK_FUNCTION_EXISTS=res_servicename   -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_cc653.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
+Linking C executable cmTC_cc653
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cc653.dir/link.txt --verbose=1
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -DCHECK_FUNCTION_EXISTS=res_servicename  -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections  -rdynamic CMakeFiles/cmTC_cc653.dir/CheckFunctionExists.c.o  -o cmTC_cc653 -lresolv 
+/opt/padavan-ng/toolchain/out/lib/gcc/mipsel-linux-uclibc/7.5.0/../../../../mipsel-linux-uclibc/bin/ld: CMakeFiles/cmTC_cc653.dir/CheckFunctionExists.c.o: in function `main':
+CheckFunctionExists.c:(.text.startup.main+0x10): undefined reference to `res_servicename'
+/opt/padavan-ng/toolchain/out/lib/gcc/mipsel-linux-uclibc/7.5.0/../../../../mipsel-linux-uclibc/bin/ld: CheckFunctionExists.c:(.text.startup.main+0x28): undefined reference to `res_servicename'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_cc653.dir/build.make:97: recipe for target 'cmTC_cc653' failed
+make[5]: *** [cmTC_cc653] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_cc653/fast' failed
+make[4]: *** [cmTC_cc653/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+
+Determining if files socket.h exist failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_07358/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_07358.dir/build.make CMakeFiles/cmTC_07358.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_07358.dir/CheckIncludeFiles.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc   -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections    -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_07358.dir/CheckIncludeFiles.c.o   -c /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c:2:10: fatal error: socket.h: No such file or directory
+ #include <socket.h>
+          ^~~~~~~~~~
+compilation terminated.
+CMakeFiles/cmTC_07358.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_07358.dir/CheckIncludeFiles.c.o' failed
+make[5]: *** [CMakeFiles/cmTC_07358.dir/CheckIncludeFiles.c.o] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_07358/fast' failed
+make[4]: *** [cmTC_07358/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+Source:
+/* */
+#include <socket.h>
+
+
+int main(void){return 0;}
+
+Determining if files stropts.h exist failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a1895/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_a1895.dir/build.make CMakeFiles/cmTC_a1895.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a1895.dir/CheckIncludeFiles.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc   -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections    -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_a1895.dir/CheckIncludeFiles.c.o   -c /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c:2:10: fatal error: stropts.h: No such file or directory
+ #include <stropts.h>
+          ^~~~~~~~~~~
+compilation terminated.
+CMakeFiles/cmTC_a1895.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_a1895.dir/CheckIncludeFiles.c.o' failed
+make[5]: *** [CMakeFiles/cmTC_a1895.dir/CheckIncludeFiles.c.o] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_a1895/fast' failed
+make[4]: *** [cmTC_a1895/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+Source:
+/* */
+#include <stropts.h>
+
+
+int main(void){return 0;}
+
+Determining if files winsock2.h;windows.h exist failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c08f6/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_c08f6.dir/build.make CMakeFiles/cmTC_c08f6.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c08f6.dir/CheckIncludeFiles.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc   -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections    -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_c08f6.dir/CheckIncludeFiles.c.o   -c /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c:2:10: fatal error: winsock2.h: No such file or directory
+ #include <winsock2.h>
+          ^~~~~~~~~~~~
+compilation terminated.
+CMakeFiles/cmTC_c08f6.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_c08f6.dir/CheckIncludeFiles.c.o' failed
+make[5]: *** [CMakeFiles/cmTC_c08f6.dir/CheckIncludeFiles.c.o] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_c08f6/fast' failed
+make[4]: *** [cmTC_c08f6/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+Source:
+/* */
+#include <winsock2.h>
+#include <windows.h>
+
+
+int main(void){return 0;}
+
+Determining if files winsock2.h;ws2tcpip.h;windows.h exist failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c2e72/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_c2e72.dir/build.make CMakeFiles/cmTC_c2e72.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c2e72.dir/CheckIncludeFiles.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc   -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections    -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_c2e72.dir/CheckIncludeFiles.c.o   -c /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c:2:10: fatal error: winsock2.h: No such file or directory
+ #include <winsock2.h>
+          ^~~~~~~~~~~~
+compilation terminated.
+CMakeFiles/cmTC_c2e72.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_c2e72.dir/CheckIncludeFiles.c.o' failed
+make[5]: *** [CMakeFiles/cmTC_c2e72.dir/CheckIncludeFiles.c.o] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_c2e72/fast' failed
+make[4]: *** [cmTC_c2e72/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+Source:
+/* */
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <windows.h>
+
+
+int main(void){return 0;}
+
+Determining if files winsock.h;windows.h exist failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_6a30d/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_6a30d.dir/build.make CMakeFiles/cmTC_6a30d.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6a30d.dir/CheckIncludeFiles.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc   -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections    -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_6a30d.dir/CheckIncludeFiles.c.o   -c /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c:2:10: fatal error: winsock.h: No such file or directory
+ #include <winsock.h>
+          ^~~~~~~~~~~
+compilation terminated.
+CMakeFiles/cmTC_6a30d.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_6a30d.dir/CheckIncludeFiles.c.o' failed
+make[5]: *** [CMakeFiles/cmTC_6a30d.dir/CheckIncludeFiles.c.o] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_6a30d/fast' failed
+make[4]: *** [cmTC_6a30d/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+Source:
+/* */
+#include <winsock.h>
+#include <windows.h>
+
+
+int main(void){return 0;}
+
+Determining if files windows.h exist failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4dc8d/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_4dc8d.dir/build.make CMakeFiles/cmTC_4dc8d.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4dc8d.dir/CheckIncludeFiles.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc   -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections    -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_4dc8d.dir/CheckIncludeFiles.c.o   -c /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c:2:10: fatal error: windows.h: No such file or directory
+ #include <windows.h>
+          ^~~~~~~~~~~
+compilation terminated.
+CMakeFiles/cmTC_4dc8d.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_4dc8d.dir/CheckIncludeFiles.c.o' failed
+make[5]: *** [CMakeFiles/cmTC_4dc8d.dir/CheckIncludeFiles.c.o] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_4dc8d/fast' failed
+make[4]: *** [cmTC_4dc8d/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+Source:
+/* */
+#include <windows.h>
+
+
+int main(void){return 0;}
+
+Performing C SOURCE FILE Test HAVE_TYPE_SOCKET failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_644ea/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_644ea.dir/build.make CMakeFiles/cmTC_644ea.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_644ea.dir/src.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -DHAVE_TYPE_SOCKET   -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_644ea.dir/src.c.o   -c /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/src.c
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/src.c: In function 'main':
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/src.c:26:4: error: unknown type name 'SOCKET'; did you mean 'LOCK_EX'?
+    SOCKET var_exists;
+    ^~~~~~
+    LOCK_EX
+CMakeFiles/cmTC_644ea.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_644ea.dir/src.c.o' failed
+make[5]: *** [CMakeFiles/cmTC_644ea.dir/src.c.o] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_644ea/fast' failed
+make[4]: *** [cmTC_644ea/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+		#include <stdio.h>
+		#include <stdlib.h>
+	
+		#include <stdbool.h>
+		#include <sys/types.h>
+		#include <arpa/inet.h>
+		#include <arpa/nameser.h>
+		#include <netdb.h>
+		#include <net/if.h>
+		#include <netinet/in.h>
+		#include <netinet/tcp.h>
+		#include <signal.h>
+		#include <stdlib.h>
+		#include <string.h>
+		#include <strings.h>
+		#include <sys/ioctl.h>
+		#include <sys/select.h>
+		#include <sys/socket.h>
+		#include <sys/time.h>
+		#include <sys/uio.h>
+		#include <time.h>
+		#include <fcntl.h>
+		#include <unistd.h>
+		int main() {
+			SOCKET var_exists;
+			(void)var_exists;
+			return 0;
+		}
+	
+Determining if the SO_NONBLOCK exist failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_3c059/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_3c059.dir/build.make CMakeFiles/cmTC_3c059.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_3c059.dir/CheckSymbolExists.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections    -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_3c059.dir/CheckSymbolExists.c.o   -c /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function 'main':
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: 'SO_NONBLOCK' undeclared (first use in this function); did you mean 'O_NONBLOCK'?
+   return ((int*)(&SO_NONBLOCK))[argc];
+                   ^~~~~~~~~~~
+                   O_NONBLOCK
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+CMakeFiles/cmTC_3c059.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_3c059.dir/CheckSymbolExists.c.o' failed
+make[5]: *** [CMakeFiles/cmTC_3c059.dir/CheckSymbolExists.c.o] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_3c059/fast' failed
+make[4]: *** [cmTC_3c059/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+File /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef SO_NONBLOCK
+  return ((int*)(&SO_NONBLOCK))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the bitncmp exist failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_db685/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_db685.dir/build.make CMakeFiles/cmTC_db685.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_db685.dir/CheckSymbolExists.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections    -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_db685.dir/CheckSymbolExists.c.o   -c /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function 'main':
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: 'bitncmp' undeclared (first use in this function); did you mean 'bcmp'?
+   return ((int*)(&bitncmp))[argc];
+                   ^~~~~~~
+                   bcmp
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+CMakeFiles/cmTC_db685.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_db685.dir/CheckSymbolExists.c.o' failed
+make[5]: *** [CMakeFiles/cmTC_db685.dir/CheckSymbolExists.c.o] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_db685/fast' failed
+make[4]: *** [cmTC_db685/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+File /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef bitncmp
+  return ((int*)(&bitncmp))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the closesocket exist failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5c065/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_5c065.dir/build.make CMakeFiles/cmTC_5c065.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5c065.dir/CheckSymbolExists.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections    -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_5c065.dir/CheckSymbolExists.c.o   -c /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function 'main':
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: 'closesocket' undeclared (first use in this function); did you mean 'socket'?
+   return ((int*)(&closesocket))[argc];
+                   ^~~~~~~~~~~
+                   socket
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+CMakeFiles/cmTC_5c065.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_5c065.dir/CheckSymbolExists.c.o' failed
+make[5]: *** [CMakeFiles/cmTC_5c065.dir/CheckSymbolExists.c.o] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_5c065/fast' failed
+make[4]: *** [cmTC_5c065/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+File /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef closesocket
+  return ((int*)(&closesocket))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the CloseSocket exist failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_dcf72/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_dcf72.dir/build.make CMakeFiles/cmTC_dcf72.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dcf72.dir/CheckSymbolExists.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections    -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_dcf72.dir/CheckSymbolExists.c.o   -c /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function 'main':
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: 'CloseSocket' undeclared (first use in this function); did you mean 'socket'?
+   return ((int*)(&CloseSocket))[argc];
+                   ^~~~~~~~~~~
+                   socket
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+CMakeFiles/cmTC_dcf72.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_dcf72.dir/CheckSymbolExists.c.o' failed
+make[5]: *** [CMakeFiles/cmTC_dcf72.dir/CheckSymbolExists.c.o] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_dcf72/fast' failed
+make[4]: *** [cmTC_dcf72/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+File /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef CloseSocket
+  return ((int*)(&CloseSocket))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the inet_net_pton exist failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_7610a/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_7610a.dir/build.make CMakeFiles/cmTC_7610a.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7610a.dir/CheckSymbolExists.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections    -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_7610a.dir/CheckSymbolExists.c.o   -c /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function 'main':
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: 'inet_net_pton' undeclared (first use in this function); did you mean 'inet_pton'?
+   return ((int*)(&inet_net_pton))[argc];
+                   ^~~~~~~~~~~~~
+                   inet_pton
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+CMakeFiles/cmTC_7610a.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_7610a.dir/CheckSymbolExists.c.o' failed
+make[5]: *** [CMakeFiles/cmTC_7610a.dir/CheckSymbolExists.c.o] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_7610a/fast' failed
+make[4]: *** [cmTC_7610a/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+File /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef inet_net_pton
+  return ((int*)(&inet_net_pton))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the ioctlsocket exist failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_01026/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_01026.dir/build.make CMakeFiles/cmTC_01026.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_01026.dir/CheckSymbolExists.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections    -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_01026.dir/CheckSymbolExists.c.o   -c /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function 'main':
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: 'ioctlsocket' undeclared (first use in this function); did you mean 'socket'?
+   return ((int*)(&ioctlsocket))[argc];
+                   ^~~~~~~~~~~
+                   socket
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+CMakeFiles/cmTC_01026.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_01026.dir/CheckSymbolExists.c.o' failed
+make[5]: *** [CMakeFiles/cmTC_01026.dir/CheckSymbolExists.c.o] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_01026/fast' failed
+make[4]: *** [cmTC_01026/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+File /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef ioctlsocket
+  return ((int*)(&ioctlsocket))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the IoctlSocket exist failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_d9c63/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_d9c63.dir/build.make CMakeFiles/cmTC_d9c63.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d9c63.dir/CheckSymbolExists.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections    -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_d9c63.dir/CheckSymbolExists.c.o   -c /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function 'main':
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: 'IoctlSocket' undeclared (first use in this function); did you mean 'clock_t'?
+   return ((int*)(&IoctlSocket))[argc];
+                   ^~~~~~~~~~~
+                   clock_t
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+CMakeFiles/cmTC_d9c63.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_d9c63.dir/CheckSymbolExists.c.o' failed
+make[5]: *** [CMakeFiles/cmTC_d9c63.dir/CheckSymbolExists.c.o] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_d9c63/fast' failed
+make[4]: *** [cmTC_d9c63/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+File /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef IoctlSocket
+  return ((int*)(&IoctlSocket))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the strcmpi exist failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_80eb1/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_80eb1.dir/build.make CMakeFiles/cmTC_80eb1.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_80eb1.dir/CheckSymbolExists.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections    -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_80eb1.dir/CheckSymbolExists.c.o   -c /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function 'main':
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: 'strcmpi' undeclared (first use in this function); did you mean 'strcmp'?
+   return ((int*)(&strcmpi))[argc];
+                   ^~~~~~~
+                   strcmp
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+CMakeFiles/cmTC_80eb1.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_80eb1.dir/CheckSymbolExists.c.o' failed
+make[5]: *** [CMakeFiles/cmTC_80eb1.dir/CheckSymbolExists.c.o] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_80eb1/fast' failed
+make[4]: *** [cmTC_80eb1/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+File /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strcmpi
+  return ((int*)(&strcmpi))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the stricmp exist failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_443e9/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_443e9.dir/build.make CMakeFiles/cmTC_443e9.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_443e9.dir/CheckSymbolExists.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections    -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_443e9.dir/CheckSymbolExists.c.o   -c /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function 'main':
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: 'stricmp' undeclared (first use in this function); did you mean 'strncmp'?
+   return ((int*)(&stricmp))[argc];
+                   ^~~~~~~
+                   strncmp
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+CMakeFiles/cmTC_443e9.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_443e9.dir/CheckSymbolExists.c.o' failed
+make[5]: *** [CMakeFiles/cmTC_443e9.dir/CheckSymbolExists.c.o] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_443e9/fast' failed
+make[4]: *** [cmTC_443e9/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+File /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef stricmp
+  return ((int*)(&stricmp))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the strncmpi exist failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_15ec2/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_15ec2.dir/build.make CMakeFiles/cmTC_15ec2.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_15ec2.dir/CheckSymbolExists.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections    -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_15ec2.dir/CheckSymbolExists.c.o   -c /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function 'main':
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: 'strncmpi' undeclared (first use in this function); did you mean 'strncmp'?
+   return ((int*)(&strncmpi))[argc];
+                   ^~~~~~~~
+                   strncmp
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+CMakeFiles/cmTC_15ec2.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_15ec2.dir/CheckSymbolExists.c.o' failed
+make[5]: *** [CMakeFiles/cmTC_15ec2.dir/CheckSymbolExists.c.o] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_15ec2/fast' failed
+make[4]: *** [cmTC_15ec2/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+File /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strncmpi
+  return ((int*)(&strncmpi))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the strnicmp exist failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_20430/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_20430.dir/build.make CMakeFiles/cmTC_20430.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_20430.dir/CheckSymbolExists.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections    -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_20430.dir/CheckSymbolExists.c.o   -c /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function 'main':
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: error: 'strnicmp' undeclared (first use in this function); did you mean 'strncmp'?
+   return ((int*)(&strnicmp))[argc];
+                   ^~~~~~~~
+                   strncmp
+/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:27:19: note: each undeclared identifier is reported only once for each function it appears in
+CMakeFiles/cmTC_20430.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_20430.dir/CheckSymbolExists.c.o' failed
+make[5]: *** [CMakeFiles/cmTC_20430.dir/CheckSymbolExists.c.o] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_20430/fast' failed
+make[4]: *** [cmTC_20430/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+File /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdbool.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <netdb.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/uio.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strnicmp
+  return ((int*)(&strnicmp))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function __system_property_get exists failed with the following output:
+Change Dir: /opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0b3c8/fast"
+make[4]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_0b3c8.dir/build.make CMakeFiles/cmTC_0b3c8.dir/build
+make[5]: Entering directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0b3c8.dir/CheckFunctionExists.c.o
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -D_GNU_SOURCE -D_POSIX_C_SOURCE=199309L -D_XOPEN_SOURCE=600  -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -DCHECK_FUNCTION_EXISTS=__system_property_get   -mips32r2 -march=mips32r2 -mtune=1004kc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -o CMakeFiles/cmTC_0b3c8.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
+Linking C executable cmTC_0b3c8
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0b3c8.dir/link.txt --verbose=1
+/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -DCHECK_FUNCTION_EXISTS=__system_property_get  -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections  -rdynamic CMakeFiles/cmTC_0b3c8.dir/CheckFunctionExists.c.o  -o cmTC_0b3c8 
+/opt/padavan-ng/toolchain/out/lib/gcc/mipsel-linux-uclibc/7.5.0/../../../../mipsel-linux-uclibc/bin/ld: CMakeFiles/cmTC_0b3c8.dir/CheckFunctionExists.c.o: in function `main':
+CheckFunctionExists.c:(.text.startup.main+0x10): undefined reference to `__system_property_get'
+/opt/padavan-ng/toolchain/out/lib/gcc/mipsel-linux-uclibc/7.5.0/../../../../mipsel-linux-uclibc/bin/ld: CheckFunctionExists.c:(.text.startup.main+0x28): undefined reference to `__system_property_get'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_0b3c8.dir/build.make:97: recipe for target 'cmTC_0b3c8' failed
+make[5]: *** [cmTC_0b3c8] Error 1
+make[5]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_0b3c8/fast' failed
+make[4]: *** [cmTC_0b3c8/fast] Error 2
+make[4]: Leaving directory '/opt/padavan-ng/trunk/libs/libcares/cares-1_17_1/build/CMakeFiles/CMakeTmp'
+
+

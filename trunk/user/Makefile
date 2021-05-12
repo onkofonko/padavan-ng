@@ -141,6 +141,10 @@ ifdef CONFIG_BLK_DEV_SD
 dir_$(CONFIG_FIRMWARE_INCLUDE_HDPARM)		+= hdparm
 endif
 
+ifeq ($(CONFIG_PRODUCT),MT7621)
+dir_y						+= mt7621_cpufreq
+endif
+
 ifdef CONFIG_USB_SUPPORT
 dir_y						+= p910nd
 dir_y						+= usb-modeswitch

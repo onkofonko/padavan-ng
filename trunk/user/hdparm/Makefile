@@ -22,7 +22,7 @@ CFLAGS += -DHDPARM_MINI
 endif
 LDFLAGS = -s
 
-CFLAGS += -ffunction-sections -fdata-sections -fvisibility=hidden
+CFLAGS += -ffunction-sections -fdata-sections
 LDFLAGS += -Wl,--gc-sections
 
 INSTALL = install

@@ -30,11 +30,6 @@ struct sockaddr_in;
 extern "C" {
 #endif
 
-/* set low watermark for the socket (if the option is available)
-*/
-int
-set_lowmark(int sockfd, int wmark, const char *where);
-
 /* set up (server) listening sockfd
  */
 int
@@ -46,7 +41,7 @@ setup_listener( const char* ipaddr, int port, int* sockfd, int bklog );
  */
 int
 setup_mcast_listener( struct sockaddr_in*   sa,
-                      const struct ip_mreq* mreq,
+                      const struct in_addr* mifaddr,
                       int*                  mcastfd,
                       int                   sockbuflen );
 
@@ -55,20 +50,20 @@ setup_mcast_listener( struct sockaddr_in*   sa,
  *
  */
 void
-close_mcast_listener( int msockfd, const struct ip_mreq* mreq );
+close_mcast_listener( int msockfd, const struct in_addr* mifaddr );
 
 
 /* add or drop membership in a multicast group
  */
 int
-set_multicast( int msockfd, const struct ip_mreq* mreq,
+set_multicast( int msockfd, const struct in_addr* mifaddr,
                int opname );
 
 
 /* drop from and add into a multicast group
  */
 int
-renew_multicast( int msockfd, const struct ip_mreq* mreq );
+renew_multicast( int msockfd, const struct in_addr* mifaddr );
 
 
 /* set send/receive timeouts on socket(s)

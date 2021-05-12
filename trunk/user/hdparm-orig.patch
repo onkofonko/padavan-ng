@@ -1,0 +1,414 @@
+diff -urNw hdparm-9.58-ref/Makefile hdparm-9.58/Makefile
+--- hdparm-9.58-ref/Makefile	2018-11-08 13:34:28.384351000 +0300
++++ hdparm-9.58/Makefile	2018-11-08 13:29:29.230140500 +0300
+@@ -3,6 +3,9 @@
+ # DESTDIR is for non root installs (eg packages, NFS) only!
+ DESTDIR =
+ 
++# usable for embedded devices
++HDPARM_MINI = 1
++
+ binprefix = 
+ manprefix = /usr
+ exec_prefix = $(binprefix)/
+@@ -13,23 +16,30 @@
+ CC ?= gcc
+ STRIP ?= strip
+ 
+-CFLAGS := -O2 -W -Wall -Wbad-function-cast -Wcast-align -Wpointer-arith -Wcast-qual -Wshadow -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -fkeep-inline-functions -Wwrite-strings -Waggregate-return -Wnested-externs -Wtrigraphs $(CFLAGS)
+-
++CFLAGS := -Os -W -Wall -Wbad-function-cast -Wcast-align -Wpointer-arith -Wcast-qual -Wshadow -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -fkeep-inline-functions -Wwrite-strings -Waggregate-return -Wnested-externs -Wtrigraphs $(CFLAGS)
++ifdef HDPARM_MINI
++CFLAGS += -DHDPARM_MINI
++endif
+ LDFLAGS = -s
+-#LDFLAGS = -s -static
++
++CFLAGS += -ffunction-sections -fdata-sections
++LDFLAGS += -Wl,--gc-sections
++
+ INSTALL = install
+ INSTALL_DATA = $(INSTALL) -m 644
+ INSTALL_DIR = $(INSTALL) -m 755 -d
+ INSTALL_PROGRAM = $(INSTALL)
+ 
+-OBJS = hdparm.o identify.o sgio.o sysfs.o geom.o fallocate.o fibmap.o fwdownload.o dvdspeed.o wdidle3.o apt.o
++OBJS = hdparm.o identify.o sgio.o sysfs.o geom.o wdidle3.o apt.o
++ifndef HDPARM_MINI
++OBJS += fallocate.o fibmap.o fwdownload.o dvdspeed.o
++endif
+ 
+ all:
+ 	$(MAKE) -j4 hdparm
+ 
+ hdparm: hdparm.h sgio.h $(OBJS)
+-	$(CC) $(LDFLAGS) -o hdparm $(OBJS)
+-	$(STRIP) hdparm
++	$(CC) $(CFLAGS) $(LDFLAGS) -o hdparm $(OBJS)
+ 
+ hdparm.o:	hdparm.h sgio.h
+ 
+@@ -55,6 +65,9 @@
+ 	if [ -d $(DESTDIR)$(mandir) ]; then $(INSTALL_DATA) -D hdparm.8 $(DESTDIR)$(mandir)/man8/hdparm.8 ;\
+ 	elif [ -d $(DESTDIR)$(oldmandir) ]; then $(INSTALL_DATA) -D hdparm.8 $(DESTDIR)$(oldmandir)/man8/hdparm.8 ; fi
+ 
++romfs:
++	$(ROMFSINST) /sbin/hdparm
++
+ clean:
+ 	-rm -f hdparm $(OBJS) core 2>/dev/null
+ 
+diff -urNw hdparm-9.58-ref/hdparm.c hdparm-9.58/hdparm.c
+--- hdparm-9.58-ref/hdparm.c	2018-11-08 13:34:28.431212300 +0300
++++ hdparm-9.58/hdparm.c	2018-11-08 13:29:29.214714700 +0300
+@@ -73,8 +73,10 @@
+ static int set_piomode  = 0, get_piomode= 0, piomode = 0;
+ static int set_dkeep    = 0, get_dkeep    = 0, dkeep    = 0;
+ static int set_standby  = 0, get_standby  = 0, standby= 0;
++#if !defined (HDPARM_MINI)
+ static int set_xfermode = 0, get_xfermode = 0;
+ static int xfermode_requested= 0;
++#endif
+ static int set_lookahead= 0, get_lookahead= 0, lookahead= 0;
+ static int set_prefetch = 0, get_prefetch = 0, prefetch = 0;
+ static int set_defects  = 0, get_defects  = 0, defects  = 0;
+@@ -87,12 +89,16 @@
+ static int set_sleepnow   = 0, get_sleepnow   = 0;
+ static int set_powerup_in_standby = 0, get_powerup_in_standby = 0, powerup_in_standby = 0;
+ static int get_hitachi_temp = 0, set_hitachi_temp = 0;
++#if !defined (HDPARM_MINI)
+ static int security_prompt_for_password = 0;
++#endif
+ static int security_freeze   = 0;
+ static int security_master = 0, security_mode = 0;
+ static int enhanced_erase = 0;
+ static int set_security   = 0;
++#if !defined (HDPARM_MINI)
+ static int do_dco_freeze = 0, do_dco_restore = 0, do_dco_identify = 0, do_dco_setmax = 0;
++#endif
+ static unsigned int security_command = ATA_OP_SECURITY_UNLOCK;
+ 
+ static char security_password[33], *fwpath, *raw_identify_path;
+@@ -117,9 +123,12 @@
+ 
+ static int get_powermode  = 0, set_powermode = 0;
+ static int set_apmmode = 0, get_apmmode= 0, apmmode = 0;
++#if !defined (HDPARM_MINI)
+ static int get_cdromspeed = 0, set_cdromspeed = 0, cdromspeed = 0;
+-static int do_IDentity = 0, drq_hsm_error = 0;
+ static int do_fwdownload = 0, xfer_mode = 0;
++static int drq_hsm_error = 0;
++#endif
++static int do_IDentity = 0;
+ static int	set_busstate = 0, get_busstate = 0, busstate = 0;
+ static int	set_reread_partn = 0, get_reread_partn;
+ static int	set_acoustic = 0, get_acoustic = 0, acoustic = 0;
+@@ -149,8 +158,10 @@
+ static int   read_sector = 0;
+ static __u64 read_sector_addr = ~0ULL;
+ 
++#if !defined (HDPARM_MINI)
+ static int   set_max_sectors = 0, set_max_permanent, get_native_max_sectors = 0;
+ static __u64 set_max_addr = 0;
++#endif
+ 
+ static int	get_doreset = 0, set_doreset = 0;
+ static int	i_know_what_i_am_doing = 0;
+@@ -642,6 +653,7 @@
+ 	printf(")\n");
+ }
+ 
++#if !defined (HDPARM_MINI)
+ struct xfermode_entry {
+ 	int val;
+ 	const char *name;
+@@ -749,6 +761,7 @@
+ 	}
+ 	printf(")\n");
+ }
++#endif
+ 
+ static unsigned int get_erase_timeout_secs (int fd, int enhanced)
+ {
+@@ -1228,6 +1241,7 @@
+ 	exit(EINVAL);
+ }
+ 
++#if !defined (HDPARM_MINI)
+ static __u16 *get_dco_identify_data (int fd, int quietly)
+ {
+ 	static __u8 args[4+512];
+@@ -1315,7 +1329,6 @@
+ 		exit(err);
+ }
+ 
+-
+ static __u64 do_get_native_max_sectors (int fd)
+ {
+ 	int err = 0;
+@@ -1389,6 +1402,7 @@
+ 	return max;
+ 	
+ }
++#endif
+ 
+ static int do_make_bad_sector (int fd, __u64 lba, const char *devname)
+ {
+@@ -1818,6 +1832,7 @@
+ 	return err;
+ }
+ 
++#if !defined (HDPARM_MINI)
+ static int do_set_max_sectors (int fd, __u64 max_lba, int permanent)
+ {
+ 	int err = 0;
+@@ -1863,6 +1878,7 @@
+ 
+ 	return err;
+ }
++#endif
+ 
+ static void usage_help (int clue, int rc)
+ {
+@@ -1880,7 +1896,9 @@
+ 	" -C   Check drive power mode status\n"
+ 	" -d   Get/set using_dma flag\n"
+ 	" -D   Enable/disable drive defect management\n"
++#if !defined (HDPARM_MINI)
+ 	" -E   Set cd/dvd drive speed\n"
++#endif
+ 	" -f   Flush buffer cache for device on exit\n"
+ 	" -F   Flush drive write cache\n"
+ 	" -g   Display drive geometry\n"
+@@ -1895,8 +1913,10 @@
+ 	" -m   Get/set multiple sector count\n"
+ 	" -M   Get/set acoustic management (0-254, 128: quiet, 254: fast)\n"
+ 	" -n   Get/set ignore-write-errors flag (0/1)\n"
++#if !defined (HDPARM_MINI)
+ 	" -N   Get/set max visible number of sectors (HPA) (VERY DANGEROUS)\n"
+ 	" -p   Set PIO mode on IDE interface chipset (0,1,2,3,4,...)\n"
++#endif
+ 	" -P   Set drive prefetch count\n"
+ 	" -q   Change next setting quietly\n"
+ 	" -Q   Get/set DMA queue_depth (if supported)\n"
+@@ -1913,11 +1933,14 @@
+ 	" -w   Perform device reset (DANGEROUS)\n"
+ 	" -W   Get/set drive write-caching flag (0/1)\n"
+ 	" -x   Obsolete\n"
++#if !defined (HDPARM_MINI)
+ 	" -X   Set IDE xfer mode (DANGEROUS)\n"
++#endif
+ 	" -y   Put drive in standby mode\n"
+ 	" -Y   Put drive to sleep\n"
+ 	" -z   Re-read partition table\n"
+ 	" -Z   Disable Seagate auto-powersaving mode\n"
++#if !defined (HDPARM_MINI)
+ 	" --dco-freeze      Freeze/lock current device configuration until next power cycle\n"
+ 	" --dco-identify    Read/dump device configuration identify data\n"
+ 	" --dco-restore     Reset device configuration back to factory defaults\n"
+@@ -1954,10 +1977,12 @@
+ 	" --trim-sector-ranges-stdin  Same as above, but reads lba:count pairs from stdin\n"
+ 	" --verbose                   Display extra diagnostics from some commands\n"
+ 	" --write-sector              Repair/overwrite a (possibly bad) sector directly on the media (VERY DANGEROUS)\n"
++#endif
+ 	"\n");
+ 	exit(rc);
+ }
+ 
++#if !defined (HDPARM_MINI)
+ static void security_help (int rc)
+ {
+ 	FILE *desc = rc ? stderr : stdout;
+@@ -1990,6 +2015,7 @@
+ 	);
+ 	exit(rc);
+ }
++#endif
+ 
+ void process_dev (char *devname)
+ {
+@@ -2191,6 +2217,7 @@
+ 			perror(" HDIO_DRIVE_CMD(setprefetch) failed");
+ 		}
+ 	}
++#if !defined (HDPARM_MINI)
+ 	if (set_xfermode) {
+ 		__u8 args[4] = {ATA_OP_SETFEATURES,0,3,0};
+ 		args[1] = xfermode_requested;
+@@ -2203,6 +2230,7 @@
+ 			perror(" HDIO_DRIVE_CMD(setxfermode) failed");
+ 		}
+ 	}
++#endif
+ 	if (set_lookahead) {
+ 		__u8 args[4] = {ATA_OP_SETFEATURES,0,0,0};
+ 		args[2] = lookahead ? 0xaa : 0x55;
+@@ -2258,6 +2286,7 @@
+ 			perror(" HDIO_DRIVE_CMD failed");
+ 		}
+ 	}
++#if !defined (HDPARM_MINI)
+ 	if (set_cdromspeed) {
+ 		int err1, err2;
+ 		/* The CDROM_SELECT_SPEED ioctl
+@@ -2274,6 +2303,7 @@
+ 			perror(" SET_STREAMING/CDROM_SELECT_SPEED both failed");
+ 		}
+ 	}
++#endif
+ 	if (set_acoustic) {
+ 		__u8 args[4];
+ 		if (get_acoustic)
+@@ -2338,6 +2368,7 @@
+ 		}
+ 		do_sanitize_cmd(fd);
+ 	}
++#if !defined (HDPARM_MINI)
+ 	if (do_dco_identify) {
+ 		__u16 *dco = get_dco_identify_data(fd, 0);
+ 		if (dco) {
+@@ -2382,6 +2413,7 @@
+ 			id = NULL; 
+ 		}
+ 	}
++#endif
+ 	if (security_freeze) {
+ 		__u8 args[4] = {ATA_OP_SECURITY_FREEZE_LOCK,0,0,0};
+ 		if (!quiet)
+@@ -2408,6 +2440,7 @@
+ 			perror(" HDIO_SET_BUSSTATE failed");
+ 		}
+ 	}
++#if !defined (HDPARM_MINI)
+ 	if (set_max_sectors) {
+ 		if (!quiet && get_native_max_sectors)
+ 			printf(" setting max visible sectors to %llu (%s)\n", set_max_addr, set_max_permanent ? "permanent" : "temporary");
+@@ -2419,6 +2452,7 @@
+ 			id = NULL; /* invalidate existing identify data */
+ 		}
+ 	}
++#endif
+ 	if (make_bad_sector) {
+ 		get_identify_data(fd);
+ 		if (id) {
+@@ -2450,6 +2484,7 @@
+ 		confirm_i_know_what_i_am_doing("--write-sector", "You are trying to deliberately overwrite a low-level sector on the media.\nThis is a BAD idea, and can easily result in total data loss.");
+ 		err = do_write_sector(fd, write_sector_addr, devname);
+ 	}
++#if !defined (HDPARM_MINI)
+ 	if (do_fwdownload) {
+ 		if (num_flags_processed > 1 || argc)
+ 			usage_help(15,EINVAL);
+@@ -2463,8 +2498,10 @@
+ 				exit(err);
+ 		}
+ 	}
++#endif
+ 	if (read_sector)
+ 		err = do_read_sector(fd, read_sector_addr, devname);
++#if !defined (HDPARM_MINI)
+ 	if (drq_hsm_error) {
+ 		get_identify_data(fd);
+ 		if (id) {
+@@ -2479,6 +2516,7 @@
+ 			fprintf(stderr, "ata status=0x%02x ata error=0x%02x\n", args[0], args[1]);
+ 		}
+ 	}
++#endif
+ 	id = NULL; /* force re-IDENTIFY in case something above modified settings */
+ 	if (get_hitachi_temp) {
+ 		__u8 args[4] = {0xf0,0,0x01,0}; /* "Sense Condition", vendor-specific */
+@@ -2756,6 +2794,7 @@
+ 			printf(" busstate      = %2ld (%s)\n", parm, busstate_str(parm));
+ 		}
+ 	}
++#if !defined (HDPARM_MINI)
+ 	if (get_native_max_sectors) {
+ 		get_identify_data(fd);
+ 		if (id) {
+@@ -2794,8 +2833,9 @@
+ 				}
+ 			}
+ 		
+-
+ 	}	
++#endif
++
+ 	if (do_ctimings)
+ 		time_cache(fd);
+ 	if (do_flush_wcache)
+@@ -2859,6 +2899,7 @@
+ 		exit (err);
+ }
+ 
++#if !defined (HDPARM_MINI)
+ #define GET_XFERMODE(flag, num)					\
+ 	do {							\
+ 		char *tmpstr = name;				\
+@@ -2929,6 +2970,7 @@
+ 	fprintf(stderr, "read only %u/256 IDENTIFY words from stdin: %s\n", wc, strerror(err));
+ 	exit(err);
+ }
++#endif
+ 
+ static void
+ numeric_parm (char c, const char *name, int *val, int *setparm, int *getparm, int min, int max, int set_only)
+@@ -2959,6 +3001,7 @@
+ #define      DO_FLAG(CH,VAR)              CH:VAR=1;noisy=1;break
+ #define    INCR_FLAG(CH,VAR)              CH:VAR++;noisy=1;break
+ 
++#if !defined (HDPARM_MINI)
+ static void get_security_password (int handle_NULL)
+ {
+ 	unsigned int maxlen = sizeof(security_password) - 1;
+@@ -3365,12 +3408,12 @@
+ 	}
+ 	return 0; /* additional flags allowed */
+ }
++#endif
+ 
+ int main (int _argc, char **_argv)
+ {
+ 	int no_more_flags = 0, disallow_flags = 0;
+ 	char c;
+-	char name[32];
+ 
+ 	argc = _argc;
+ 	argv = _argv;
+@@ -3412,7 +3455,9 @@
+ 				case     SET_FLAG('C',powermode);
+ 				case GET_SET_PARM('d',"dma-enable",dma,0,1);
+ 				case     SET_PARM('D',"defects-management",defects,0,1);
++#if !defined (HDPARM_MINI)
+ 				case     SET_PARM('E',"CDROM/DVD-speed",cdromspeed,0,255);
++#endif
+ 				case      DO_FLAG('f',do_flush);
+ 				case      DO_FLAG('F',do_flush_wcache);
+ 				case      DO_FLAG('g',get_geom);
+@@ -3427,7 +3472,9 @@
+ 				case GET_SET_PARM('m',"multmode-count",mult,0,64);
+ 				case GET_SET_PARM('M',"acoustic-management",acoustic,0,255);
+ 				case GET_SET_PARM('n',"ignore-write-errors",nowerr,0,1);
++#if !defined (HDPARM_MINI)
+ 				case              'N': get_set_max_sectors_parms(); break;
++#endif
+ 				case     SET_PARM('P',"prefetch",prefetch,0,255);
+ 				case              'q': quiet = 1; noisy = 0; break;
+ 				case GET_SET_PARM('Q',"queue-depth",dma_q,0,1024);
+@@ -3448,6 +3495,7 @@
+ 				case     SET_FLAG('z',reread_partn);
+ 				case     SET_FLAG('Z',seagate);
+ 
++#if !defined (HDPARM_MINI)
+ 				case '-':
+ 					if (get_longarg())
+ 						disallow_flags = 1;
+@@ -3466,7 +3514,7 @@
+ 					if (!set_xfermode)
+ 						fprintf(stderr, "-X: missing value\n");
+ 					break;
+-
++#endif
+ 
+ 				default:
+ 					usage_help(10,EINVAL);

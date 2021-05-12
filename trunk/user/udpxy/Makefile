@@ -29,14 +29,17 @@ GZIP  := /bin/gzip
 MKDEPOPT := -MM
 DEBUG_ON := -g
 
-ALL_CFLAGS  = -W -Wall -Werror --pedantic $(CFLAGS)
-ALL_CFLAGS += -ffunction-sections -fdata-sections -fvisibility=hidden
+ALL_CFLAGS  = -W -Wall --pedantic $(CFLAGS) -O2
+ALL_CFLAGS += -ffunction-sections -fdata-sections
 
 LDFLAGS += -Wl,--gc-sections
 
 SYSTEM=$(shell uname 2>/dev/null)
-ifeq ($(SYSTEM), FreeBSD)
+ifneq (,$(filter $(SYSTEM),FreeBSD))
 MAKE := gmake
+GZIP := /usr/bin/gzip
+endif
+ifneq (,$(filter $(SYSTEM),Darwin))
 GZIP := /usr/bin/gzip
 endif
 

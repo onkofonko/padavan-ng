@@ -38,7 +38,6 @@ AC_CANONICAL_TARGET
 AC_CONFIG_MACRO_DIR([m4])
 
 AM_INIT_AUTOMAKE()
-AM_MAINTAINER_MODE([disable])
 AC_CONFIG_HEADERS([config.h])
 
 dnl Checks for programs

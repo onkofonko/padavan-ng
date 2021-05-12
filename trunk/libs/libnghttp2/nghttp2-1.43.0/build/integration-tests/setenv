@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+libdir="/opt/padavan-ng/trunk/libs/libnghttp2/nghttp2-1.43.0/build/lib"
+if [ -d "$libdir/.libs" ]; then
+    libdir="$libdir/.libs"
+fi
+
+export CGO_CFLAGS="-I/opt/padavan-ng/trunk/libs/libnghttp2/nghttp2-1.43.0/lib/includes -I/opt/padavan-ng/trunk/libs/libnghttp2/nghttp2-1.43.0/build/lib/includes "
+export CGO_CPPFLAGS=""
+export CGO_LDFLAGS="-L$libdir "
+export LD_LIBRARY_PATH="$libdir"
+export GODEBUG=cgocheck=0
+"$@"

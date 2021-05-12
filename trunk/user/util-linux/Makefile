@@ -1,13 +1,27 @@
-SRC_NAME=util-linux-2.3X.X
+SRC_NAME=util-linux-2.36.1
+SRC_URL=https://www.kernel.org/pub/linux/utils/util-linux/v2.36/util-linux-2.36.1.tar.xz
 
 THISDIR = $(shell pwd)
 
 CFLAGS += -ffunction-sections -fdata-sections
 LDFLAGS += -Wl,--gc-sections
 
-all: config_test
+all: download_test extract_test config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME) && \
-	$(MAKE) -C $(SRC_NAME) install DESTDIR=$(STAGEDIR)
+	$(MAKE) -C $(SRC_NAME) install DESTDIR=$(THISDIR)/install && \
+	cp -rfP $(THISDIR)/install/lib $(STAGEDIR) && \
+	cp -rfP $(THISDIR)/install/include $(STAGEDIR)
+
+download_test:
+	( if [ ! -f $(SRC_NAME).tar.xz ]; then \
+		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.xz $(SRC_URL); \
+	fi )
+
+extract_test:
+	( if [ ! -d $(SRC_NAME) ]; then \
+		tar xJf $(SRC_NAME).tar.xz; \
+		patch -d $(SRC_NAME) -p1 -i ../libblkid.patch; \
+	fi )
 
 config_test:
 	( if [ -f ./config_done ]; then \
@@ -18,41 +32,53 @@ config_test:
 
 configure:
 	( cd $(SRC_NAME) ; \
+	./autogen.sh ; \
+	PKG_CONFIG_PATH=$(STAGEDIR)/lib/pkgconfig \
 	scanf_cv_type_modifier=no \
 	./configure \
 		--prefix= \
-		--without-audit \
-		--without-btrfs \
-		--without-libz \
 		--without-ncurses \
 		--without-ncursesw \
-		--without-python \
-		--without-readline \
-		--without-selinux \
 		--without-slang \
-		--without-smack \
-		--without-systemd \
-		--without-tinfo \
+		--without-selinux \
+		--without-audit \
 		--without-udev \
-		--without-user \
-		--without-utempter \
-		--without-util \
+		--without-python \
+		--without-systemd \
+		--without-btrfs \
+		--without-readline \
 		--disable-all-programs \
-		--disable-bash-completion \
-		--disable-colors-default \
-		--disable-libfdisk \
-		--disable-libmount \
-		--disable-libsmartcols \
-		--disable-makeinstall-chown \
-		--disable-makeinstall-setuid \
-		--disable-nls \
-		--disable-plymouth_support \
-		--disable-rpath \
-		--disable-use-tty-group \
-		--disable-widechar \
 		--enable-libblkid \
 		--enable-libuuid \
 		--enable-blkid \
+		--disable-bash-completion \
+		--disable-nls \
+		--disable-libmount \
+		--disable-mount \
+		--disable-losetup \
+		--disable-fsck \
+		--disable-partx \
+		--disable-uuidd \
+		--disable-mountpoint \
+		--disable-fallocate \
+		--disable-unshare \
+		--disable-eject \
+		--disable-agetty \
+		--disable-cramfs \
+		--disable-wdctl \
+		--disable-switch_root \
+		--disable-pivot_root \
+		--disable-kill \
+		--disable-utmpdump \
+		--disable-rename \
+		--disable-login \
+		--disable-sulogin \
+		--disable-su \
+		--disable-schedutils \
+		--disable-wall \
+		--disable-use-tty-group \
+		--disable-makeinstall-chown \
+		--disable-makeinstall-setuid \
 		--host=$(HOST_TARGET) \
 		--build=$(HOST_BUILD) ; \
 	)
@@ -65,9 +91,9 @@ clean:
 	rm -rf install
 
 romfs:
-	$(ROMFSINST) $(STAGEDIR)/sbin/blkid /sbin/blkid
-	$(ROMFSINST) $(STAGEDIR)/lib/libblkid.so.1.1.0 /lib/libblkid.so.1.1.0
-	$(ROMFSINST) $(STAGEDIR)/lib/libuuid.so.1.3.0 /lib/libuuid.so.1.3.0
+	$(ROMFSINST) $(THISDIR)/install/sbin/blkid /sbin/blkid
+	$(ROMFSINST) $(THISDIR)/install/lib/libblkid.so.1.1.0 /lib/libblkid.so.1.1.0
+	$(ROMFSINST) $(THISDIR)/install/lib/libuuid.so.1.3.0 /lib/libuuid.so.1.3.0
 	$(ROMFSINST) -s libblkid.so.1.1.0 /lib/libblkid.so
 	$(ROMFSINST) -s libblkid.so.1.1.0 /lib/libblkid.so.1
 	$(ROMFSINST) -s libuuid.so.1.3.0 /lib/libuuid.so

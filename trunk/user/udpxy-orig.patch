@@ -1,0 +1,86 @@
+diff -urNw udpxy/Makefile udpxy/Makefile
+--- udpxy/Makefile	2019-02-15 08:35:15.949965200 +0300
++++ udpxy/Makefile	2018-12-28 09:27:20.099339600 +0300
+@@ -29,7 +29,10 @@
+ MKDEPOPT := -MM
+ DEBUG_ON := -g
+ 
+-ALL_CFLAGS = -W -Wall -Werror --pedantic $(CFLAGS)
++ALL_CFLAGS  = -W -Wall --pedantic $(CFLAGS) -O2
++ALL_CFLAGS += -ffunction-sections -fdata-sections
++
++LDFLAGS += -Wl,--gc-sections
+ 
+ SYSTEM=$(shell uname 2>/dev/null)
+ ifneq (,$(filter $(SYSTEM),FreeBSD))
+@@ -180,6 +180,9 @@
+ 	@ls -l $(ARCFILE)
+ 	@rm -fr $(DISTRO_DIR)
+ 
++romfs:	release
++	$(ROMFSINST) /usr/sbin/udpxy
++
+ install: $(EXEC)
+ 	@mkdir -p -m 755 $(INSTALLROOT)/bin
+ 	@cp $(EXEC) $(INSTALLROOT)/bin
+diff -urNw udpxy/dpkt.c udpxy/dpkt.c
+--- udpxy/dpkt.c	2019-02-15 08:35:16.018151000 +0300
++++ udpxy/dpkt.c	2018-10-22 10:22:23.883831700 +0300
+@@ -748,7 +747,9 @@
+                 (void)tmfprintf( g_flog, "Write on fd=[%d] timed out\n", fd);
+                 error = IO_BLK;
+             }
++/*
+             mperror( g_flog, errno, "%s: writev", __func__ );
++*/
+             return error;
+         }
+     }
+diff -urN udpxy-1.0.23-12/udpxy.c udpxy/udpxy.c
+--- udpxy-1.0.23-12/udpxy.c	2019-02-15 08:35:16.039130600 +0300
++++ udpxy/udpxy.c	2018-10-22 10:22:23.883831700 +0300
+@@ -18,6 +18,9 @@
+  *  along with udpxy.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
++#define _XOPEN_SOURCE 600
++#define _BSD_SOURCE
++
+ #include "osdef.h"  /* os-specific definitions */
+ 
+ #include <sys/types.h>
+@@ -96,6 +99,34 @@
+ 
+ /*********************************************************/
+ 
++#if defined(__UCLIBC_MAJOR__)
++# if __UCLIBC_MAJOR__ == 0 && \
++    (__UCLIBC_MINOR__ < 9 || (__UCLIBC_MINOR__ == 9 && __UCLIBC_SUBLEVEL__ < 29) )
++/* pselect stuff for old uclibc */
++int
++pselect(int nfds, fd_set *rset, fd_set *wset, fd_set *xset, const struct timespec *ts, const sigset_t *sigmask)
++{
++	int             n;
++	struct timeval  tv;
++	sigset_t        savemask;
++	
++	if (ts != NULL) {
++		tv.tv_sec = ts->tv_sec;
++		tv.tv_usec = ts->tv_nsec / 1000;    /* nanosec -> microsec */
++	}
++	
++	if (sigmask != NULL)
++		sigprocmask(SIG_SETMASK, sigmask, &savemask);   /* caller's mask */
++	n = select(nfds, rset, wset, xset, (ts == NULL) ? NULL : &tv);
++	if (sigmask != NULL)
++		sigprocmask(SIG_SETMASK, &savemask, NULL);      /* restore mask */
++	
++	return(n);
++}
++# endif
++#endif
++
++
+ /* process client requests - implemented in sloop.c */
+ extern int srv_loop (const char* ipaddr, int port,
+                     const char* mcast_addr);

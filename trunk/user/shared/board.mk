@@ -1,8 +1,8 @@
 ##################################################################
 # Board PID # Board Name       # PRODUCT # Note
 ##################################################################
-# RT-N56U   # ASUS RT-N56U     # RT3883  #
+# MI-R3PRO # Xiaomi R3PRO   # MT7621  #
 ##################################################################
 
-CFLAGS += -DBOARD_N56U -DVENDOR_ASUS
-BOARD_NUM_USB_PORTS=2
+CFLAGS += -DBOARD_MIR3PRO
+BOARD_NUM_USB_PORTS=1

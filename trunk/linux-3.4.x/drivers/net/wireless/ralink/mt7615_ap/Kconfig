@@ -104,51 +104,19 @@ config MBO_SUPPORT
 
 config PRE_CAL_TRX_SET1_SUPPORT
 	bool "Calibration To Flash/BinFile Support"
-	depends on WIFI_DRIVER
 	default y
 
 config RLM_CAL_CACHE_SUPPORT
 	bool "RlmCalibrationCache Support"
-	depends on WIFI_DRIVER
 	default y
 
 config PRE_CAL_TRX_SET2_SUPPORT
 	bool "Pre-calibration to Flash Support"
-	depends on WIFI_DRIVER
 	default y
 
-#config BLOCK_NET_IF
-#	bool "NETIF Block"
-#	depends on MT7615_AP
-#	default n
-#	help
-#	Support Net interface block while Tx-Sw queue full
-
-#config RATE_ADAPTION
-#	bool "New Rate Adaptation support"
+#config CAL_BIN_FILE_SUPPORT
+#	bool "Calibration to BinFile Support"
 #	default y
-
-#config NEW_RATE_ADAPT_SUPPORT
-#	bool "Intelligent Rate Adaption"
-#	depends on RATE_ADAPTION
-#	default y
-
-#config AGS_SUPPORT
-#	bool "Adaptive Group Switching"
-#	depends on RATE_ADAPTION
-#	depends on MT7615_AP
-#	default n
-
-#config RATE_ADAPT_AGBS_SUPPORT
-#	bool "Adaptive AGBS Mode"
-#	depends on RATE_ADAPTION
-#	depends on MT7615_AP
-#	default y
-
-#config IDS_SUPPORT
-#	bool "IDS (Intrusion Detection System) Support"
-#	depends on MT7615_AP
-#	default n
 
 config RF_LOCKDOWN_SUPPORT
 	bool "RF Lockdown Support"
@@ -157,11 +125,6 @@ config RF_LOCKDOWN_SUPPORT
 config WIFI_EAP_FEATURE
 	bool "EAP Feature Support"
 	default y
-
-#config LED_CONTROL_SUPPORT
-#	bool "LED Support"
-#	depends on MT7615_AP
-#	default n
 
 config ATE_SUPPORT
 	bool "ATE/QA Support"
@@ -172,10 +135,6 @@ config PASSPOINT_R2
 	select DOT11W_PMF_SUPPORT
 	depends on MT7615_AP
 	default n
-
-#config TRACE_TCP_PKT
-#       bool "TCP DATA/ACK packets trace log"
-#       default n
 
 config TCP_RACK_SUPPORT
 	bool "TCP Reduced ACK  support"
@@ -237,17 +196,6 @@ config MT7615_AP_MBSS
 	bool "MBSSID"
 	depends on MT7615_AP
 	default y
-
-#config NEW_MBSSID_MODE
-#	bool "New MBSSID MODE"
-#	depends on MT7615_AP && MT7615_AP_MBSS
-#	depends on RALINK_RT3883 || RALINK_RT3352 || RALINK_RT5350 || RALINK_RT6352 || RALINK_MT7620
-#	default y
-
-#config ENHANCE_NEW_MBSSID_MODE
-#	bool "Enhanced MBSSID mode"
-#	depends on NEW_MBSSID_MODE
-#	default y
 
 config MT7615_AP_APCLI
 	bool "AP-Client Support"
@@ -402,9 +350,14 @@ config RADIUS_MAC_AUTH_SUPPORT
 	depends on CFG80211_SUPPORT
 	default n
 
-config MT7615_AP_LLTD
-	bool "LLTD (Link Layer Topology Discovery Protocol)"
+config CON_WPS_SUPPORT
+	bool "Concurrent WPS Support"
 	depends on MT7615_AP
+	depends on MT7615_AP_APCLI
+	depends on WSC_INCLUDED
+	depends on WSC_V2_SUPPORT
+#	depends on MULTI_INF_SUPPORT
+	default n
 
 config VOW_SUPPORT
 	bool "MediaAir(VOW) support"
@@ -462,12 +415,6 @@ config WNM_SUPPORT
 	bool "802.11v WNM Support"
 	depends on MT7615_AP
 	default n
-
-#config ROAMING_ENHANCE_SUPPORT
-#	bool "Roaming Enhance Support"
-#	depends on MT7615_AP
-#	depends on MT7615_AP_APCLI
-#	default n
 
 config WPA3_SUPPORT
 	bool "WPA3 support"

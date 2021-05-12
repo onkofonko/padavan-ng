@@ -242,14 +242,14 @@ calc_buf_settings( ssize_t* bufmsgs, size_t* sock_buflen )
 /* subscribe to the (configured) multicast channel
  */
 static int
-subscribe( int* sockfd, struct ip_mreq* mreq )
+subscribe( int* sockfd, struct in_addr* mcast_inaddr )
 {
     struct sockaddr_in sa;
     const char* ipaddr = g_recopt.rec_channel;
     size_t rcvbuf_len = 0;
     int rc = 0;
 
-    assert( sockfd && mreq );
+    assert( sockfd && mcast_inaddr );
 
     if( 1 != inet_aton( ipaddr, &sa.sin_addr ) ) {
         mperror( g_flog, errno,
@@ -258,33 +258,20 @@ subscribe( int* sockfd, struct ip_mreq* mreq )
         return -1;
     }
 
+    sa.sin_family = AF_INET;
+    sa.sin_port = htons( (uint16_t)g_recopt.rec_port );
 
-    if( 1 != inet_aton( g_recopt.mcast_addr, (struct in_addr*)&mreq->imr_interface.s_addr) ) {
+    if( 1 != inet_aton( g_recopt.mcast_addr, mcast_inaddr ) ) {
         mperror( g_flog, errno,
                 "%s: Invalid multicast interface: [%s]: inet_aton",
                 __func__, g_recopt.mcast_addr );
         return -1;
     }
 
-    sa.sin_family = AF_INET;
-    sa.sin_port = htons( (uint16_t)g_recopt.rec_port );
-
-    if( 1 != inet_aton( g_recopt.rec_channel, (struct in_addr*)&mreq->imr_multiaddr.s_addr) ) {
-        mperror( g_flog, errno,
-                "%s: Invalid multicast group address: [%s]: inet_aton",
-                __func__, g_recopt.rec_channel );
-        return -1;
-    }
-#if defined(NO_MCAST_BIND)
-    sa.sin_addr.s_addr=htonl(INADDR_ANY);
-#else
-    (void) memcpy( &sa.sin_addr, &mreq->imr_multiaddr.s_addr, sizeof(struct in_addr) );
-#endif
-
     rc = calc_buf_settings( NULL, &rcvbuf_len );
     if (0 != rc) return rc;
 
-    return setup_mcast_listener( &sa, mreq,
+    return setup_mcast_listener( &sa, mcast_inaddr,
             sockfd, (g_recopt.nosync_sbuf ? 0 : rcvbuf_len) );
 }
 
@@ -294,11 +281,8 @@ subscribe( int* sockfd, struct ip_mreq* mreq )
 static int
 record()
 {
-#ifdef USE_SELECT_READY
-    fd_set rfds;
-#endif
     int rsock = -1, destfd = -1, rc = 0, wtime_sec = 0;
-    struct ip_mreq mreq;
+    struct in_addr raddr;
     struct timeval rtv;
     struct dstream_ctx ds;
     ssize_t nmsgs = 0;
@@ -330,7 +314,7 @@ record()
             break;
         }
 
-        rc = subscribe( &rsock, &mreq );
+        rc = subscribe( &rsock, &raddr );
         if( 0 != rc ) break;
 
         rtv.tv_sec = RSOCK_TIMEOUT;
@@ -393,20 +377,9 @@ record()
     /* record loop */
     ropt.max_frgs = g_recopt.rbuf_msgs;
     ropt.buf_tmout = -1;
-#ifdef USE_SELECT_READY
-    FD_ZERO( &rfds );
-    FD_SET( rsock, &rfds );
-#endif
 
     for( n_total = 0; (0 == rc) && !(quit = must_quit()); ) {
-#ifdef USE_SELECT_READY
-        rtv.tv_sec = RSOCK_TIMEOUT;
-        rtv.tv_usec = 0;
-        nrcv=0;
-        if ((select(rsock+1, &rfds, NULL, NULL, &rtv)>0) && FD_ISSET(rsock, &rfds))
-#endif
-          nrcv = read_data( &ds, rsock, data, g_recopt.bufsize, &ropt );
-
+        nrcv = read_data( &ds, rsock, data, g_recopt.bufsize, &ropt );
         if( -1 == nrcv ) { rc = ERR_INTERNAL; break; }
 
         if( 0 == n_total ) {
@@ -429,8 +402,8 @@ record()
 
             n_total += (size_t)nwr;
             /*
-            TRACE( tmfprintf( g_flog, "Wrote [%lu] to file, total=[%ld]\n",
-                        (long)nwr, (u_long)n_total ) );
+            TRACE( tmfprintf( g_flog, "Wrote [%ld] to file, total=[%ld]\n",
+                        (long)nwr, (long)n_total ) );
             */
 
             TRACE( check_fragments( "wrote to file",
@@ -456,7 +429,7 @@ record()
     free_dstream_ctx( &ds );
     if( data ) free( data );
 
-    close_mcast_listener( rsock, &mreq );
+    close_mcast_listener( rsock, &raddr );
     if( destfd >= 0 ) (void) close( destfd );
 
     if( quit )
@@ -472,7 +445,7 @@ record()
 static int
 verify_channel()
 {
-    struct ip_mreq mreq;
+    struct in_addr mcast_inaddr;
     int sockfd = -1, rc = -1;
     char buf[16];
     ssize_t nrd = -1;
@@ -480,7 +453,7 @@ verify_channel()
 
     static const time_t MSOCK_TMOUT_SEC = 2;
 
-    rc = subscribe( &sockfd, &mreq );
+    rc = subscribe( &sockfd, &mcast_inaddr );
     do {
         if( rc ) break;
 
@@ -513,7 +486,7 @@ verify_channel()
     } while(0);
 
     if( sockfd >= 0 ) {
-        close_mcast_listener( sockfd, &mreq );
+        close_mcast_listener( sockfd, &mcast_inaddr );
     }
 
     return rc;
@@ -556,9 +529,7 @@ int udpxrec_main( int argc, char* const argv[] )
     time_t now = time(NULL);
     char now_buf[ 32 ] = {0}, sel_buf[ 32 ] = {0}, app_finfo[80] = {0};
 
-#if !defined(__CYGWIN__)
     extern int optind, optopt;
-#endif
     extern const char IPv4_ALL[];
 
     mk_app_info(g_udpxrec_app, g_app_info, sizeof(g_app_info) - 1);
@@ -772,10 +743,7 @@ int udpxrec_main( int argc, char* const argv[] )
             }
         }
 
-#if !defined(__CYGWIN__)
-        if( 0 == geteuid() )
-#endif
-        {
+        if( 0 == geteuid() ) {
             if( !no_daemon ) {
                 if( stderr == g_flog ) {
                     (void) fprintf( stderr,
