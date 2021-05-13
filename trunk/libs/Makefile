@@ -124,7 +124,6 @@ dir_$(LIBS_INCLUDE_LIBLZO)			+= liblzo
 dir_$(LIBS_INCLUDE_LIBSSL)			+= libssl
 dir_$(LIBS_INCLUDE_LIBUSB_0)			+= libusb
 dir_$(LIBS_INCLUDE_LIBUSB_1)			+= libusb-1.0
-dir_$(LIBS_INCLUDE_LIBEVENT)			+= libevent
 dir_y						+= libnfnetlink
 
 # ipset shared libs
@@ -168,6 +167,8 @@ dir_$(CONFIG_FIRMWARE_INCLUDE_DNSCRYPT)		+= libsodium
 ifneq (,$(filter y,$(CONFIG_FIRMWARE_INCLUDE_NFSD) $(CONFIG_FIRMWARE_INCLUDE_NFSC)))
 dir_y						+= libtirpc
 endif
+
+dir_$(LIBS_INCLUDE_LIBEVENT)			+= libevent
 
 all:
 	for i in $(dir_y) ; do \
