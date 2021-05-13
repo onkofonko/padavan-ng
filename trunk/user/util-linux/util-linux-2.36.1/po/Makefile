@@ -463,6 +463,7 @@ POTFILES = \
      ../sys-utils/hwclock.c \
      ../sys-utils/hwclock-cmos.c \
      ../sys-utils/hwclock.h \
+     ../sys-utils/hwclock-parse-date.c \
      ../sys-utils/hwclock-rtc.c \
      ../sys-utils/ipcmk.c \
      ../sys-utils/ipcrm.c \

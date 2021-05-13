@@ -1504,8 +1504,8 @@ maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
 	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
-install-data-local:
 uninstall-local:
+install-data-local:
 clean-local:
 clean: clean-am
 
