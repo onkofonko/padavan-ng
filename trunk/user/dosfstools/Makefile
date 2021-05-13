@@ -1,4 +1,4 @@
-SRC_NAME=dosfstools-4.1
+SRC_NAME=dosfstools-4.2
 
 CFLAGS+=$(COPT) -ffunction-sections -fdata-sections -fvisibility=hidden
 LDFLAGS += -Wl,--gc-sections
