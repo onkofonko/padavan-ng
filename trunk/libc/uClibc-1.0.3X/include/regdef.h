@@ -1,1 +1,0 @@
-../libc/sysdeps/linux/mips/regdef.h
