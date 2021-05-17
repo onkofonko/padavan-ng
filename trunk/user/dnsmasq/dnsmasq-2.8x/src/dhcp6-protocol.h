@@ -1,4 +1,4 @@
-/* dnsmasq is Copyright (c) 2000-2020 Simon Kelley
+/* dnsmasq is Copyright (c) 2000-2021 Simon Kelley
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -72,4 +72,3 @@
 #define DHCP6NOBINDING   3
 #define DHCP6NOTONLINK   4
 #define DHCP6USEMULTI    5
-

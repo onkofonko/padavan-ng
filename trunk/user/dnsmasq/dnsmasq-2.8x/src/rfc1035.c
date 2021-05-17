@@ -1,4 +1,4 @@
-/* dnsmasq is Copyright (c) 2000-2020 Simon Kelley
+/* dnsmasq is Copyright (c) 2000-2021 Simon Kelley
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -198,7 +198,6 @@ int in_arpa_name_2_addr(char *namein, union all_addr *addrp)
 
       return F_IPV4;
     }
-#ifdef HAVE_IPV6
   else if (hostname_isequal(penchunk, "ip6") && 
 	   (hostname_isequal(lastchunk, "int") || hostname_isequal(lastchunk, "arpa")))
     {
@@ -243,7 +242,6 @@ int in_arpa_name_2_addr(char *namein, union all_addr *addrp)
 	  return F_IPV6;
 	}
     }
-#endif
   
   return 0;
 }
@@ -377,7 +375,6 @@ int private_net(struct in_addr addr, int ban_localhost)
     ((ip_addr & 0xFFFFFFFF) == 0xFFFFFFFF)  /* 255.255.255.255/32 (broadcast)*/ ;
 }
 
-#ifdef HAVE_IPV6
 static int private_net6(struct in6_addr *a)
 {
   return 
@@ -387,8 +384,6 @@ static int private_net6(struct in6_addr *a)
     ((unsigned char *)a)[0] == 0xfd ||   /* RFC 6303 4.4 */
     ((u32 *)a)[0] == htonl(0x20010db8); /* RFC 6303 4.6 */
 }
-#endif
-
 
 static unsigned char *do_doctor(unsigned char *p, int count, struct dns_header *header, size_t qlen, char *name, int *doctored)
 {
@@ -692,13 +687,11 @@ int extract_addresses(struct dns_header *header, size_t qlen, char *name, time_t
 	      addrlen = INADDRSZ;
 	      flags |= F_IPV4;
 	    }
-#ifdef HAVE_IPV6
 	  else if (qtype == T_AAAA)
 	    {
 	      addrlen = IN6ADDRSZ;
 	      flags |= F_IPV6;
 	    }
-#endif
 	  else if (qtype == T_SRV)
 	    flags |= F_SRV;
 	  else
@@ -802,7 +795,6 @@ int extract_addresses(struct dns_header *header, size_t qlen, char *name, time_t
 				  private_net(addr.addr4, !option_bool(OPT_LOCAL_REBIND)))
 				return 1;
 
-#ifdef HAVE_IPV6
 			      /* Block IPv4-mapped IPv6 addresses in private IPv4 address space */
 			      if (flags & F_IPV6)
 				{
@@ -825,7 +817,6 @@ int extract_addresses(struct dns_header *header, size_t qlen, char *name, time_t
 				      IN6_IS_ADDR_LOOPBACK(&addr.addr6))
 				    return 1;
 				}
-#endif
 			    }
 
 #ifdef HAVE_IPSET
@@ -972,7 +963,6 @@ size_t setup_reply(struct dns_header *header, size_t qlen,
 	  add_resource_record(header, NULL, NULL, sizeof(struct dns_header), &p, ttl, NULL, T_A, C_IN, "4", addrp);
 	}
       
-#ifdef HAVE_IPV6
       if (flags & F_IPV6)
 	{
 	  SET_RCODE(header, NOERROR);
@@ -980,7 +970,6 @@ size_t setup_reply(struct dns_header *header, size_t qlen,
 	  header->hb3 |= HB3_AA;
 	  add_resource_record(header, NULL, NULL, sizeof(struct dns_header), &p, ttl, NULL, T_AAAA, C_IN, "6", addrp);
 	}
-#endif
     }
   else /* nowhere to forward to */
     {
@@ -1028,30 +1017,33 @@ int check_for_local_domain(char *name, time_t now)
   return 0;
 }
 
-/* Is the packet a reply with the answer address equal to addr?
-   If so mung is into an NXDOMAIN reply and also put that information
-   in the cache. */
-int check_for_bogus_wildcard(struct dns_header *header, size_t qlen, char *name, 
-			     struct bogus_addr *baddr, time_t now)
+static int check_bad_address(struct dns_header *header, size_t qlen, struct bogus_addr *baddr, char *name, unsigned long *ttlp)
 {
   unsigned char *p;
   int i, qtype, qclass, rdlen;
   unsigned long ttl;
   struct bogus_addr *baddrp;
-
+  struct in_addr addr;
+  
   /* skip over questions */
   if (!(p = skip_questions(header, qlen)))
     return 0; /* bad packet */
 
   for (i = ntohs(header->ancount); i != 0; i--)
     {
-      if (!extract_name(header, qlen, &p, name, 1, 10))
+      if (name && !extract_name(header, qlen, &p, name, 1, 10))
 	return 0; /* bad packet */
-  
+
+      if (!name && !(p = skip_name(p, header, qlen, 10)))
+	return 0;
+      
       GETSHORT(qtype, p); 
       GETSHORT(qclass, p);
       GETLONG(ttl, p);
       GETSHORT(rdlen, p);
+
+      if (ttlp)
+	*ttlp = ttl;
       
       if (qclass == C_IN && qtype == T_A)
 	{
@@ -1059,16 +1051,12 @@ int check_for_bogus_wildcard(struct dns_header *header, size_t qlen, char *name,
 	    return 0;
 	  
 	  for (baddrp = baddr; baddrp; baddrp = baddrp->next)
-	    if (memcmp(&baddrp->addr, p, INADDRSZ) == 0)
-	      {
-		/* Found a bogus address. Insert that info here, since there no SOA record
-		   to get the ttl from in the normal processing */
-		cache_start_insert();
-		cache_insert(name, NULL, C_IN, now, ttl, F_IPV4 | F_FORWARD | F_NEG | F_NXDOMAIN);
-		cache_end_insert();
-		
+	    {
+	      memcpy(&addr, p, INADDRSZ);
+	      
+	      if ((addr.s_addr & baddrp->mask.s_addr) == baddrp->addr.s_addr)
 		return 1;
-	      }
+	    }
 	}
       
       if (!ADD_RDLEN(header, p, qlen, rdlen))
@@ -1078,43 +1066,31 @@ int check_for_bogus_wildcard(struct dns_header *header, size_t qlen, char *name,
   return 0;
 }
 
-int check_for_ignored_address(struct dns_header *header, size_t qlen, struct bogus_addr *baddr)
+/* Is the packet a reply with the answer address equal to addr?
+   If so mung is into an NXDOMAIN reply and also put that information
+   in the cache. */
+int check_for_bogus_wildcard(struct dns_header *header, size_t qlen, char *name, time_t now)
 {
-  unsigned char *p;
-  int i, qtype, qclass, rdlen;
-  struct bogus_addr *baddrp;
+  unsigned long ttl;
 
-  /* skip over questions */
-  if (!(p = skip_questions(header, qlen)))
-    return 0; /* bad packet */
-
-  for (i = ntohs(header->ancount); i != 0; i--)
+  if (check_bad_address(header, qlen, daemon->bogus_addr, name, &ttl))
     {
-      if (!(p = skip_name(p, header, qlen, 10)))
-	return 0; /* bad packet */
-      
-      GETSHORT(qtype, p); 
-      GETSHORT(qclass, p);
-      p += 4; /* TTL */
-      GETSHORT(rdlen, p);
-      
-      if (qclass == C_IN && qtype == T_A)
-	{
-	  if (!CHECK_LEN(header, p, qlen, INADDRSZ))
-	    return 0;
-	  
-	  for (baddrp = baddr; baddrp; baddrp = baddrp->next)
-	    if (memcmp(&baddrp->addr, p, INADDRSZ) == 0)
-	      return 1;
-	}
-      
-      if (!ADD_RDLEN(header, p, qlen, rdlen))
-	return 0;
+      /* Found a bogus address. Insert that info here, since there no SOA record
+	 to get the ttl from in the normal processing */
+      cache_start_insert();
+      cache_insert(name, NULL, C_IN, now, ttl, F_IPV4 | F_FORWARD | F_NEG | F_NXDOMAIN);
+      cache_end_insert();
+
+      return 1;
     }
-  
+
   return 0;
 }
 
+int check_for_ignored_address(struct dns_header *header, size_t qlen)
+{
+  return check_bad_address(header, qlen, daemon->ignore_addr, NULL, NULL);
+}
 
 int add_resource_record(struct dns_header *header, char *limit, int *truncp, int nameoffset, unsigned char **pp, 
 			unsigned long ttl, int *offset, unsigned short type, unsigned short class, char *format, ...)
@@ -1170,14 +1146,12 @@ int add_resource_record(struct dns_header *header, char *limit, int *truncp, int
   for (; *format; format++)
     switch (*format)
       {
-#ifdef HAVE_IPV6
       case '6':
         CHECK_LIMIT(IN6ADDRSZ);
 	sval = va_arg(ap, char *); 
 	memcpy(p, sval, IN6ADDRSZ);
 	p += IN6ADDRSZ;
 	break;
-#endif
 	
       case '4':
         CHECK_LIMIT(INADDRSZ);
@@ -1475,7 +1449,6 @@ size_t answer_request(struct dns_header *header, char *limit, size_t qlen,
 		      while (intr->next && strcmp(intr->intr, intr->next->intr) == 0)
 			intr = intr->next;
 		  }
-#ifdef HAVE_IPV6
 	      else if (is_arpa == F_IPV6)
 		for (intr = daemon->int_names; intr; intr = intr->next)
 		  {
@@ -1491,7 +1464,6 @@ size_t answer_request(struct dns_header *header, char *limit, size_t qlen,
 		      while (intr->next && strcmp(intr->intr, intr->next->intr) == 0)
 			intr = intr->next;
 		  }
-#endif
 	      
 	      if (intr)
 		{
@@ -1582,9 +1554,7 @@ size_t answer_request(struct dns_header *header, char *limit, size_t qlen,
 		    }
 		}
 	      else if (option_bool(OPT_BOGUSPRIV) && (
-#ifdef HAVE_IPV6
 		       (is_arpa == F_IPV6 && private_net6(&addr.addr6)) ||
-#endif
 		       (is_arpa == F_IPV4 && private_net(addr.addr4, 1))))
 		{
 		  struct server *serv;
@@ -1599,8 +1569,6 @@ size_t answer_request(struct dns_header *header, char *limit, size_t qlen,
 
 		      if ((serv->flags & (SERV_HAS_DOMAIN | SERV_NO_ADDR)) != SERV_HAS_DOMAIN)
 		        continue;
-		      
-		      if (NULL == serv->domain) continue;
 
 		      domainlen = strlen(serv->domain);
 		      if (domainlen == 0 || domainlen > namelen)
@@ -1627,16 +1595,9 @@ size_t answer_request(struct dns_header *header, char *limit, size_t qlen,
 
 	  for (flag = F_IPV4; flag; flag = (flag == F_IPV4) ? F_IPV6 : 0)
 	    {
-	      unsigned short type = T_A;
+	      unsigned short type = (flag == F_IPV6) ? T_AAAA : T_A;
 	      struct interface_name *intr;
 
-	      if (flag == F_IPV6)
-#ifdef HAVE_IPV6
-		type = T_AAAA;
-#else
-	        break;
-#endif
-	      
 	      if (qtype != type && qtype != T_ANY)
 		continue;
 	      
@@ -1658,31 +1619,27 @@ size_t answer_request(struct dns_header *header, char *limit, size_t qlen,
 		    for (intr = daemon->int_names; intr; intr = intr->next)
 		      if (hostname_isequal(name, intr->name))
 			for (addrlist = intr->addr; addrlist; addrlist = addrlist->next)
-#ifdef HAVE_IPV
-			  if (!(addrlist->flags & ADDRLIST_IPV6))
-#endif
-			    if (is_same_net(addrlist->addr.addr4, local_addr, local_netmask))
+			  if (!(addrlist->flags & ADDRLIST_IPV6) && 
+			      is_same_net(addrlist->addr.addr4, local_addr, local_netmask))
 			    {
 			      localise = 1;
 			      break;
 			    }
-
+		  
 		  for (intr = daemon->int_names; intr; intr = intr->next)
 		    if (hostname_isequal(name, intr->name))
 		      {
 			for (addrlist = intr->addr; addrlist; addrlist = addrlist->next)
-#ifdef HAVE_IPV6
 			  if (((addrlist->flags & ADDRLIST_IPV6) ? T_AAAA : T_A) == type)
-#endif
 			    {
-			      if (localise &&
+			      if (localise && 
 				  !is_same_net(addrlist->addr.addr4, local_addr, local_netmask))
 				continue;
-#ifdef HAVE_IPV6
+
 			      if (addrlist->flags & ADDRLIST_REVONLY)
 				continue;
-#endif
-			      ans = 1;
+
+			      ans = 1;	
 			      sec_data = 0;
 			      if (!dryrun)
 				{
@@ -1961,11 +1918,8 @@ size_t answer_request(struct dns_header *header, char *limit, size_t qlen,
 	crecp = NULL;
 	while ((crecp = cache_find_by_name(crecp, rec->target, now, F_IPV4 | F_IPV6)))
 	  {
-#ifdef HAVE_IPV6
 	    int type =  crecp->flags & F_IPV4 ? T_A : T_AAAA;
-#else
-	    int type = T_A;
-#endif
+
 	    if (crecp->flags & F_NEG)
 	      continue;
 

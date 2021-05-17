@@ -1,4 +1,4 @@
-/* dnsmasq is Copyright (c) 2000-2020 Simon Kelley
+/* dnsmasq is Copyright (c) 2000-2021 Simon Kelley
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -2785,11 +2785,4 @@ static void apply_delay(u32 xid, time_t recvtime, struct dhcp_netid *netid)
     }
 }
 
-#endif
-  
-
-  
-  
-
-
-  
+#endif /* HAVE_DHCP */
