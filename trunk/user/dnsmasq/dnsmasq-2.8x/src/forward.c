@@ -23,6 +23,24 @@ static unsigned short get_id(void);
 static void free_frec(struct frec *f);
 static void query_full(time_t now);
 
+#ifdef HAVE_REGEX
+static inline int match_regex(const pcre * regex, const pcre_extra * pextra, const char* str, size_t len, unsigned int* group0_len)
+{
+    int captcount = 0;
+    int ret = 0;
+    if (pcre_fullinfo(regex, pextra, PCRE_INFO_CAPTURECOUNT, &captcount) == 0)
+    {
+        /* C99 dyn-array, or alloca must be used */
+        int ovect[(captcount + 1) * 3];
+        ret = pcre_exec(regex, pextra, str, len, 0, 0, ovect, (captcount + 1) * 3) > 0;
+ 
+        if (group0_len && ret)
+            *group0_len = (unsigned int) (ovect[1] - ovect[0]); // captured group 0
+    }
+    return ret;
+}
+#endif
+
 /* Send a UDP packet with its source address set as "source" 
    unless nowild is true, when we just send it with the kernel default */
 int send_from(int fd, int nowild, char *packet, size_t len, 
@@ -155,11 +173,28 @@ static unsigned int search_servers(time_t now, union all_addr **addrpp, unsigned
       }
     else if (serv->flags & SERV_HAS_DOMAIN)
       {
-	unsigned int domainlen = strlen(serv->domain);
-	char *matchstart = qdomain + namelen - domainlen;
-	if (namelen >= domainlen &&
-	    hostname_isequal(matchstart, serv->domain) &&
-	    (domainlen == 0 || namelen == domainlen || *(matchstart-1) == '.' ))
+	unsigned int domainlen = matchlen;
+	int serverhit = 0;
+
+#ifdef HAVE_REGEX
+	if (serv->flags & SERV_IS_REGEX)
+	  {
+		if (match_regex(serv->regex, serv->pextra, qdomain, namelen, &domainlen) && domainlen >= matchlen)
+		  serverhit = 1;
+	  }
+	else
+#endif
+	  {
+	    char *matchstart;
+	    domainlen = strlen(serv->domain);
+	    matchstart = qdomain + namelen - domainlen;
+	    if (namelen >= domainlen &&
+	        hostname_isequal(matchstart, serv->domain) &&
+	        (domainlen == 0 || namelen == domainlen || *(matchstart-1) == '.' ))
+	       serverhit = 1;
+	  }
+
+	if (serverhit)
 	  {
 	    if ((serv->flags & SERV_NO_REBIND) && norebind)	
 	      *norebind = 1;
@@ -186,6 +221,11 @@ static unsigned int search_servers(time_t now, union all_addr **addrpp, unsigned
 		if (domainlen >= matchlen)
 		  {
 		    *type = serv->flags & (SERV_HAS_DOMAIN | SERV_USE_RESOLV | SERV_NO_REBIND | SERV_DO_DNSSEC);
+#ifdef HAVE_REGEX
+		    if (serv->flags & SERV_IS_REGEX)
+				*domain = qdomain;
+		    else
+#endif
 		    *domain = serv->domain;
 		    matchlen = domainlen;
 		    if (serv->flags & SERV_NO_ADDR)
@@ -285,11 +325,27 @@ static void server_send_log(struct server *server, int fd,
 }
 #endif
 
+#ifdef HAVE_REGEX
+static int match_domain_for_forward(const char *domain, const struct server *serv)
+{
+  int ret_val = 0;
+  if(serv->flags & SERV_IS_REGEX)
+    ret_val = match_regex(serv->regex, serv->pextra, domain, strlen(domain), NULL);
+  else
+    ret_val = hostname_isequal(domain, serv->domain);
+  return ret_val;
+}
+#endif
+
 static int server_test_type(const struct server *server,
 			    const char *domain, int type, int extratype)
 {
   return (type == (server->flags & (SERV_TYPE | extratype)) &&
+#ifdef HAVE_REGEX
+      (type != SERV_HAS_DOMAIN || match_domain_for_forward(domain, server)) &&
+#else
       (type != SERV_HAS_DOMAIN || hostname_isequal(domain, server->domain)) &&
+#endif
       !(server->flags & (SERV_LITERAL_ADDRESS | SERV_LOOP)));
 }
 
@@ -418,6 +474,11 @@ static int forward_query(int udpfd, union mysockaddr *udpaddr,
 #endif
 
       /* retry on existing query, from original source. Send to all available servers  */
+#ifdef HAVE_REGEX
+      if(forward->sentto->flags & SERV_IS_REGEX)
+        domain = daemon->namebuff;
+      else
+#endif
       domain = forward->sentto->domain;
       forward->sentto->failed_queries++;
       if (!option_bool(OPT_ORDER) && old_src)
@@ -669,6 +730,14 @@ static size_t process_reply(struct dns_header *header, time_t now, struct server
       unsigned int matchlen = 0;
       for (ipset_pos = daemon->ipsets; ipset_pos; ipset_pos = ipset_pos->next) 
 	{
+#ifdef HAVE_REGEX
+#ifdef HAVE_REGEX_IPSET
+	  if (ipset_pos->domain_type & IPSET_IS_REGEX){
+		  if (match_regex(ipset_pos->regex, ipset_pos->pextra, daemon->namebuff, namelen, NULL))
+		    sets = ipset_pos->sets;
+	  }else{
+#endif
+#endif
 	  unsigned int domainlen = strlen(ipset_pos->domain);
 	  char *matchstart = daemon->namebuff + namelen - domainlen;
 	  if (namelen >= domainlen && hostname_isequal(matchstart, ipset_pos->domain) &&
@@ -678,6 +747,11 @@ static size_t process_reply(struct dns_header *header, time_t now, struct server
 	      matchlen = domainlen;
 	      sets = ipset_pos->sets;
 	    }
+#ifdef HAVE_REGEX
+#ifdef HAVE_REGEX_IPSET
+	  }
+#endif
+#endif
 	}
     }
 #endif
