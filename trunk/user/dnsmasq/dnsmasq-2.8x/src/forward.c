@@ -56,7 +56,9 @@ int send_from(int fd, int nowild, char *packet, size_t len,
 #elif defined(IP_SENDSRCADDR)
     char control[CMSG_SPACE(sizeof(struct in_addr))];
 #endif
+#ifdef HAVE_IPV6
     char control6[CMSG_SPACE(sizeof(struct in6_pktinfo))];
+#endif
   } control_u;
   
   iov[0].iov_base = packet;
@@ -97,6 +99,7 @@ int send_from(int fd, int nowild, char *packet, size_t len,
 #endif
 	}
       else
+#ifdef HAVE_IPV6
 	{
 	  struct in6_pktinfo p;
 	  p.ipi6_ifindex = iface; /* Need iface for IPv6 to handle link-local addrs */
@@ -107,6 +110,9 @@ int send_from(int fd, int nowild, char *packet, size_t len,
 	  cmptr->cmsg_type = daemon->v6pktinfo;
 	  cmptr->cmsg_level = IPPROTO_IPV6;
 	}
+#else
+      (void)iface; /* eliminate warning */
+#endif
     }
   
   while (retry_send(sendmsg(fd, &msg, 0)));
@@ -144,7 +150,7 @@ static unsigned int search_servers(time_t now, union all_addr **addrpp, unsigned
     /* domain matches take priority over NODOTS matches */
     else if ((serv->flags & SERV_FOR_NODOTS) && *type != SERV_HAS_DOMAIN && !strchr(qdomain, '.') && namelen != 0)
       {
-	unsigned int sflag = serv->addr.sa.sa_family == AF_INET ? F_IPV4 : F_IPV6; 
+	unsigned int sflag = serv->addr.sa.sa_family == AF_INET ? F_IPV4 : F_IPV6;
 	*type = SERV_FOR_NODOTS;
 	if ((serv->flags & SERV_NO_REBIND) && norebind)
 	  *norebind = 1;
@@ -164,8 +170,10 @@ static unsigned int search_servers(time_t now, union all_addr **addrpp, unsigned
 		flags = sflag;
 		if (serv->addr.sa.sa_family == AF_INET) 
 		  *addrpp = (union all_addr *)&serv->addr.in.sin_addr;
+#ifdef HAVE_IPV6
 		else
 		  *addrpp = (union all_addr *)&serv->addr.in6.sin6_addr;
+#endif 
 	      }
 	    else if (!flags || (flags & F_NXDOMAIN))
 	      flags = F_NOERR;
@@ -244,8 +252,10 @@ static unsigned int search_servers(time_t now, union all_addr **addrpp, unsigned
 			    flags = sflag;
 			    if (serv->addr.sa.sa_family == AF_INET) 
 			      *addrpp = (union all_addr *)&serv->addr.in.sin_addr;
+#ifdef HAVE_IPV6
 			    else
 			      *addrpp = (union all_addr *)&serv->addr.in6.sin6_addr;
+#endif
 			  }
 			else if (!flags || (flags & F_NXDOMAIN))
 			  flags = F_NOERR;
@@ -274,8 +284,10 @@ static unsigned int search_servers(time_t now, union all_addr **addrpp, unsigned
 	   /* handle F_IPV4 and F_IPV6 set on ANY query to 0.0.0.0/:: domain. */
 	   if (flags & F_IPV4)
 	     log_query((flags | F_CONFIG | F_FORWARD) & ~F_IPV6, qdomain, *addrpp, NULL);
+#ifdef HAVE_IPV6
 	   if (flags & F_IPV6)
 	     log_query((flags | F_CONFIG | F_FORWARD) & ~F_IPV4, qdomain, *addrpp, NULL);
+#endif
 	 }
     }
   else if ((*type) & SERV_USE_RESOLV)
@@ -300,8 +312,10 @@ static void log_query_mysockaddr(unsigned int flags, char *name, union mysockadd
 {
   if (addr->sa.sa_family == AF_INET)
     log_query(flags | F_IPV4, name, (union all_addr *)&addr->in.sin_addr, arg);
+#ifdef HAVE_IPV6
   else
     log_query(flags | F_IPV6, name, (union all_addr *)&addr->in6.sin6_addr, arg);
+#endif
 }
 
 static void server_send(struct server *server, int fd,
@@ -923,9 +937,10 @@ void reply_query(int fd, time_t now)
   daemon->srv_save = NULL;
 
   /* Determine the address of the server replying  so that we can mark that as good */
+#ifdef HAVE_IPV6
   if (serveraddr.sa.sa_family == AF_INET6)
     serveraddr.in6.sin6_flowinfo = 0;
-  
+#endif
   header = (struct dns_header *)daemon->packet;
 
   if (n < (int)sizeof(struct dns_header) || !(header->hb3 & HB3_QR))
@@ -1367,7 +1382,9 @@ void receive_query(struct listener *listen, time_t now)
   struct cmsghdr *cmptr;
   union {
     struct cmsghdr align; /* this ensures alignment */
+#ifdef HAVE_IPV6
     char control6[CMSG_SPACE(sizeof(struct in6_pktinfo))];
+#endif
 #if defined(HAVE_LINUX_NETWORK)
     char control[CMSG_SPACE(sizeof(struct in_pktinfo))];
 #elif defined(IP_RECVDSTADDR) && defined(HAVE_SOLARIS_NETWORK)
@@ -1379,8 +1396,12 @@ void receive_query(struct listener *listen, time_t now)
 #endif
   } control_u;
   int family = listen->addr.sa.sa_family;
+#ifdef HAVE_IPV6
    /* Can always get recvd interface for IPv6 */
   int check_dst = !option_bool(OPT_NOWILD) || family == AF_INET6;
+#else
+  int check_dst = !option_bool(OPT_NOWILD);
+#endif
 
   /* packet buffer overwritten */
   daemon->srv_save = NULL;
@@ -1431,6 +1452,7 @@ void receive_query(struct listener *listen, time_t now)
       if (source_addr.in.sin_port == 0)
 	return;
     }
+#ifdef HAVE_IPV6
   else
     {
       /* Source-port == 0 is an error, we can't send back to that. */
@@ -1438,12 +1460,13 @@ void receive_query(struct listener *listen, time_t now)
 	return;
       source_addr.in6.sin6_flowinfo = 0;
     }
+#endif
   
   /* We can be configured to only accept queries from at-most-one-hop-away addresses. */
   if (option_bool(OPT_LOCAL_SERVICE))
     {
       struct addrlist *addr;
-
+#ifdef HAVE_IPV6
       if (family == AF_INET6) 
 	{
 	  for (addr = daemon->interface_addrs; addr; addr = addr->next)
@@ -1452,6 +1475,7 @@ void receive_query(struct listener *listen, time_t now)
 	      break;
 	}
       else
+#endif
 	{
 	  struct in_addr netmask;
 	  for (addr = daemon->interface_addrs; addr; addr = addr->next)
@@ -1520,6 +1544,7 @@ void receive_query(struct listener *listen, time_t now)
 	}
 #endif
       
+#ifdef HAVE_IPV6
       if (family == AF_INET6)
 	{
 	  for (cmptr = CMSG_FIRSTHDR(&msg); cmptr; cmptr = CMSG_NXTHDR(&msg, cmptr))
@@ -1535,6 +1560,7 @@ void receive_query(struct listener *listen, time_t now)
 		if_index = p.p->ipi6_ifindex;
 	      }
 	}
+#endif
       
       /* enforce available interface configuration */
       
@@ -1880,10 +1906,11 @@ unsigned char *tcp_request(int confd, time_t now,
   if (option_bool(OPT_CONNTRACK))
     {
       union all_addr local;
-		      
+#ifdef HAVE_IPV6		      
       if (local_addr->sa.sa_family == AF_INET6)
 	local.addr6 = local_addr->in6.sin6_addr;
       else
+#endif
 	local.addr4 = local_addr->in.sin_addr;
       
       have_mark = get_incoming_mark(&peer_addr, &local, 1, &mark);
@@ -1894,7 +1921,7 @@ unsigned char *tcp_request(int confd, time_t now,
   if (option_bool(OPT_LOCAL_SERVICE))
     {
       struct addrlist *addr;
-
+#ifdef HAVE_IPV6
       if (peer_addr.sa.sa_family == AF_INET6) 
 	{
 	  for (addr = daemon->interface_addrs; addr; addr = addr->next)
@@ -1903,6 +1930,7 @@ unsigned char *tcp_request(int confd, time_t now,
 	      break;
 	}
       else
+#endif
 	{
 	  struct in_addr netmask;
 	  for (addr = daemon->interface_addrs; addr; addr = addr->next)
