@@ -1,12 +1,24 @@
-SRC_NAME=e2fsprogs-1.4X.X
+SRC_NAME=e2fsprogs-1.45.6
+SRC_URL=https://www.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.45.6/$(SRC_NAME).tar.xz
 
 THISDIR = $(shell pwd)
 
 CFLAGS += -ffunction-sections -fdata-sections
 LDFLAGS += -Wl,--gc-sections
 
-all: config_test
+all: download_test extract_test config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
+
+download_test:
+	( if [ ! -f $(SRC_NAME).tar.xz ]; then \
+		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.xz $(SRC_URL); \
+	fi )
+
+extract_test:
+	( if [ ! -d $(SRC_NAME) ]; then \
+		tar xJf $(SRC_NAME).tar.xz; \
+		patch -d $(SRC_NAME) -p1 -i ../e2fsprogs-orig.patch; \
+	fi )
 
 config_test:
 	( if [ -f ./config_done ]; then \
@@ -17,30 +29,32 @@ config_test:
 
 configure:
 	( cd $(SRC_NAME) ; \
+	autoreconf -fi ; \
+	PKG_CONFIG_PATH=$(STAGEDIR)/lib/pkgconfig \
 	./configure \
 		--prefix= \
 		--disable-bmap-stats \
 		--disable-debugfs \
-		--disable-e2initrd-helper \
+		--disable-testio-debug \
 		--disable-fuse2fs \
 		--disable-gcov \
 		--disable-hardening \
 		--disable-imager \
-		--disable-libblkid \
-		--disable-libuuid \
-		--disable-mmp \
-		--disable-nls \
 		--disable-resizer \
-		--disable-rpath \
-		--disable-tdb \
-		--disable-testio-debug \
-		--disable-threads \
-		--disable-tls \
+		--disable-e2initrd-helper \
 		--disable-uuidd \
-		--enable-defrag \
-		--enable-elf-shlibs \
+		--disable-mmp \
+		--disable-tdb \
+		--disable-rpath \
+		--disable-nls \
+		--disable-tls \
+		--disable-libuuid \
+		--disable-libblkid \
+		--disable-threads \
 		--enable-symlink-build \
 		--enable-verbose-makecmds \
+		--enable-elf-shlibs \
+		--enable-defrag \
 		--host=$(HOST_TARGET) \
 		--build=$(HOST_BUILD) ; \
 	)

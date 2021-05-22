@@ -667,8 +667,8 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-#uninstall-local:
 #distclean-local:
+#uninstall-local:
 #install-data-local:
 clean: clean-recursive
 
