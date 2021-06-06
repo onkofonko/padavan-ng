@@ -1,20 +1,20 @@
-SRC_NAME="inadyn-2.7"
-
-SHAREDIR = $(ROOTDIR)/user/shared
-CFLAGS += -Os -ffunction-sections -fdata-sections -I.
-CFLAGS	+= -I$(SHAREDIR)
-LDFLAGS	+= -Wl,--gc-sections -L. -L$(SHAREDIR) -lshared
-
-ifeq ($(CONFIG_FIRMWARE_INCLUDE_DDNS_SSL),y)
-SSLFLAG=--enable-openssl
-else
-SSLFLAG=--disable-openssl
-endif
-
+SRC_NAME = inadyn-2.8.1
+SRC_URL = https://github.com/troglobit/inadyn/releases/download/v2.8.1/inadyn-2.8.1.tar.xz
 THISDIR = $(shell pwd)
 
-all: config_test
-	$(MAKE) -C $(SRC_NAME)
+all: download_test extract_test config_test
+	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
+
+download_test:
+	( if [ ! -f $(SRC_NAME).tar.xz ]; then \
+		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.xz $(SRC_URL); \
+	fi )
+
+extract_test:
+	( if [ ! -d $(SRC_NAME) ]; then \
+		tar -xf $(SRC_NAME).tar.xz; \
+		patch -d $(SRC_NAME) -p1 -i ../$(SRC_NAME).patch; \
+	fi )
 
 config_test:
 	( if [ -f ./config_done ]; then \
@@ -25,14 +25,11 @@ config_test:
 
 configure:
 	( cd $(SRC_NAME) ; \
-	export PKG_CONFIG_PATH=$(STAGEDIR)/lib/pkgconfig ; \
-	autoreconf -vif && \
-	./configure --without-systemd \
-		$(SSLFLAG) \
-		confuse_CFLAGS="-I$(STAGEDIR)/include" \
-		confuse_LIBS="-L$(STAGEDIR)/lib" \
-		OpenSSL_CFLAGS="-I$(STAGEDIR)/include" \
-		OpenSSL_LIBS="-L$(STAGEDIR)/lib -lssl -lcrypto" \
+	autoreconf -fi ; \
+	./configure \
+		--prefix=/usr \
+		--enable-openssl \
+		PKG_CONFIG_LIBDIR="$(STAGEDIR)/lib/pkgconfig/" \
 		--host=$(HOST_TARGET) \
 		--build=$(HOST_BUILD) ; \
 	)
@@ -40,11 +37,8 @@ configure:
 clean:
 	if [ -f $(SRC_NAME)/Makefile ] ; then \
 		$(MAKE) -C $(SRC_NAME) distclean ; \
-	fi; \
+	fi ; \
 	rm -f config_done
-	rm -f inadyn
 
 romfs:
-	cp $(SRC_NAME)/src/inadyn .
-	$(STRIP) inadyn
-	$(ROMFSINST) /bin/inadyn
+	$(ROMFSINST) -p +x $(THISDIR)/$(SRC_NAME)/src/inadyn /bin/inadyn
