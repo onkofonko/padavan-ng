@@ -62,19 +62,19 @@
 
 <pre><code>        addgroup, adduser, arp, arping, ash, awk, base32, basename, bash,
         brctl, bunzip2, bzcat, bzip2, cat, chgrp, chmod, chown, chpasswd,
-        chroot, clear, cp, crond, crontab, cut, date, dd, df, dirname,
-        dmesg, dnsdomainname, dos2unix, du, echo, egrep, eject, env,
-        ether-wake, expr, false, fdisk, fgrep, find, flock, free, fuser,
-        grep, gunzip, gzip, head, hostname, ifconfig, inetd, insmod, kill,
-        killall, klogd, ln, logger, login, ls, lsmod, lsof, md5sum, mdev,
-        microcom, mkdir, mknod, mkswap, modprobe, more, mount, mountpoint,
-        mv, netstat, nice, nslookup, ntpd, passwd, pgrep, pidof, ping,
-        ping6, printf, ps, pwd, rm, rmdir, rmmod, route, sed, sendmail, seq,
-        sh, sleep, sort, start-stop-daemon, stat, strings, swapoff, swapon,
-        switch_root, sync, sysctl, syslogd, tail, tar, tee, telnetd, test,
-        time, top, touch, tr, traceroute, traceroute6, true, udhcpc, umount,
-        uname, uniq, unix2dos, unlink, uptime, usleep, vconfig, vi, watch,
-        wc, wget, which, whoami, xargs, yes, zcat, zcip</code></pre>
+        chroot, clear, cp, crond, crontab, cut, date, dd, df, dhcp6c,
+        dirname, dmesg, dnsdomainname, dos2unix, du, echo, egrep, eject,
+        env, ether-wake, expr, false, fdisk, fgrep, find, flock, free,
+        fuser, grep, gunzip, gzip, head, hostname, ifconfig, inetd, insmod,
+        kill, killall, klogd, ln, logger, login, ls, lsmod, lsof, md5sum,
+        mdev, microcom, mkdir, mknod, mkswap, modprobe, more, mount,
+        mountpoint, mv, netstat, nice, nslookup, ntpd, passwd, pgrep, pidof,
+        ping, ping6, printf, ps, pwd, rm, rmdir, rmmod, route, sed,
+        sendmail, seq, sh, sleep, sort, start-stop-daemon, stat, strings,
+        swapoff, swapon, switch_root, sync, sysctl, syslogd, tail, tar, tee,
+        telnetd, test, time, top, touch, tr, traceroute, traceroute6, true,
+        udhcpc, umount, uname, uniq, unix2dos, unlink, uptime, usleep,
+        vconfig, vi, watch, wc, wget, which, whoami, xargs, yes, zcat, zcip</code></pre>
 
 <h1 id="COMMAND-DESCRIPTIONS">COMMAND DESCRIPTIONS</h1>
 
@@ -440,6 +440,19 @@
         -a      Show all filesystems
         -i      Inodes
         -B SIZE Blocksize</code></pre>
+
+</dd>
+<dt id="dhcp6c"><b>dhcp6c</b></dt>
+<dd>
+
+<p>dhcp6c [-vfi] [-c FILE] [-D LL|LLT] [-p FILE] interface</p>
+
+<pre><code>        -v         Print debugging messages(may be repeated)
+        -f         Foreground mode
+        -i         Info-req(information-only) mode
+        -c FILE    Use FILE as the configuration file
+        -D LL|LLT  Use LL or LLT to override default(LLT) DUID type generation
+        -p FILE    Use FILE to dump the process ID of dhcp6c</code></pre>
 
 </dd>
 <dt id="dirname"><b>dirname</b></dt>

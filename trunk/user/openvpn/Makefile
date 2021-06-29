@@ -1,10 +1,22 @@
-SRC_NAME=openvpn-2.5.x
+SRC_NAME=openvpn-2.5.3
+SRC_URL=https://github.com/OpenVPN/openvpn/archive/v2.5.3.tar.gz
 
-CFLAGS += -ffunction-sections -fdata-sections -fvisibility=hidden
+CFLAGS += -ffunction-sections -fdata-sections
 LDFLAGS += -Wl,--gc-sections
 
+#all: download_test extract_test config_test
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
+
+download_test:
+	( if [ ! -f $(SRC_NAME).tar.gz ]; then \
+		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.gz $(SRC_URL); \
+	fi )
+
+extract_test:
+	( if [ ! -d $(SRC_NAME) ]; then \
+		tar xzf $(SRC_NAME).tar.gz; \
+	fi )
 
 config_test:
 	( if [ -f ./config_done ]; then \
@@ -28,18 +40,13 @@ configure:
 		--disable-selinux \
 		--disable-systemd \
 		--disable-iproute2 \
+		--disable-unit-tests \
 		--disable-management \
-		--disable-socks \
 		--enable-small \
-		--enable-multi \
-		--enable-server \
 		--enable-multihome \
 		--enable-pf \
 		--enable-fragment \
-		--enable-http-proxy \
 		--enable-def-auth \
-		--enable-ssl \
-		--enable-crypto \
 		--enable-lzo \
 		--with-crypto-library=openssl \
 		--with-sysroot=$(STAGEDIR) \

@@ -129,7 +129,7 @@
 .\" ========================================================================
 .\"
 .IX Title "BUSYBOX 1"
-.TH BUSYBOX 1 "2021-06-15" "version 1.33.1" "busybox"
+.TH BUSYBOX 1 "2021-06-29" "version 1.33.1" "busybox"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -218,19 +218,19 @@ Currently available applets include:
 .Vb 10
 \&        addgroup, adduser, arp, arping, ash, awk, base32, basename, bash,
 \&        brctl, bunzip2, bzcat, bzip2, cat, chgrp, chmod, chown, chpasswd,
-\&        chroot, clear, cp, crond, crontab, cut, date, dd, df, dirname,
-\&        dmesg, dnsdomainname, dos2unix, du, echo, egrep, eject, env,
-\&        ether\-wake, expr, false, fdisk, fgrep, find, flock, free, fuser,
-\&        grep, gunzip, gzip, head, hostname, ifconfig, inetd, insmod, kill,
-\&        killall, klogd, ln, logger, login, ls, lsmod, lsof, md5sum, mdev,
-\&        microcom, mkdir, mknod, mkswap, modprobe, more, mount, mountpoint,
-\&        mv, netstat, nice, nslookup, ntpd, passwd, pgrep, pidof, ping,
-\&        ping6, printf, ps, pwd, rm, rmdir, rmmod, route, sed, sendmail, seq,
-\&        sh, sleep, sort, start\-stop\-daemon, stat, strings, swapoff, swapon,
-\&        switch_root, sync, sysctl, syslogd, tail, tar, tee, telnetd, test,
-\&        time, top, touch, tr, traceroute, traceroute6, true, udhcpc, umount,
-\&        uname, uniq, unix2dos, unlink, uptime, usleep, vconfig, vi, watch,
-\&        wc, wget, which, whoami, xargs, yes, zcat, zcip
+\&        chroot, clear, cp, crond, crontab, cut, date, dd, df, dhcp6c,
+\&        dirname, dmesg, dnsdomainname, dos2unix, du, echo, egrep, eject,
+\&        env, ether\-wake, expr, false, fdisk, fgrep, find, flock, free,
+\&        fuser, grep, gunzip, gzip, head, hostname, ifconfig, inetd, insmod,
+\&        kill, killall, klogd, ln, logger, login, ls, lsmod, lsof, md5sum,
+\&        mdev, microcom, mkdir, mknod, mkswap, modprobe, more, mount,
+\&        mountpoint, mv, netstat, nice, nslookup, ntpd, passwd, pgrep, pidof,
+\&        ping, ping6, printf, ps, pwd, rm, rmdir, rmmod, route, sed,
+\&        sendmail, seq, sh, sleep, sort, start\-stop\-daemon, stat, strings,
+\&        swapoff, swapon, switch_root, sync, sysctl, syslogd, tail, tar, tee,
+\&        telnetd, test, time, top, touch, tr, traceroute, traceroute6, true,
+\&        udhcpc, umount, uname, uniq, unix2dos, unlink, uptime, usleep,
+\&        vconfig, vi, watch, wc, wget, which, whoami, xargs, yes, zcat, zcip
 .Ve
 .SH "COMMAND DESCRIPTIONS"
 .IX Header "COMMAND DESCRIPTIONS"
@@ -563,6 +563,18 @@ Print filesystem usage statistics
 \&        \-a      Show all filesystems
 \&        \-i      Inodes
 \&        \-B SIZE Blocksize
+.Ve
+.IP "\fBdhcp6c\fR" 4
+.IX Item "dhcp6c"
+dhcp6c [\-vfi] [\-c \s-1FILE\s0] [\-D LL|LLT] [\-p \s-1FILE\s0] interface
+.Sp
+.Vb 6
+\&        \-v         Print debugging messages(may be repeated)
+\&        \-f         Foreground mode
+\&        \-i         Info\-req(information\-only) mode
+\&        \-c FILE    Use FILE as the configuration file
+\&        \-D LL|LLT  Use LL or LLT to override default(LLT) DUID type generation
+\&        \-p FILE    Use FILE to dump the process ID of dhcp6c
 .Ve
 .IP "\fBdirname\fR" 4
 .IX Item "dirname"
