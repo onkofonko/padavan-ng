@@ -38,7 +38,6 @@
 
 #define DNS_RESOLV_CONF			"/etc/resolv.conf"
 #define DNS_SERVERS_FILE		"/tmp/dnsmasq.servers"
-#define DNS_RELAY_QUERIES_MAX		512
 
 #define SCRIPT_UDHCPC_LAN		"/tmp/udhcpc_lan.script"
 #define SCRIPT_UDHCPC_WAN		"/tmp/udhcpc.script"
@@ -84,8 +83,10 @@
 #define QMI_HANDLE_PDH			"/tmp/qmi-handle"
 
 #define DDNS_CONF_FILE			"/etc/inadyn.conf"
+#define DDNS_CONF_FILE_MAN		"/etc/inadyn_asusreg.conf"
 #define DDNS_DONE_SCRIPT		"/sbin/ddns_updated"
 #define DDNS_CACHE_DIR			"/tmp/inadyn"
+#define DDNS_PID_FILE			"/var/run/inadyn.pid"
 
 #define NTPC_DONE_SCRIPT		"/sbin/ntpc_updated"
 
