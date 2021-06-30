@@ -54,7 +54,7 @@ LT_CONFIG_LTDL_DIR([.]) # I am me!
 
 AM_INIT_AUTOMAKE([gnu subdir-objects])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
-AM_MAINTAINER_MODE([disable])
+
 
 ## ------------------------------- ##
 ## Libtool specific configuration. ##

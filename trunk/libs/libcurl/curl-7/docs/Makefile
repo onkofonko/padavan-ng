@@ -107,7 +107,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-build_triplet = x86_64-pc-linux-gnu
+build_triplet = aarch64-pc-linux-gnu
 host_triplet = mipsel-unknown-linux-gnu
 subdir = docs
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -265,7 +265,7 @@ CC = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r
 CCDEPMODE = depmode=gcc3
 CFLAGS = -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe -DEMBED -isystem /opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -Werror-implicit-function-declaration -Wno-system-headers
 CFLAG_CURL_SYMBOL_HIDING = -fvisibility=hidden
-CONFIGURE_OPTIONS = " '--prefix=' '--disable-static' '--enable-openssl-auto-load-config' '--enable-shared' '--enable-ipv6' '--disable-gopher' '--disable-ldap' '--disable-ldaps' '--disable-rt' '--disable-rtsp' '--disable-telnet' '--disable-tftp' '--disable-smb' '--disable-smtp' '--disable-pop3' '--disable-imap' '--disable-sspi' '--disable-dict' '--disable-ares' '--disable-debug' '--disable-curldebug' '--disable-manual' '--disable-verbose' '--disable-tls-srp' '--disable-libcurl-option' '--disable-threaded-resolver' '--without-brotli' '--without-gnutls' '--without-ca-path' '--without-ca-fallback' '--without-cyassl' '--without-darwinssl' '--without-default-ssl-backend' '--without-libidn2' '--without-libmetalink' '--without-libpsl' '--without-librtmp' '--without-libssh' '--without-libssh2' '--without-krb4' '--with-nghttp2' '--without-nss' '--without-mbedtls' '--without-mesalink' '--without-polarssl' '--without-schannel' '--without-wolfssl' '--without-winidn' '--without-winssl' '--without-zsh-functions-dir' '--with-random=/dev/urandom' '--with-zlib=/opt/padavan-ng/trunk/stage' '--with-ssl=/opt/padavan-ng/trunk/stage' '--with-ca-bundle=/etc/ssl/cert.pem' '--host=mipsel-linux' '--build=x86_64-pc-linux-gnu' 'build_alias=x86_64-pc-linux-gnu' 'host_alias=mipsel-linux' 'CC=/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc' 'CFLAGS=-Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections' 'LDFLAGS=-L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections'"
+CONFIGURE_OPTIONS = " '--prefix=' '--disable-static' '--enable-openssl-auto-load-config' '--enable-shared' '--enable-ipv6' '--disable-gopher' '--disable-ldap' '--disable-ldaps' '--disable-rt' '--disable-rtsp' '--disable-telnet' '--disable-tftp' '--disable-smb' '--disable-smtp' '--disable-pop3' '--disable-imap' '--disable-sspi' '--disable-dict' '--disable-ares' '--disable-debug' '--disable-curldebug' '--disable-manual' '--disable-verbose' '--disable-tls-srp' '--disable-libcurl-option' '--disable-threaded-resolver' '--without-brotli' '--without-gnutls' '--without-ca-path' '--without-ca-fallback' '--without-cyassl' '--without-darwinssl' '--without-default-ssl-backend' '--without-libidn2' '--without-libmetalink' '--without-libpsl' '--without-librtmp' '--without-libssh' '--without-libssh2' '--without-krb4' '--with-nghttp2' '--without-nss' '--without-mbedtls' '--without-mesalink' '--without-polarssl' '--without-schannel' '--without-wolfssl' '--without-winidn' '--without-winssl' '--without-zsh-functions-dir' '--with-random=/dev/urandom' '--with-zlib=/opt/padavan-ng/trunk/stage' '--with-ssl=/opt/padavan-ng/trunk/stage' '--with-ca-bundle=/etc/ssl/cert.pem' '--host=mipsel-linux' '--build=aarch64-pc-linux-gnu' 'build_alias=aarch64-pc-linux-gnu' 'host_alias=mipsel-linux' 'CC=/opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc' 'CFLAGS=-Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe  -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections' 'LDFLAGS=-L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections'"
 CPP = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc -E
 CPPFLAGS = -isystem /opt/padavan-ng/trunk/stage/include -isystem /opt/padavan-ng/trunk/stage//include -isystem /opt/padavan-ng/trunk/stage/include
 CPPFLAG_CURL_STATICLIB = 
@@ -342,11 +342,11 @@ LT_SYS_LIBRARY_PATH =
 MAINT = #
 MAKEINFO = ${SHELL} /opt/padavan-ng/trunk/libs/libcurl/curl-7/missing makeinfo
 MANIFEST_TOOL = :
-MANOPT = -man
+MANOPT = 
 MKDIR_P = /bin/mkdir -p
 NM = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-nm
 NMEDIT = 
-NROFF = /usr/bin/nroff
+NROFF = 
 NSS_LIBS = 
 OBJDUMP = objdump
 OBJEXT = o
@@ -421,9 +421,9 @@ am__quote =
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
 bindir = ${exec_prefix}/bin
-build = x86_64-pc-linux-gnu
-build_alias = x86_64-pc-linux-gnu
-build_cpu = x86_64
+build = aarch64-pc-linux-gnu
+build_alias = aarch64-pc-linux-gnu
+build_cpu = aarch64
 build_os = linux-gnu
 build_vendor = pc
 builddir = .
