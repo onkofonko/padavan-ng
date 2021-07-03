@@ -475,13 +475,13 @@ static inline void rcu_preempt_sleep_check(void)
 
 #define __rcu_access_pointer(p, space) \
 	({ \
-		typeof(*p) *_________p1 = (typeof(*p)*__force )ACCESS_ONCE(p); \
+		typeof(*p) *_________p1 = (typeof(*p)*__force )READ_ONCE(p); \
 		rcu_dereference_sparse(p, space); \
 		((typeof(*p) __force __kernel *)(_________p1)); \
 	})
 #define __rcu_dereference_check(p, c, space) \
 	({ \
-		typeof(*p) *_________p1 = (typeof(*p)*__force )ACCESS_ONCE(p); \
+		typeof(*p) *_________p1 = (typeof(*p)*__force )READ_ONCE(p); \
 		rcu_lockdep_assert(c, "suspicious rcu_dereference_check()" \
 				      " usage"); \
 		rcu_dereference_sparse(p, space); \
@@ -498,13 +498,13 @@ static inline void rcu_preempt_sleep_check(void)
 
 #define __rcu_access_index(p, space) \
 	({ \
-		typeof(p) _________p1 = ACCESS_ONCE(p); \
+		typeof(p) _________p1 = READ_ONCE(p); \
 		rcu_dereference_sparse(p, space); \
 		(_________p1); \
 	})
 #define __rcu_dereference_index_check(p, c) \
 	({ \
-		typeof(p) _________p1 = ACCESS_ONCE(p); \
+		typeof(p) _________p1 = READ_ONCE(p); \
 		rcu_lockdep_assert(c, \
 				   "suspicious rcu_dereference_index_check()" \
 				   " usage"); \
