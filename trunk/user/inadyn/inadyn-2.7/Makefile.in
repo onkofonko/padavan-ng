@@ -194,8 +194,8 @@ am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/inadyn.service.in \
 	$(top_srcdir)/aux/config.guess $(top_srcdir)/aux/config.sub \
 	$(top_srcdir)/aux/install-sh $(top_srcdir)/aux/ltmain.sh \
 	$(top_srcdir)/aux/missing AUTHORS COPYING aux/ar-lib \
-	aux/compile aux/config.guess aux/config.sub aux/install-sh \
-	aux/ltmain.sh aux/missing
+	aux/compile aux/config.guess aux/config.sub aux/depcomp \
+	aux/install-sh aux/ltmain.sh aux/missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
