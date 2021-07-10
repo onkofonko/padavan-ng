@@ -84,7 +84,7 @@ enum DstPort {
 	MAX_IF_NUM // MAX_IF_NUM = 64 entries (act_dp length 6bits)
 };
 
-typedef struct {
+struct PdmaRxDescInfo4 {
 	uint16_t MAGIC_TAG;
 	uint32_t FOE_Entry:14;
 #if defined (CONFIG_RALINK_MT7620)
@@ -103,7 +103,7 @@ typedef struct {
 	uint32_t AIS:1;
 	uint32_t RESV2:4;
 #endif
-}  __attribute__ ((packed)) PdmaRxDescInfo4;
+}  __packed;
 
 /*
  * DEFINITIONS AND MACROS
@@ -134,34 +134,34 @@ typedef struct {
 #define IS_SPACE_AVAILABLED(skb)    ((skb_headroom(skb) >= FOE_INFO_LEN) ? 1 : 0)
 #define FOE_INFO_START_ADDR(skb)    (skb->head)
 
-#define FOE_MAGIC_TAG(skb)	    ((PdmaRxDescInfo4 *)((skb)->head))->MAGIC_TAG
-#define FOE_ENTRY_NUM(skb)	    ((PdmaRxDescInfo4 *)((skb)->head))->FOE_Entry
-#define FOE_ALG(skb)		    ((PdmaRxDescInfo4 *)((skb)->head))->ALG
+#define FOE_MAGIC_TAG(skb)	    ((struct PdmaRxDescInfo4 *)((skb)->head))->MAGIC_TAG
+#define FOE_ENTRY_NUM(skb)	    ((struct PdmaRxDescInfo4 *)((skb)->head))->FOE_Entry
+#define FOE_ALG(skb)		    ((struct PdmaRxDescInfo4 *)((skb)->head))->ALG
 #if defined (CONFIG_HNAT_V2)
-#define FOE_ENTRY_VALID(skb)	    (((PdmaRxDescInfo4 *)((skb)->head))->FOE_Entry != 0x3fff)
-#define FOE_AI(skb)		    ((PdmaRxDescInfo4 *)((skb)->head))->CRSN
-#define FOE_SP(skb)		    ((PdmaRxDescInfo4 *)((skb)->head))->SPORT
+#define FOE_ENTRY_VALID(skb)	    (((struct PdmaRxDescInfo4 *)((skb)->head))->FOE_Entry != 0x3fff)
+#define FOE_AI(skb)		    ((struct PdmaRxDescInfo4 *)((skb)->head))->CRSN
+#define FOE_SP(skb)		    ((struct PdmaRxDescInfo4 *)((skb)->head))->SPORT
 #else
-#define FOE_ENTRY_VALID(skb)	    ((PdmaRxDescInfo4 *)((skb)->head))->FVLD
-#define FOE_AI(skb)		    ((PdmaRxDescInfo4 *)((skb)->head))->AI
-#define FOE_SP(skb)		    ((PdmaRxDescInfo4 *)((skb)->head))->SP	//src_port or user priority
+#define FOE_ENTRY_VALID(skb)	    ((struct PdmaRxDescInfo4 *)((skb)->head))->FVLD
+#define FOE_AI(skb)		    ((struct PdmaRxDescInfo4 *)((skb)->head))->AI
+#define FOE_SP(skb)		    ((struct PdmaRxDescInfo4 *)((skb)->head))->SP	//src_port or user priority
 #endif
 
 #elif defined (HNAT_USE_TAILROOM)
 #define IS_SPACE_AVAILABLED(skb)    ((skb_tailroom(skb) >= FOE_INFO_LEN) ? 1 : 0)
 #define FOE_INFO_START_ADDR(skb)    (skb->end - FOE_INFO_LEN)
 
-#define FOE_MAGIC_TAG(skb)	    ((PdmaRxDescInfo4 *)((skb)->end-FOE_INFO_LEN))->MAGIC_TAG
-#define FOE_ENTRY_NUM(skb)	    ((PdmaRxDescInfo4 *)((skb)->end-FOE_INFO_LEN))->FOE_Entry
-#define FOE_ALG(skb)		    ((PdmaRxDescInfo4 *)((skb)->end-FOE_INFO_LEN))->ALG
+#define FOE_MAGIC_TAG(skb)	    ((struct PdmaRxDescInfo4 *)((skb)->end-FOE_INFO_LEN))->MAGIC_TAG
+#define FOE_ENTRY_NUM(skb)	    ((struct PdmaRxDescInfo4 *)((skb)->end-FOE_INFO_LEN))->FOE_Entry
+#define FOE_ALG(skb)		    ((struct PdmaRxDescInfo4 *)((skb)->end-FOE_INFO_LEN))->ALG
 #if defined (CONFIG_HNAT_V2)
-#define FOE_ENTRY_VALID(skb)	    (((PdmaRxDescInfo4 *)((skb)->end-FOE_INFO_LEN))->FOE_Entry != 0x3fff)
-#define FOE_AI(skb)		    ((PdmaRxDescInfo4 *)((skb)->end-FOE_INFO_LEN))->CRSN
-#define FOE_SP(skb)		    ((PdmaRxDescInfo4 *)((skb)->end-FOE_INFO_LEN))->SPORT
+#define FOE_ENTRY_VALID(skb)	    (((struct PdmaRxDescInfo4 *)((skb)->end-FOE_INFO_LEN))->FOE_Entry != 0x3fff)
+#define FOE_AI(skb)		    ((struct PdmaRxDescInfo4 *)((skb)->end-FOE_INFO_LEN))->CRSN
+#define FOE_SP(skb)		    ((struct PdmaRxDescInfo4 *)((skb)->end-FOE_INFO_LEN))->SPORT
 #else
-#define FOE_ENTRY_VALID(skb)	    ((PdmaRxDescInfo4 *)((skb)->end-FOE_INFO_LEN))->FVLD
-#define FOE_AI(skb)		    ((PdmaRxDescInfo4 *)((skb)->end-FOE_INFO_LEN))->AI
-#define FOE_SP(skb)		    ((PdmaRxDescInfo4 *)((skb)->end-FOE_INFO_LEN))->SP	//src_port or user priority
+#define FOE_ENTRY_VALID(skb)	    ((struct PdmaRxDescInfo4 *)((skb)->end-FOE_INFO_LEN))->FVLD
+#define FOE_AI(skb)		    ((struct PdmaRxDescInfo4 *)((skb)->end-FOE_INFO_LEN))->AI
+#define FOE_SP(skb)		    ((struct PdmaRxDescInfo4 *)((skb)->end-FOE_INFO_LEN))->SP	//src_port or user priority
 #endif
 
 #elif defined (HNAT_USE_SKB_CB)
@@ -170,17 +170,17 @@ typedef struct {
 #define IS_SPACE_AVAILABLED(skb)    1
 #define FOE_INFO_START_ADDR(skb)    (skb->cb + CB_OFFSET)
 
-#define FOE_MAGIC_TAG(skb)	    ((PdmaRxDescInfo4 *)((skb)->cb + CB_OFFSET))->MAGIC_TAG
-#define FOE_ENTRY_NUM(skb)	    ((PdmaRxDescInfo4 *)((skb)->cb + CB_OFFSET))->FOE_Entry
-#define FOE_ALG(skb)		    ((PdmaRxDescInfo4 *)((skb)->cb + CB_OFFSET))->ALG
+#define FOE_MAGIC_TAG(skb)	    ((struct PdmaRxDescInfo4 *)((skb)->cb + CB_OFFSET))->MAGIC_TAG
+#define FOE_ENTRY_NUM(skb)	    ((struct PdmaRxDescInfo4 *)((skb)->cb + CB_OFFSET))->FOE_Entry
+#define FOE_ALG(skb)		    ((struct PdmaRxDescInfo4 *)((skb)->cb + CB_OFFSET))->ALG
 #if defined (CONFIG_HNAT_V2)
-#define FOE_ENTRY_VALID(skb)	    (((PdmaRxDescInfo4 *)((skb)->cb + CB_OFFSET))->FOE_Entry != 0x3fff)
-#define FOE_AI(skb)		    ((PdmaRxDescInfo4 *)((skb)->cb + CB_OFFSET))->CRSN
-#define FOE_SP(skb)		    ((PdmaRxDescInfo4 *)((skb)->cb + CB_OFFSET))->SPORT
+#define FOE_ENTRY_VALID(skb)	    (((struct PdmaRxDescInfo4 *)((skb)->cb + CB_OFFSET))->FOE_Entry != 0x3fff)
+#define FOE_AI(skb)		    ((struct PdmaRxDescInfo4 *)((skb)->cb + CB_OFFSET))->CRSN
+#define FOE_SP(skb)		    ((struct PdmaRxDescInfo4 *)((skb)->cb + CB_OFFSET))->SPORT
 #else
-#define FOE_ENTRY_VALID(skb)	    ((PdmaRxDescInfo4 *)((skb)->cb + CB_OFFSET))->FVLD
-#define FOE_AI(skb)		    ((PdmaRxDescInfo4 *)((skb)->cb + CB_OFFSET))->AI
-#define FOE_SP(skb)		    ((PdmaRxDescInfo4 *)((skb)->cb + CB_OFFSET))->SP	//src_port or user priority
+#define FOE_ENTRY_VALID(skb)	    ((struct PdmaRxDescInfo4 *)((skb)->cb + CB_OFFSET))->FVLD
+#define FOE_AI(skb)		    ((struct PdmaRxDescInfo4 *)((skb)->cb + CB_OFFSET))->AI
+#define FOE_SP(skb)		    ((struct PdmaRxDescInfo4 *)((skb)->cb + CB_OFFSET))->SP	//src_port or user priority
 #endif
 
 #endif

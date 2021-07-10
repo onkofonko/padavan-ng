@@ -154,7 +154,7 @@ struct l2_rule {
 			uint16_t pppoe_id;
 		} others;
 	};
-} __attribute__ ((packed));
+} __packed;
 
 struct l3_rule {
 
@@ -185,7 +185,7 @@ struct l3_rule {
 			uint16_t rsv1:2;
 		} qos;
 	};
-} __attribute__ ((packed));
+} __packed;
 
 struct l4_rule {
 
@@ -213,6 +213,6 @@ struct l4_rule {
 			uint16_t tu:2;	/* 11:tcp/udp, 10:tcp, 01:udp, 00:ip_proto */
 		} ip;
 	};
-} __attribute__ ((packed));
+} __packed;
 
 #endif
