@@ -1,5 +1,5 @@
 SRC_NAME1=squashfs-4.3
-SRC_NAME2=xz-5.2.4
+SRC_NAME2=xz-5.2.5
 
 all: config_xz build_xz build_squashfs
 

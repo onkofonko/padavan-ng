@@ -86,7 +86,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-build_triplet = aarch64-pc-linux-gnu
+build_triplet = x86_64-pc-linux-gnu
 host_triplet = mipsel-unknown-linux-gnu
 subdir = doc/libogg
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -246,9 +246,9 @@ am__quote =
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
 bindir = ${exec_prefix}/bin
-build = aarch64-pc-linux-gnu
-build_alias = aarch64-pc-linux-gnu
-build_cpu = aarch64
+build = x86_64-pc-linux-gnu
+build_alias = x86_64-pc-linux-gnu
+build_cpu = x86_64
 build_os = linux-gnu
 build_vendor = pc
 builddir = .
@@ -321,9 +321,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu doc/libogg/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign doc/libogg/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu doc/libogg/Makefile
+	  $(AUTOMAKE) --foreign doc/libogg/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \

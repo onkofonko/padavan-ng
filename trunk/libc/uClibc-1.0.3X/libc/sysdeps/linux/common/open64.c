@@ -10,13 +10,13 @@
 #include <stdarg.h>
 #include <cancel.h>
 
-/* Open FILE with access OFLAG.  If OFLAG includes O_CREAT or O_TMPFILE,
+/* Open FILE with access OFLAG.  If OFLAG includes O_CREAT,
    a third argument is the file protection.  */
 int open64(const char *file, int oflag, ...)
 {
 	mode_t mode = 0;
 
-	if (oflag & (O_CREAT | (O_TMPFILE &~ O_DIRECTORY))) {
+	if (oflag & O_CREAT) {
 		va_list arg;
 		va_start (arg, oflag);
 		mode = va_arg (arg, mode_t);

@@ -42,7 +42,7 @@
 /* to disable Gopher */
 #undef CURL_DISABLE_GOPHER
 
-/* disable alt-svc */
+/* disable HSTS */
 #undef CURL_DISABLE_HSTS
 
 /* to disable HTTP */

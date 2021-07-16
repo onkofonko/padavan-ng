@@ -31,7 +31,7 @@ int open(const char *file, int oflag, ...)
 	int oldtype, result;
 #endif
 
-	if (oflag & (O_CREAT | (O_TMPFILE &~ O_DIRECTORY))) {
+	if (oflag & O_CREAT) {
 		va_list arg;
 		va_start(arg, oflag);
 		mode = va_arg(arg, mode_t);
