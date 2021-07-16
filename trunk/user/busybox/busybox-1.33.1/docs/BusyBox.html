@@ -60,21 +60,21 @@
 
 <p>Currently available applets include:</p>
 
-<pre><code>        addgroup, adduser, arp, arping, ash, awk, base32, basename, bash,
-        brctl, bunzip2, bzcat, bzip2, cat, chgrp, chmod, chown, chpasswd,
-        chroot, clear, cp, crond, crontab, cut, date, dd, df, dhcp6c,
-        dirname, dmesg, dnsdomainname, dos2unix, du, echo, egrep, eject,
-        env, ether-wake, expr, false, fdisk, fgrep, find, flock, free,
-        fuser, grep, gunzip, gzip, head, hostname, ifconfig, inetd, insmod,
-        kill, killall, klogd, ln, logger, login, ls, lsmod, lsof, md5sum,
-        mdev, microcom, mkdir, mknod, mkswap, modprobe, more, mount,
-        mountpoint, mv, netstat, nice, nslookup, ntpd, passwd, pgrep, pidof,
-        ping, ping6, printf, ps, pwd, rm, rmdir, rmmod, route, sed,
-        sendmail, seq, sh, sleep, sort, start-stop-daemon, stat, strings,
-        swapoff, swapon, switch_root, sync, sysctl, syslogd, tail, tar, tee,
-        telnetd, test, time, top, touch, tr, traceroute, traceroute6, true,
-        udhcpc, umount, uname, uniq, unix2dos, unlink, uptime, usleep,
-        vconfig, vi, watch, wc, wget, which, whoami, xargs, yes, zcat, zcip</code></pre>
+<pre><code>        addgroup, adduser, arp, arping, ash, awk, basename, bash, brctl,
+        bunzip2, bzcat, bzip2, cat, chgrp, chmod, chown, chpasswd, chroot,
+        clear, cp, crond, crontab, cut, date, dd, df, dhcp6c, dirname,
+        dmesg, dnsdomainname, dos2unix, du, echo, egrep, eject, env,
+        ether-wake, expr, false, fdisk, fgrep, find, flock, free, fuser,
+        grep, gunzip, gzip, head, hostname, ifconfig, inetd, insmod, kill,
+        killall, klogd, ln, logger, login, ls, lsmod, lsof, md5sum, mdev,
+        microcom, mkdir, mknod, mkswap, modprobe, more, mount, mountpoint,
+        mv, netstat, nice, nslookup, ntpd, passwd, pgrep, pidof, ping,
+        ping6, printf, ps, pwd, rm, rmdir, rmmod, route, sed, sendmail, seq,
+        sh, sleep, sort, start-stop-daemon, stat, strings, swapoff, swapon,
+        switch_root, sync, sysctl, syslogd, tail, tar, tee, telnetd, test,
+        time, top, touch, tr, traceroute, traceroute6, true, udhcpc, umount,
+        uname, uniq, unix2dos, unlink, uptime, usleep, vconfig, vi, watch,
+        wc, wget, which, whoami, xargs, yes, zcat, zcip</code></pre>
 
 <h1 id="COMMAND-DESCRIPTIONS">COMMAND DESCRIPTIONS</h1>
 
@@ -164,14 +164,6 @@
         -F SEP          Use SEP as field separator
         -f FILE         Read program from FILE
         -e AWK_PROGRAM</code></pre>
-
-</dd>
-<dt id="base32"><b>base32</b></dt>
-<dd>
-
-<p>base32 [-d] [-w COL] [FILE]</p>
-
-<p>Base32 encode or decode FILE to standard output -d Decode data -w COL Wrap lines at COL (default 76, 0 disables)</p>
 
 </dd>
 <dt id="basename"><b>basename</b></dt>
@@ -632,6 +624,7 @@
         -ipath PATTERN  Case insensitive -path
         -regex PATTERN  Match path to regex PATTERN
         -type X         File type is X (one of: f,d,l,b,c,s,p)
+        -executable     File is executable
         -perm MASK      At least one mask bit (+MASK), all bits (-MASK),
                         or exactly MASK bits are set in file&#39;s mode
         -mtime DAYS     mtime is greater than (+N), less than (-N),
@@ -1452,16 +1445,15 @@ Other:
 <dt id="stat"><b>stat</b></dt>
 <dd>
 
-<p>stat [-ltf] [-c FMT] FILE...</p>
+<p>stat [-lt] [-c FMT] FILE...</p>
 
-<p>Display file (default) or filesystem status</p>
+<p>Display file status</p>
 
 <pre><code>        -c FMT  Use the specified format
-        -f      Display filesystem status
         -L      Follow links
         -t      Terse display</code></pre>
 
-<p>FMT sequences for files:</p>
+<p>FMT sequences:</p>
 
 <pre><code> %a     Access rights in octal
  %A     Access rights in human readable form
@@ -1489,21 +1481,6 @@ Other:
  %Y     Time of last modification as seconds since Epoch
  %z     Time of last change
  %Z     Time of last change as seconds since Epoch</code></pre>
-
-<p>FMT sequences for file systems:</p>
-
-<pre><code> %a     Free blocks available to non-superuser
- %b     Total data blocks
- %c     Total file nodes
- %d     Free file nodes
- %f     Free blocks
- %i     File System ID in hex
- %l     Maximum length of filenames
- %n     File name
- %s     Block size (for faster transfer)
- %S     Fundamental block size (for block counts)
- %t     Type in hex
- %T     Type in human readable form</code></pre>
 
 </dd>
 <dt id="strings"><b>strings</b></dt>
@@ -1620,7 +1597,7 @@ Other:
 <dt id="tar"><b>tar</b></dt>
 <dd>
 
-<p>tar c|x|t [-zjahvokO] [-f TARFILE] [-C DIR] [-T FILE] [-X FILE] [OPTION]... [FILE]...</p>
+<p>tar c|x|t [-zjahvokO] [-f TARFILE] [-C DIR] [-T FILE] [-X FILE] [FILE]...</p>
 
 <p>Create, extract, or list files from a tar file</p>
 
@@ -1638,13 +1615,7 @@ Other:
         -a      (De)compress based on extension
         -h      Follow symlinks
         -T FILE File with names to include
-        -X FILE File with glob patterns to exclude
-        --exclude PATTERN       Glob pattern to exclude
-        --overwrite             Replace existing files
-        --strip-components NUM  NUM of leading components to strip
-        --no-recursion          Don&#39;t descend in directories
-        --numeric-owner         Use numeric user:group
-        --no-same-permissions   Don&#39;t restore access permissions</code></pre>
+        -X FILE File with glob patterns to exclude</code></pre>
 
 </dd>
 <dt id="tee"><b>tee</b></dt>

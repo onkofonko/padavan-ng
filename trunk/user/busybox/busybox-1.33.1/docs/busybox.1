@@ -129,7 +129,7 @@
 .\" ========================================================================
 .\"
 .IX Title "BUSYBOX 1"
-.TH BUSYBOX 1 "2021-07-05" "version 1.33.1" "busybox"
+.TH BUSYBOX 1 "2021-07-16" "version 1.33.1" "busybox"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -216,21 +216,21 @@ been enabled, more detailed usage information will also be available.
 Currently available applets include:
 .PP
 .Vb 10
-\&        addgroup, adduser, arp, arping, ash, awk, base32, basename, bash,
-\&        brctl, bunzip2, bzcat, bzip2, cat, chgrp, chmod, chown, chpasswd,
-\&        chroot, clear, cp, crond, crontab, cut, date, dd, df, dhcp6c,
-\&        dirname, dmesg, dnsdomainname, dos2unix, du, echo, egrep, eject,
-\&        env, ether\-wake, expr, false, fdisk, fgrep, find, flock, free,
-\&        fuser, grep, gunzip, gzip, head, hostname, ifconfig, inetd, insmod,
-\&        kill, killall, klogd, ln, logger, login, ls, lsmod, lsof, md5sum,
-\&        mdev, microcom, mkdir, mknod, mkswap, modprobe, more, mount,
-\&        mountpoint, mv, netstat, nice, nslookup, ntpd, passwd, pgrep, pidof,
-\&        ping, ping6, printf, ps, pwd, rm, rmdir, rmmod, route, sed,
-\&        sendmail, seq, sh, sleep, sort, start\-stop\-daemon, stat, strings,
-\&        swapoff, swapon, switch_root, sync, sysctl, syslogd, tail, tar, tee,
-\&        telnetd, test, time, top, touch, tr, traceroute, traceroute6, true,
-\&        udhcpc, umount, uname, uniq, unix2dos, unlink, uptime, usleep,
-\&        vconfig, vi, watch, wc, wget, which, whoami, xargs, yes, zcat, zcip
+\&        addgroup, adduser, arp, arping, ash, awk, basename, bash, brctl,
+\&        bunzip2, bzcat, bzip2, cat, chgrp, chmod, chown, chpasswd, chroot,
+\&        clear, cp, crond, crontab, cut, date, dd, df, dhcp6c, dirname,
+\&        dmesg, dnsdomainname, dos2unix, du, echo, egrep, eject, env,
+\&        ether\-wake, expr, false, fdisk, fgrep, find, flock, free, fuser,
+\&        grep, gunzip, gzip, head, hostname, ifconfig, inetd, insmod, kill,
+\&        killall, klogd, ln, logger, login, ls, lsmod, lsof, md5sum, mdev,
+\&        microcom, mkdir, mknod, mkswap, modprobe, more, mount, mountpoint,
+\&        mv, netstat, nice, nslookup, ntpd, passwd, pgrep, pidof, ping,
+\&        ping6, printf, ps, pwd, rm, rmdir, rmmod, route, sed, sendmail, seq,
+\&        sh, sleep, sort, start\-stop\-daemon, stat, strings, swapoff, swapon,
+\&        switch_root, sync, sysctl, syslogd, tail, tar, tee, telnetd, test,
+\&        time, top, touch, tr, traceroute, traceroute6, true, udhcpc, umount,
+\&        uname, uniq, unix2dos, unlink, uptime, usleep, vconfig, vi, watch,
+\&        wc, wget, which, whoami, xargs, yes, zcat, zcip
 .Ve
 .SH "COMMAND DESCRIPTIONS"
 .IX Header "COMMAND DESCRIPTIONS"
@@ -317,13 +317,6 @@ awk [\s-1OPTIONS\s0] [\s-1AWK_PROGRAM\s0] [\s-1FILE\s0]...
 \&        \-f FILE         Read program from FILE
 \&        \-e AWK_PROGRAM
 .Ve
-.IP "\fBbase32\fR" 4
-.IX Item "base32"
-base32 [\-d] [\-w \s-1COL\s0] [\s-1FILE\s0]
-.Sp
-Base32 encode or decode \s-1FILE\s0 to standard output
-	\-d	Decode data
-	\-w \s-1COL\s0	Wrap lines at \s-1COL\s0 (default 76, 0 disables)
 .IP "\fBbasename\fR" 4
 .IX Item "basename"
 basename \s-1FILE\s0 [\s-1SUFFIX\s0]
@@ -753,6 +746,7 @@ Actions:
 \&        \-ipath PATTERN  Case insensitive \-path
 \&        \-regex PATTERN  Match path to regex PATTERN
 \&        \-type X         File type is X (one of: f,d,l,b,c,s,p)
+\&        \-executable     File is executable
 \&        \-perm MASK      At least one mask bit (+MASK), all bits (\-MASK),
 \&                        or exactly MASK bits are set in file\*(Aqs mode
 \&        \-mtime DAYS     mtime is greater than (+N), less than (\-N),
@@ -1520,18 +1514,17 @@ Process matching:
 .Ve
 .IP "\fBstat\fR" 4
 .IX Item "stat"
-stat [\-ltf] [\-c \s-1FMT\s0] \s-1FILE...\s0
+stat [\-lt] [\-c \s-1FMT\s0] \s-1FILE...\s0
 .Sp
-Display file (default) or filesystem status
+Display file status
 .Sp
-.Vb 4
+.Vb 3
 \&        \-c FMT  Use the specified format
-\&        \-f      Display filesystem status
 \&        \-L      Follow links
 \&        \-t      Terse display
 .Ve
 .Sp
-\&\s-1FMT\s0 sequences for files:
+\&\s-1FMT\s0 sequences:
 .Sp
 .Vb 10
 \& %a     Access rights in octal
@@ -1560,23 +1553,6 @@ Display file (default) or filesystem status
 \& %Y     Time of last modification as seconds since Epoch
 \& %z     Time of last change
 \& %Z     Time of last change as seconds since Epoch
-.Ve
-.Sp
-\&\s-1FMT\s0 sequences for file systems:
-.Sp
-.Vb 12
-\& %a     Free blocks available to non\-superuser
-\& %b     Total data blocks
-\& %c     Total file nodes
-\& %d     Free file nodes
-\& %f     Free blocks
-\& %i     File System ID in hex
-\& %l     Maximum length of filenames
-\& %n     File name
-\& %s     Block size (for faster transfer)
-\& %S     Fundamental block size (for block counts)
-\& %t     Type in hex
-\& %T     Type in human readable form
 .Ve
 .IP "\fBstrings\fR" 4
 .IX Item "strings"
@@ -1684,7 +1660,7 @@ With more than one \s-1FILE,\s0 precede each with a filename header.
 N may be suffixed by k (x1024), b (x512), or m (x1024^2).
 .IP "\fBtar\fR" 4
 .IX Item "tar"
-tar c|x|t [\-zjahvokO] [\-f \s-1TARFILE\s0] [\-C \s-1DIR\s0] [\-T \s-1FILE\s0] [\-X \s-1FILE\s0] [\s-1OPTION\s0]... [\s-1FILE\s0]...
+tar c|x|t [\-zjahvokO] [\-f \s-1TARFILE\s0] [\-C \s-1DIR\s0] [\-T \s-1FILE\s0] [\-X \s-1FILE\s0] [\s-1FILE\s0]...
 .Sp
 Create, extract, or list files from a tar file
 .Sp
@@ -1704,12 +1680,6 @@ Create, extract, or list files from a tar file
 \&        \-h      Follow symlinks
 \&        \-T FILE File with names to include
 \&        \-X FILE File with glob patterns to exclude
-\&        \-\-exclude PATTERN       Glob pattern to exclude
-\&        \-\-overwrite             Replace existing files
-\&        \-\-strip\-components NUM  NUM of leading components to strip
-\&        \-\-no\-recursion          Don\*(Aqt descend in directories
-\&        \-\-numeric\-owner         Use numeric user:group
-\&        \-\-no\-same\-permissions   Don\*(Aqt restore access permissions
 .Ve
 .IP "\fBtee\fR" 4
 .IX Item "tee"
