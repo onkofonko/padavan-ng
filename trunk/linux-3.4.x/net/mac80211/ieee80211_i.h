@@ -78,22 +78,15 @@ struct ieee80211_local;
 	IEEE80211_WMM_IE_STA_QOSINFO_SP_ALL
 
 struct ieee80211_fragment_entry {
-	unsigned long first_frag_time;
-<<<<<<< HEAD
-	unsigned int seq;
-	unsigned int rx_queue;
-	unsigned int last_frag;
-	unsigned int extra_len;
 	struct sk_buff_head skb_list;
-	int ccmp; /* Whether fragments were encrypted with CCMP */
-=======
+	unsigned long first_frag_time;
 	u16 seq;
 	u16 extra_len;
 	u16 last_frag;
 	u8 rx_queue;
 	bool check_sequential_pn; /* needed for CCMP/GCMP */
->>>>>>> cce011673... mac80211: check PN correctly for GCMP-encrypted fragmented MPDUs
 	u8 last_pn[6]; /* PN of the last fragment if CCMP was used */
+	unsigned int key_color;
 };
 
 
@@ -225,7 +218,6 @@ typedef unsigned __bitwise__ ieee80211_rx_result;
  * @IEEE80211_RX_RA_MATCH: frame is destined to interface currently processed
  *	(incl. multicast frames)
  * @IEEE80211_RX_IN_SCAN: received while scanning
- * @IEEE80211_RX_FRAGMENTED: fragmented frame
  * @IEEE80211_RX_AMSDU: a-MSDU packet
  * @IEEE80211_RX_MALFORMED_ACTION_FRM: action frame is malformed
  * @IEEE80211_RX_DEFERRED_RELEASE: frame was subjected to receive reordering
@@ -236,7 +228,6 @@ typedef unsigned __bitwise__ ieee80211_rx_result;
 enum ieee80211_packet_rx_flags {
 	IEEE80211_RX_IN_SCAN			= BIT(0),
 	IEEE80211_RX_RA_MATCH			= BIT(1),
-	IEEE80211_RX_FRAGMENTED			= BIT(2),
 	IEEE80211_RX_AMSDU			= BIT(3),
 	IEEE80211_RX_MALFORMED_ACTION_FRM	= BIT(4),
 	IEEE80211_RX_DEFERRED_RELEASE		= BIT(5),
