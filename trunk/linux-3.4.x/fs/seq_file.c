@@ -5,6 +5,7 @@
  * initial implementation -- AV, Oct 2001.
  */
 
+#include <linux/pagemap.h>
 #include <linux/fs.h>
 #include <linux/export.h>
 #include <linux/seq_file.h>
@@ -132,6 +133,8 @@ static int traverse(struct seq_file *m, loff_t offset)
 Eoverflow:
 	m->op->stop(m, p);
 	kfree(m->buf);
+	if ((m->size << 1) > MAX_RW_COUNT)
+		return -ENOMEM;
 	m->buf = kmalloc(m->size <<= 1, GFP_KERNEL);
 	return !m->buf ? -ENOMEM : -EAGAIN;
 }
@@ -230,6 +233,8 @@ ssize_t seq_read(struct file *file, char __user *buf, size_t size, loff_t *ppos)
 			goto Fill;
 		m->op->stop(m, p);
 		kfree(m->buf);
+		if ((m->size << 1) > MAX_RW_COUNT)
+			goto Enomem;
 		m->buf = kmalloc(m->size <<= 1, GFP_KERNEL);
 		if (!m->buf)
 			goto Enomem;
