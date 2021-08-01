@@ -414,10 +414,10 @@ static int inet_peer_gc(struct inet_peer_base *base,
 		if (atomic_read(&p->refcnt) == 0) {
 			smp_rmb();
 
-			/* The READ_ONCE() pairs with the WRITE_ONCE()
+			/* The ACCESS_ONCE() pairs with the ACCESS_ONCE()
 			 * in inet_putpeer()
 			 */
-			delta = (__u32)jiffies - READ_ONCE(p->dtime);
+			delta = (__u32)jiffies - ACCESS_ONCE(p->dtime);
 
 			if (delta >= ttl &&
 			    atomic_cmpxchg(&p->refcnt, 0, -1) == 0) {
@@ -504,10 +504,10 @@ EXPORT_SYMBOL_GPL(inet_getpeer);
 
 void inet_putpeer(struct inet_peer *p)
 {
-	/* The WRITE_ONCE() pairs with itself (we run lockless)
-	 * and the READ_ONCE() in inet_peer_gc()
+	/* The ACCESS_ONCE() pairs with itself (we run lockless)
+	 * and the ACCESS_ONCE() in inet_peer_gc()
 	 */
-	WRITE_ONCE(p->dtime, (__u32)jiffies);
+	ACCESS_ONCE(p->dtime) = (__u32)jiffies;
 	smp_mb__before_atomic_dec();
 	atomic_dec(&p->refcnt);
 }
