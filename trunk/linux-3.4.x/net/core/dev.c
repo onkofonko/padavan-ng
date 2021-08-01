@@ -3120,7 +3120,7 @@ bool rps_may_expire_flow(struct net_device *dev, u16 rxq_index,
 	flow_table = rcu_dereference(rxqueue->rps_flow_table);
 	if (flow_table && flow_id <= flow_table->mask) {
 		rflow = &flow_table->flows[flow_id];
-		cpu = READ_ONCE(rflow->cpu);
+		cpu = ACCESS_ONCE(rflow->cpu);
 		if (rflow->filter == filter_id && cpu != RPS_NO_CPU &&
 		    ((int)(per_cpu(softnet_data, cpu).input_queue_head -
 			   rflow->last_qtail) <
@@ -5155,7 +5155,7 @@ static int __dev_set_mtu(struct net_device *dev, int new_mtu)
 		return ops->ndo_change_mtu(dev, new_mtu);
 
 	/* Pairs with all the lockless reads of dev->mtu in the stack */
-	WRITE_ONCE(dev->mtu, new_mtu);
+	ACCESS_ONCE(dev->mtu) = new_mtu;
 	return 0;
 }
 
