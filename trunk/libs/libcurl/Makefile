@@ -1,5 +1,5 @@
-SRC_NAME=curl-7.77.0
-SRC_URL=https://github.com/curl/curl/releases/download/curl-7_77_0/$(SRC_NAME).tar.xz
+SRC_NAME=curl-7.78.0
+SRC_URL=https://github.com/curl/curl/releases/download/curl-7_78_0/$(SRC_NAME).tar.xz
 
 all: download_test extract_test config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
@@ -25,7 +25,7 @@ config_test:
 
 configure:
 	( cd $(SRC_NAME) ; \
-	autoreconf -f ; \
+	autoreconf -fi ; \
 	./configure \
 		--prefix= \
 		--disable-static \
@@ -53,15 +53,18 @@ configure:
 		--disable-tls-srp \
 		--disable-libcurl-option \
 		--disable-threaded-resolver \
+		--disable-mqtt \
+		--disable-alt-svc \
+		--disable-hsts \
 		--without-brotli \
+		--disable-ntlm \
+		--without-hyper \
 		--without-gnutls \
 		--without-ca-path \
 		--without-ca-fallback \
 		--without-cyassl \
-		--without-darwinssl \
 		--without-default-ssl-backend \
 		--without-libidn2 \
-		--without-libmetalink \
 		--without-libpsl \
 		--without-librtmp \
 		--without-libssh \
