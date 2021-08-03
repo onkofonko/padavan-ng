@@ -2,6 +2,9 @@
 #          Compression build options          #
 ###############################################
 #
+#SRCBASE ?= $(shell pwd)/..
+#CC = gcc
+#export CC
 #
 ############# Building gzip support ###########
 #
@@ -27,6 +30,8 @@ GZIP_SUPPORT = 1
 # the XZ_SUPPORT line below.
 #
 XZ_SUPPORT = 1
+#XZUTILSDIR = $(SRCBASE)/xz
+#XZUTILSDIR = $(SRCBASE)/xz-5.2.5
 
 
 ############ Building LZO support ##############
@@ -115,7 +120,7 @@ MKSQUASHFS_OBJS = mksquashfs.o read_fs.o action.o swap.o pseudo.o compressor.o \
 	caches-queues-lists.o
 
 UNSQUASHFS_OBJS = unsquashfs.o unsquash-1.o unsquash-2.o unsquash-3.o \
-	unsquash-4.o swap.o compressor.o unsquashfs_info.o
+	unsquash-4.o unsquash-123.o unsquash-34.o swap.o compressor.o unsquashfs_info.o
 
 CFLAGS ?= -O2
 CFLAGS += $(EXTRA_CFLAGS) $(INCLUDEDIR) -D_FILE_OFFSET_BITS=64 \
@@ -158,6 +163,7 @@ LIBS += $(XZUTILSDIR)/src/liblzma/.libs/liblzma.a
 endif
 MKSQUASHFS_OBJS += xz_wrapper.o
 UNSQUASHFS_OBJS += xz_wrapper.o
+#LIBS += $(XZ_LIBDIR) -llzma
 COMPRESSORS += xz
 endif
 
@@ -294,6 +300,10 @@ unsquash-3.o: unsquashfs.h unsquash-3.c squashfs_fs.h squashfs_compat.h
 unsquash-4.o: unsquashfs.h unsquash-4.c squashfs_fs.h squashfs_swap.h \
 	read_fs.h
 
+unsquash-123.o: unsquashfs.h unsquash-123.c squashfs_fs.h squashfs_compat.h
+
+unsquash-34.o: unsquashfs.h unsquash-34.c
+
 unsquashfs_xattr.o: unsquashfs_xattr.c unsquashfs.h squashfs_fs.h xattr.h
 
 unsquashfs_info.o: unsquashfs.h squashfs_fs.h
@@ -307,3 +317,23 @@ install: mksquashfs unsquashfs
 	mkdir -p $(INSTALL_DIR)
 	cp mksquashfs $(INSTALL_DIR)
 	cp unsquashfs $(INSTALL_DIR)
+
+#.PHONY: xzutils xzutils-configure
+
+#xzutils: $(XZUTILSDIR)/configure $(XZUTILSDIR)/Makefile
+#xzutils: xzutils-autogen xzutils-Makefile
+#	$(MAKE) -j$(HOST_NCPU) -C $(XZUTILSDIR)
+
+#$(XZUTILSDIR)/Makefile:
+#xzutils-Makefile:
+#	$(MAKE) xzutils-configure
+
+#$(XZUTILSDIR)/configure:
+#xzutils-autogen:
+#	( cd $(XZUTILSDIR) ; ./autogen.sh )
+
+#xzutils-configure:
+#	( cd $(XZUTILSDIR) ; \
+#		./configure \
+#		--prefix=/usr/local \
+#	)
