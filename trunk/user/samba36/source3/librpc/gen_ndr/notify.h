@@ -76,7 +76,7 @@ struct FILE_NOTIFY_INFORMATION {
 	enum FILE_NOTIFY_ACTION Action;
 	uint32_t FileNameLength;/* [value(strlen_m(FileName1)*2)] */
 	const char *FileName1;/* [charset(UTF16),flag(LIBNDR_FLAG_STR_NOTERM)] */
-}/* [flag(LIBNDR_FLAG_ALIGN4),public,gensize] */;
+}/* [gensize,flag(LIBNDR_FLAG_ALIGN4),public] */;
 
 #endif /* _HEADER_notify */
 #endif /* _PIDL_HEADER_notify */
