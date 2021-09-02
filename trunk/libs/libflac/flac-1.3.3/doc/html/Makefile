@@ -279,9 +279,9 @@ FGREP = /bin/grep -F
 FLAC__HAS_OGG = 0
 FLAC__TEST_LEVEL = 0
 FLAC__TEST_WITH_VALGRIND = no
-GCC_MAJOR_VERSION = 8
-GCC_MINOR_VERSION = 3
-GCC_VERSION = 8.3.0
+GCC_MAJOR_VERSION = 7
+GCC_MINOR_VERSION = 5
+GCC_VERSION = 7.5.0
 GREP = /bin/grep
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
@@ -667,8 +667,8 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-#distclean-local:
 #uninstall-local:
+#distclean-local:
 #install-data-local:
 clean: clean-recursive
 

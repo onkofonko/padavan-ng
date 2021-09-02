@@ -281,7 +281,7 @@ finish_eval=""
 hardcode_into_libs=yes
 
 # Compile-time system search path for libraries.
-sys_lib_search_path_spec="/opt/padavan-ng/toolchain/out/lib/gcc/mipsel-linux-uclibc/8.3.0 /opt/padavan-ng/toolchain/out/mipsel-linux-uclibc/lib /opt/padavan-ng/toolchain/out/mipsel-linux-uclibc/sysroot/lib /opt/padavan-ng/toolchain/out/mipsel-linux-uclibc/sysroot/usr/lib "
+sys_lib_search_path_spec="/opt/padavan-ng/toolchain/out/lib/gcc/mipsel-linux-uclibc/7.5.0 /opt/padavan-ng/toolchain/out/mipsel-linux-uclibc/lib /opt/padavan-ng/toolchain/out/mipsel-linux-uclibc/sysroot/lib /opt/padavan-ng/toolchain/out/mipsel-linux-uclibc/sysroot/usr/lib "
 
 # Detected run-time system search path for libraries.
 sys_lib_dlsearch_path_spec="/lib /usr/lib /usr/local/lib/aarch64-linux-gnu /lib/aarch64-linux-gnu /usr/lib/aarch64-linux-gnu /usr/lib/aarch64-linux-gnu/libfakeroot /usr/local/lib "
