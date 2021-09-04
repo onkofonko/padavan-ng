@@ -1,4 +1,4 @@
-SRC_NAME=aria2-1.3X.X
+SRC_NAME=aria2-1.36.0
 
 COMMON_FLAGS = -ffunction-sections -fdata-sections -fvisibility=hidden
 CFLAGS  += $(COMMON_FLAGS)
