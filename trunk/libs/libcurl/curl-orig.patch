@@ -22,25 +22,7 @@ diff -urN curl-7.77.0-ref/Makefile.am curl-7.77.0/Makefile.am
 diff -urN curl-7.77.0-ref/configure.ac curl-7.77.0/configure.ac
 --- curl-7.77.0-ref/configure.ac	2021-05-25 13:50:36.000000000 +0300
 +++ curl-7.77.0/configure.ac	2021-07-08 14:09:15.204592800 +0300
-@@ -172,7 +172,7 @@
-      curl_h3_msg="no      (--with-ngtcp2, --with-quiche)"
- 
- enable_altsvc="yes"
--enable_hsts="yes"
-+enable_hsts="no"
- 
- dnl
- dnl Save some initial values the user might have provided
-@@ -3867,7 +3867,7 @@
- 
- if test "x$enable_hsts" != "xyes"; then
-   curl_hsts_msg="no      (--enable-hsts)";
--  AC_DEFINE(CURL_DISABLE_HSTS, 1, [disable alt-svc])
-+  AC_DEFINE(CURL_DISABLE_HSTS, 1, [disable HSTS])
- fi
- 
- dnl *************************************************************
-@@ -4187,24 +4187,12 @@
+@@ -4235,24 +4235,12 @@
  fi
  
  AC_CONFIG_FILES([Makefile \
@@ -65,7 +47,7 @@ diff -urN curl-7.77.0-ref/configure.ac curl-7.77.0/configure.ac
             packages/Makefile \
             packages/vms/Makefile \
             curl-config \
-@@ -4214,7 +4202,7 @@
+@@ -4262,7 +4250,7 @@
  
  CURL_GENERATE_CONFIGUREHELP_PM
  
