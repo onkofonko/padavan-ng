@@ -98,4 +98,5 @@ install:
 	$(MAKE) -C $(SRC_NAME) install DESTDIR=$(STAGEDIR)
 
 romfs:
+	$(ROMFSINST) -d $(DESTDIR)/bin/curl /usr/bin/curl
 	cp -fP $(DESTDIR)/lib/libcurl.so* $(ROMFSDIR)/lib
