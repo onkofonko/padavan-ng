@@ -23,6 +23,9 @@ struct nf_conntrack_helper {
 	struct module *me;		/* pointer to self */
 	const struct nf_conntrack_expect_policy *expect_policy;
 
+	/* length of internal data, ie. sizeof(struct nf_ct_*_master) */
+	size_t data_len;
+
 	/* Tuple of things we will help (compared against server response) */
 	struct nf_conntrack_tuple tuple;
 
