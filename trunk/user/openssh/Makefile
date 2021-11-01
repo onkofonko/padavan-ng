@@ -1,4 +1,4 @@
-SRC_NAME=openssh-8.x
+SRC_NAME=openssh-8.8p1
 
 CFLAGS += -ffunction-sections -fdata-sections
 LDFLAGS += -Wl,--gc-sections
