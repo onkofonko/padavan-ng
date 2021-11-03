@@ -1,4 +1,4 @@
-SRC_NAME=confuse-3.2.2
+SRC_NAME=confuse-3.3
 
 CFLAGS += -Os
 
