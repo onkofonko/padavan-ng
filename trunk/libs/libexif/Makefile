@@ -1,19 +1,7 @@
-SRC_NAME=libexif-0.6.22
-SRC_URL=https://github.com/libexif/libexif/releases/download/libexif-0_6_22-release/$(SRC_NAME).tar.xz
+SRC_NAME=libexif-0.6.23
 
-all: download_test extract_test config_test
+all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
-
-download_test:
-	( if [ ! -f $(SRC_NAME).tar.xz ]; then \
-		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.xz $(SRC_URL); \
-	fi )
-
-extract_test:
-	( if [ ! -d $(SRC_NAME) ]; then \
-		tar xJf $(SRC_NAME).tar.xz ; \
-		patch -d $(SRC_NAME) -p1 -i ../no_doc_test.patch ; \
-	fi )
 
 config_test:
 	( if [ -f ./config_done ]; then \
@@ -42,6 +30,6 @@ clean:
 
 install:
 	$(MAKE) -C $(SRC_NAME) install DESTDIR=$(STAGEDIR)
-
+	
 romfs:
 
