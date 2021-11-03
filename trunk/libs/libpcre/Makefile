@@ -1,4 +1,4 @@
-SRC_NAME=pcre-8.43
+SRC_NAME=pcre-8.45
 
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
@@ -30,5 +30,5 @@ clean:
 
 install:
 	$(MAKE) -C $(SRC_NAME) install DESTDIR=$(STAGEDIR)
-
+	
 romfs:

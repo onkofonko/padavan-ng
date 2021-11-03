@@ -1,18 +1,7 @@
-SRC_NAME=libpcap-1.9.1
-SRC_URL=http://www.tcpdump.org/release/$(SRC_NAME).tar.gz
+SRC_NAME=libpcap-1.X.X
 
-all: download_test extract_test config_test
+all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
-
-download_test:
-	( if [ ! -f $(SRC_NAME).tar.gz ]; then \
-		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.gz $(SRC_URL); \
-	fi )
-
-extract_test:
-	( if [ ! -d $(SRC_NAME) ]; then \
-		tar zxf $(SRC_NAME).tar.gz; \
-	fi )
 
 config_test:
 	( if [ -f ./config_done ]; then \
@@ -29,8 +18,8 @@ configure:
 		--disable-shared \
 		$(if $(CONFIG_IPV6),--enable-ipv6,--disable-ipv6) \
 		--disable-yydebug \
-		--disable-dbus \
 		--disable-usb \
+		--disable-dbus \
 		--disable-bluetooth \
 		--disable-netmap \
 		--disable-rdma \
