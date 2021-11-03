@@ -1,4 +1,4 @@
-SRC_NAME=nfs-utils-2.4.3
+SRC_NAME=nfs-utils-2.5.3
 
 CFLAGS +=$(COPT) -ffunction-sections -fdata-sections -fvisibility=hidden
 LDFLAGS += -Wl,--gc-sections
@@ -16,12 +16,11 @@ config_test:
 configure:
 	( cd $(SRC_NAME) && \
 	knfsd_cv_bsd_signals=no \
-	autoreconf -fi ; \
+	PKG_CONFIG_PATH=$(STAGEDIR)/lib/pkgconfig \
 	./configure \
 		--prefix=/ \
 		$(if $(CONFIG_IPV6),--enable-ipv6,--disable-ipv6) \
 		--disable-mount \
-		--disable-libmount \
 		--disable-mountconfig \
 		--disable-nfsdcltrack \
 		--disable-nfsv4 \
@@ -38,7 +37,7 @@ configure:
 	)
 
 clean:
-	if [ -f $(SRC_NAME1)/Makefile ] ; then \
+	if [ -f $(SRC_NAME)/Makefile ] ; then \
 		$(MAKE) -C $(SRC_NAME) distclean ; \
 	fi; \
 	rm -f config_done
