@@ -1,4 +1,4 @@
-/* $OpenBSD: readconf.h,v 1.140 2021/02/15 20:43:15 markus Exp $ */
+/* $OpenBSD: readconf.h,v 1.145 2021/09/15 06:56:01 djm Exp $ */
 
 /*
  * Author: Tatu Ylonen <ylo@cs.hut.fi>
@@ -38,8 +38,6 @@ typedef struct {
 	struct ForwardOptions fwd_opts;	/* forwarding options */
 	int     pubkey_authentication;	/* Try ssh2 pubkey authentication. */
 	int     hostbased_authentication;	/* ssh2's rhosts_rsa */
-	int     challenge_response_authentication;
-					/* Try S/Key or TIS, authentication. */
 	int     gss_authentication;	/* Try GSS authentication */
 	int     gss_deleg_creds;	/* Delegate GSS credentials */
 	int     password_authentication;	/* Try password
@@ -148,6 +146,9 @@ typedef struct {
 	int	visual_host_key;
 
 	int	request_tty;
+	int	session_type;
+	int	stdin_null;
+	int	fork_after_authentication;
 
 	int	proxy_use_fdpass;
 
@@ -193,6 +194,10 @@ typedef struct {
 #define REQUEST_TTY_YES		2
 #define REQUEST_TTY_FORCE	3
 
+#define SESSION_TYPE_NONE	0
+#define SESSION_TYPE_SUBSYSTEM	1
+#define SESSION_TYPE_DEFAULT	2
+
 #define SSHCONF_CHECKPERM	1  /* check permissions on config file */
 #define SSHCONF_USERCONF	2  /* user provided config file not system */
 #define SSHCONF_FINAL		4  /* Final pass over config, after canon. */
@@ -223,6 +228,7 @@ int	 parse_jump(const char *, Options *, int);
 int	 parse_ssh_uri(const char *, char **, char **, int *);
 int	 default_ssh_port(void);
 int	 option_clear_or_none(const char *);
+int	 config_has_permitted_cnames(Options *);
 void	 dump_client_config(Options *o, const char *host);
 
 void	 add_local_forward(Options *, const struct Forward *);
