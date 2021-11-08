@@ -1263,8 +1263,8 @@ int ws_returnerror(WS_CONNINFO *pwsc,int error, char *description) {
        iTunes, which seems to get pissy about it */
 
     useragent = ws_getarg(&pwsc->request_headers,"User-Agent");
-    if((useragent) &&
-       (((strncmp(useragent,"iTunes",6) == 0) && (error == 401)) ||
+      if((useragent) &&
+       (((strncmp(useragent,"iTunes",6) == 0) && (error == 401)) || ((strncmp(useragent,"Music",5) == 0) && (error == 401)) ||
         ((strncmp(useragent,"Java",4) == 0)))) {
         keep_alive = 1;
     }
