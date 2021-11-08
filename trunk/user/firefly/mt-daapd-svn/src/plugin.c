@@ -565,8 +565,8 @@ int plugin_ssc_should_transcode(WS_CONNINFO *pwsc, char *codec) {
         }
         free(never_transcode);
     }
-
-    if(pwsc) {
+    
+     if(pwsc) {
         /* see if the headers give us any guidance */
         native_codecs = ws_getrequestheader(pwsc,"accept-codecs");
         if(!native_codecs) {
@@ -574,6 +574,8 @@ int plugin_ssc_should_transcode(WS_CONNINFO *pwsc, char *codec) {
             if(user_agent) {
                 if(strncmp(user_agent,"iTunes",6)==0) {
                     native_codecs = "mpeg,mp4a,wav,mp4v,alac";
+                } else if(strncmp(user_agent,"Music",5)==0) {
+                	native_codecs = "mpeg,mp4a,wav,mp4v,alac";
                 } else if(strncmp(user_agent,"Roku",4)==0) {
                     native_codecs = "mpeg,mp4a,wav,wma";
                 } else if(strncmp(user_agent,"Hifidelio",9)==0) {
@@ -582,7 +584,7 @@ int plugin_ssc_should_transcode(WS_CONNINFO *pwsc, char *codec) {
             }
         }
     }
-
+    
     if(!native_codecs) {
         native_codecs = "mpeg,wav";
     }
