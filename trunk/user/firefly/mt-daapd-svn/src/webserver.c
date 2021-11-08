@@ -882,7 +882,10 @@ int ws_encoding_hack(WS_CONNINFO *pwsc) {
             space_as_plus=0;
         if(strncasecmp(user_agent,"iTunes",6) == 0)
             space_as_plus=0;
+        if(strncasecmp(user_agent,"Music",5) == 0)
+            space_as_plus=0;                        
     }
+    
     WS_EXIT();
     return space_as_plus;
 }
