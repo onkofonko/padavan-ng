@@ -1,4 +1,4 @@
-SRC_NAME=yaml-0.2.4
+SRC_NAME=yaml-0.2.5
 
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)

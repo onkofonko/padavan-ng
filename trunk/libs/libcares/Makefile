@@ -1,4 +1,4 @@
-SRC_NAME=cares-1_17_1
+SRC_NAME=c-ares-1.18.1
 
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)/build
