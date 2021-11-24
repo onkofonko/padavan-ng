@@ -2278,6 +2278,10 @@ config VOW_SUPPORT
     bool
     default y
 
+config BAND_STEERING
+    bool
+    default y
+
 config RT_IGMP_SNOOP
     bool
     default y
