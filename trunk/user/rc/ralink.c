@@ -705,20 +705,23 @@ gen_ralink_config(int is_soc_ap, int is_aband, int disable_autoscan)
 		fprintf(fp, "VOW_Group_Min_Ratio=%d\n", 5);
 	}
 #endif
+
 #if defined (USE_WID_5G) && USE_WID_5G==7615
 	if (is_aband) {
 		if (nvram_wlan_get_int(1, "mumimo"))
 			fprintf(fp, "MUTxRxEnable=%d\n", 1);
 		else
 			fprintf(fp, "MUTxRxEnable=%d\n", 0);
+		
+		if (nvram_wlan_get_int(1, "band_steering"))
+			fprintf(fp, "BandSteering=%d\n", 1);
+		else
+			fprintf(fp, "BandSteering=%d\n", 0);
 
 		fprintf(fp, "ITxBfTimeout=%d\n", 0);
 		fprintf(fp, "ETxBfTimeout=%d\n", 0);
 		fprintf(fp, "ETxBfNoncompress=%d\n", 0);
 		fprintf(fp, "ETxBfIncapable=%d\n", 0);
-
-		fprintf(fp, "BandSteering=%d\n", 0);
-
 
 	}
 #endif
