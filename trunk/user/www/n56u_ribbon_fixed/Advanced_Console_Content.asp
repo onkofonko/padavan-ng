@@ -61,9 +61,9 @@ function clearOut(){
 }
 
 function checkEnter(e){
-	e = e || event;
-	return (e.keyCode || event.which || event.charCode || 0) === 13;
-}
+	return ((window.event ? window.event.KeyCode : e.which) || event.charCode || 0) === 13;
+    }
+    
 </script>
 </head>
 
