@@ -10,7 +10,7 @@ diff -urN curl-7.77.0-ref/Makefile.am curl-7.77.0/Makefile.am
  
  pkgconfigdir = $(libdir)/pkgconfig
  pkgconfig_DATA = libcurl.pc
-@@ -306,8 +306,6 @@
+@@ -309,8 +309,6 @@
  # We extend the standard install with a custom hook:
  install-data-hook:
  	(cd include && $(MAKE) install)

@@ -1,11 +1,11 @@
-SRC_NAME=openvpn-2.5.3
-SRC_URL=https://github.com/OpenVPN/openvpn/archive/v2.5.3.tar.gz
+SRC_NAME=openvpn-2.5.5
+SRC_URL=https://github.com/OpenVPN/openvpn/archive/v2.5.5.tar.gz
 
 CFLAGS += -ffunction-sections -fdata-sections
 LDFLAGS += -Wl,--gc-sections
 
-#all: download_test extract_test config_test
-all: config_test
+all: download_test extract_test config_test
+#all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
 
 download_test:
