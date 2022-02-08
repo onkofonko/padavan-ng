@@ -15,7 +15,7 @@
 @SET_MAKE@
 
 # aminclude_static.am generated automatically by Autoconf
-# from AX_AM_MACROS_STATIC on Thu Nov 18 02:05:01 +06 2021
+# from AX_AM_MACROS_STATIC on Wed Feb  9 02:31:23 +06 2022
 
 VPATH = @srcdir@
 am__is_gnu_make = { \

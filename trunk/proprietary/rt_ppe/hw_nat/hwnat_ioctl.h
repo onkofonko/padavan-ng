@@ -122,7 +122,7 @@ struct hwnat_args {
 	unsigned int entry_num:16;
 	unsigned int num_of_entries:16;
 	struct hwnat_tuple entries[0];
-};
+} __packed;
 
 #if !defined (CONFIG_HNAT_V2)
 /*hnat qos*/
