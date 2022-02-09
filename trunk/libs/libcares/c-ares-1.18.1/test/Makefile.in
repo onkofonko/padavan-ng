@@ -15,7 +15,7 @@
 @SET_MAKE@
 
 # aminclude_static.am generated automatically by Autoconf
-# from AX_AM_MACROS_STATIC on Wed Feb  9 02:31:20 +06 2022
+# from AX_AM_MACROS_STATIC on Thu Feb 10 03:48:48 +06 2022
 
 
 VPATH = @srcdir@
