@@ -2539,7 +2539,7 @@ INT rtmp_tx_swq_exit(RTMP_ADAPTER *pAd, UCHAR wcid)
 
 	if (wcid == WCID_ALL) {
 		wcid_start = 0;
-		wcid_end = MAX_LEN_OF_TR_TABLE;
+		wcid_end = MAX_LEN_OF_TR_TABLE - 1;
 	} else {
 		if (wcid < MAX_LEN_OF_TR_TABLE)
 			wcid_start = wcid_end = wcid;
