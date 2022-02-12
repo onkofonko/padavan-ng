@@ -1810,9 +1810,29 @@ static inline UCHAR SelectClearChannelBusyTime(
 	StartChannelIdx = SubGroupMaxBusyTimeChIdx + 1;
 	GroupNum = 0;
 	os_alloc_mem(pAd, (UCHAR **)&pSubGroupMaxBusyTimeTable, (MAX_NUM_OF_CHANNELS+1)*sizeof(UINT32));
+	if (!pSubGroupMaxBusyTimeTable) {
+		MTWF_LOG(DBG_CAT_AP, DBG_SUBCAT_ALL, DBG_LVL_OFF,
+			("alloc buf for pSubGroupMaxBusyTimeTable failed!\n"));
+		goto ReturnCh;
+	}
 	os_alloc_mem(pAd, (UCHAR **)&pSubGroupMaxBusyTimeChIdxTable, (MAX_NUM_OF_CHANNELS+1)*sizeof(UINT32));
+	if (!pSubGroupMaxBusyTimeChIdxTable) {
+		MTWF_LOG(DBG_CAT_AP, DBG_SUBCAT_ALL, DBG_LVL_OFF,
+			("alloc buf for pSubGroupMaxBusyTimeChIdxTable failed!\n"));
+		goto ReturnCh;
+	}
 	os_alloc_mem(pAd, (UCHAR **)&pSubGroupMinBusyTimeTable, (MAX_NUM_OF_CHANNELS+1)*sizeof(UINT32));
+	if (!pSubGroupMinBusyTimeTable) {
+		MTWF_LOG(DBG_CAT_AP, DBG_SUBCAT_ALL, DBG_LVL_OFF,
+			("alloc buf for pSubGroupMinBusyTimeTable failed!\n"));
+		goto ReturnCh;
+	}
 	os_alloc_mem(pAd, (UCHAR **)&pSubGroupMinBusyTimeChIdxTable, (MAX_NUM_OF_CHANNELS+1)*sizeof(UINT32));
+	if (!pSubGroupMinBusyTimeChIdxTable) {
+		MTWF_LOG(DBG_CAT_AP, DBG_SUBCAT_ALL, DBG_LVL_OFF,
+			("alloc buf for pSubGroupMinBusyTimeChIdxTable failed!\n"));
+		goto ReturnCh;
+	}
 	NdisZeroMemory(pSubGroupMaxBusyTimeTable, (MAX_NUM_OF_CHANNELS+1)*sizeof(UINT32));
 	NdisZeroMemory(pSubGroupMaxBusyTimeChIdxTable, (MAX_NUM_OF_CHANNELS+1)*sizeof(UINT32));
 	NdisZeroMemory(pSubGroupMinBusyTimeTable, (MAX_NUM_OF_CHANNELS+1)*sizeof(UINT32));
@@ -1969,10 +1989,6 @@ static inline UCHAR SelectClearChannelBusyTime(
 				 ("Rule 3 Channel Busy time value : MinorMin Channel Busy = %u\n", MinorMinBusyTime));
 		MTWF_LOG(DBG_CAT_AP, DBG_SUBCAT_ALL, DBG_LVL_OFF,
 				 ("Rule 3 Channel Busy time value : BW = %s\n", "80+80"));
-		os_free_mem(pSubGroupMaxBusyTimeTable);
-		os_free_mem(pSubGroupMaxBusyTimeChIdxTable);
-		os_free_mem(pSubGroupMinBusyTimeTable);
-		os_free_mem(pSubGroupMinBusyTimeChIdxTable);
 		goto ReturnCh;
 	}
 
@@ -2053,10 +2069,6 @@ static inline UCHAR SelectClearChannelBusyTime(
 				 (pAutoChCtrl->AutoChSelCtrl.AutoChSelChList[CandidateChIdx1].Bw == BW_160) ? "160"
 				 : (pAutoChCtrl->AutoChSelCtrl.AutoChSelChList[CandidateChIdx1].Bw == BW_80) ? "80"
 				 : (pAutoChCtrl->AutoChSelCtrl.AutoChSelChList[CandidateChIdx1].Bw == BW_40) ? "40":"20");
-		os_free_mem(pSubGroupMaxBusyTimeTable);
-		os_free_mem(pSubGroupMaxBusyTimeChIdxTable);
-		os_free_mem(pSubGroupMinBusyTimeTable);
-		os_free_mem(pSubGroupMinBusyTimeChIdxTable);
 		goto ReturnCh;
 	}
 
@@ -2080,6 +2092,17 @@ static inline UCHAR SelectClearChannelBusyTime(
 //			 ("Randomly Select : Select Channel %d\n", CandidateCh1));
 	printk("Randomly Select ==> Select Channel %d\n", CandidateCh1);
 ReturnCh:
+	if (pSubGroupMaxBusyTimeTable)
+		os_free_mem(pSubGroupMaxBusyTimeTable);
+
+	if (pSubGroupMaxBusyTimeChIdxTable)
+		os_free_mem(pSubGroupMaxBusyTimeChIdxTable);
+
+	if (pSubGroupMinBusyTimeTable)
+		os_free_mem(pSubGroupMinBusyTimeTable);
+
+	if (pSubGroupMinBusyTimeChIdxTable)
+		os_free_mem(pSubGroupMinBusyTimeChIdxTable);
 	MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_TRACE, ("%s<-----------------\n", __func__));
 	MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("[SelectClearChannelBusyTime] - band%d END\n", BandIdx));
 	return CandidateCh1;
