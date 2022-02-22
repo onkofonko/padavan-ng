@@ -3920,7 +3920,7 @@ BOOLEAN DOT1X_InternalCmdAction(
 	USHORT			bss_Vlan;
 	USHORT			TCI;
 	/* Init the frame buffer */
-	NdisZeroMemory(FrameBuf, frame_len);
+	NdisZeroMemory(FrameBuf, FRAME_BUF_LEN);
 #ifdef RADIUS_ACCOUNTING_SUPPORT
 	NdisMoveMemory(data.StaAddr, pEntry->Addr, MAC_ADDR_LEN);
 	data.rx_bytes = pEntry->RxBytes;
