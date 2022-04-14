@@ -410,8 +410,8 @@ am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/config.h.in \
 	$(srcdir)/libxml-2.0-uninstalled.pc.in \
 	$(srcdir)/libxml-2.0.pc.in $(srcdir)/libxml.spec.in \
 	$(srcdir)/libxml2-config.cmake.in $(srcdir)/xml2-config.in \
-	COPYING NEWS TODO compile config.guess config.sub depcomp \
-	install-sh ltmain.sh missing
+	NEWS TODO compile config.guess config.sub depcomp install-sh \
+	ltmain.sh missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
