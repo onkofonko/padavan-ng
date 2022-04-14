@@ -1,5 +1,7 @@
-project(HttpsDnsProxy)
-cmake_minimum_required(VERSION 2.8)
+project(HttpsDnsProxy C)
+cmake_minimum_required(VERSION 3.7)
+
+# FUNCTIONS
 
 # source: https://stackoverflow.com/a/27990434
 function(define_file_basename_for_sources targetname)
@@ -12,12 +14,19 @@ function(define_file_basename_for_sources targetname)
   endforeach()
 endfunction()
 
-set(CMAKE_BUILD_TYPE "Debug")
-#set(CMAKE_BUILD_TYPE "Release")
+# CONFIG
 
-#set(CMAKE_C_FLAGS "-Wall -Wextra --pedantic -Wno-strict-aliasing")
+set(CMAKE_BUILD_TYPE "Debug")
+
+if (NOT CMAKE_INSTALL_BINDIR)
+  set(CMAKE_INSTALL_BINDIR bin)
+endif()
+
+#set(CMAKE_C_FLAGS "-Wall -Wextra --pedantic -Wno-strict-aliasing -Wno-variadic-macros")
 set(CMAKE_C_FLAGS_DEBUG "-g -DDEBUG")
 set(CMAKE_C_FLAGS_RELEASE "-O2")
+
+# VERSION
 
 find_package(Git)
 if(Git_FOUND)
@@ -37,12 +46,16 @@ else()
   message(WARNING "Could not find git command! Version is set to: ${GIT_VERSION}")
 endif()
 
+# LIBRARY DEPENDENCIES
+
 find_path(LIBCARES_INCLUDE_DIR ares.h)
 find_path(LIBCURL_INCLUDE_DIR curl/curl.h)
 find_path(LIBEV_INCLUDE_DIR ev.h)
 include_directories(
   ${LIBCARES_INCLUDE_DIR} ${LIBCURL_INCLUDE_DIR}
   ${LIBEV_INCLUDE_DIR} src)
+
+# CLANG TIDY
 
 find_program(
   CLANG_TIDY_EXE
@@ -53,8 +66,10 @@ if(NOT CLANG_TIDY_EXE)
   message(STATUS "clang-tidy not found.")
 else()
   message(STATUS "clang-tidy found: ${CLANG_TIDY_EXE}")
-  set(DO_CLANG_TIDY "${CLANG_TIDY_EXE}" "-fix" "-checks=*,-clang-analyzer-alpha.*,-misc-unused-parameters,-cert-err34-c,-google-readability-todo,-hicpp-signed-bitwise,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers")
+  set(DO_CLANG_TIDY "${CLANG_TIDY_EXE}" "-fix" "-checks=*,-clang-analyzer-alpha.*,-misc-unused-parameters,-cert-err34-c,-google-readability-todo,-hicpp-signed-bitwise,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-gnu-folding-constant,-gnu-zero-variadic-macro-arguments,-readability-function-cognitive-complexity,-concurrency-mt-unsafe")
 endif()
+
+# BUILD
 
 # The main binary
 set(TARGET_NAME "https_dns_proxy")
@@ -67,8 +82,8 @@ target_link_libraries(${TARGET_NAME} ${LIBS})
 define_file_basename_for_sources("https_dns_proxy")
 
 set_source_files_properties(
-  src/options.c PROPERTIES
-  COMPILE_FLAGS "-DGIT_VERSION='\"${GIT_VERSION}\"'")
+  src/main.c src/options.c
+  PROPERTIES COMPILE_FLAGS "-DGIT_VERSION='\"${GIT_VERSION}\"'")
 
 if(CLANG_TIDY_EXE)
   set_target_properties(
@@ -77,7 +92,24 @@ if(CLANG_TIDY_EXE)
   )
 endif()
 
+# INSTALL
+
+install(TARGETS ${TARGET_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+set(SERVICE_EXTRA_OPTIONS "")
+if(IS_DIRECTORY "/etc/munin/plugins" AND
+   IS_DIRECTORY "/etc/munin/plugin-conf.d")
+  set(SERVICE_EXTRA_OPTIONS "-s 300")
+  install(PROGRAMS munin/${TARGET_NAME}.plugin
+          DESTINATION /etc/munin/plugins/
+          RENAME ${TARGET_NAME})
+  install(FILES munin/${TARGET_NAME}.config
+          DESTINATION /etc/munin/plugin-conf.d/
+          RENAME ${TARGET_NAME})
+endif()
+
 configure_file(${TARGET_NAME}.service.in ${TARGET_NAME}.service)
 
-install(TARGETS ${TARGET_NAME} DESTINATION bin)
-install(FILES ${TARGET_NAME}.service DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/systemd/system/)
+install(FILES ${TARGET_NAME}.service
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/systemd/system/)
+

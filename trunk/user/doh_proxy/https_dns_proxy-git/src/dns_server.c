@@ -65,22 +65,19 @@ static void watcher_cb(struct ev_loop __attribute__((unused)) *loop,
   struct sockaddr_storage raddr;
   /* recvfrom can write to addrlen */
   socklen_t tmp_addrlen = d->addrlen;
-  int len = recvfrom(w->fd, buf, REQUEST_MAX, 0, (struct sockaddr*)&raddr,
-                     &tmp_addrlen);
+  ssize_t len = recvfrom(w->fd, buf, REQUEST_MAX, 0, (struct sockaddr*)&raddr,
+                         &tmp_addrlen);
   if (len < 0) {
-    WLOG("recvfrom failed: %s", strerror(errno));
+    ELOG("recvfrom failed: %s", strerror(errno));
     return;
   }
 
   if (len < (int)sizeof(uint16_t)) {
-    DLOG("Malformed request received (too short).");
+    WLOG("Malformed request received (too short).");
     return;
   }
 
-  uint16_t net_tx_id = 0;
-  // NOLINTNEXTLINE(clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling)
-  memcpy(&net_tx_id, buf, sizeof(net_tx_id));
-  uint16_t tx_id = ntohs(net_tx_id);
+  uint16_t tx_id = ntohs(*((uint16_t*)buf));
   d->cb(d, d->cb_data, (struct sockaddr*)&raddr, tx_id, buf, len);
 }
 
@@ -99,7 +96,7 @@ void dns_server_init(dns_server_t *d, struct ev_loop *loop,
 }
 
 void dns_server_respond(dns_server_t *d, struct sockaddr *raddr, char *buf,
-                        int blen) {
+                        size_t blen) {
   ssize_t len = sendto(d->sock, buf, blen, 0, raddr, d->addrlen);
   if(len == -1) {
     DLOG("sendto failed: %s", strerror(errno));
