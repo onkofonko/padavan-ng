@@ -1,4 +1,4 @@
-SRC_NAME=openssh-8.8p1
+SRC_NAME=openssh-9.0p1
 SRC_URL=https://mirror.yandex.ru/pub/OpenBSD/OpenSSH/portable/$(SRC_NAME).tar.gz
 
 CFLAGS += -ffunction-sections -fdata-sections
