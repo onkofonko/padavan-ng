@@ -35,12 +35,12 @@
 
 #define DEF_WLAN_2G_CC		"GB"
 #define DEF_WLAN_5G_CC		"GB"
-#define DEF_WLAN_2G_SSID	"Xiaomi_7AA1"
-#define DEF_WLAN_5G_SSID	"Xiaomi_7AA1_5G"
-#define DEF_WLAN_2G_GSSID	"Xiaomi_7AA1_GUEST"
-#define DEF_WLAN_5G_GSSID	"Xiaomi_7AA1_5G_GUEST"
-#define DEF_WLAN_2G_PSK		""
-#define DEF_WLAN_5G_PSK		""
+#define DEF_WLAN_2G_SSID	"Padavan"
+#define DEF_WLAN_5G_SSID	"Padavan_5G"
+#define DEF_WLAN_2G_GSSID	"Padavan_GUEST"
+#define DEF_WLAN_5G_GSSID	"Padavan_5G_GUEST"
+#define DEF_WLAN_2G_PSK		"1234567890"
+#define DEF_WLAN_5G_PSK		"1234567890"
 
 #define DEF_ROOT_PASSWORD	"admin"
 #define DEF_SMB_WORKGROUP	"WORKGROUP"
