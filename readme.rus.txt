@@ -33,6 +33,9 @@
 - pkg-config
 - sudo
 - zlib1g-dev
+-doxygen
+- pkg-config
+- cmake 
 
 Для сборки кросс-toolchain требуются дополнительные пакеты:
 - libgmp3-dev

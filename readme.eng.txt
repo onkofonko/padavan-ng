@@ -26,6 +26,9 @@ You need following packages to build the firmware under Debian 8.x 'Jessie':
 - pkg-config
 - sudo
 - zlib1g-dev
+- doxygen
+- pkg-config
+- cmake 
 
 You need additional packages to build cross-toolchain:
 - libgmp3-dev
