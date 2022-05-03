@@ -1,8 +1,8 @@
 /*
  * hdparm.c - Command line interface to get/set hard disk parameters.
- *          - by Mark Lord (C) 1994-2018 -- freely distributable.
+ *          - by Mark Lord (C) 1994-2022 -- freely distributable.
  */
-#define HDPARM_VERSION "v9.62"
+#define HDPARM_VERSION "v9.63"
 
 #define _LARGEFILE64_SOURCE /*for lseek64*/
 #define _BSD_SOURCE	/* for strtoll() */
@@ -99,6 +99,7 @@ static char security_password[33], *fwpath, *raw_identify_path;
 
 static int do_sanitize = 0;
 static __u16 sanitize_feature = 0;
+static __u64 sanitize_overwrite_passes = 0;
 static __u32 ow_pattern = 0;
 static const char *sanitize_states_str[SANITIZE_STATE_NUMBER] = {
 	"SD0 Sanitize Idle",
@@ -625,14 +626,16 @@ static void interpret_standby (void)
 				unsigned int secs = standby * 5;
 				unsigned int mins = secs / 60;
 				secs %= 60;
-				if (mins)	  printf("%u minutes", mins);
+				if (mins)	  printf("%u minute%s", mins,
+							 mins==1 ? "" : "s");
 				if (mins && secs) printf(" + ");
 				if (secs)	  printf("%u seconds", secs);
 			} else if (standby <= 251) {
 				unsigned int mins = (standby - 240) * 30;
 				unsigned int hrs  = mins / 60;
 				mins %= 60;
-				if (hrs)	  printf("%u hours", hrs);
+				if (hrs)	  printf("%u hour%s", hrs,
+							 hrs==1 ? "" : "s");
 				if (hrs && mins)  printf(" + ");
 				if (mins)	  printf("%u minutes", mins);
 			} else {
@@ -895,6 +898,11 @@ do_sanitize_cmd (int fd)
 		r.iflags.bits.lob.lbal    = 1;
 		r.iflags.bits.lob.lbam    = 1;
 		r.iflags.bits.hob.nsect   = 1;
+
+		if (sanitize_feature == SANITIZE_OVERWRITE_EXT) {
+			r.oflags.bits.lob.nsect = 1;
+			r.lob.nsect = sanitize_overwrite_passes;
+		}
 
 		printf("Issuing %s command\n", description);
 		if (do_taskfile_cmd(fd, &r, 10)) {
@@ -1971,6 +1979,7 @@ static void usage_help (int clue, int rc)
 	" --sanitize-crypto-scramble  Change the internal encryption keys that used for used data\n"
 	" --sanitize-freeze-lock      Lock drive's sanitize features until next power cycle\n"
 	" --sanitize-overwrite  PATTERN  Overwrite the internal media with constant PATTERN\n"
+	" --sanitize-overwrite-passes COUNT  Number of overwrite passes from 0 to 7, default 0 means 16 passes\n"
 	" --sanitize-status           Show sanitize status information\n"
 	" --security-help             Display help for ATA security commands\n"
 	" --set-sector-size           Change logical sector size of drive\n"
@@ -3266,6 +3275,9 @@ get_longarg (void)
 		--num_flags_processed;	/* doesn't count as an action flag */
 	} else if (0 == strcasecmp(name, "direct")) {
 		open_flags |= O_DIRECT;
+		--num_flags_processed;	/* doesn't count as an action flag */
+	} else if (0 == strcasecmp(name, "sanitize-overwrite-passes")) {
+		get_u64_parm(0, 0, NULL, &sanitize_overwrite_passes, 0, 7, name, "Number of passes must be in range 0..7");
 		--num_flags_processed;	/* doesn't count as an action flag */
 	} else if (0 == strcasecmp(name, "drq-hsm-error")) {
 		drq_hsm_error = 1;

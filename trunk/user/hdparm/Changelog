@@ -1,3 +1,6 @@
+hdparm-9.63:
+	- new --sanitize-overwrite-passes flag, courtesy Michal Grzedzicki.
+	- "Plurals patch" from Martin Guy.
 hdparm-9.62:
 	- Work around unexpected sign-extending of left-shifted unsigned values by gcc
 hdparm-9.61:
