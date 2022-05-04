@@ -6,7 +6,7 @@ CXXFLAGS += $(COMMON_FLAGS) -fvisibility-inlines-hidden
 LDFLAGS += -Wl,--gc-sections
 
 all: config_test
-	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
+	$(MAKE) -j1  -C $(SRC_NAME)
 
 config_test:
 	( if [ -f ./config_done ]; then \
