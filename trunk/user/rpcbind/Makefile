@@ -1,4 +1,4 @@
-SRC_NAME=rpcbind-1.2.5
+SRC_NAME=rpcbind-1.2.6
 
 CFLAGS +=$(COPT) -ffunction-sections -fdata-sections -fvisibility=hidden
 LDFLAGS += -Wl,--gc-sections
