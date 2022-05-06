@@ -9,5 +9,7 @@ apt install -y -q nano unzip autoconf automake bison build-essential flex gawk g
 
 pip install docutils
 
+For doh_proxy: apt install -y -q libc-ares-dev libcurl4-openssl-dev libev-dev
+
 NB: Had to upgrade e2fsprogs 1.46.5 (latest version) to build it with latest Ubuntu.
 
