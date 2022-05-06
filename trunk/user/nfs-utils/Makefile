@@ -19,7 +19,7 @@ configure:
 	PKG_CONFIG_PATH=$(STAGEDIR)/lib/pkgconfig \
 	./configure \
 		--prefix=/ \
-		--disable-ipv6 \
+		$(if $(CONFIG_IPV6),--enable-ipv6,--disable-ipv6) \
 		--disable-mount \
 		--disable-mountconfig \
 		--disable-nfsdcltrack \
