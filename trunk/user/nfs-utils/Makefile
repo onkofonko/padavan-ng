@@ -1,4 +1,4 @@
-SRC_NAME=nfs-utils-2.5.3
+SRC_NAME=nfs-utils-2.6.1
 
 CFLAGS +=$(COPT) -ffunction-sections -fdata-sections -fvisibility=hidden
 LDFLAGS += -Wl,--gc-sections
