@@ -12,7 +12,8 @@ unit_files =  \
     rpc-statd-notify.service \
     rpc-statd.service \
     \
-    proc-fs-nfsd.mount
+    proc-fs-nfsd.mount \
+    var-lib-nfs-rpc_pipefs.mount
 
 rpc_pipefs_mount_file = \
     var-lib-nfs-rpc_pipefs.mount
