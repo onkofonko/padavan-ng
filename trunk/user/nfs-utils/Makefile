@@ -1,8 +1,8 @@
 SRC_NAME=nfs-utils-2.6.1
 SRC_URL=https://www.kernel.org/pub/linux/utils/nfs-utils/2.6.1/$(SRC_NAME).tar.xz
 
-CFLAGS += -ffunction-sections -fdata-sections -fvisibility=hidden
-LDFLAGS += -Wl,--gc-sections
+CFLAGS += -ffunction-sections -fdata-sections -fvisibility=hidden `pkg-config --cflags uuid`
+LDFLAGS += -Wl,--gc-sections `pkg-config --libs uuid`
 
 all: download_test extract_test config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
