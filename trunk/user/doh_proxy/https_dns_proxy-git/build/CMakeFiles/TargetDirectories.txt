@@ -1,0 +1,7 @@
+/opt/padavan-ng/trunk/user/doh_proxy/https_dns_proxy-git/build/CMakeFiles/https_dns_proxy.dir
+/opt/padavan-ng/trunk/user/doh_proxy/https_dns_proxy-git/build/CMakeFiles/edit_cache.dir
+/opt/padavan-ng/trunk/user/doh_proxy/https_dns_proxy-git/build/CMakeFiles/rebuild_cache.dir
+/opt/padavan-ng/trunk/user/doh_proxy/https_dns_proxy-git/build/CMakeFiles/list_install_components.dir
+/opt/padavan-ng/trunk/user/doh_proxy/https_dns_proxy-git/build/CMakeFiles/install.dir
+/opt/padavan-ng/trunk/user/doh_proxy/https_dns_proxy-git/build/CMakeFiles/install/local.dir
+/opt/padavan-ng/trunk/user/doh_proxy/https_dns_proxy-git/build/CMakeFiles/install/strip.dir

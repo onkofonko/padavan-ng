@@ -10816,7 +10816,7 @@ else $as_nop
 printf "%s\n" "no" >&6; }
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for struct ip_mreq" >&5
 printf %s "checking for struct ip_mreq... " >&6; }
-    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+    _au_m4_changequote(,)cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 #include <netinet/in.h>
 int
