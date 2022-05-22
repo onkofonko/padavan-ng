@@ -87,7 +87,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <netinet/in.h>]], [[
     # We'll just have to try and use struct ip_mreq
     AC_MSG_RESULT(no)
     AC_MSG_CHECKING(for struct ip_mreq)
-    _au_m4_changequote([,])AC_TRY_COMPILE([#include <netinet/in.h>], [
+    AC_TRY_COMPILE([#include <netinet/in.h>], [
         struct ip_mreq mreq;
         mreq.imr_interface.s_addr = 0;
     ], [
@@ -569,23 +569,6 @@ AC_ARG_ENABLE(tivo,
 	fi
 	],[
 		AM_CONDITIONAL(TIVO_SUPPORT, false)
-		AC_MSG_RESULT([no])
-	]
-)
-
-AC_MSG_CHECKING([whether to enable ASUS support])
-AC_ARG_ENABLE(asus,
-	[  --enable-asus           enable ASUS support],[
-	if test "$enableval" = "yes"; then
-		AC_DEFINE(ASUS_SUPPORT, 1, [Define to 1 if you want to enable ASUS support])
-		AM_CONDITIONAL(ASUS_SUPPORT, true)
-		AC_MSG_RESULT([yes])
-	else
-		AM_CONDITIONAL(ASUS_SUPPORT, false)
-		AC_MSG_RESULT([no])
-	fi
-	],[
-		AM_CONDITIONAL(ASUS_SUPPORT, false)
 		AC_MSG_RESULT([no])
 	]
 )
