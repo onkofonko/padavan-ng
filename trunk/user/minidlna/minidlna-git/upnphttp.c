@@ -1091,7 +1091,7 @@ Process_upnphttp(struct event *ev)
 		n = recv(h->ev.fd, buf, 2048, 0);
 		if(n<0)
 		{
-			DPRINTF(E_ERROR, L_HTTP, "recv (state0): %s\n", strerror(errno));
+			DPRINTF(E_DEBUG, L_HTTP, "recv (state0): %s\n", strerror(errno));
 			h->state = 100;
 		}
 		else if(n==0)
@@ -1137,7 +1137,7 @@ Process_upnphttp(struct event *ev)
 		n = recv(h->ev.fd, buf, sizeof(buf), 0);
 		if(n < 0)
 		{
-			DPRINTF(E_ERROR, L_HTTP, "recv (state%d): %s\n", h->state, strerror(errno));
+			DPRINTF(E_DEBUG, L_HTTP, "recv (state%d): %s\n", h->state, strerror(errno));
 			h->state = 100;
 		}
 		else if(n == 0)
@@ -1490,7 +1490,7 @@ SendResp_albumArt(struct upnphttp * h, char * object)
 	int fd;
 	struct string_s str;
 
-	if( h->reqflags & (FLAG_XFERSTREAMING|FLAG_RANGE) )
+	if( (h->reqflags & FLAG_XFERSTREAMING) && (h->reqflags & FLAG_RANGE) )
 	{
 		DPRINTF(E_WARN, L_HTTP, "Client tried to specify transferMode as Streaming with an image!\n");
 		Send406(h);
@@ -1595,7 +1595,7 @@ SendResp_thumbnail(struct upnphttp * h, char * object)
 	ExifLoader *l;
 	struct string_s str;
 
-	if( h->reqflags & (FLAG_XFERSTREAMING|FLAG_RANGE) )
+	if( (h->reqflags & FLAG_XFERSTREAMING) && (h->reqflags & FLAG_RANGE) )
 	{
 		DPRINTF(E_WARN, L_HTTP, "Client tried to specify transferMode as Streaming with an image!\n");
 		Send406(h);
@@ -1738,7 +1738,7 @@ SendResp_resizedimg(struct upnphttp * h, char * object)
 		goto resized_error;
 	}
 #endif
-	if( h->reqflags & (FLAG_XFERSTREAMING|FLAG_RANGE) )
+	if( (h->reqflags & FLAG_XFERSTREAMING) && (h->reqflags & FLAG_RANGE) )
 	{
 		DPRINTF(E_WARN, L_HTTP, "Client tried to specify transferMode as Streaming with an image!\n");
 		Send406(h);

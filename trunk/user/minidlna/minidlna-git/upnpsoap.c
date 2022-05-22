@@ -804,7 +804,7 @@ add_res(char *size, char *duration, char *bitrate, char *sampleFrequency,
 }
 
 static int
-get_child_count(const char *object, struct magic_container_s *magic)
+get_child_count(const char *object, const struct magic_container_s *magic)
 {
 	int ret;
 
@@ -1301,7 +1301,7 @@ BrowseContentDirectory(struct upnphttp * h, const char * action)
 			"<Result>"
 			"&lt;DIDL-Lite"
 			CONTENT_DIRECTORY_SCHEMAS;
-	struct magic_container_s *magic;
+	const struct magic_container_s *magic;
 	char *zErrMsg = NULL;
 	char *sql, *ptr;
 	struct Response args;
@@ -1823,7 +1823,7 @@ SearchContentDirectory(struct upnphttp * h, const char * action)
 			"<Result>"
 			"&lt;DIDL-Lite"
 			CONTENT_DIRECTORY_SCHEMAS;
-	struct magic_container_s *magic;
+	const struct magic_container_s *magic;
 	char *zErrMsg = NULL;
 	char *sql, *ptr;
 	struct Response args;

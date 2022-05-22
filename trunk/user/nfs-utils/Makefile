@@ -1,7 +1,7 @@
 SRC_NAME=nfs-utils-2.6.1
 
-CFLAGS +=$(COPT) -ffunction-sections -fdata-sections -fvisibility=hidden
-LDFLAGS += -Wl,--gc-sections
+CFLAGS +=$(COPT) -ffunction-sections -fdata-sections -fvisibility=hidden #`pkg-config --cflags uuid`
+LDFLAGS += -Wl,--gc-sections #`pkg-config --libs uuid`
 
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)

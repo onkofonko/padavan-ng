@@ -199,18 +199,19 @@ extern uint32_t runtime_flags;
 #define MERGE_MEDIA_DIRS_MASK 0x0020
 #define WIDE_LINKS_MASK       0x0040
 #ifdef HAVE_AVAHI
-#define TIVO_BONJOUR_MASK     0x0080
+//#define TIVO_BONJOUR_MASK     0x0080    //Reserv for UPDATE_SCAN_MASK
 #else
 #define TIVO_BONJOUR_MASK     0x0000
+#define UPDATE_SCAN_MASK      0x0080
 #endif
 #define SCANNING_MASK         0x0100
 #define RESCAN_MASK           0x0200
 #define SUBTITLES_MASK        0x0400
 #define FORCE_ALPHASORT_MASK  0x0800
 
-#define SETFLAG(mask)	runtime_flags |= mask
+#define SETFLAG(mask)	(runtime_flags |= mask)
 #define GETFLAG(mask)	(runtime_flags & mask)
-#define CLEARFLAG(mask)	runtime_flags &= ~mask
+#define CLEARFLAG(mask)	(runtime_flags &= ~mask)
 
 extern const char *pidfilename;
 

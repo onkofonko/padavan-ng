@@ -650,6 +650,8 @@ ac_func_c_list=
 ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
+ASUS_SUPPORT_FALSE
+ASUS_SUPPORT_TRUE
 TIVO_SUPPORT_FALSE
 TIVO_SUPPORT_TRUE
 HAVE_KQUEUE_FALSE
@@ -808,6 +810,7 @@ with_os_name
 with_os_version
 with_os_url
 enable_tivo
+enable_asus
 enable_netgear
 enable_readynas
 enable_static
@@ -1459,6 +1462,7 @@ Optional Features:
   --disable-rpath         do not hardcode runtime library paths
   --disable-nls           do not use Native Language Support
   --enable-tivo           enable TiVo support
+  --enable-asus           enable ASUS support
   --enable-netgear        enable generic NETGEAR device support
   --enable-readynas       enable NETGEAR ReadyNAS support
   --enable-static         build a static binary executable
@@ -12474,6 +12478,56 @@ printf "%s\n" "no" >&6; }
 fi
 
 
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether to enable ASUS support" >&5
+printf %s "checking whether to enable ASUS support... " >&6; }
+# Check whether --enable-asus was given.
+if test ${enable_asus+y}
+then :
+  enableval=$enable_asus;
+	if test "$enableval" = "yes"; then
+
+printf "%s\n" "#define ASUS_SUPPORT 1" >>confdefs.h
+
+		 if true; then
+  ASUS_SUPPORT_TRUE=
+  ASUS_SUPPORT_FALSE='#'
+else
+  ASUS_SUPPORT_TRUE='#'
+  ASUS_SUPPORT_FALSE=
+fi
+
+		{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+	else
+		 if false; then
+  ASUS_SUPPORT_TRUE=
+  ASUS_SUPPORT_FALSE='#'
+else
+  ASUS_SUPPORT_TRUE='#'
+  ASUS_SUPPORT_FALSE=
+fi
+
+		{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+	fi
+
+else $as_nop
+
+		 if false; then
+  ASUS_SUPPORT_TRUE=
+  ASUS_SUPPORT_FALSE='#'
+else
+  ASUS_SUPPORT_TRUE='#'
+  ASUS_SUPPORT_FALSE=
+fi
+
+		{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+
+
+fi
+
+
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether to enable generic NETGEAR device support" >&5
 printf %s "checking whether to enable generic NETGEAR device support... " >&6; }
 # Check whether --enable-netgear was given.
@@ -12868,6 +12922,18 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${TIVO_SUPPORT_TRUE}" && test -z "${TIVO_SUPPORT_FALSE}"; then
   as_fn_error $? "conditional \"TIVO_SUPPORT\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${ASUS_SUPPORT_TRUE}" && test -z "${ASUS_SUPPORT_FALSE}"; then
+  as_fn_error $? "conditional \"ASUS_SUPPORT\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${ASUS_SUPPORT_TRUE}" && test -z "${ASUS_SUPPORT_FALSE}"; then
+  as_fn_error $? "conditional \"ASUS_SUPPORT\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${ASUS_SUPPORT_TRUE}" && test -z "${ASUS_SUPPORT_FALSE}"; then
+  as_fn_error $? "conditional \"ASUS_SUPPORT\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${TIVO_SUPPORT_TRUE}" && test -z "${TIVO_SUPPORT_FALSE}"; then
