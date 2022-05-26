@@ -20,6 +20,8 @@ RUN apt-get install -qy \
 	libtool \
 	bison \
 	flex \
+	kmod \
+	cmake \
 	zlib1g-dev \
 	libgmp3-dev \
 	libmpfr-dev \
@@ -29,6 +31,7 @@ RUN apt-get install -qy \
 	libncurses5-dev \
 	nano \
 	vim \
+	wget \
 	autopoint \
 	gperf \
 	python-docutils \
@@ -36,6 +39,6 @@ RUN apt-get install -qy \
 	libtool-bin \
 	libtool-doc
 
-RUN git clone https://gitlab.com/dm38/padavan-ng.git --depth=1 /opt/padavan-ng
+RUN git clone https://gitlab.com/mahtabctg/padavan-ng.git --depth=1 /opt/padavan-ng
 
 RUN cd /opt/padavan-ng/toolchain && ./clean_sources.sh && ./build_toolchain.sh
