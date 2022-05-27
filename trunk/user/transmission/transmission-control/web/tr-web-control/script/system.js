@@ -21,8 +21,6 @@ var system = {
 		showBTServers: false,
 		// ipinfo.io token
 		ipInfoToken: '',
-		ipInfoFlagUrl: '',
-		ipInfoDetailUrl: '',
 		ui: {
 			status: {
 				tree: {},
@@ -71,7 +69,6 @@ var system = {
 	// The currently selected torrent number
 	currentTorrentId: 0,
 	flags: [],
-	ipdetail: [],
 	control: {
 		tree: null,
 		torrentlist: null
@@ -1118,7 +1115,7 @@ var system = {
 			if (this.control.torrentlist.datagrid("getRows").length==0) {
 				return;
 			}
-			$("#toolbar_start, #toolbar_pause, #toolbar_remove, #toolbar_recheck, #toolbar_changeDownloadDir,#toolbar_changeSpeedLimit,#toolbar_morepeers,#toolbar_copyPath", this.panel.toolbar).linkbutton({
+			$("#toolbar_start, #toolbar_pause, #toolbar_remove, #toolbar_recheck, #toolbar_changeDownloadDir,#toolbar_morepeers,#toolbar_copyPath", this.panel.toolbar).linkbutton({
 				disabled: rowData
 			});
 
@@ -1132,16 +1129,16 @@ var system = {
 		// 如果没有被选中的数据时
 		if (this.checkedRows.length == 0) {
 			// 禁用所有菜单
-			$("#toolbar_start, #toolbar_pause, #toolbar_rename, #toolbar_remove, #toolbar_recheck, #toolbar_changeDownloadDir,#toolbar_changeSpeedLimit,#toolbar_morepeers,#toolbar_copyPath", this.panel.toolbar).linkbutton({
+			$("#toolbar_start, #toolbar_pause, #toolbar_rename, #toolbar_remove, #toolbar_recheck, #toolbar_changeDownloadDir,#toolbar_morepeers,#toolbar_copyPath", this.panel.toolbar).linkbutton({
 				disabled: true
 			});
 			this.panel.toolbar.find("#toolbar_queue").menubutton("disable");
 			return;
 
-			// 当仅有一条数据被选中时
+		// 当仅有一条数据被选中时
 		} else if (this.checkedRows.length == 1) {
 			// 设置 删除、改名、变更保存目录、移动队列功能可用
-			$("#toolbar_remove, #toolbar_rename, #toolbar_changeDownloadDir,#toolbar_changeSpeedLimit,#toolbar_copyPath", this.panel.toolbar).linkbutton({
+			$("#toolbar_remove, #toolbar_rename, #toolbar_changeDownloadDir,#toolbar_copyPath", this.panel.toolbar).linkbutton({
 				disabled: false
 			});
 			this.panel.toolbar.find("#toolbar_queue").menubutton("enable");
@@ -1180,7 +1177,7 @@ var system = {
 
 		// 多条数据被选中时
 		} else {
-			$("#toolbar_start, #toolbar_pause, #toolbar_remove, #toolbar_recheck, #toolbar_changeDownloadDir,#toolbar_changeSpeedLimit,#toolbar_copyPath", this.panel.toolbar).linkbutton({
+			$("#toolbar_start, #toolbar_pause, #toolbar_remove, #toolbar_recheck, #toolbar_changeDownloadDir,#toolbar_copyPath", this.panel.toolbar).linkbutton({
 				disabled: false
 			});
 			$("#toolbar_rename, #toolbar_morepeers", this.panel.toolbar).linkbutton({
@@ -1482,35 +1479,6 @@ var system = {
 					datas: {
 						"ids": ids
 					}
-				});
-			});
-
-		this.panel.toolbar
-			.find("#toolbar_changeSpeedLimit")
-			.linkbutton({
-				disabled: true,
-			})
-			.attr("title", this.lang.toolbar.tip["change-speedlimit"])
-			.click(function () {
-				var rows = system.control.torrentlist.datagrid("getChecked");
-				var ids = new Array();
-				for (var i in rows) {
-					ids.push(rows[i].id);
-				}
-				if (ids.length == 0) return;
-
-				system.openDialogFromTemplate({
-					id: "dialog-torrent-changeSpeedLimit",
-					options: {
-						title: system.lang.dialog["torrent-changeSpeedLimit"].title,
-						width: 600,
-						height: 200,
-						resizable: true,
-					},
-					datas: {
-						ids: ids,
-					},
-					type: 0,
 				});
 			});
 
@@ -2883,7 +2851,7 @@ var system = {
 	fillTorrentPeersList: function (torrent) {
 		var peers = torrent.peers;
 		var datas = new Array();
-
+		let flag;
 		for (var index in peers) {
 			var item = peers[index];
 			var rowdata = {};
@@ -2891,60 +2859,28 @@ var system = {
 				rowdata[key] = item[key];
 			}
 
-			if (system.config.ipInfoToken !== '' || system.config.ipInfoFlagUrl !== '') {
-				let flag = '';
-				let detail = '';
-				let ip = rowdata['address'];
+			if (system.config.ipInfoToken !== '') {
+			let flag = '';
+			let ip = rowdata['address'];
 
-				if (system.config.ipInfoDetailUrl !== '') {
-					if (this.ipdetail[ip] === undefined ){
-							$.ajax({
-								type: 'GET',
-								url: this.expandIpInfoUrl(system.config.ipInfoDetailUrl, ip)
-							}).done((data) => {
-								if (data) {
-									detail = data.trim();
-									this.ipdetail[ip] = detail;
-								}
-							});
-					} else {
-						detail = this.ipdetail[ip];
-					}
-				}
+			if (this.flags[ip] === undefined) {
+			        let settings = {
+			                'url': 'https://ipinfo.io/' + ip + '/country?token=' + system.config.ipInfoToken,
+			                'method': 'GET',
+                			'async': false
+			        };
 
-				if (this.flags[ip] === undefined) {
-					let url = ''
-					if (system.config.ipInfoFlagUrl !== '') {
-						url = this.expandIpInfoUrl(system.config.ipInfoFlagUrl, ip);
-					} else {
-						url = 'https://ipinfo.io/' + ip + '/country?token=' + system.config.ipInfoToken;
-					}
-					$.ajax({
-						type: "GET",
-						url: url
-					}).done((data) => {
-						if (data) {
-							flag = data.toLowerCase().trim();
-							this.flags[ip] = flag;
-							$("img.img_ip-"+ip.replaceAll(/[:.]+/g,'_')).attr({
-								src: this.rootPath + 'style/flags/' + flag + '.png',
-								alt: flag,
-								title: detail!==''? detail : flag
-							}).show();
-						}
-					});
-				} else {
-					flag = this.flags[ip];
-				}
+			        $.ajax(settings).done(function (response) {
+			                flag = response.toLowerCase().trim();
+			        });
 
-				let img = "";
-				if (flag) {
-					img = '<img src="' + this.rootPath + 'style/flags/' + flag + '.png" alt="' + flag + '" title="' + (detail!==''? detail : flag) + '"> ';
-				} else {
-					img = '<img src="" class="img_ip-'+ip.replaceAll(/[:.]+/g,'_')+'" style="display:none;"> ';
-				}
-				rowdata['address'] = img + ip;
+			        this.flags[ip] = flag;
+			} else {
+			        flag = this.flags[ip];
 			}
+
+			rowdata['address'] = '<img src="' + this.rootPath + '/style/flags/' + flag + '.png" alt="' + flag + '" title="' + flag + '"> ' + ip;
+      }
 
 			// 使用同类已有的翻译文本
 			rowdata.isUTP = system.lang.torrent.attribute["status"][item.isUTP];
@@ -3441,18 +3377,6 @@ var system = {
 		if (!text) return "";
 		var _key = this.B64.encode(text);
 		return _key.replace(/[+|\/|=]/g,"0");
-	},
-
-	expandIpInfoUrl: function (url, ip) {
-		if (url=='' || url==undefined) {
-			return '';
-		}
-		return url.replace("%ip", ip)
-				  .replace("%lang", system.lang.name)
-				  .replace("%hostname", document.location.hostname)
-				  .replace("%host", document.location.host)
-				  .replace("%protocol", document.location.protocol)
-				  .replace("%navlang", navigator.language);
 	}
 };
 

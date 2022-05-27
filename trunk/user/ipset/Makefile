@@ -28,7 +28,7 @@ config_test:
 
 configure:
 	( cd $(SRC_NAME) ; \
-#	./autogen.sh ; \
+	./autogen.sh ; \
 	PKG_CONFIG_PATH=$(STAGEDIR)/lib/pkgconfig \
 	./configure \
 		--prefix= \
