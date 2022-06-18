@@ -22,6 +22,8 @@ dir_y =
 dir_n =
 dir_  =
 
+dir_y += libmnl
+
 LIBS_INCLUDE_LIBLZO=n
 LIBS_INCLUDE_LIBSSL=n
 LIBS_INCLUDE_LIBGETDNS=n
@@ -128,7 +130,7 @@ dir_y						+= libnfnetlink
 dir_y						+= libconfuse
 
 # ipset shared libs
-dir_$(CONFIG_FIRMWARE_INCLUDE_IPSET)		+= libmnl
+#dir_$(CONFIG_FIRMWARE_INCLUDE_IPSET)		+= libmnl
 
 # tcpdump shared libs
 dir_$(CONFIG_FIRMWARE_INCLUDE_TCPDUMP)		+= libpcap
