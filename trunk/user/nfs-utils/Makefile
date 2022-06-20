@@ -15,6 +15,7 @@ config_test:
 
 configure:
 	( cd $(SRC_NAME) && \
+	autoreconf -fi ; \
 	knfsd_cv_bsd_signals=no \
 	PKG_CONFIG_PATH=$(STAGEDIR)/lib/pkgconfig \
 	./configure \
