@@ -82,7 +82,7 @@ configure:
 		--without-zsh-functions-dir \
 		--with-random=/dev/urandom \
 		--with-zlib=$(STAGEDIR) \
-		--with-ssl=$(STAGEDIR) \
+		--with-openssl=$(STAGEDIR) \
 		--with-ca-bundle=/etc/ssl/cert.pem \
 		--host=$(HOST_TARGET) \
 		--build=$(HOST_BUILD) ; \
