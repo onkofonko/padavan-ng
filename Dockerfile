@@ -1,44 +1,73 @@
-FROM ubuntu:focal
+FROM ubuntu:jammy
 
-ENV DEBIAN_FRONTEND noninteractive
+ENV BASE_DIR="/opt" \
+    PROJECT="padavan-ng" \
+    PROJECT_REPO="https://gitlab.com/mahtabctg/${PROJECT}.git" \
+    DEBIAN_FRONTEND="noninteractive"
 
-RUN apt-get update && apt-get install -qy apt-utils
-RUN apt-get -qy install locales
+RUN apt update && \
+    apt upgrade -y && \
+    apt install -y \
+    autoconf \
+    automake \
+    autopoint \
+    bison \
+    build-essential \
+    cmake \
+    cpio \
+    curl \
+    doxygen \
+    fakeroot \
+    flex \
+    gawk \
+    gettext \
+    git \
+    gperf \
+    help2man \
+    htop \
+    kmod \
+    libblkid-dev \
+    libc-ares-dev \
+    libcurl4-openssl-dev \
+    libdevmapper-dev \
+    libev-dev \
+    libevent-dev \
+    libgmp3-dev \
+    libkeyutils-dev \
+    libltdl-dev \
+    libmpc-dev \
+    libmpfr-dev \
+    libncurses5-dev \
+    libsqlite3-dev \
+    libssl-dev \
+    libtool \
+    libtool-bin \
+    libudev-dev \
+    libxml2-dev \
+    locales \
+    mc \
+    nano \
+    pkg-config \
+    ppp-dev \
+    python3 \
+    python3-docutils \
+    texinfo \
+    unzip \
+    uuid \
+    uuid-dev \
+    vim \
+    wget \
+    xxd \
+    zlib1g-dev
+
 RUN locale-gen --no-purge en_US.UTF-8 ru_RU.UTF-8
-ENV LC_ALL en_US.UTF-8
 
+ENV LANG="en_US.UTF-8" \
+    LC_ALL="en_US.UTF-8"
 
-RUN apt-get install -qy \
-	git \
-	build-essential \
-	gawk \
-	pkg-config \
-	gettext \
-	automake \
-	autoconf \
-	autopoint \
-	libtool \
-	bison \
-	flex \
-	kmod \
-	cmake \
-	zlib1g-dev \
-	libgmp3-dev \
-	libmpfr-dev \
-	libmpc-dev \
-	texinfo \
-	mc \
-	libncurses5-dev \
-	nano \
-	vim \
-	wget \
-	autopoint \
-	gperf \
-	python-docutils \
-	help2man \
-	libtool-bin \
-	libtool-doc
+WORKDIR "$BASE_DIR"
 
-RUN git clone https://gitlab.com/mahtabctg/padavan-ng.git --depth=1 /opt/padavan-ng
-
-RUN cd /opt/padavan-ng/toolchain && ./clean_sources.sh && ./build_toolchain.sh
+RUN git clone "$PROJECT_REPO" --depth=1 && \
+    cd "${PROJECT}/toolchain" && \
+    ./clean_sources.sh && \
+    ./build_toolchain.sh
