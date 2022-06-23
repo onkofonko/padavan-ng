@@ -1,8 +1,9 @@
 FROM ubuntu:jammy
 
-ENV BASE_DIR="/opt" \
-    PROJECT="padavan-ng" \
-    PROJECT_REPO="https://gitlab.com/mahtabctg/${PROJECT}.git" \
+ENV PROJECT="padavan-ng"
+
+ENV PROJECT_REPO="https://gitlab.com/mahtabctg/${PROJECT}.git" \
+    BASE_DIR="/opt" \
     DEBIAN_FRONTEND="noninteractive"
 
 RUN apt update && \
