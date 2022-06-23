@@ -9,6 +9,7 @@ RUN apt update && \
     apt upgrade -y && \
     apt install -y \
     autoconf \
+    autoconf-archive \
     automake \
     autopoint \
     bison \
