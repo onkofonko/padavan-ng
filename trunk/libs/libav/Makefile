@@ -1,4 +1,4 @@
-SRC_NAME = ffmpeg-4.3.1
+SRC_NAME = ffmpeg-5.0.1
 
 ifeq ($(CONFIG_RALINK_MT7621),y)
 FFMPEG_CPU = 1004kc
