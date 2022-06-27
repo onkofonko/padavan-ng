@@ -1,4 +1,4 @@
-SRC_NAME=sqlite-3380000
+SRC_NAME=sqlite-3390000
 
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)

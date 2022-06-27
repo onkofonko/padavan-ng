@@ -1,4 +1,4 @@
-SRC_NAME=libexif-0.6.23
+SRC_NAME=libexif-0.6.24
 
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
