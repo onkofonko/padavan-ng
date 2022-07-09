@@ -5,12 +5,4 @@ OS: Ubuntu-22.04 LTS (arm64v8/aarch64) [Should also work on x64]
 Installation type: Docker Container [Should also work on VM and Native installation]
 
 Installed packages:
-apt install -y -q nano unzip autoconf automake bison build-essential flex gawk gettext gperf libtool zlib1g-dev doxygen pkg-config cmake libtool-bin curl gawk  htop xxd fakeroot cpio autopoint help2man libncurses5-dev libltdl-dev wget kmod locales vim libgmp3-dev libmpc-dev libmpfr-dev texinfo mc libtool-doc libudev-dev uuid uuid-dev libblkid-dev libxml2-dev libssl-dev libevent-dev libsqlite3-dev libdevmapper-dev libkeyutils-dev python pip
-
-pip install docutils
-
-For doh_proxy: apt install -y -q libc-ares-dev libcurl4-openssl-dev libev-dev
-
-NB: Had to upgrade e2fsprogs 1.46.5 (latest version) to build it with latest Ubuntu.
-
-
+autoconf autoconf-archive automake autopoint bison build-essential cmake cpio curl doxygen fakeroot flex gawk gettext git gperf help2man htop kmod libblkid-dev libc-ares-dev libcurl4-openssl-dev libdevmapper-dev libev-dev libevent-dev libgmp3-dev libkeyutils-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libsqlite3-dev libssl-dev libtool libtool-bin libudev-dev libxml2-dev  locales mc nano pkg-config ppp-dev python3 python3-docutils texinfo unzip uuid uuid-dev vim wget xxd zlib1g-dev
