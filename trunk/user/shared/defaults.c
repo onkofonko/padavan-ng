@@ -336,6 +336,9 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_guest_macrule", "0" },
 	{ "rt_guest_mcs_mode", "0" },
 
+	// band steering AP 2.4Ghz
+	{ "rt_band_steering", "0" },
+
 #if defined (USE_WID_2G) && USE_WID_2G==7615
 	{ "rt_turbo_qam", "1" },
 	{ "rt_airtimefairness", "0" },

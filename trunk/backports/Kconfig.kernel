@@ -2282,6 +2282,26 @@ config BAND_STEERING
     bool
     default y
 
+config RT_BAND_STEERING
+    bool
+    default y
+
+config RT_DOT11R_FT
+    bool
+    default y
+
+config RT_DOT11K_RRM
+    bool
+    default y
+
+config RT_80211N_DRAFT3
+    bool
+    default y
+
+config RT_80211W_PMF
+    bool
+    default y
+
 config RT_IGMP_SNOOP
     bool
     default y
