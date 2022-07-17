@@ -1,4 +1,4 @@
-SRC_NAME=libmnl-1.0.4
+SRC_NAME=libmnl-1.0.5
 
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
