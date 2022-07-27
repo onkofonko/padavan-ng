@@ -2230,6 +2230,10 @@ config MT7615_AP_SMART_CARRIER_SENSE
     bool
     default y
 
+config DOT11W_PMF_SUPPORT
+    bool
+    default y
+
 config MT7615_AP_TXBF
     bool
     default y
@@ -2271,6 +2275,14 @@ config MUMIMO_SUPPORT
     default y
 
 config MU_RA_SUPPORT
+    bool
+    default y
+
+config DOT11R_FT_SUPPORT
+    bool
+    default y
+
+config DOT11K_RRM_SUPPORT
     bool
     default y
 
