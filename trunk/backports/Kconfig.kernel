@@ -2294,6 +2294,10 @@ config BAND_STEERING
     bool
     default y
 
+config WNM_SUPPORT
+    bool
+    default y
+
 config RT_BAND_STEERING
     bool
     default y
