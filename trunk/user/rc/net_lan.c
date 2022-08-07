@@ -766,6 +766,7 @@ full_restart_lan(void)
 
 	/* force httpd logout */
 	doSystem("killall %s %s", "-SIGUSR1", "httpd");
+	doSystem("/usr/bin/iappd.sh restart");
 }
 
 void
@@ -987,16 +988,16 @@ udhcpc_lan_bound(char *lan_ifname, int is_renew)
 		char *lan_ipmask  = nvram_safe_get(strcat_r(prefix, "netmask_t", tmp));
 		char *lan_gateway = nvram_safe_get(strcat_r(prefix, "gateway_t", tmp));
 		char *lan_domain  = nvram_safe_get(strcat_r(prefix, "domain_t", tmp));
-		
+
 		if (ip_changed)
 			ifconfig(lan_ifname, IFUP, "0.0.0.0", NULL);
-		
+
 		ifconfig(lan_ifname, IFUP, lan_ipaddr, lan_ipmask);
-		
+
 		create_hosts_lan(lan_ipaddr, lan_domain);
-		
+
 		lan_up_auto(lan_ifname, lan_gateway, lan_domain);
-		
+		system("/usr/bin/iappd.sh restart");
 		logmessage("DHCP LAN Client", "%s, IP: %s/%s, GW: %s, lease time: %d",
 			udhcpc_lan_state, lan_ipaddr, lan_ipmask, lan_gateway, lease_dur);
 	}
