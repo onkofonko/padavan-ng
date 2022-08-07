@@ -1,5 +1,5 @@
-SRC_NAME=curl-7.83.1
-SRC_URL=https://github.com/curl/curl/releases/download/curl-7_83_1/$(SRC_NAME).tar.xz
+SRC_NAME=curl-7.84.0
+SRC_URL=https://github.com/curl/curl/releases/download/curl-7_84_0/$(SRC_NAME).tar.xz
 
 all: download_test extract_test config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
@@ -82,7 +82,7 @@ configure:
 		--without-zsh-functions-dir \
 		--with-random=/dev/urandom \
 		--with-zlib=$(STAGEDIR) \
-		--with-openssl=$(STAGEDIR) \
+		--with-ssl=$(STAGEDIR) \
 		--with-ca-bundle=/etc/ssl/cert.pem \
 		--host=$(HOST_TARGET) \
 		--build=$(HOST_BUILD) ; \
