@@ -90,7 +90,7 @@ INT wds_rx_pkt_allow(RTMP_ADAPTER *pAd, RX_BLK *pRxBlk)
 			pEntry = NULL;
 
 		/* have no valid wds entry exist, then discard the incoming packet.*/
-		if (!(pEntry && WDS_IF_UP_CHECK(pAd, pEntry->func_tb_idx)))
+		if (!pEntry || !WDS_IF_UP_CHECK(pAd, pEntry->func_tb_idx))
 			return FALSE;
 
 		/*receive corresponding WDS packet, disable TX lock state (fix WDS jam issue) */
@@ -277,11 +277,12 @@ MAC_TABLE_ENTRY *MacTableInsertWDSEntry(
 			pEntry->MaxHTPhyMode.word = HTPhyMode.word;
 			pEntry->MinHTPhyMode.word = wdev->MinHTPhyMode.word;
 			pEntry->HTPhyMode.word = pEntry->MaxHTPhyMode.word;
+
+#ifdef DOT11_N_SUPPORT
 			/* default */
 			pEntry->MpduDensity = 5;
 			pEntry->MaxRAmpduFactor = 3;
 
-#ifdef DOT11_N_SUPPORT
 			if (wdev->PhyMode >= MODE_HTMIX)
 			{
 				if (wdev->DesiredTransmitSetting.field.MCS != MCS_AUTO)
@@ -481,7 +482,7 @@ VOID WdsTableMaintenance(RTMP_ADAPTER *pAd)
 {
 	UCHAR idx;
 
-	if (pAd->WdsTab.Mode == WDS_DISABLE_MODE)
+	if (pAd->WdsTab.Mode != WDS_LAZY_MODE)
 		return;
 
 	for (idx = 0; idx < pAd->WdsTab.Size; idx++)
@@ -505,13 +506,8 @@ VOID WdsTableMaintenance(RTMP_ADAPTER *pAd)
 		{
 			DBGPRINT(RT_DEBUG_TRACE, ("ageout %02x:%02x:%02x:%02x:%02x:%02x from WDS #%d after %d-sec silence\n",
 					PRINT_MAC(pEntry->Addr), idx, MAC_TABLE_AGEOUT_TIME));
-			if (pAd->WdsTab.Mode != WDS_LAZY_MODE) {
-				pEntry->NoDataIdleCount = 0;
-				BASessionTearDownALL(pAd, pEntry->wcid);
-			} else {
-				WdsEntryDel(pAd, pEntry->Addr);
-				MacTableDeleteWDSEntry(pAd, pEntry->wcid, pEntry->Addr);
-			}
+			WdsEntryDel(pAd, pEntry->Addr);
+			MacTableDeleteWDSEntry(pAd, pEntry->wcid, pEntry->Addr);
 		}
 	}
 
@@ -1354,12 +1350,10 @@ VOID WDS_Remove(RTMP_ADAPTER *pAd)
 	}
 }
 
-
-BOOLEAN WDS_StatsGet(RTMP_ADAPTER *pAd, RT_CMD_STATS *pStats)
+BOOLEAN WDS_StatsGet(RTMP_ADAPTER *pAd, RT_CMD_STATS64 *pStats)
 {
-	INT WDS_apidx = 0,index;
-	RT_802_11_WDS_ENTRY *wds_entry;
-
+	INT WDS_apidx = 0, index;
+	RT_802_11_WDS_ENTRY *pWdsEntry;
 
 	for(index = 0; index < MAX_WDS_ENTRY; index++)
 	{
@@ -1369,32 +1363,23 @@ BOOLEAN WDS_StatsGet(RTMP_ADAPTER *pAd, RT_CMD_STATS *pStats)
 			break;
 		}
 	}
-		
+
 	if(index >= MAX_WDS_ENTRY)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s(): can not find wds I/F\n", __FUNCTION__));
 		return FALSE;
 	}
 
-	wds_entry = &pAd->WdsTab.WdsEntry[WDS_apidx];
-	pStats->pStats = pAd->stats;
+	pWdsEntry = &pAd->WdsTab.WdsEntry[WDS_apidx];
 
-	pStats->rx_packets = wds_entry->WdsCounter.ReceivedFragmentCount.QuadPart;
-	pStats->tx_packets = wds_entry->WdsCounter.TransmittedFragmentCount.QuadPart;
+	pStats->rx_bytes = pWdsEntry->WdsCounter.ReceivedByteCount.QuadPart;
+	pStats->tx_bytes = pWdsEntry->WdsCounter.TransmittedByteCount.QuadPart;
 
-	pStats->rx_bytes = wds_entry->WdsCounter.ReceivedByteCount;
-	pStats->tx_bytes = wds_entry->WdsCounter.TransmittedByteCount;
+	pStats->rx_packets = pWdsEntry->WdsCounter.ReceivedFragmentCount;
+	pStats->tx_packets = pWdsEntry->WdsCounter.TransmittedFragmentCount;
 
-	pStats->rx_errors = wds_entry->WdsCounter.RxErrorCount;
-	pStats->tx_errors = wds_entry->WdsCounter.TxErrors;
-
-	pStats->multicast = wds_entry->WdsCounter.MulticastReceivedFrameCount.QuadPart;   /* multicast packets received */
-	pStats->collisions = 0;  /* Collision packets */
-
-	pStats->rx_over_errors = wds_entry->WdsCounter.RxNoBuffer;                   /* receiver ring buff overflow */
-	pStats->rx_crc_errors = 0;/*pAd->WlanCounters.FCSErrorCount;     // recved pkt with crc error */
-	pStats->rx_frame_errors = 0; /* recv'd frame alignment error */
-	pStats->rx_fifo_errors = wds_entry->WdsCounter.RxNoBuffer;                   /* recv'r fifo overrun */
+	pStats->rx_errors = pWdsEntry->WdsCounter.RxErrorCount;
+	pStats->multicast = pWdsEntry->WdsCounter.MulticastReceivedFrameCount;
 
 	return TRUE;
 }

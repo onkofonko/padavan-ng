@@ -15,7 +15,7 @@
     ---------    ----------    ----------------------------------------------
 
 ***************************************************************************/
-#include "rt_config.h"
+
 #ifndef __RT_OS_UTIL_H__
 #define __RT_OS_UTIL_H__
 
@@ -53,10 +53,8 @@ UINT32 RtmpOsTickUnitGet(VOID);
 */
 NDIS_STATUS os_alloc_mem(VOID *pReserved, UCHAR **mem, ULONG size);
 NDIS_STATUS os_alloc_mem_suspend(VOID *pReserved, UCHAR **mem, ULONG size);
-NDIS_STATUS os_move_mem(PVOID pDest, PVOID pSrc, ULONG length);
-NDIS_STATUS os_free_mem(VOID *pReserved, VOID *mem);
 
-NDIS_STATUS os_zero_mem(PVOID ptr, ULONG length);
+NDIS_STATUS os_free_mem(VOID *pReserved, VOID *mem);
 
 NDIS_STATUS AdapterBlockAllocateMemory(
 	IN	VOID *handle,
@@ -69,7 +67,7 @@ VOID RtmpOsVfree(VOID *pMem);
 ULONG RtmpOsCopyFromUser(VOID *to, const void *from, ULONG n);
 ULONG RtmpOsCopyToUser(VOID *to, const void *from, ULONG n);
 
-BOOLEAN RtmpOsStatsAlloc(VOID **ppStats, VOID **ppIwStats);
+BOOLEAN RtmpOsStatsAlloc(VOID **ppIwStats);
 
 /* OS Packet */
 PNDIS_PACKET RtmpOSNetPktAlloc(VOID *pReserved, int size);
@@ -94,8 +92,6 @@ void RTMP_QueryPacketInfo(
 
 
 PNDIS_PACKET ClonePacket(PNET_DEV ndev, PNDIS_PACKET pkt, UCHAR *buf, ULONG sz);
-PNDIS_PACKET CopyPacket(PNET_DEV ndev, PNDIS_PACKET pkt,  ULONG sz);
-
 PNDIS_PACKET DuplicatePacket(PNET_DEV pNetDev, PNDIS_PACKET pPacket);
 
 PNDIS_PACKET duplicate_pkt_with_TKIP_MIC(
@@ -216,11 +212,7 @@ PUCHAR RtmpOsPktTailBufExtend(PNDIS_PACKET pNetPkt, UINT len);
 PUCHAR RtmpOsPktHeadBufExtend(PNDIS_PACKET pNetPkt, UINT len);
 VOID RtmpOsPktReserve(PNDIS_PACKET pNetPkt, UINT len);
 
-VOID RtmpOsPktProtocolAssign(PNDIS_PACKET pNetPkt);
 VOID RtmpOsPktInfPpaSend(PNDIS_PACKET pNetPkt);
-VOID RtmpOsPktRcvHandle(PNDIS_PACKET pNetPkt);
-VOID RtmpOsPktNatMagicTag(PNDIS_PACKET pNetPkt);
-VOID RtmpOsPktNatNone(PNDIS_PACKET pNetPkt);
 VOID RtmpOsPktInit(PNDIS_PACKET pNetPkt, PNET_DEV pNetDev, UCHAR *buf, USHORT len);
 
 PNDIS_PACKET RtmpOsPktIappMakeUp(PNET_DEV pNetDev, UINT8 *pMac);
@@ -629,7 +621,6 @@ void linux_pci_unmap_single(void *pPciDev, ra_dma_addr_t dma_addr, size_t size, 
 
 #if defined(RTMP_RBUS_SUPPORT) || defined(RTMP_FLASH_SUPPORT)
 void RtmpFlashRead(
-	RTMP_ADAPTER *ad,
 	UCHAR * p,
 	ULONG a,
 	ULONG b);
@@ -689,7 +680,6 @@ int OS_TEST_BIT(int bit, unsigned long *flags);
 void OS_SET_BIT(int bit, unsigned long *flags);
 void OS_CLEAR_BIT(int bit, unsigned long *flags);
 void OS_LOAD_CODE_FROM_BIN(unsigned char **image, char *bin_name, void *inf_dev, UINT32 *code_len);
-VOID os_load_code_from_bin(void *pAd, unsigned char **image, char *bin_name, UINT32 *code_len);
 
 #endif /* __RT_OS_UTIL_H__ */
 

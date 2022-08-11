@@ -37,11 +37,9 @@ VOID EnableAPMIMOPSv2(RTMP_ADAPTER *pAd, BOOLEAN ReduceCorePower)
 		if (pAd->Antenna.field.RxPath == 2)
 			AsicSetRxStream(pAd, 1);
 	}
-#else	
-	{
-		bbp_set_mmps(pAd, ReduceCorePower);
-		rtmp_mac_set_mmps(pAd, ReduceCorePower);
-	}
+#else
+	bbp_set_mmps(pAd, ReduceCorePower);
+	rtmp_mac_set_mmps(pAd, ReduceCorePower);
 #endif /* defined (MT7603) || defined (MT7628) */
 
 	pAd->ApCfg.bGreenAPActive=TRUE;
@@ -56,11 +54,9 @@ VOID DisableAPMIMOPSv2(RTMP_ADAPTER *pAd)
 		if (pAd->Antenna.field.RxPath == 2)
 			AsicSetRxStream(pAd, pAd->Antenna.field.RxPath);
 	}
-#else	
-	{
-		bbp_set_mmps(pAd, FALSE);
-		rtmp_mac_set_mmps(pAd, FALSE);
-	}
+#else
+	bbp_set_mmps(pAd, FALSE);
+	rtmp_mac_set_mmps(pAd, FALSE);
 #endif /* defined (MT7603) || defined (MT7628) */
 
 	pAd->ApCfg.bGreenAPActive=FALSE;

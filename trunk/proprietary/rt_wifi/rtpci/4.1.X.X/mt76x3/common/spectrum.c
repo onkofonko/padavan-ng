@@ -420,7 +420,6 @@ PMEASURE_REQ_ENTRY MeasureReqInsert(RTMP_ADAPTER *pAd, UINT8 DialogToken)
 				PMEASURE_REQ_ENTRY pPrevEntry = NULL;
 				ULONG HashIdx = MQ_DIALOGTOKEN_HASH_INDEX(pEntry->DialogToken);
 				PMEASURE_REQ_ENTRY pProbeEntry = pTab->Hash[HashIdx];
-				BOOLEAN Cancelled;
 
 				/* update Hash list*/
 				do
@@ -442,10 +441,6 @@ PMEASURE_REQ_ENTRY MeasureReqInsert(RTMP_ADAPTER *pAd, UINT8 DialogToken)
 					pProbeEntry = pProbeEntry->pNext;
 				} while (pProbeEntry);
 
-				RTMPCancelTimer(&pEntry->WaitBCNRepTimer, &Cancelled);
-				RTMPReleaseTimer(&pEntry->WaitBCNRepTimer, &Cancelled);
-				RTMPCancelTimer(&pEntry->WaitNRRspTimer, &Cancelled);
-				RTMPReleaseTimer(&pEntry->WaitNRRspTimer, &Cancelled);
 				NdisZeroMemory(pEntry, sizeof(MEASURE_REQ_ENTRY));
 				pTab->Size--;
 
@@ -820,52 +815,53 @@ VOID InsertChannelRepIE(
 	OUT PUCHAR pFrameBuf,
 	OUT PULONG pFrameLen,
 	IN RTMP_STRING *pCountry,
-	IN UINT8 RegulatoryClass,
-	IN UINT8 *ChReptList)
+	IN UINT8 RegulatoryClass)
 {
 	ULONG TempLen;
 	UINT8 Len;
 	UINT8 IEId = IE_AP_CHANNEL_REPORT;
 	PUCHAR pChListPtr = NULL;
-	UINT8 i,j;
-	PUCHAR channel_set = NULL;
-	UCHAR ChannelList[16] ={0};
-	UINT8 NumberOfChannels = 0;
-	UINT8 *pChannelList = NULL;
-	UCHAR channel_set_num = 0;
-	UCHAR ch_list_num = 0;
+	DOT11_CHANNEL_SET *pChannelSet = NULL;
 
 	Len = 1;
+	if (strncmp(pCountry, "US", 2) == 0)
+	{
+		if (RegulatoryClass >= USA_REGULATORY_INFO_SIZE)
+		{
+			DBGPRINT(RT_DEBUG_ERROR, ("%s: USA Unknow Requlatory class (%d)\n",
+						__FUNCTION__, RegulatoryClass));
+			return;
+		}
+		pChannelSet = &USARegulatoryInfo[RegulatoryClass].ChannelSet;
+	}
+	else if (strncmp(pCountry, "JP", 2) == 0)
+	{
+		if (RegulatoryClass >= JP_REGULATORY_INFO_SIZE)
+		{
+			DBGPRINT(RT_DEBUG_ERROR, ("%s: JP Unknow Requlatory class (%d)\n",
+						__FUNCTION__, RegulatoryClass));
+			return;
+		}
 
-	channel_set = get_channelset_by_reg_class(pAd, RegulatoryClass);
-	channel_set_num = get_channel_set_num(channel_set);
-
-	ch_list_num = get_channel_set_num(ChReptList);
+		pChannelSet = &JapanRegulatoryInfo[RegulatoryClass].ChannelSet;
+	}
+	else
+	{
+		DBGPRINT(RT_DEBUG_ERROR, ("%s: Unknow Country (%s)\n",
+					__FUNCTION__, pCountry));
+		return;
+	}
 
 	/* no match channel set. */
-	if (channel_set == NULL)
+	if (pChannelSet == NULL)
 		return;
 
 	/* empty channel set. */
-	if (channel_set_num == 0)
+	if (pChannelSet->NumberOfChannels == 0)
 		return;
 
-	if (ch_list_num) { /* assign partial channel list */
-		for (i = 0; i < channel_set_num; i++) {
-			for (j = 0; j < ch_list_num; j++) {
-				if (ChReptList[j] == channel_set[i])
-					ChannelList[NumberOfChannels++] = channel_set[i];
-			}
-		}
-
-		pChannelList = &ChannelList[0];
-	} else {
-		NumberOfChannels = channel_set_num;
-		pChannelList = channel_set;
-	}
-
-	Len += NumberOfChannels;
-	pChListPtr = pChannelList;
+	Len += pChannelSet->NumberOfChannels;
+	pChListPtr = pChannelSet->ChannelList;
 
 	if (Len > 1)
 	{
@@ -881,36 +877,6 @@ VOID InsertChannelRepIE(
 	return;
 }
 
-/*
-*	==========================================================================
-*	Description:
-*		Add last beacon report indication request into beacon request
-*
-*	Parametrs:
-*
-*	Return	: NAN
-*	==========================================================================
- */
-VOID InsertBcnReportIndicationReqIE(
-	IN RTMP_ADAPTER *pAd,
-	OUT PUCHAR pFrameBuf,
-	OUT PULONG pFrameLen,
-	IN UINT8 Data
-)
-{
-	ULONG TempLen;
-	UINT8 Len;
-	UINT8 IEId = IE_LAST_BCN_REPORT_INDICATION_REQUEST;
-
-	Len = 1;
-
-	MakeOutgoingFrame(pFrameBuf,	&TempLen,
-					  1,				&IEId,
-					  1,				&Len,
-					  1,				&Data,
-					  END_OF_ARGS);
-	*pFrameLen = *pFrameLen + TempLen;
-}
 
 /*
 	==========================================================================
@@ -1130,20 +1096,17 @@ VOID MakeMeasurementReqFrame(
 {
 	ULONG TempLen;
 	MEASURE_REQ_INFO MeasureReqIE;
-	UINT16 leRepetitions;
 
 	InsertActField(pAd, (pOutBuffer + *pFrameLen), pFrameLen, Category, Action);
 
 	/* fill Dialog Token*/
 	InsertDialogToken(pAd, (pOutBuffer + *pFrameLen), pFrameLen, MeasureToken);
-	leRepetitions = cpu2le16(NumOfRepetitions);
-
 
 	/* fill Number of repetitions. */
 	if (Category == CATEGORY_RM)
 	{
 		MakeOutgoingFrame((pOutBuffer+*pFrameLen),	&TempLen,
-						2,							&leRepetitions,
+						2,							&NumOfRepetitions,
 						END_OF_ARGS);
 
 		*pFrameLen += TempLen;
@@ -2230,8 +2193,14 @@ INT Set_MeasureReq_Proc(RTMP_ADAPTER *pAd, RTMP_STRING *arg)
 
 	//TotalLen = sizeof(MEASURE_REQ_INFO) + sizeof(MEASURE_REQ);
 
+	/*
+		according to 802.11h-2003.pdf 
+		Page#26
+		Table 19a!XCategory values
+		Spectrum management (CATEGORY_SPECTRUM) ==> 0
+	*/
 	MakeMeasurementReqFrame(pAd, pOutBuffer, &FrameLen,
-		sizeof(MEASURE_REQ_INFO), CATEGORY_RM, RM_BASIC,
+		sizeof(MEASURE_REQ_INFO), CATEGORY_SPECTRUM, SPEC_MRQ,
 		MeasureReqToken, MeasureReqMode.word,
 		MeasureReqType, 1);
 

@@ -52,9 +52,6 @@ static inline VOID FreeGrpMemberEntry(
 static VOID IGMPTableDisplay(
 	IN PRTMP_ADAPTER pAd);
 
-static BOOLEAN isIgmpMacAddr(
-	IN PUCHAR pMacAddr);
-
 static VOID InsertIgmpMember(
 	IN PMULTICAST_FILTER_TABLE pMulticastFilterTable,
 	IN PLIST_HEADER pList,
@@ -69,6 +66,8 @@ static VOID DeleteIgmpMemberList(
 	IN PMULTICAST_FILTER_TABLE pMulticastFilterTable,
 	IN PLIST_HEADER pList);
 
+static INT32 IPv6MulticastFilterExcluded(
+	IN PUCHAR pDstMacAddr);
 
 /*
     ==========================================================================
@@ -132,16 +131,18 @@ static VOID IGMPTableDisplay(
 	MULTICAST_FILTER_TABLE_ENTRY *pEntry = NULL;
 	PMULTICAST_FILTER_TABLE pMulticastFilterTable = pAd->pMulticastFilterTable;
 
+	printk(KERN_INFO "Multicast filter table:\n");
+
 	if (pMulticastFilterTable == NULL)
 	{
-		DBGPRINT(RT_DEBUG_OFF, ("%s Multicase filter table is not ready.\n", __FUNCTION__));
+		DBGPRINT(RT_DEBUG_OFF, ("Table is not ready!\n"));
 		return;
 	}
 
 	/* if FULL, return */
 	if (pMulticastFilterTable->Size == 0)
 	{
-		DBGPRINT(RT_DEBUG_ERROR, ("Table empty.\n"));
+		printk(KERN_INFO "Table empty.\n");
 		return;
 	}
 
@@ -156,15 +157,15 @@ static VOID IGMPTableDisplay(
 			PMEMBER_ENTRY pMemberEntry = NULL;
 			pEntry = &pMulticastFilterTable->Content[i];
 
-			DBGPRINT(RT_DEBUG_OFF, ("IF(%s) entry #%d, type=%s, GrpId=(%02x:%02x:%02x:%02x:%02x:%02x) memberCnt=%d\n",
+			printk(KERN_INFO "IF(%s) entry #%d, type=%s, GrpId=(%02x:%02x:%02x:%02x:%02x:%02x) memberCnt=%d\n",
 				RTMP_OS_NETDEV_GET_DEVNAME(pEntry->net_dev), i, (pEntry->type==0 ? "static":"dynamic"),
-				PRINT_MAC(pEntry->Addr), IgmpMemberCnt(&pEntry->MemberList)));
+				PRINT_MAC(pEntry->Addr), IgmpMemberCnt(&pEntry->MemberList));
 
 			pMemberEntry = (PMEMBER_ENTRY)pEntry->MemberList.pHead;
 			while (pMemberEntry)
 			{
-				DBGPRINT(RT_DEBUG_OFF, ("member mac=(%02x:%02x:%02x:%02x:%02x:%02x)\n",
-										PRINT_MAC(pMemberEntry->Addr)));
+				printk(KERN_INFO "  member mac=(%02x:%02x:%02x:%02x:%02x:%02x)\n",
+					PRINT_MAC(pMemberEntry->Addr));
 
 				pMemberEntry = pMemberEntry->pNext;
 			}
@@ -212,6 +213,14 @@ BOOLEAN MulticastFilterTableInsertEntry(
 	/* check the rule is in table already or not. */
 	if ((pEntry = MulticastFilterTableLookup(pMulticastFilterTable, pGrpId, dev)))
 	{
+
+		if (pEntry && type == MCAT_FILTER_STATIC)
+		{
+			RTMP_SEM_LOCK(&pMulticastFilterTable->MulticastFilterTabLock);
+			pEntry->type = MCAT_FILTER_STATIC;
+			RTMP_SEM_UNLOCK(&pMulticastFilterTable->MulticastFilterTabLock);
+		}
+	
 		/* doesn't indicate member mac address. */
 		if(pMemberAddr == NULL)
 		{
@@ -336,7 +345,8 @@ BOOLEAN MulticastFilterTableDeleteEntry(
 	IN PRTMP_ADAPTER pAd,
 	IN PUCHAR pGrpId,
 	IN PUCHAR pMemberAddr,
-	IN PNET_DEV dev)
+	IN PNET_DEV dev,
+	IN MulticastFilterEntryType type)
 {
 	USHORT HashIdx;
 	MULTICAST_FILTER_TABLE_ENTRY *pEntry, *pPrevEntry;
@@ -377,6 +387,9 @@ BOOLEAN MulticastFilterTableDeleteEntry(
 
 		if (pEntry)
 		{
+			if ((pEntry->type == MCAT_FILTER_STATIC) && (type != MCAT_FILTER_STATIC))
+				break;
+		
 			if (pEntry == pMulticastFilterTable->Hash[HashIdx])
 			{
 				pMulticastFilterTable->Hash[HashIdx] = pEntry->pNext;
@@ -396,7 +409,7 @@ BOOLEAN MulticastFilterTableDeleteEntry(
 		}
 		else
 		{
-			DBGPRINT(RT_DEBUG_TRACE, ("%s: the Group doesn't exist.\n", __FUNCTION__));
+			DBGPRINT(RT_DEBUG_ERROR, ("%s: the Group doesn't exist.\n", __FUNCTION__));
 		}
 	} while(FALSE);
 
@@ -481,6 +494,62 @@ PMULTICAST_FILTER_TABLE_ENTRY MulticastFilterTableLookup(
 	return pEntry;
 }
 
+static inline BOOLEAN isIgmpMacAddr(
+	IN PUCHAR pMacAddr)
+{
+	if((pMacAddr[0] == 0x01)
+		&& (pMacAddr[1] == 0x00)
+		&& (pMacAddr[2] == 0x5e))
+		return TRUE;
+	return FALSE;
+}
+
+static BOOLEAN isIgmpPkt(
+	IN PUCHAR pDstMacAddr,
+	IN PUCHAR pIpHeader)
+{
+	UINT16 IpProtocol = ntohs(*((UINT16 *)(pIpHeader)));
+	UCHAR IgmpProtocol;
+
+	if(!isIgmpMacAddr(pDstMacAddr))
+		return FALSE;
+
+	if(IpProtocol == ETH_P_IP)
+	{
+		IgmpProtocol = (UCHAR)*(pIpHeader + 11);
+		if(IgmpProtocol == IGMP_PROTOCOL_DESCRIPTOR)
+				return TRUE;
+	}
+
+	return FALSE;
+}
+
+static INT32 IPv4MulticastFilterExcluded(
+	IN PUCHAR pDstMacAddr)
+{
+	UINT32 DstIpAddr;
+
+	if(!isIgmpMacAddr(pDstMacAddr))
+		return -1;
+
+	/* Check IGMP packet */
+	if(*(pDstMacAddr + 23) == IGMP_PROTOCOL_DESCRIPTOR)
+		return 1;
+
+	/* Get destination Ip address of IP header */
+	DstIpAddr = ntohl(*((UINT32*)(pDstMacAddr + 30)));
+
+	/* Check address is local multicast */
+	if ((DstIpAddr & 0xffffff00) == 0xe0000000)
+		return 2;
+
+	/* Check address is SSDP */
+	if (DstIpAddr == 0xeffffffa)
+		return 2;
+
+	return 0;
+}
+
 VOID IGMPSnooping(
 	IN PRTMP_ADAPTER pAd,
 	IN PUCHAR pDstMacAddr,
@@ -525,7 +594,7 @@ VOID IGMPSnooping(
 				ConvertMulticastIP2MAC(pGroupIpAddr, (PUCHAR *)&pGroupMacAddr, ETH_P_IP);
 			DBGPRINT(RT_DEBUG_TRACE, ("IGMP Group=%02x:%02x:%02x:%02x:%02x:%02x\n",
 				GroupMacAddr[0], GroupMacAddr[1], GroupMacAddr[2], GroupMacAddr[3], GroupMacAddr[4], GroupMacAddr[5]));
-			MulticastFilterTableDeleteEntry(pAd, GroupMacAddr, pSrcMacAddr, pDev);
+			MulticastFilterTableDeleteEntry(pAd, GroupMacAddr, pSrcMacAddr, pDev, MCAT_FILTER_DYNAMIC);
 			break;
 
 		case IGMP_V3_MEMBERSHIP_REPORT: /* IGMP version 3 membership report. */
@@ -559,7 +628,7 @@ VOID IGMPSnooping(
 						|| (GroupType == BLOCK_OLD_SOURCES))
 					{
 						if(numOfSources == 0)
-							MulticastFilterTableDeleteEntry(pAd, GroupMacAddr, pSrcMacAddr, pDev);
+							MulticastFilterTableDeleteEntry(pAd, GroupMacAddr, pSrcMacAddr, pDev, MCAT_FILTER_DYNAMIC);
 						else
 							MulticastFilterTableInsertEntry(pAd, GroupMacAddr, pSrcMacAddr, pDev, MCAT_FILTER_DYNAMIC);
 						break;
@@ -577,71 +646,6 @@ VOID IGMPSnooping(
 
 	return;
 }
-
-
-static BOOLEAN isIgmpMacAddr(
-	IN PUCHAR pMacAddr)
-{
-	if((pMacAddr[0] == 0x01)
-		&& (pMacAddr[1] == 0x00)
-		&& (pMacAddr[2] == 0x5e))
-		return TRUE;
-	return FALSE;
-}
-
-BOOLEAN isIgmpPkt(
-	IN PUCHAR pDstMacAddr,
-	IN PUCHAR pIpHeader)
-{
-	UINT16 IpProtocol = ntohs(*((UINT16 *)(pIpHeader)));
-	UCHAR IgmpProtocol;
-
-	if(!isIgmpMacAddr(pDstMacAddr))
-		return FALSE;
-
-	if(IpProtocol == ETH_P_IP)
-	{
-		IgmpProtocol = (UCHAR)*(pIpHeader + 11);
-		if(IgmpProtocol == IGMP_PROTOCOL_DESCRIPTOR)
-				return TRUE;
-	}
-
-	return FALSE;
-}
-
-
-BOOLEAN ismDNS(
-	IN PUCHAR pDstMacAddr,
-	IN PUCHAR pIpHeader)
-{
-	UINT16 IpProtocol = ntohs(*((UINT16 *) (pIpHeader)));
-	UCHAR IpUDP;
-	UCHAR mDNSv6[16] = {0xFF, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-				0x00, 0x00 ,0x00, 0x00, 0x00, 0x00, 0x00, 0xFB};
-
-	if (IpProtocol == ETH_P_IP) {
-		IpUDP = (UCHAR)*(pIpHeader + 11);
-		if (IpUDP == IP_UDP) {
-			/* check the ip address : 224.0.0.x  reserved for mDNS & well known Protocol*/
-			if (((UCHAR)*(pIpHeader + (11+7)) == 0xE0)
-				&& ((UCHAR)*(pIpHeader + (11+8)) == 0x00)
-				&& ((UCHAR)*(pIpHeader + (11+9)) == 0x00)
-			)
-				return TRUE;
-		}
-	} else if (IpProtocol == ETH_P_IPV6) {
-		IpUDP = (UCHAR)*(pIpHeader + 8);
-		if (IpUDP == IP_UDP) {
-			/* check the ipv6 address : ff02::fb  reserved for mDNSv6 */
-			if (!memcmp((pIpHeader + (8+18)), mDNSv6, 16))
-				return TRUE;
-
-		}		
-	}
-
-	return FALSE;
-}
-
 
 static VOID InsertIgmpMember(
 	IN PMULTICAST_FILTER_TABLE pMulticastFilterTable,
@@ -745,7 +749,6 @@ static VOID DeleteIgmpMemberList(
 	return;
 }
 
-
 UCHAR IgmpMemberCnt(
 	IN PLIST_HEADER pList)
 {
@@ -782,7 +785,7 @@ VOID IgmpGroupDelMembers(
 
 			if((pEntry->type == MCAT_FILTER_DYNAMIC)
 				&& (IgmpMemberCnt(&pEntry->MemberList) == 0))
-				MulticastFilterTableDeleteEntry(pAd, pEntry->Addr, pMemberAddr, pDev);
+				MulticastFilterTableDeleteEntry(pAd, pEntry->Addr, pMemberAddr, pDev, MCAT_FILTER_DYNAMIC);
 		}
 	}
 }
@@ -954,13 +957,13 @@ INT Set_IgmpSn_DelEntry_Proc(RTMP_ADAPTER *pAd, RTMP_STRING *arg)
 			memberCnt++;
 
 		if (memberCnt > 0 )
-			MulticastFilterTableDeleteEntry(pAd, (PUCHAR)GroupId, Addr, pDev);
+			MulticastFilterTableDeleteEntry(pAd, (PUCHAR)GroupId, Addr, pDev, MCAT_FILTER_STATIC);
 
 		bGroupId = 0;
 	}
 
 	if(memberCnt == 0)
-		MulticastFilterTableDeleteEntry(pAd, (PUCHAR)GroupId, NULL, pDev);
+		MulticastFilterTableDeleteEntry(pAd, (PUCHAR)GroupId, NULL, pDev, MCAT_FILTER_STATIC);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s (%2X:%2X:%2X:%2X:%2X:%2X)\n",
 		__FUNCTION__, Addr[0], Addr[1], Addr[2], Addr[3], Addr[4], Addr[5]));
@@ -1003,28 +1006,24 @@ NDIS_STATUS IgmpPktInfoQuery(
 {
 	if(IS_MULTICAST_MAC_ADDR(pSrcBufVA))
 	{
-		BOOLEAN IgmpMldPkt = FALSE;
-		PUCHAR pIpHeader = pSrcBufVA + 12;
-
-		if(ntohs(*((UINT16 *)(pIpHeader))) == ETH_P_IPV6)
-			IgmpMldPkt = IPv6MulticastFilterExcluded(pSrcBufVA, pIpHeader);
-		else
-			IgmpMldPkt = isIgmpPkt(pSrcBufVA, pIpHeader);
-
-		if (ismDNS(pSrcBufVA, pIpHeader)) {
-			/* just update the timestamp */
-			*ppGroupEntry = MulticastFilterTableLookup(pAd->pMulticastFilterTable,
-								pSrcBufVA,
-								wdev->if_dev);
-
-			*pInIgmpGroup = IGMP_NONE;
-			return NDIS_STATUS_SUCCESS;
+		INT32 ExcludedGroupType = -1;
+		UINT16 EtherType = ntohs(*((UINT16 *)(pSrcBufVA + 12)));
+		
+		if (EtherType == ETH_P_IPV6)
+		{
+			ExcludedGroupType = IPv6MulticastFilterExcluded(pSrcBufVA);
 		}
-
-		if (IgmpMldPkt)
+		else if (EtherType == ETH_P_IP)
+		{
+			ExcludedGroupType = IPv4MulticastFilterExcluded(pSrcBufVA);
+		}
+		
+		if (ExcludedGroupType)
 		{
 			*ppGroupEntry = NULL;
-			*pInIgmpGroup = IGMP_PKT;
+			
+			if (ExcludedGroupType == 1)
+				*pInIgmpGroup = IGMP_PKT;
 		}
 		else if ((*ppGroupEntry = MulticastFilterTableLookup(pAd->pMulticastFilterTable, pSrcBufVA,
 									wdev->if_dev)) == NULL)
@@ -1055,11 +1054,8 @@ NDIS_STATUS IgmpPktInfoQuery(
 NDIS_STATUS IgmpProtocolPktClone(
 	IN PRTMP_ADAPTER pAd,
 	IN PNDIS_PACKET pPacket,
-	IN INT IgmpPktInGroup,
-	IN PMULTICAST_FILTER_TABLE_ENTRY pGroupEntry,
 	IN UCHAR QueIdx,
-	IN UINT8 UserPriority,
-	IN PNET_DEV pNetDev)
+	IN UINT8 UserPriority)
 {
 	PNDIS_PACKET pSkbClone = NULL;
 	STA_TR_ENTRY *tr_entry = NULL;
@@ -1067,21 +1063,11 @@ NDIS_STATUS IgmpProtocolPktClone(
 #ifdef IP_ASSEMBLY	
 	INT ret=0;
 	PACKET_INFO PacketInfo;
-	UCHAR *pSrcBufVA;
-	UINT SrcBufLen;
-	RTMP_QueryPacketInfo(pPacket, &PacketInfo, &pSrcBufVA, &SrcBufLen);
-	if ((!pSrcBufVA) || (SrcBufLen <= 14)) {
-		goto drop_pkt;
-	}
 #endif /* IP_ASSEMBLY */	
-
-	if ((IgmpPktInGroup != IGMP_PKT))
-		return NDIS_STATUS_FAILURE;
 
 	wcid = RTMP_GET_PACKET_WCID(pPacket);
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(): wcid=%d\n", __FUNCTION__, wcid));
 	if (!(VALID_TR_WCID(wcid) && IS_VALID_ENTRY(&pAd->MacTab.tr_entry[wcid]))) {
-		DBGPRINT(RT_DEBUG_ERROR, ("%s(): Invalid wcid=%d\n", __func__, wcid));
 		return NDIS_STATUS_FAILURE;
 	}
 
@@ -1097,16 +1083,16 @@ NDIS_STATUS IgmpProtocolPktClone(
 	//pSkbClone=(PNDIS_PACKET)OS_PKT_COPY(pPacket);
 	if (pSkbClone)
 	{
-					if (pAd->TxSwQueue[QueIdx].Number >= pAd->TxSwQMaxLen)
-						{
-							{
+		if (pAd->TxSwQueue[QueIdx].Number >= pAd->TxSwQMaxLen)
+		{
+			{
 #ifdef BLOCK_NET_IF
-								StopNetIfQueue(pAd, QueIdx, pSkbClone);
+				StopNetIfQueue(pAd, QueIdx, pSkbClone);
 #endif /* BLOCK_NET_IF */
-								goto drop_pkt;
-					
-							}
-						}else {
+				goto drop_pkt;
+			
+			}
+		}else {
 #ifdef MT_MAC
 			if (pAd->chipCap.hif_type == HIF_MT)
 			{
@@ -1125,7 +1111,7 @@ NDIS_STATUS IgmpProtocolPktClone(
 #endif /* MT_MAC */
 			
 #ifdef UAPSD_SUPPORT
-			if (IS_ENTRY_CLIENT(tr_entry) && (wcid < MAX_LEN_OF_MAC_TABLE)
+			if (IS_ENTRY_CLIENT(tr_entry) 
 				&& (tr_entry->PsMode == PWR_SAVE)
 				&& UAPSD_MR_IS_UAPSD_AC(&pAd->MacTab.Content[wcid], QueIdx))
 			{
@@ -1162,7 +1148,7 @@ NDIS_STATUS IgmpProtocolPktClone(
 				{
 					/* mark corresponding TIM bit in outgoing BEACON frame */
 #ifdef UAPSD_SUPPORT
-					if (wcid < MAX_LEN_OF_MAC_TABLE && UAPSD_MR_IS_NOT_TIM_BIT_NEEDED_HANDLED(&pAd->MacTab.Content[wcid], QueIdx))
+					if (UAPSD_MR_IS_NOT_TIM_BIT_NEEDED_HANDLED(&pAd->MacTab.Content[wcid], QueIdx))
 					{
 						/*
 							1. the station is UAPSD station;
@@ -1190,16 +1176,13 @@ nofree_drop_pkt:
 	return NDIS_STATUS_FAILURE;
 }
 
-
-
 NDIS_STATUS IgmpPktClone(
 	IN PRTMP_ADAPTER pAd,
 	IN PNDIS_PACKET pPacket,
 	IN INT IgmpPktInGroup,
 	IN PMULTICAST_FILTER_TABLE_ENTRY pGroupEntry,
 	IN UCHAR QueIdx,
-	IN UINT8 UserPriority,
-	IN PNET_DEV pNetDev)
+	IN UINT8 UserPriority)
 {
 	PNDIS_PACKET pSkbClone = NULL;
 	PMEMBER_ENTRY pMemberEntry = NULL;
@@ -1209,20 +1192,19 @@ NDIS_STATUS IgmpPktClone(
 	SST	Sst = SST_ASSOC;
 	UCHAR PsMode = PWR_ACTIVE;
 	UCHAR Rate;
-#ifndef MT_MAC
-	unsigned long IrqFlags;
-#endif
 	INT MacEntryIdx;
 	BOOLEAN bContinue;
 	PUCHAR pMemberAddr = NULL;
+	PUCHAR src_addr = NULL;
+	PNET_DEV pNetDev = NULL;
 
 	bContinue = FALSE;
 
-	if ((IgmpPktInGroup == IGMP_IN_GROUP) && (pGroupEntry == NULL))
-		return NDIS_STATUS_FAILURE;
-
 	if (IgmpPktInGroup == IGMP_IN_GROUP)
 	{
+		if (!pGroupEntry)
+			return NDIS_STATUS_FAILURE;
+		
 		pMemberEntry = (PMEMBER_ENTRY)pGroupEntry->MemberList.pHead;
 		if (pMemberEntry)
 		{
@@ -1233,17 +1215,16 @@ NDIS_STATUS IgmpPktClone(
 	}
 	else if (IgmpPktInGroup == IGMP_PKT)
 	{
-		   PUCHAR src_addr = GET_OS_PKT_DATAPTR(pPacket);
-                src_addr += 6;
-
+		pNetDev = GET_OS_PKT_NETDEV(pPacket);
+		src_addr = GET_OS_PKT_DATAPTR(pPacket) + 6;
+		
 		for(MacEntryIdx=1; MacEntryIdx<MAX_NUMBER_OF_MAC; MacEntryIdx++)
 		{
 			pMemberAddr = pAd->MacTab.Content[MacEntryIdx].Addr;
 			pMacEntry = APSsPsInquiry(pAd, pMemberAddr, &Sst, &Aid, &PsMode, &Rate);
-			// TODO: shiang-usw, check get_netdev_from_bssid() here!!
 			if (pMacEntry && IS_ENTRY_CLIENT(pMacEntry)
 				&& get_netdev_from_bssid(pAd, pMacEntry->wdev->wdev_idx) == pNetDev
-				&& (!NdisEqualMemory(src_addr, pMacEntry->Addr, MAC_ADDR_LEN)))
+				&& !NdisEqualMemory(src_addr, pMacEntry->Addr, MAC_ADDR_LEN))
 			{
 				pMemberAddr = pMacEntry->Addr;
 				bContinue = TRUE;
@@ -1286,16 +1267,7 @@ NDIS_STATUS IgmpPktClone(
 							}
 						}
 
-
-#if defined(RTMP_MAC) || defined(RLT_MAC)
-						/* detect AC Category of tx packets to tune AC0(BE) TX_OP (MAC reg 0x1300) */
-						// TODO: shiang-usw, check this for REG access, it should not be here!
-						if  ((pAd->chipCap.hif_type == HIF_RTMP) || (pAd->chipCap.hif_type == HIF_RLT))
-							detect_wmm_traffic(pAd, UserPriority, 1);
-#endif /* defined(RTMP_MAC) || defined(RLT_MAC) */
-
 						RTMP_SET_PACKET_UP(pSkbClone, UserPriority);
-
 
 						if (rtmp_enq_req(pAd, pSkbClone, QueIdx, tr_entry, FALSE, NULL) == FALSE)
 						{
@@ -1303,7 +1275,6 @@ NDIS_STATUS IgmpPktClone(
 							RELEASE_NDIS_PACKET(pAd, pSkbClone, NDIS_STATUS_FAILURE);
 							return NDIS_STATUS_FAILURE;
 						}
-
 
 						if (tr_entry->EntryType == ENTRY_CAT_MCAST) //should not be here!!
 						{
@@ -1334,83 +1305,23 @@ NDIS_STATUS IgmpPktClone(
 								}
 							}
 						}
-
 				}
 #endif /* MT_MAC */
-
 			}
 			else
 			{
-				if (IgmpPktInGroup == IGMP_IN_GROUP)
-				{
-					pMemberEntry = pMemberEntry->pNext;
-					if (pMemberEntry != NULL)
-					{
-						pMemberAddr = pMemberEntry->Addr;
-						pMacEntry = APSsPsInquiry(pAd, pMemberAddr, &Sst, &Aid, &PsMode, &Rate);
-						bContinue = TRUE;
-					}
-					else
-						bContinue = FALSE;
-				}
-				else if (IgmpPktInGroup == IGMP_PKT)
-				{
-		   			PUCHAR src_addr = GET_OS_PKT_DATAPTR(pPacket);
-                			src_addr += 6;
-					for(MacEntryIdx=pMacEntry->Aid + 1; MacEntryIdx<MAX_NUMBER_OF_MAC; MacEntryIdx++)
-					{
-						pMemberAddr = pAd->MacTab.Content[MacEntryIdx].Addr;
-						pMacEntry = APSsPsInquiry(pAd, pMemberAddr, &Sst, &Aid, &PsMode, &Rate);
-						if (pMacEntry && IS_ENTRY_CLIENT(pMacEntry)
-							&& get_netdev_from_bssid(pAd, pMacEntry->wdev->wdev_idx) == pNetDev
-							&& (!NdisEqualMemory(src_addr, pMacEntry->Addr, MAC_ADDR_LEN)))
-						{
-							pMemberAddr = pMacEntry->Addr;
-							bContinue = TRUE;
-							break;
-						}
-					}
-					if (MacEntryIdx == MAX_NUMBER_OF_MAC)
-						bContinue = FALSE;
-				}
-				else
-					bContinue = FALSE;	
-
 #ifdef DOT11V_WNM_SUPPORT
 				pMacEntry->Beclone = FALSE;
 #endif /* DOT11V_WNM_SUPPORT */
-				continue;
+				goto next_iteration;
 			}
-
-#ifndef MT_MAC
-/*did't queue to AC queue for MT_MAC */
-			if (PsMode == PWR_SAVE)
-			{
-				APInsertPsQueue(pAd, pSkbClone, pMacEntry, QueIdx);
-			}
-			else
-			{
-				if (pAd->TxSwQueue[QueIdx].Number >= pAd->TxSwQMaxLen)
-				{
-#ifdef BLOCK_NET_IF
-					StopNetIfQueue(pAd, QueIdx, pSkbClone);
-#endif /* BLOCK_NET_IF */
-					RELEASE_NDIS_PACKET(pAd, pSkbClone, NDIS_STATUS_FAILURE);
-					return NDIS_STATUS_FAILURE;
-				}
-				else
-				{
-					RTMP_IRQ_LOCK(&pAd->irq_lock, IrqFlags);
-					InsertTailQueueAc(pAd, pMacEntry, &pAd->TxSwQueue[QueIdx], PACKET_TO_QUEUE_ENTRY(pSkbClone));
-					RTMP_IRQ_UNLOCK(&pAd->irq_lock, IrqFlags);
-				}
-			}
-#endif /* !MT_MAC */
 		
 #ifdef DOT11_N_SUPPORT
 			RTMP_BASetup(pAd, tr_entry, UserPriority);
 #endif /* DOT11_N_SUPPORT */
 		}
+
+next_iteration:
 
 		if (IgmpPktInGroup == IGMP_IN_GROUP)
 		{
@@ -1424,15 +1335,15 @@ NDIS_STATUS IgmpPktClone(
 			else
 				bContinue = FALSE;
 		}
-		else if (IgmpPktInGroup == IGMP_PKT)
+		else
 		{
 			for(MacEntryIdx=pMacEntry->Aid + 1; MacEntryIdx<MAX_NUMBER_OF_MAC; MacEntryIdx++)
 			{
 				pMemberAddr = pAd->MacTab.Content[MacEntryIdx].Addr;
 				pMacEntry = APSsPsInquiry(pAd, pMemberAddr, &Sst, &Aid, &PsMode, &Rate);
-				// TODO: shiang-usw, check for pMacEntry->wdev->wdev_idx here!
 				if (pMacEntry && IS_ENTRY_CLIENT(pMacEntry)
-					&& get_netdev_from_bssid(pAd, pMacEntry->wdev->wdev_idx) == pNetDev)
+					&& get_netdev_from_bssid(pAd, pMacEntry->wdev->wdev_idx) == pNetDev
+					&& !NdisEqualMemory(src_addr, pMacEntry->Addr, MAC_ADDR_LEN))
 				{
 					pMemberAddr = pMacEntry->Addr;
 					bContinue = TRUE;
@@ -1442,8 +1353,6 @@ NDIS_STATUS IgmpPktClone(
 			if (MacEntryIdx == MAX_NUMBER_OF_MAC)
 				bContinue = FALSE;
 		}
-		else
-			bContinue = FALSE;	
 	}
 
 	return NDIS_STATUS_SUCCESS;
@@ -1453,6 +1362,15 @@ static inline BOOLEAN isMldMacAddr(
 	IN PUCHAR pMacAddr)
 {
 	return ((pMacAddr[0] == 0x33) && (pMacAddr[1] == 0x33)) ? TRUE : FALSE;
+}
+
+static inline BOOLEAN IPv6_Transient_Multicast(
+	IN PRT_IPV6_ADDR pIpv6Addr)
+{
+	if ((pIpv6Addr->ipv6_addr32[0] & htonl(0xFF100000)) == htonl(0xFF100000))
+		return TRUE;
+
+	return FALSE;
 }
 
 static inline BOOLEAN IsSupportedMldMsg(
@@ -1520,46 +1438,53 @@ BOOLEAN isMldPkt(
 	return result;
 }
 
-BOOLEAN IPv6MulticastFilterExcluded(
-	IN PUCHAR pDstMacAddr,
-	IN PUCHAR pIpHeader)
+static INT32 IPv6MulticastFilterExcluded(
+	IN PUCHAR pDstMacAddr)
 {
-	BOOLEAN result = FALSE;
-	UINT16 IpProtocol = ntohs(*((UINT16 *)(pIpHeader)));
 	INT idx;
 	UINT8 nextProtocol;
+	PUCHAR pIpHeader;
+	PRT_IPV6_HDR pIpv6Hdr;
+	UINT32 offset;
 
 	if(!IS_IPV6_MULTICAST_MAC_ADDR(pDstMacAddr))
-		return FALSE;
+		return -1;
 
-	if(IpProtocol != ETH_P_IPV6)
-		return FALSE;
-
-	/* skip protocol (2 Bytes). */
-	pIpHeader += 2;
-	do
+	pIpHeader = pDstMacAddr + 14;
+	pIpv6Hdr = (PRT_IPV6_HDR)(pIpHeader);
+	offset = IPV6_HDR_LEN;
+	nextProtocol = pIpv6Hdr->nextHdr;
+	while(nextProtocol == IPV6_NEXT_HEADER_HOP_BY_HOP)
 	{
-		PRT_IPV6_HDR pIpv6Hdr = (PRT_IPV6_HDR)(pIpHeader);
-		UINT32 offset = IPV6_HDR_LEN;
+		if(IPv6ExtHdrHandle((RT_IPV6_EXT_HDR *)(pIpHeader + offset), &nextProtocol, &offset) == FALSE)
+			break;
+	}
 
-		nextProtocol = pIpv6Hdr->nextHdr;
-		while(nextProtocol == IPV6_NEXT_HEADER_HOP_BY_HOP)
+	if (nextProtocol == IPV6_NEXT_HEADER_ICMPV6)
+	{
+		PRT_ICMPV6_HDR pICMPv6Hdr = (PRT_ICMPV6_HDR)(pIpHeader + offset);
+		
+		switch (pICMPv6Hdr->type)
 		{
-			if(IPv6ExtHdrHandle((RT_IPV6_EXT_HDR *)(pIpHeader + offset), &nextProtocol, &offset) == FALSE)
-				break;
+		case MLD_QUERY:
+		case MLD_V1_LISTENER_REPORT:
+		case MLD_V1_LISTENER_DONE:
+		case MLD_V2_LISTERNER_REPORT:
+			return 1;
 		}
-	} while(FALSE);
+	}
 
 	for (idx = 0; idx < IPV6_MULTICAST_FILTER_EXCLUED_SIZE; idx++)
 	{
 		if (nextProtocol == IPv6MulticastFilterExclued[idx])
-		{
-			result = TRUE;
-			break;
-		}
+			return 2;
 	}
 
-	return result;
+	/* Check non-transient multicast */
+	if (!IPv6_Transient_Multicast(&pIpv6Hdr->dstAddr))
+		return 2;
+
+	return 0;
 }
 
 /*  MLD v1 messages have the following format:
@@ -1701,7 +1626,7 @@ VOID MLDSnooping(
 				ConvertMulticastIP2MAC(pGroupIpAddr, (PUCHAR *)&pGroupMacAddr, ETH_P_IPV6);
 				DBGPRINT(RT_DEBUG_TRACE, ("Group Id=%02x:%02x:%02x:%02x:%02x:%02x\n",
 						GroupMacAddr[0], GroupMacAddr[1], GroupMacAddr[2], GroupMacAddr[3], GroupMacAddr[4], GroupMacAddr[5]));
-				MulticastFilterTableDeleteEntry(pAd, GroupMacAddr, pSrcMacAddr, pDev);
+				MulticastFilterTableDeleteEntry(pAd, GroupMacAddr, pSrcMacAddr, pDev, MCAT_FILTER_DYNAMIC);
 				break;
 
 			case MLD_V2_LISTERNER_REPORT: /* IGMP version 3 membership report. */
@@ -1735,7 +1660,7 @@ VOID MLDSnooping(
 							|| (GroupType == BLOCK_OLD_SOURCES))
 						{
 							if(numOfSources == 0)
-								MulticastFilterTableDeleteEntry(pAd, GroupMacAddr, pSrcMacAddr, pDev);
+								MulticastFilterTableDeleteEntry(pAd, GroupMacAddr, pSrcMacAddr, pDev, MCAT_FILTER_DYNAMIC);
 							else
 								MulticastFilterTableInsertEntry(pAd, GroupMacAddr, pSrcMacAddr, pDev, MCAT_FILTER_DYNAMIC);
 							break;

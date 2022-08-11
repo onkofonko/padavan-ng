@@ -52,7 +52,8 @@ CH_FREQ_MAP CH_HZ_ID_MAP[]=
 			{132, 5660},
 			{136, 5680},
 			{140, 5700},
-						
+			{144, 5720},
+
 			/* Japan MMAC */
 			{34, 5170},
 			{38, 5190},
@@ -322,6 +323,14 @@ CH_DESC Country_Region22_ChDesc_5GHZ[] =
 	{}              
 };
 
+/* special for Russia */
+CH_DESC Country_Region36_ChDesc_5GHZ[] = {
+	{36, 8, CHANNEL_DEFAULT_PROP},
+	{132, 4, CHANNEL_DEFAULT_PROP},
+	{149, 5, CHANNEL_DEFAULT_PROP},
+	{}
+};
+
 COUNTRY_REGION_CH_DESC Country_Region_ChDesc_5GHZ[] =
 {
 	{REGION_0_A_BAND, Country_Region0_ChDesc_5GHZ},
@@ -347,6 +356,8 @@ COUNTRY_REGION_CH_DESC Country_Region_ChDesc_5GHZ[] =
 	{REGION_20_A_BAND, Country_Region20_ChDesc_5GHZ},
 	{REGION_21_A_BAND, Country_Region21_ChDesc_5GHZ},
 	{REGION_22_A_BAND, Country_Region22_ChDesc_5GHZ},
+	{REGION_36_A_BAND, Country_Region36_ChDesc_5GHZ},
+
 	{}
 };
 
@@ -417,27 +428,6 @@ UCHAR GetChannelFlag(PCH_DESC pChDesc, UCHAR index)
 }
 
 #ifdef EXT_BUILD_CHANNEL_LIST
-PCH_REGION GetChRegion(
-	IN PUCHAR CntryCode)
-{
-	INT loop = 0;
-	PCH_REGION pChRegion = NULL;
-
-	while (strcmp((RTMP_STRING *) ChRegion[loop].CountReg, "") != 0) {
-		if (strncmp((RTMP_STRING *) ChRegion[loop].CountReg, (RTMP_STRING *) CntryCode, 2) == 0) {
-			pChRegion = &ChRegion[loop];
-			break;
-		}
-		loop++;
-	}
-
-	/* Default: use WO*/
-	if (pChRegion == NULL)
-		pChRegion = GetChRegion("WO");
-
-	return pChRegion;
-}
-
 
 /*Albania*/
 CH_DESP Country_AL_ChDesp[] =
@@ -1215,8 +1205,11 @@ CH_DESP Country_RO_ChDesp[] =
 CH_DESP Country_RU_ChDesp[] =
 {
 	{ 1,   13, 20, BOTH, FALSE},	/*2402~2482MHz, Ch 1~13,   Max BW: 40 */
-	{ 149,  5, 30, BOTH, FALSE},	/*5735~5835MHz, Ch 149~165, Max BW: 20 */		
-	{ 0},               	    	/* end*/
+	{ 36,   4, 20, BOTH, FALSE},	/*5170~5250MHz, Ch 36~48, Max BW: 40 */
+	{ 52,   4, 20, BOTH, FALSE}, 	/*5250~5330MHz, Ch 52~64, Max BW: 40 */
+	{ 132,  4, 20, BOTH, FALSE},	/*5650~5730MHz, Ch 132~144, Max BW: 40 */
+	{ 149,  5, 20, BOTH, FALSE},	/*5735~5835MHz, Ch 149~165, Max BW: 40 */
+	{ 0},				/* end*/
 };
 /*Saint Barth'elemy*/		
 CH_DESP Country_BL_ChDesp[] =
@@ -1491,7 +1484,7 @@ CH_REGION ChRegion[] =
 	{"KH", CE, Country_KH_ChDesp, TRUE}, /* Cambodia */
 	{"CA", FCC,Country_CA_ChDesp, FALSE}, /* Canada */
 	{"CL", CE, Country_CL_ChDesp, TRUE}, /* Chile */
-	{"CN", CHN, Country_CN_ChDesp, FALSE}, /* China */
+	{"CN", CE, Country_CN_ChDesp, FALSE}, /* China */
 	{"CO", CE, Country_CO_ChDesp, TRUE}, /* Colombia */
 	{"CR", CE, Country_CR_ChDesp, TRUE}, /* Costa Rica */
 	{"HR", CE, Country_HR_ChDesp, TRUE}, /* Croatia */
@@ -1524,7 +1517,8 @@ CH_REGION ChRegion[] =
 	{"IL", CE, Country_IL_ChDesp, FALSE}, /* Israel */
 	{"IT", CE, Country_IT_ChDesp, TRUE}, /* Italy */
 	{"JM", CE, Country_JM_ChDesp, TRUE}, /* Jamaica */
-	{"JP", JAP,Country_JP_ChDesp, FALSE}, /* Japan */		
+	{"JP", JAP,Country_JP_ChDesp, TRUE}, /* Japan */  
+	/* for unify mac ED must be ON to pass Japan CD cert - by CSD */		
 	{"JO", CE, Country_JO_ChDesp, TRUE}, /* Jordan */	
 	{"KZ", CE, Country_KZ_ChDesp, TRUE}, /* Kazakhstan */			
 	{"KE", CE, Country_KE_ChDesp, TRUE}, /* Kenya */	
@@ -1591,9 +1585,30 @@ CH_REGION ChRegion[] =
 	{"WO", FCC, Country_WO_ChDesp, FALSE}, /* World Wide */
 	{""  , 0,  NULL, FALSE}	     , /* End */	
 };
-#endif
 
-#ifdef EXT_BUILD_CHANNEL_LIST
+static PCH_REGION GetChRegion(
+	IN PUCHAR CntryCode)
+{
+	INT loop = 0;
+	PCH_REGION pChRegion = NULL;
+
+	while (strcmp((RTMP_STRING *) ChRegion[loop].CountReg, "") != 0)
+	{
+		if (strncmp((RTMP_STRING *) ChRegion[loop].CountReg, (RTMP_STRING *) CntryCode, 2) == 0)
+		{
+			pChRegion = &ChRegion[loop];
+			break;
+		}
+		loop++;
+	}
+
+	/* Default: use WO*/
+	if (pChRegion == NULL)
+		pChRegion = GetChRegion("WO");
+
+	return pChRegion;
+}
+
 static VOID ChBandCheck(
 	IN UCHAR PhyMode,
 	OUT PUCHAR pChType)
@@ -1864,7 +1879,8 @@ COUNTRY_PROP CountryProp[]=
 	{"IL", CE, FALSE }, /* Israel */
 	{"IT", CE, TRUE }, /* Italy */
 	{"JM", CE, TRUE }, /* Jamaica */
-	{"JP", JAP, FALSE}, /* Japan */		
+	{"JP", JAP, TRUE}, /* Japan */	
+	/* for unify mac ED must be ON to pass Japan CD cert - by CSD */	
 	{"JO", CE, TRUE }, /* Jordan */	
 	{"KZ", CE, TRUE }, /* Kazakhstan */			
 	{"KE", CE, TRUE }, /* Kenya */	
@@ -1933,7 +1949,7 @@ COUNTRY_PROP CountryProp[]=
 };
 
 #ifndef EXT_BUILD_CHANNEL_LIST
-PCOUNTRY_PROP GetCountryProp(
+static PCOUNTRY_PROP GetCountryProp(
 	IN PUCHAR CntryCode)
 {
 	INT loop = 0;
@@ -1956,6 +1972,8 @@ PCOUNTRY_PROP GetCountryProp(
 	return pCountryProp;
 }
 #endif /* !EXT_BUILD_CHANNEL_LIST */
+
+#ifdef ED_MONITOR
 BOOLEAN GetEDCCASupport(
 	IN PRTMP_ADAPTER pAd)
 {
@@ -1966,7 +1984,7 @@ BOOLEAN GetEDCCASupport(
 	
 	pChReg = GetChRegion(pAd->CommonCfg.CountryCode);
 
-	if ((pChReg->DfsType == CE) && (pChReg->edcca_on == TRUE) )
+	if ((pChReg->DfsType != FCC) && (pChReg->edcca_on == TRUE) )
 	{
 		// actually need to check PM's table in CE country
 		ret = TRUE;
@@ -1976,7 +1994,7 @@ BOOLEAN GetEDCCASupport(
 	
 	pCountryProp = GetCountryProp(pAd->CommonCfg.CountryCode);
 
-	if ((pCountryProp->DfsType == CE) && (pCountryProp->edcca_on == TRUE))
+	if ((pCountryProp->DfsType != FCC) && (pCountryProp->edcca_on == TRUE))
 	{
 		// actually need to check PM's table in CE country
 		ret = TRUE;
@@ -1986,6 +2004,8 @@ BOOLEAN GetEDCCASupport(
 	return ret;
 	
 }
+#endif /* ED_MONITOR */
+
 #ifdef DOT11_N_SUPPORT
 static BOOLEAN IsValidChannel(
 	IN PRTMP_ADAPTER pAd,

@@ -308,20 +308,20 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl/config/missing aclocal-1.15
+ACLOCAL = ${SHELL} /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl/config/missing aclocal-1.15
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 0
-AR = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ar
-AS = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-as -mips32r2 -march=mips32r2 -mtune=1004kc
-AUTOCONF = ${SHELL} /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl/config/missing autoconf
-AUTOHEADER = ${SHELL} /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl/config/missing autoheader
-AUTOMAKE = ${SHELL} /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl/config/missing automake-1.15
+AR = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ar
+AS = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-as -mips32r2 -march=mips32r2 -mtune=1004kc
+AUTOCONF = ${SHELL} /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl/config/missing autoconf
+AUTOHEADER = ${SHELL} /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl/config/missing autoheader
+AUTOMAKE = ${SHELL} /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl/config/missing automake-1.15
 AWK = gawk
-CC = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc
+CC = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc
 CCDEPMODE = depmode=none
-CFLAGS = -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe -Dlinux -D__linux__ -Dunix -DEMBED -I/opt/padavan-ng/trunk/stage/include -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign  -ffunction-sections -fdata-sections -fvisibility=hidden  -ffunction-sections -fdata-sections -fvisibility=hidden -fPIC -fPIE -fno-strict-aliasing -fno-strict-overflow -Winit-self -Wwrite-strings -Wdiv-by-zero
-CPP = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc -E
-CPPFLAGS = -I/opt/padavan-ng/trunk/stage/include -D_FORTIFY_SOURCE=2 -I/usr/local/include
+CFLAGS = -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe -Dlinux -D__linux__ -Dunix -DEMBED -I/home/mahtab/padavan-ng/trunk/stage/include -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign  -ffunction-sections -fdata-sections -fvisibility=hidden  -ffunction-sections -fdata-sections -fvisibility=hidden -fPIC -fPIE -fno-strict-aliasing -fno-strict-overflow -Winit-self -Wwrite-strings -Wdiv-by-zero
+CPP = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc -E
+CPPFLAGS = -I/home/mahtab/padavan-ng/trunk/stage/include -D_FORTIFY_SOURCE=2 -I/usr/local/include
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
@@ -340,8 +340,8 @@ INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LD = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ld
-LDFLAGS = -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -Wl,--gc-sections -pie -Wl,-z,relro -Wl,-z,now -Wl,-z,noexecstack -L/usr/local/lib
+LD = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ld
+LDFLAGS = -L/home/mahtab/padavan-ng/trunk/stage/lib -Wl,--gc-sections -Wl,--gc-sections -pie -Wl,-z,relro -Wl,-z,now -Wl,-z,noexecstack -L/usr/local/lib
 LIBADD_DL =  
 LIBADD_DLD_LINK = 
 LIBADD_DLOPEN = 
@@ -358,10 +358,10 @@ LT_CONFIG_H = config.h
 LT_DLLOADERS =  dlopen.la
 LT_DLPREOPEN = -dlpreopen dlopen.la 
 LT_SYS_LIBRARY_PATH = 
-MAKEINFO = ${SHELL} /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl/config/missing makeinfo
+MAKEINFO = ${SHELL} /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl/config/missing makeinfo
 MANIFEST_TOOL = :
 MKDIR_P = /usr/bin/mkdir -p
-NM = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-nm
+NM = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-nm
 NMEDIT = 
 OBJDUMP = objdump
 OBJEXT = o
@@ -375,16 +375,16 @@ PACKAGE_TARNAME = libltdl
 PACKAGE_URL = 
 PACKAGE_VERSION = 2.4.3a
 PATH_SEPARATOR = :
-RANLIB = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ranlib
+RANLIB = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ranlib
 SED = /usr/bin/sed
 SET_MAKE = 
 SHELL = /bin/bash
-STRIP = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-strip
+STRIP = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-strip
 VERSION = 2.4.3a
-abs_builddir = /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl
-abs_srcdir = /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl
-abs_top_builddir = /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl
-abs_top_srcdir = /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl
+abs_builddir = /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl
+abs_srcdir = /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl
+abs_top_builddir = /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl
+abs_top_srcdir = /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl
 ac_ct_AR = 
 ac_ct_CC = 
 ac_ct_DUMPBIN = 
@@ -413,7 +413,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl/config/install-sh
+install_sh = ${SHELL} /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/libltdl/config/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale

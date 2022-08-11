@@ -32,8 +32,7 @@
 #include "rtmp_type.h"
 
 
-#if defined(DOT11R_FT_SUPPORT) || defined(DOT11K_RRM_SUPPORT)
-
+#ifdef DOT11R_FT_SUPPORT
 /*
 	Fast BSS transition auth algorithm in 802.11rD9.0 specification.
 	All other algorithms are defined in  rtmp_def.h
@@ -81,7 +80,7 @@
 #define FT_AKM_SUITE_PSK	4
 #endif
 
-#if defined(DOT11R_FT_SUPPORT) || defined(DOT11K_RRM_SUPPORT)
+#ifdef DOT11R_FT_SUPPORT
 /*
 ** MDIE: Mobile Domain IE.
 */

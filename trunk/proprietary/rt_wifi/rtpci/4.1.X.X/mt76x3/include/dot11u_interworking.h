@@ -108,10 +108,5 @@ enum DOT11U_ADVERTISMENT_PROTOCOL_ID {
 	VENDOR_SPECIFIC = 221
 };
 
-struct anqp_frame {
-	UINT16 info_id;
-	UINT16 length;
-	char variable[0];
-} __packed;
 #endif /* __DOT11U_HOTSPOT_H__ */
 

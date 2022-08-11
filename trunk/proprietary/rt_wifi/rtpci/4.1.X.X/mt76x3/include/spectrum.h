@@ -175,15 +175,7 @@ VOID InsertChannelRepIE(
 	OUT PUCHAR pFrameBuf,
 	OUT PULONG pFrameLen,
 	IN RTMP_STRING *pCountry,
-	IN UINT8 RegulatoryClass,
-	IN UINT8 *ChReptList);
-
-VOID InsertBcnReportIndicationReqIE(
-	IN RTMP_ADAPTER *pAd,
-	OUT PUCHAR pFrameBuf,
-	OUT PULONG pFrameLen,
-	IN UINT8 Data
-);
+	IN UINT8 RegulatoryClass);
 
 VOID InsertTpcReportIE(
 	IN PRTMP_ADAPTER pAd,

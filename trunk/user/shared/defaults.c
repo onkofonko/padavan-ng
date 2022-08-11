@@ -56,7 +56,7 @@ struct nvram_pair router_defaults[] = {
 	{ "lan_dns_x", "1" },			/* LAN DNS [static|dhcp] */
 	{ "lan_dns1", "" },			/* LAN DNS1 */
 	{ "lan_dns2", "" },			/* LAN DNS2 */
-	{ "lan_domain", "lan" },		/* LAN domain name */
+	{ "lan_domain", "" },		/* LAN domain name */
 	{ "lan_stp", "1" },			/* LAN spanning tree protocol */
 
 	/* WAN H/W parameters */
@@ -174,7 +174,7 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_closed", "0" },			/* Closed (hidden) network */
 	{ "wl_macmode", "disabled" },		/* "allow" only, "deny" only, or "disabled"(allow all) */
 	{ "wl_maclist", "" },			/* xx:xx:xx:xx:xx:xx ... */
-	{ "wl_wme", "0" },			/* WME mode (off|on) */
+	{ "wl_wme", "1" },			/* WME mode (off|on) */
 	{ "wl_wme_no_ack", "off" },		/* WME No-Acknowledgment mode */
 	{ "wl_auth_mode", "psk" },		/* Network authentication mode: WPAx Personal */
 	{ "wl_key", "1" },			/* Current WEP key */
@@ -195,7 +195,7 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_TxPower", "100" },
 	{ "wl_TxBurst", "1" },
 	{ "wl_PktAggregate", "1" },
-	{ "wl_APSDCapable", "0" },
+	{ "wl_APSDCapable", "1" },
 	{ "wl_HT_OpMode", "0" },
 #if BOARD_HAS_5G_11AC
 	{ "wl_HT_BW", "2" },
@@ -228,6 +228,7 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_mumimo", "0" },
 #else
 	{ "wl_HT_AMSDU", "0" },
+	{ "wl_HT_MpduDensity", "5" },
 	{ "wl_HT_BAWinSize", "64" },
 #endif
 	{ "wl_HT_80211KV", "1" },
@@ -288,13 +289,13 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_HT_BW", "1" },
 	{ "rt_HT_EXTCHA", "1" },
 	{ "rt_HT_OpMode", "0" },
-	{ "rt_wme", "0" },
+	{ "rt_wme", "1" },
 	{ "rt_wme_no_ack", "off" },
 	{ "rt_IgmpSnEnable", "1" },
 	{ "rt_TxPower", "100" },
 	{ "rt_TxBurst", "1" },
 	{ "rt_PktAggregate", "1" },
-	{ "rt_APSDCapable", "0" },
+	{ "rt_APSDCapable", "1" },
 	{ "rt_auth_mode", "psk" },
 	{ "rt_crypto", "aes" },
 	{ "rt_wpa_psk", DEF_WLAN_2G_PSK },
@@ -326,6 +327,7 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_stream_rx", STR(BOARD_NUM_ANT_2G_RX) },
 	{ "rt_preamble", "1" },
 	{ "rt_greenap", "0" },
+	{ "rt_ldpc", "0" },
 	{ "rt_HT_RDG", "0" },
 	{ "rt_HT_AMSDU", "0" },
 	{ "rt_HT_80211KV", "1" },
@@ -359,6 +361,13 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_guest_wpa_psk", "" },
 	{ "rt_guest_macrule", "0" },
 	{ "rt_guest_mcs_mode", "0" },
+	// band steering AP 2.4Ghz
+	{ "rt_band_steering", "0" },
+
+#if defined (USE_WID_2G) && USE_WID_2G==7615
+	{ "rt_turbo_qam", "1" },
+	{ "rt_airtimefairness", "0" },
+#endif
 
 	// ApCli 2.4Ghz
 	{ "rt_sta_ssid", "" },
@@ -373,8 +382,8 @@ struct nvram_pair router_defaults[] = {
 	// USB related
 	{ "acc_num", "0" },
 	{ "enable_ftp", "0" },
-	{ "enable_samba", "0" },
-	{ "st_samba_fp", "0" },
+	{ "enable_samba", "1" },
+	{ "st_samba_fp", "1" },
 	{ "st_samba_mode", "1" },
 	{ "st_samba_lmb", "1" },
 	{ "st_samba_workgroup", DEF_SMB_WORKGROUP },
@@ -392,8 +401,8 @@ struct nvram_pair router_defaults[] = {
 	{ "usb3_disable", "0" },
 	{ "u2ec_enable", "1" },
 	{ "lprd_enable", "1" },
-	{ "rawd_enable", "0" },
-	{ "achk_enable", "1" },
+	{ "rawd_enable", "1" },
+	{ "achk_enable", "0" },
 	{ "nfsd_enable", "0" },
 	{ "optw_enable", "0" },
 	{ "dlna_disc", "895" },
@@ -497,96 +506,6 @@ struct nvram_pair router_defaults[] = {
 	{ "dr_staticnetmask_x", "0" },
 	{ "dr_staticgateway_x", "" },
 
-#if defined(APP_SCUT)
-	/* scutclient related */
-	{ "scutclient_enable", "0" },
-	{ "scutclient_debug", "0" },
-	{ "scutclient_hostname", "Lenovo-PC" },
-	{ "scutclient_server_auth_ip", "202.38.210.131" },
-	{ "scutclient_skip_udp_hb", "0" },
-	{ "scutclient_version", "4472434f4d0096022a" },
-	{ "scutclient_hash", "2ec15ad258aee9604b18f2f8114da38db16efd00" },
-	{ "scutclient_username", "" },
-	{ "scutclient_password", "" },
-	{ "scutclient_watchcat", "1" },
-	{ "scutclient_wdg_force", "1" },
-#endif
-
-#if defined(APP_MENTOHUST)
-	/* mentohust related */
-	{ "mentohust_enable", "0" },
-	{ "mentohust_username", "" },
-	{ "mentohust_password", "" },
-	{ "mentohust_nic", "" },
-	{ "mentohust_ip", "" },
-	{ "mentohust_mask", "" },
-	{ "mentohust_gw", "" },
-	{ "mentohust_dns", "" },
-	{ "mentohust_pinghost", "" },
-	{ "mentohust_timeout", "8" },
-	{ "mentohust_interval", "30" },
-	{ "mentohust_restart_wait", "15" },
-	{ "mentohust_maxfail", "0" },
-	{ "mentohust_startmode", "1" },
-	{ "mentohust_dhcp", "0" },
-	{ "mentohust_daemon", "1" },
-	{ "mentohust_service", "0" },
-	{ "mentohust_ver", "0.00" },
-	{ "mentohust_datafile", "/etc/storage/mentohust/" },
-	{ "mentohust_dhcpscript", "" },
-#endif
-
-#if defined(APP_TTYD)
-	/* ttyd related */
-	{ "ttyd_enable", "0" },
-	{ "ttyd_port", "7681" },
-
-	/* NAPT66 */
-	{ "napt66_enable", "0" },
-#endif
-
-#if defined(APP_VLMCSD)
-	/* vlmcsd */
-	{ "vlmcsd_enable", "0" },
-#endif
-
-#if defined(APP_DNSFORWARDER)
-	/* dns-forwarder */
-	{ "dns_forwarder_enable", "0" },
-	{ "dns_forwarder_port", "5353" },
-	{ "dns_forwarder_bind", "0.0.0.0" },
-	{ "dns_forwarder_server", "8.8.4.4:53" },
-#endif
-
-#if defined(APP_SHADOWSOCKS)
-	/* shadowsocks */
-	{ "ss_type", "0" }, //0=ss, 1=ssr
-	{ "ss_enable", "0" },
-	{ "ss_mode", "1" }, 	//0=全局代理,1=绕过大陆,2=gfwlist
-	{ "ss_server", "127.0.0.1" },
-	{ "ss_server_port", "8989" },
-	{ "ss_key", "Secret" },
-	{ "ss_method", "rc4-md5" },
-	{ "ss_udp", "0" },
-	{ "ss_local_port", "1080" },
-	{ "ss_mtu", "1492" },
-	{ "ss_router_proxy", "1" },
-	{ "ss_lower_port_only", "1" },		//1:22-1023;2:53,80,443
-	{ "ss_timeout", "60"},
-	{ "ss_protocol", "origin"},
-	{ "ss_proto_param", ""},
-	{ "ss_obfs", "plain"},
-	{ "ss_obfs_param", ""},
-
-	{ "ss-tunnel_enable", "0" },
-	{ "ss-tunnel_local_port", "5301" },
-	{ "ss-tunnel_remote", "8.8.4.4:53" },
-	{ "ss-tunnel_mtu", "1492" },
-
-	{ "ss_watchcat", "1" },
-	{ "ss_update_chnroute", "0" },
-	{ "ss_update_gfwlist", "0" },
-#endif
 
 	/* DHCP server parameters */
 	{ "dhcp_start", DEF_LAN_DHCP_BEG },	/* First assignable DHCP address */
@@ -628,15 +547,15 @@ struct nvram_pair router_defaults[] = {
 	{ "ddns_source", "0" },
 	{ "ddns_checkip", "0" },
 	{ "ddns2_checkip", "0" },
-	{ "ddns_ssl", "0" },
+	{ "ddns_ssl", "1" },
 	{ "ddns2_server", "" },
 	{ "ddns2_hname", "" },
 	{ "ddns2_user", "" },
 	{ "ddns2_pass", "" },
-	{ "ddns2_ssl", "0" },
+	{ "ddns2_ssl", "1" },
 	{ "asusddns_tos_agreement", "0" },
 
-	{ "preferred_lang", "CN" },
+	{ "preferred_lang", "" },
 
 	{ "modem_rule", "0" },
 	{ "modem_prio", "1" },
@@ -678,18 +597,18 @@ struct nvram_pair router_defaults[] = {
 	{ "di_timeout", "2" },
 	{ "di_time_done", "30" },
 	{ "di_time_fail", "5" },
-	{ "di_lost_delay", "1" },
+	{ "di_lost_delay", "10" },
 	{ "di_lost_action", "0" },
 	{ "di_recon_pause", "0" },
-	{ "di_addr0", "114.114.114.114" },
-	{ "di_addr1", "208.67.222.222" },
-	{ "di_addr2", "14.17.42.40" },
-	{ "di_addr3", "8.8.8.8" },
+	{ "di_addr0", "77.88.8.8" },
+	{ "di_addr1", "8.8.8.8" },
+	{ "di_addr2", "208.67.222.222" },
+	{ "di_addr3", "77.88.8.1" },
 	{ "di_addr4", "8.8.4.4" },
 	{ "di_addr5", "208.67.220.220" },
 	{ "di_port0", "53" },
 	{ "di_port1", "53" },
-	{ "di_port2", "80" },
+	{ "di_port2", "53" },
 	{ "di_port3", "53" },
 	{ "di_port4", "53" },
 	{ "di_port5", "53" },
@@ -702,13 +621,34 @@ struct nvram_pair router_defaults[] = {
 	{ "sw_mode", "1" },
 #endif
 
-	{ "telnetd", "0" },
-	{ "sshd_enable", "1" },
+	{ "telnetd", "1" },
+	{ "sshd_enable", "0" },
+	{ "sshd_enable_gp", "0" },
 	{ "wins_enable", "0" },
+	#if defined (APP_TOR)
+	{ "tor_enable", "0" },
+#endif
+#if defined (APP_PRIVOXY)
+	{ "privoxy_enable", "0" },
+#endif
+#if defined (APP_DNSCRYPT)
+	{ "dnscrypt_enable", "0" },
+	{ "dnscrypt_resolver", "cisco" },
+	{ "dnscrypt_ipaddr", "127.0.0.1" },
+	{ "dnscrypt_port", "65053" },
+	{ "dnscrypt_force_dns", "0" },
+	{ "dnscrypt_options", "-e 4096 -S -m 0" },
+#endif
+
 	{ "lltd_enable", "1" },
 	{ "adsc_enable", "0" },
-	{ "crond_enable", "1" },
+	{ "crond_enable", "0" },
 	{ "crond_log", "0" },
+	
+#if defined(SUPPORT_ZRAM)
+	{ "zram_enable", "0" },
+#endif
+
 
 #if defined(BOARD_N65U)
 	{ "inic_disable", "0" },
@@ -730,7 +670,7 @@ struct nvram_pair router_defaults[] = {
 	{ "fn2_action_short", "0" },
 	{ "fn2_action_long", "0" },
 #endif
-	{ "watchdog_cpu", "1" },
+	{ "watchdog_cpu", "0" },
 	{ "front_led_all", "1" },
 	{ "front_led_wan", "2" },
 	{ "front_led_lan", "2" },
@@ -777,18 +717,12 @@ struct nvram_pair router_defaults[] = {
 #endif
 
 #if defined(CONFIG_RALINK_MT7621) || (defined(CONFIG_RALINK_MT7620) && !defined(BOARD_N14U))
-#if defined(USE_MT7615_AP) || (USE_MT7915_AP) // hwnat is disabled by default
-	{ "hw_nat_mode", "2" },
-#else
 	{ "hw_nat_mode", "4" },
-#endif
 #else
 	{ "hw_nat_mode", "1" },
 #endif
 	{ "sw_nat_mode", "0" },
-#if defined(USE_SFE)
-	{ "sfe_enable", "0" },
-#endif
+	{ "sfe_enable",  "0" },
 	{ "fw_syn_cook", "0" },
 	{ "fw_mac_drop", "0" },
 	{ "nf_nat_type", "2" },
@@ -859,19 +793,6 @@ struct nvram_pair router_defaults[] = {
 	{ "vpnc_ov_ncp_clist", DEF_OVPNC_CIPH_LIST },
 	{ "vpnc_ov_compress", "2" },
 	{ "vpnc_ov_atls", "0" },
-
-#if defined(APP_XTU)
-	/* xTun */
-	{ "xTun_iface", "tun0" },
-	{ "xTun_cidr", "10.0.1.2/24" },
-	{ "xTun_server", "server.me" },
-	{ "xTun_port", "1082" },
-	{ "xTun_tcp", "0" },
-	{ "xTun_key", "password" },
-
-	{ "xTun_dns", "1.1.1.1" },
-	{ "xTun_black_list", "/etc/storage/xTun_black_list" },
-#endif
 
 	{ 0, 0 }
 };

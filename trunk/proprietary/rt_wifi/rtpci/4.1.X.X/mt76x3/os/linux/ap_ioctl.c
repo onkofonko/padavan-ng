@@ -30,7 +30,6 @@
 #include "rt_os_util.h"
 #include "rt_os_net.h"
 #include <linux/wireless.h>
-#include "rtmp_def.h"
 
 struct iw_priv_args ap_privtab[] = {
 { RTPRIV_IOCTL_SET, 
@@ -45,31 +44,23 @@ struct iw_priv_args ap_privtab[] = {
 #ifdef AIRPLAY_SUPPORT
   IW_PRIV_TYPE_CHAR | 1024 ,
 #else
-  /*0 ,*/
-	IW_PRIV_TYPE_CHAR | 1024,
+  0 ,
 #endif /* AIRPLAY_SUPPORT */
   IW_PRIV_TYPE_CHAR | 1024 ,
-  "get_site_survey"},
-#ifdef WH_EZ_SETUP
-{ RTPRIV_IOCTL_GEZ_SCAN_TABLE,
-  IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | 1024 ,
-  "get_ez_table"},
-#endif /* WH_EZ_SETUP */
-  
+  "get_site_survey"}, 
 #ifdef INF_AR9
   { RTPRIV_IOCTL_GET_AR9_SHOW,
   IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | 1024 ,
   "ar9_show"}, 
 #endif
-  { RTPRIV_IOCTL_SET_WSCOOB,
+#ifdef WSC_AP_SUPPORT
+{ RTPRIV_IOCTL_SET_WSCOOB,
   IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | 1024 ,
   "set_wsc_oob"}, 
+#endif
 { RTPRIV_IOCTL_GET_MAC_TABLE,
   IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | 1024 ,
   "get_mac_table"}, 
-{ RTPRIV_IOCTL_GET_DRIVER_INFO,
-	IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | 1024,
-	"get_driverinfo"},
 { RTPRIV_IOCTL_E2P,
   IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | 1024,
   "e2p"},
@@ -141,7 +132,6 @@ INT rt28xx_ap_ioctl(struct net_device *net_dev, struct ifreq *rq, int cmd)
 
 	wrq->u.data.pointer = wrqin->u.data.pointer;
 	wrq->u.data.length = wrqin->u.data.length;
-	wrq->u.data.flags = wrqin->u.data.flags;
 	org_len = wrq->u.data.length;
 
 	pIoctlConfig->Status = 0;
@@ -280,10 +270,7 @@ skip_check:
 			}
 			break;
 		case SIOCGIWMODE:  /*get operation mode */
-			if (RT_DEV_PRIV_FLAGS_GET(net_dev) == INT_APCLI)
-				wrqin->u.mode = IW_MODE_INFRA; /* ApCli mode. */
-			else
-				wrqin->u.mode = IW_MODE_MASTER; /* Ap mode. */
+			wrqin->u.mode = IW_MODE_INFRA;   /*SoftAP always on INFRA mode. */
 			break;
 		case SIOCSIWAP:  /*set access point MAC addresses */
 		case SIOCSIWMODE:  /*set operation mode */
@@ -404,21 +391,11 @@ skip_check:
 			break;
 /* end of modification */
 
-		case RTPRIV_IOCTL_GET_DRIVER_INFO:
-			RTMP_AP_IoctlHandle(pAd, wrq, CMD_RTPRIV_IOCTL_GET_DRIVER_INFO, 0, NULL, 0);
-			break;
-
 #ifdef AP_SCAN_SUPPORT
 		case RTPRIV_IOCTL_GSITESURVEY:
 			RTMP_AP_IoctlHandle(pAd, wrq, CMD_RTPRIV_IOCTL_GSITESURVEY, 0, NULL, 0);
 			break;
 #endif /* AP_SCAN_SUPPORT */
-
-#ifdef WH_EZ_SETUP
-		case RTPRIV_IOCTL_GEZ_SCAN_TABLE:
-			RTMP_AP_IoctlHandle(pAd, wrq, CMD_RTPRIV_IOCTL_GET_EZ_SCAN_TABLE, 0, NULL, 0);
-			break;
-#endif /* WH_EZ_SETUP */
 
 		case RTPRIV_IOCTL_STATISTICS:
 			RTMP_AP_IoctlHandle(pAd, wrq, CMD_RTPRIV_IOCTL_STATISTICS, 0, NULL, 0);
@@ -458,12 +435,6 @@ skip_check:
 			break;
 #endif /* RTMP_RF_RW_SUPPORT */
 #endif /* DBG */
-
-#ifdef WIFI_DIAG
-		case RTPRIV_IOCTL_GET_PROCESS_INFO:
-			RTMP_AP_IoctlHandle(pAd, wrq, CMD_RTPRIV_IOCTL_GET_PROCESS_INFO, 0, NULL, 0);
-			break;
-#endif
 
 		default:
 /*			DBGPRINT(RT_DEBUG_ERROR, ("IOCTL::unknown IOCTL's cmd = 0x%08x\n", cmd)); */
