@@ -190,33 +190,33 @@ am__relativize = \
     dir1=`echo "$$dir1" | sed -e "$$sed_rest"`; \
   done; \
   reldir="$$dir2"
-ACLOCAL = ${SHELL} '/home/mahtab/padavan-ng/trunk/user/aria2/aria2-1.36.0/missing' aclocal-1.16
+ACLOCAL = ${SHELL} '/opt/padavan-ng/trunk/user/aria2/aria2-1.36.0/missing' aclocal-1.16
 ALLOCA = 
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 0
 APPLETLS_LDFLAGS = 
-AR = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ar
+AR = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ar
 ARIA2_STATIC = no
-AUTOCONF = ${SHELL} '/home/mahtab/padavan-ng/trunk/user/aria2/aria2-1.36.0/missing' autoconf
-AUTOHEADER = ${SHELL} '/home/mahtab/padavan-ng/trunk/user/aria2/aria2-1.36.0/missing' autoheader
-AUTOMAKE = ${SHELL} '/home/mahtab/padavan-ng/trunk/user/aria2/aria2-1.36.0/missing' automake-1.16
+AUTOCONF = ${SHELL} '/opt/padavan-ng/trunk/user/aria2/aria2-1.36.0/missing' autoconf
+AUTOHEADER = ${SHELL} '/opt/padavan-ng/trunk/user/aria2/aria2-1.36.0/missing' autoheader
+AUTOMAKE = ${SHELL} '/opt/padavan-ng/trunk/user/aria2/aria2-1.36.0/missing' automake-1.16
 AWK = gawk
-CC = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc
-CCAS = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc
+CC = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc
+CCAS = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc
 CCASDEPMODE = depmode=gcc3
-CCASFLAGS = -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe -Dlinux -D__linux__ -Dunix -DEMBED -I/home/mahtab/padavan-ng/trunk/stage/include -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -fvisibility=hidden -ffunction-sections -fdata-sections -fvisibility=hidden
+CCASFLAGS = -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe -Dlinux -D__linux__ -Dunix -DEMBED -I/opt/padavan-ng/trunk/stage/include -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -fvisibility=hidden -ffunction-sections -fdata-sections -fvisibility=hidden
 CCDEPMODE = depmode=gcc3
-CFLAGS = -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe -Dlinux -D__linux__ -Dunix -DEMBED -I/home/mahtab/padavan-ng/trunk/stage/include -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -fvisibility=hidden -ffunction-sections -fdata-sections -fvisibility=hidden
+CFLAGS = -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe -Dlinux -D__linux__ -Dunix -DEMBED -I/opt/padavan-ng/trunk/stage/include -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -fvisibility=hidden -ffunction-sections -fdata-sections -fvisibility=hidden
 CPPFLAGS = 
 CPPUNIT_CFLAGS = 
 CPPUNIT_LIBS = 
 CSCOPE = cscope
 CTAGS = ctags
-CXX = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-g++ -mips32r2 -march=mips32r2 -mtune=1004kc -std=c++11
+CXX = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-g++ -mips32r2 -march=mips32r2 -mtune=1004kc -std=c++11
 CXX1XCXXFLAGS = 
-CXXCPP = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-g++ -mips32r2 -march=mips32r2 -mtune=1004kc -E -std=c++11
+CXXCPP = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-g++ -mips32r2 -march=mips32r2 -mtune=1004kc -E -std=c++11
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe -Dlinux -D__linux__ -Dunix -DEMBED -I/home/mahtab/padavan-ng/trunk/stage/include -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks  -static-libstdc++ -ffunction-sections -fdata-sections -fvisibility=hidden -fvisibility-inlines-hidden -ffunction-sections -fdata-sections -fvisibility=hidden -fvisibility-inlines-hidden
+CXXFLAGS = -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe -Dlinux -D__linux__ -Dunix -DEMBED -I/opt/padavan-ng/trunk/stage/include -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks  -static-libstdc++ -ffunction-sections -fdata-sections -fvisibility=hidden -fvisibility-inlines-hidden -ffunction-sections -fdata-sections -fvisibility=hidden -fvisibility-inlines-hidden
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
@@ -251,8 +251,8 @@ INTLLIBS =
 INTL_MACOSX_LIBS = 
 JEMALLOC_CFLAGS = 
 JEMALLOC_LIBS = 
-LD = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ld
-LDFLAGS = -L/home/mahtab/padavan-ng/trunk/stage/lib -Wl,--gc-sections -Wl,--gc-sections
+LD = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ld
+LDFLAGS = -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -Wl,--gc-sections
 LIBCARES_CFLAGS = 
 LIBCARES_LIBS = 
 LIBGCRYPT_CFLAGS = 
@@ -273,8 +273,8 @@ LIBSSH2_LIBS =
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LIBUV_CFLAGS = 
 LIBUV_LIBS = 
-LIBXML2_CFLAGS = -I/home/mahtab/padavan-ng/trunk/stage/include/libxml2
-LIBXML2_LIBS = -L/home/mahtab/padavan-ng/trunk/stage/lib -lxml2
+LIBXML2_CFLAGS = -I/opt/padavan-ng/trunk/stage/include/libxml2
+LIBXML2_LIBS = -L/opt/padavan-ng/trunk/stage/lib -lxml2
 LIPO = 
 LN_S = ln -s
 LTLIBICONV = -liconv
@@ -284,18 +284,18 @@ LT_AGE = 0
 LT_CURRENT = 0
 LT_REVISION = 0
 LT_SYS_LIBRARY_PATH = 
-MAKEINFO = ${SHELL} '/home/mahtab/padavan-ng/trunk/user/aria2/aria2-1.36.0/missing' makeinfo
+MAKEINFO = ${SHELL} '/opt/padavan-ng/trunk/user/aria2/aria2-1.36.0/missing' makeinfo
 MANIFEST_TOOL = :
 MKDIR_P = /usr/bin/mkdir -p
 MSGFMT = /usr/bin/msgfmt
 MSGFMT_015 = /usr/bin/msgfmt
 MSGMERGE = /usr/bin/msgmerge
-NM = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-nm
+NM = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-nm
 NMEDIT = 
 OBJDUMP = objdump
 OBJEXT = o
-OPENSSL_CFLAGS = -I/home/mahtab/padavan-ng/trunk/stage/include
-OPENSSL_LIBS = -L/home/mahtab/padavan-ng/trunk/stage/lib -lssl -lcrypto
+OPENSSL_CFLAGS = -I/opt/padavan-ng/trunk/stage/include
+OPENSSL_LIBS = -L/opt/padavan-ng/trunk/stage/lib -lssl -lcrypto
 OTOOL = 
 OTOOL64 = 
 PACKAGE = aria2
@@ -307,19 +307,19 @@ PACKAGE_URL = https://aria2.github.io/
 PACKAGE_VERSION = 1.36.0
 PATH_SEPARATOR = :
 PKG_CONFIG = /usr/bin/pkg-config
-PKG_CONFIG_LIBDIR = /home/mahtab/padavan-ng/trunk/stage/lib
-PKG_CONFIG_PATH = /home/mahtab/padavan-ng/trunk/stage/lib/pkgconfig
+PKG_CONFIG_LIBDIR = /opt/padavan-ng/trunk/stage/lib
+PKG_CONFIG_PATH = /opt/padavan-ng/trunk/stage/lib/pkgconfig
 POSUB = 
 POW_LIB = 
-RANLIB = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ranlib
-RST2HTML = /usr/bin/rst2html
+RANLIB = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ranlib
+RST2HTML = /usr/local/bin/rst2html.py
 SED = /usr/bin/sed
 SET_MAKE = 
 SHELL = /bin/bash
 SPHINXBUILD = 
 SQLITE3_CFLAGS = 
 SQLITE3_LIBS = 
-STRIP = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-strip
+STRIP = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-strip
 TCMALLOC_CFLAGS = 
 TCMALLOC_LIBS = 
 USE_NLS = no
@@ -333,12 +333,12 @@ XGETTEXT_015 = /usr/bin/xgettext
 XGETTEXT_EXTRA_OPTIONS = 
 YACC = bison -y
 YFLAGS = 
-ZLIB_CFLAGS = -I/home/mahtab/padavan-ng/trunk/stage/include
-ZLIB_LIBS = -L/home/mahtab/padavan-ng/trunk/stage/lib -lz
-abs_builddir = /home/mahtab/padavan-ng/trunk/user/aria2/aria2-1.36.0/doc/manual-src
-abs_srcdir = /home/mahtab/padavan-ng/trunk/user/aria2/aria2-1.36.0/doc/manual-src
-abs_top_builddir = /home/mahtab/padavan-ng/trunk/user/aria2/aria2-1.36.0
-abs_top_srcdir = /home/mahtab/padavan-ng/trunk/user/aria2/aria2-1.36.0
+ZLIB_CFLAGS = -I/opt/padavan-ng/trunk/stage/include
+ZLIB_LIBS = -L/opt/padavan-ng/trunk/stage/lib -lz
+abs_builddir = /opt/padavan-ng/trunk/user/aria2/aria2-1.36.0/doc/manual-src
+abs_srcdir = /opt/padavan-ng/trunk/user/aria2/aria2-1.36.0/doc/manual-src
+abs_top_builddir = /opt/padavan-ng/trunk/user/aria2/aria2-1.36.0
+abs_top_srcdir = /opt/padavan-ng/trunk/user/aria2/aria2-1.36.0
 ac_ct_AR = 
 ac_ct_CC = 
 ac_ct_CXX = 
@@ -369,7 +369,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/mahtab/padavan-ng/trunk/user/aria2/aria2-1.36.0/install-sh
+install_sh = ${SHELL} /opt/padavan-ng/trunk/user/aria2/aria2-1.36.0/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale

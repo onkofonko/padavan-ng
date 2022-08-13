@@ -400,19 +400,19 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified/missing aclocal-1.15
+ACLOCAL = ${SHELL} /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified/missing aclocal-1.15
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 0
-AR = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ar
-AUTOCONF = ${SHELL} /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified/missing autoconf
-AUTOHEADER = ${SHELL} /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified/missing autoheader
-AUTOMAKE = ${SHELL} /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified/missing automake-1.15
+AR = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ar
+AUTOCONF = ${SHELL} /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified/missing autoconf
+AUTOHEADER = ${SHELL} /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified/missing autoheader
+AUTOMAKE = ${SHELL} /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified/missing automake-1.15
 AWK = gawk
-CC = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc
+CC = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc
 CCDEPMODE = depmode=none
-CFLAGS = -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe -Dlinux -D__linux__ -Dunix -DEMBED -I/home/mahtab/padavan-ng/trunk/stage/include -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign  -ffunction-sections -fdata-sections -fvisibility=hidden  -ffunction-sections -fdata-sections -fvisibility=hidden -fPIC -fPIE -fno-strict-aliasing -fno-strict-overflow -Winit-self -Wwrite-strings -Wdiv-by-zero -Wall -fno-strict-aliasing
-CPP = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc -E
-CPPFLAGS = -I/home/mahtab/padavan-ng/trunk/stage/include -D_FORTIFY_SOURCE=2 -I/usr/local/include
+CFLAGS = -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe -Dlinux -D__linux__ -Dunix -DEMBED -I/opt/padavan-ng/trunk/stage/include -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign  -ffunction-sections -fdata-sections -fvisibility=hidden  -ffunction-sections -fdata-sections -fvisibility=hidden -fPIC -fPIE -fno-strict-aliasing -fno-strict-overflow -Winit-self -Wwrite-strings -Wdiv-by-zero -Wall -fno-strict-aliasing
+CPP = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc -E
+CPPFLAGS = -I/opt/padavan-ng/trunk/stage/include -D_FORTIFY_SOURCE=2 -I/usr/local/include
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
@@ -433,8 +433,8 @@ INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LD = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ld
-LDFLAGS = -L/home/mahtab/padavan-ng/trunk/stage/lib -Wl,--gc-sections -Wl,--gc-sections -pie -Wl,-z,relro -Wl,-z,now -Wl,-z,noexecstack -L/usr/local/lib
+LD = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ld
+LDFLAGS = -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections -Wl,--gc-sections -pie -Wl,-z,relro -Wl,-z,now -Wl,-z,noexecstack -L/usr/local/lib
 LIBEVENT_GC_SECTIONS = 
 LIBOBJS = 
 LIBS = -lsodium 
@@ -445,10 +445,10 @@ LN_S = ln -s
 LTLIBOBJS = 
 LT_SYS_LIBRARY_PATH = 
 MAINT = #
-MAKEINFO = ${SHELL} /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified/missing makeinfo
+MAKEINFO = ${SHELL} /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified/missing makeinfo
 MANIFEST_TOOL = :
 MKDIR_P = /usr/bin/mkdir -p
-NM = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-nm
+NM = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-nm
 NMEDIT = 
 OBJDUMP = objdump
 OBJEXT = o
@@ -467,17 +467,17 @@ PATH_SEPARATOR = :
 PTHREAD_CC = 
 PTHREAD_CFLAGS = 
 PTHREAD_LIBS = 
-RANLIB = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ranlib
+RANLIB = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ranlib
 SED = /usr/bin/sed
 SET_MAKE = 
 SHELL = /bin/bash
-STRIP = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-strip
+STRIP = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-strip
 VERSION = 2.0.23-stable
 ZLIB_LIBS = -lz 
-abs_builddir = /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified
-abs_srcdir = /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified
-abs_top_builddir = /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified
-abs_top_srcdir = /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified
+abs_builddir = /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified
+abs_srcdir = /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified
+abs_top_builddir = /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified
+abs_top_srcdir = /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified
 ac_ct_AR = 
 ac_ct_CC = 
 ac_ct_DUMPBIN = 
@@ -507,7 +507,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/mahtab/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified/install-sh
+install_sh = ${SHELL} /opt/padavan-ng/trunk/user/dnscrypt-proxy/dnscrypt-proxy-1.9.5/src/libevent-modified/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale

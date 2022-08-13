@@ -197,29 +197,29 @@ am__define_uniq_tagged_files = \
   done | $(am__uniquify_input)`
 am__DIST_COMMON = $(srcdir)/Makefile.in $(top_srcdir)/depcomp
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} '/home/mahtab/padavan-ng/trunk/libs/libflac/flac-1.3.3/missing' aclocal-1.16
+ACLOCAL = ${SHELL} '/opt/padavan-ng/trunk/libs/libflac/flac-1.3.3/missing' aclocal-1.16
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 0
-AR = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ar
-AS = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-as -mips32r2 -march=mips32r2 -mtune=1004kc
-AUTOCONF = ${SHELL} '/home/mahtab/padavan-ng/trunk/libs/libflac/flac-1.3.3/missing' autoconf
-AUTOHEADER = ${SHELL} '/home/mahtab/padavan-ng/trunk/libs/libflac/flac-1.3.3/missing' autoheader
-AUTOMAKE = ${SHELL} '/home/mahtab/padavan-ng/trunk/libs/libflac/flac-1.3.3/missing' automake-1.16
+AR = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ar
+AS = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-as -mips32r2 -march=mips32r2 -mtune=1004kc
+AUTOCONF = ${SHELL} '/opt/padavan-ng/trunk/libs/libflac/flac-1.3.3/missing' autoconf
+AUTOHEADER = ${SHELL} '/opt/padavan-ng/trunk/libs/libflac/flac-1.3.3/missing' autoheader
+AUTOMAKE = ${SHELL} '/opt/padavan-ng/trunk/libs/libflac/flac-1.3.3/missing' automake-1.16
 AWK = gawk
-CC = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc
-CCAS = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc
+CC = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc
+CCAS = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc
 CCASDEPMODE = depmode=gcc3
-CCASFLAGS = -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe -DEMBED -I/home/mahtab/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections
+CCASFLAGS = -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections
 CCDEPMODE = depmode=gcc3
-CFLAGS = -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe -DEMBED -I/home/mahtab/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline  -Wdeclaration-after-statement -fvisibility=hidden
-CPP = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc -E
+CFLAGS = -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline  -Wdeclaration-after-statement -fvisibility=hidden
+CPP = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc -E
 CPPFLAGS =  -D_FORTIFY_SOURCE=2 -DFLAC__USE_VISIBILITY_ATTR
 CSCOPE = cscope
 CTAGS = ctags
-CXX = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-g++ -mips32r2 -march=mips32r2 -mtune=1004kc
-CXXCPP = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-g++ -mips32r2 -march=mips32r2 -mtune=1004kc -E
+CXX = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-g++ -mips32r2 -march=mips32r2 -mtune=1004kc
+CXXCPP = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-g++ -mips32r2 -march=mips32r2 -mtune=1004kc -E
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe -DEMBED -I/home/mahtab/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks  -static-libstdc++ -Wall -Wextra -Wcast-align -Wshadow -Wwrite-strings -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Wsign-promo -Wundef  -Weffc++ -fvisibility=hidden
+CXXFLAGS = -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe -DEMBED -I/opt/padavan-ng/trunk/stage/include -Dlinux -D__linux__ -Dunix -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks  -static-libstdc++ -Wall -Wextra -Wcast-align -Wshadow -Wwrite-strings -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Wsign-promo -Wundef  -Weffc++ -fvisibility=hidden
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
@@ -248,8 +248,8 @@ INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LD = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ld
-LDFLAGS = -L/home/mahtab/padavan-ng/trunk/stage/lib -Wl,--gc-sections
+LD = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ld
+LDFLAGS = -L/opt/padavan-ng/trunk/stage/lib -Wl,--gc-sections
 LIBICONV = 
 LIBOBJS = 
 LIBS = 
@@ -260,11 +260,11 @@ LN_S = ln -s
 LTLIBICONV = 
 LTLIBOBJS = 
 LT_SYS_LIBRARY_PATH = 
-MAKEINFO = ${SHELL} '/home/mahtab/padavan-ng/trunk/libs/libflac/flac-1.3.3/missing' makeinfo
+MAKEINFO = ${SHELL} '/opt/padavan-ng/trunk/libs/libflac/flac-1.3.3/missing' makeinfo
 MANIFEST_TOOL = :
 MKDIR_P = /usr/bin/mkdir -p
 NASM = 
-NM = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-nm
+NM = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-nm
 NMEDIT = 
 OBJDUMP = objdump
 OBJEXT = o
@@ -282,11 +282,11 @@ PACKAGE_TARNAME = flac
 PACKAGE_URL = https://www.xiph.org/flac/
 PACKAGE_VERSION = 1.3.3
 PATH_SEPARATOR = :
-RANLIB = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ranlib
+RANLIB = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-ranlib
 SED = /usr/bin/sed
 SET_MAKE = 
 SHELL = /bin/bash
-STRIP = /home/mahtab/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-strip
+STRIP = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-strip
 VERSION = 1.3.3
 XMMS_CFLAGS = 
 XMMS_CONFIG = 
@@ -299,10 +299,10 @@ XMMS_OUTPUT_PLUGIN_DIR =
 XMMS_PLUGIN_DIR = 
 XMMS_VERSION = 
 XMMS_VISUALIZATION_PLUGIN_DIR = 
-abs_builddir = /home/mahtab/padavan-ng/trunk/libs/libflac/flac-1.3.3/src/test_seeking
-abs_srcdir = /home/mahtab/padavan-ng/trunk/libs/libflac/flac-1.3.3/src/test_seeking
-abs_top_builddir = /home/mahtab/padavan-ng/trunk/libs/libflac/flac-1.3.3
-abs_top_srcdir = /home/mahtab/padavan-ng/trunk/libs/libflac/flac-1.3.3
+abs_builddir = /opt/padavan-ng/trunk/libs/libflac/flac-1.3.3/src/test_seeking
+abs_srcdir = /opt/padavan-ng/trunk/libs/libflac/flac-1.3.3/src/test_seeking
+abs_top_builddir = /opt/padavan-ng/trunk/libs/libflac/flac-1.3.3
+abs_top_srcdir = /opt/padavan-ng/trunk/libs/libflac/flac-1.3.3
 ac_ct_AR = 
 ac_ct_CC = 
 ac_ct_CXX = 
@@ -332,7 +332,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/mahtab/padavan-ng/trunk/libs/libflac/flac-1.3.3/install-sh
+install_sh = ${SHELL} /opt/padavan-ng/trunk/libs/libflac/flac-1.3.3/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale

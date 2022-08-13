@@ -56,7 +56,7 @@ struct nvram_pair router_defaults[] = {
 	{ "lan_dns_x", "1" },			/* LAN DNS [static|dhcp] */
 	{ "lan_dns1", "" },			/* LAN DNS1 */
 	{ "lan_dns2", "" },			/* LAN DNS2 */
-	{ "lan_domain", "" },		/* LAN domain name */
+	{ "lan_domain", "" },			/* LAN domain name */
 	{ "lan_stp", "1" },			/* LAN spanning tree protocol */
 
 	/* WAN H/W parameters */
@@ -75,7 +75,6 @@ struct nvram_pair router_defaults[] = {
 	{ "wan_hostname", "" },			/* WAN hostname */
 	{ "wan_vci", "" },			/* WAN vendor class identifier (OPT-60) */
 	{ "wan_ttl_fix", "0" },
-	{ "wan_ttl_value", "0" },
 	{ "wan_hwaddr_x", "" },
 	{ "wan_nat_x", "1" },
 	{ "wan_mtu", "1500" },
@@ -133,7 +132,6 @@ struct nvram_pair router_defaults[] = {
 	{ "wan_ppp_peer", "" },			/* VPN server address */
 	{ "wan_ppp_auth", "0" },		/* PPP authentication */
 	{ "wan_ppp_mppe", "0" },		/* MPPE encryption */
-	{ "wan_ppp_lcp", "1" },
 	{ "wan_ppp_alcp", "0" },		/* Adaptive LCP Echo */
 	{ "wan_ppp_pppd", "" },			/* Custom PPPD options */
 
@@ -157,9 +155,7 @@ struct nvram_pair router_defaults[] = {
 	/* 5G Wireless parameters */
 	{ "wl_country_code", DEF_WLAN_5G_CC },		/* Country Code (default obtained from driver) */
 	{ "wl_ssid", DEF_WLAN_5G_SSID },		/* Service set ID (network name) */
-#if defined(BOARD_HAS_5G_11AX) && BOARD_HAS_5G_11AX
-	{ "wl_gmode", "5" },			/* A/N/AC/AX Mixed */
-#elif BOARD_HAS_5G_11AC
+#if BOARD_HAS_5G_11AC
 	{ "wl_gmode", "4" },			/* A/N/AC Mixed */
 #else
 	{ "wl_gmode", "2" },			/* A/N Mixed */
@@ -202,7 +198,7 @@ struct nvram_pair router_defaults[] = {
 #else
 	{ "wl_HT_BW", "1" },
 #endif
-	{ "wl_txbf", "1" },
+	{ "wl_txbf", "0" },
 	{ "wl_ssid2",  DEF_WLAN_5G_SSID },
 	{ "wl_mode_x", "0" },
 	{ "wl_wdsapply_x", "0" },
@@ -220,24 +216,13 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_stream_rx", STR(BOARD_NUM_ANT_5G_RX) },
 	{ "wl_preamble", "1" },
 	{ "wl_greenap", "0" },
-	{ "wl_ldpc", "2" },
+	{ "wl_ldpc", "0" },
 	{ "wl_HT_RDG", "0" },
-#if defined (USE_WID_5G) && (USE_WID_5G==7615 || USE_WID_5G==7915)
-	{ "wl_HT_AMSDU", "1" },
-	{ "wl_HT_BAWinSize", "256" },
-	{ "wl_mumimo", "0" },
-#else
 	{ "wl_HT_AMSDU", "0" },
 	{ "wl_HT_MpduDensity", "5" },
 	{ "wl_HT_BAWinSize", "64" },
-#endif
-	{ "wl_HT_80211KV", "1" },
-	{ "wl_HT_80211R", "0" },
-	{ "wl_HT_MpduDensity", "5" },
 	{ "wl_HT_AutoBA", "1" },
 	{ "wl_VgaClamp", "0" },
-	{ "wl_KickStaRssiLow", "0" },
-	{ "wl_AssocReqRssiThres", "0" },
 
 	// guest AP 5Ghz
 	{ "wl_guest_enable", "0" },
@@ -254,6 +239,11 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_guest_wpa_psk", "" },
 	{ "wl_guest_macrule", "0" },
 	{ "wl_guest_mcs_mode", "0" },
+
+#if defined (USE_WID_5G) && USE_WID_5G==7615
+	{ "wl_band_steering", "0" },
+	{ "wl_mumimo", "0" },
+#endif
 
 	// ApCli 5Ghz
 	{ "wl_sta_ssid", "" },
@@ -325,21 +315,10 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_ldpc", "0" },
 	{ "rt_HT_RDG", "0" },
 	{ "rt_HT_AMSDU", "0" },
-	{ "rt_HT_80211KV", "1" },
-	{ "rt_HT_80211R", "0" },
 	{ "rt_HT_MpduDensity", "5" },
-#if defined (USE_WID_2G) && (USE_WID_2G==7615 || USE_WID_2G==7915)
-	{ "rt_HT_BAWinSize", "256" },
-	{ "rt_ldpc", "1" },
-	{ "rt_turbo_qam", "1" },
-#else
 	{ "rt_HT_BAWinSize", "64" },
-	{ "rt_ldpc", "0" },
-#endif
 	{ "rt_HT_AutoBA", "1" },
 	{ "rt_VgaClamp", "0" },
-	{ "rt_KickStaRssiLow", "0" },
-	{ "rt_AssocReqRssiThres", "0" },
 
 	// guest AP 2.4Ghz
 	{ "rt_guest_enable", "0" },
@@ -356,6 +335,7 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_guest_wpa_psk", "" },
 	{ "rt_guest_macrule", "0" },
 	{ "rt_guest_mcs_mode", "0" },
+
 	// band steering AP 2.4Ghz
 	{ "rt_band_steering", "0" },
 
@@ -500,7 +480,6 @@ struct nvram_pair router_defaults[] = {
 	{ "dr_staticnetmask_x", "0" },
 	{ "dr_staticgateway_x", "" },
 
-
 	/* DHCP server parameters */
 	{ "dhcp_start", DEF_LAN_DHCP_BEG },	/* First assignable DHCP address */
 	{ "dhcp_end", DEF_LAN_DHCP_END },	/* Last assignable DHCP address */
@@ -510,7 +489,6 @@ struct nvram_pair router_defaults[] = {
 	{ "dhcp_dns1_x", "" },
 	{ "dhcp_dns2_x", "" },
 	{ "dhcp_dns3_x", "" },
-	{ "dhcp_dnsv6_x", "" },
 	{ "dhcp_wins_x", "" },
 	{ "dhcp_verbose", "0" },		/* 0 : quiet, 1: verbose DHCP, 2: verbose DHCPv6, 3: verbose all */
 	{ "dhcp_static_x", "0" },
@@ -531,8 +509,6 @@ struct nvram_pair router_defaults[] = {
 	{ "ddns_hostname2_x", "" },
 	{ "ddns_hostname3_x", "" },
 	{ "ddns_wildcard_x", "0" },
-	{ "ddns2_wildcard_x", "0" },
-	{ "ddns_ipv6", "0" },
 	{ "ddns_cst_svr", "" },
 	{ "ddns_cst_url", "" },
 	{ "ddns_period", "24" },
@@ -540,7 +516,6 @@ struct nvram_pair router_defaults[] = {
 	{ "ddns_verbose", "1" },
 	{ "ddns_source", "0" },
 	{ "ddns_checkip", "0" },
-	{ "ddns2_checkip", "0" },
 	{ "ddns_ssl", "1" },
 	{ "ddns2_server", "" },
 	{ "ddns2_hname", "" },
@@ -572,11 +547,9 @@ struct nvram_pair router_defaults[] = {
 	{ "force_mld", "0" },
 	{ "udpxy_enable_x", "0" },
 	{ "udpxy_clients", "10" },
-	{ "udpxy_renew_period", "120" },
-#if defined(APP_XUPNPD)
 	{ "xupnpd_enable_x", "0" },
 	{ "xupnpd_udpxy", "0" },
-#endif
+
 	{ "rstats_enable", "1" },
 	{ "rstats_stored", "1" },
 	{ "stime_stored", "1" },
@@ -588,8 +561,8 @@ struct nvram_pair router_defaults[] = {
 	{ "controlrate_broadcast", "10" },
 
 	{ "di_poll_mode", "0" },
-	{ "di_timeout", "2" },
-	{ "di_time_done", "30" },
+	{ "di_timeout", "3" },
+	{ "di_time_done", "55" },
 	{ "di_time_fail", "5" },
 	{ "di_lost_delay", "10" },
 	{ "di_lost_action", "0" },
@@ -619,7 +592,7 @@ struct nvram_pair router_defaults[] = {
 	{ "sshd_enable", "0" },
 	{ "sshd_enable_gp", "0" },
 	{ "wins_enable", "0" },
-	#if defined (APP_TOR)
+#if defined (APP_TOR)
 	{ "tor_enable", "0" },
 #endif
 #if defined (APP_PRIVOXY)
@@ -633,16 +606,14 @@ struct nvram_pair router_defaults[] = {
 	{ "dnscrypt_force_dns", "0" },
 	{ "dnscrypt_options", "-e 4096 -S -m 0" },
 #endif
-
 	{ "lltd_enable", "1" },
 	{ "adsc_enable", "0" },
 	{ "crond_enable", "0" },
 	{ "crond_log", "0" },
-	
+
 #if defined(SUPPORT_ZRAM)
 	{ "zram_enable", "0" },
 #endif
-
 
 #if defined(BOARD_N65U)
 	{ "inic_disable", "0" },
@@ -667,7 +638,11 @@ struct nvram_pair router_defaults[] = {
 	{ "watchdog_cpu", "0" },
 	{ "front_led_all", "1" },
 	{ "front_led_wan", "2" },
+#if defined (BOARD_GPIO_LED_WAN) && defined (BOARD_GPIO_LED_WAN_PHY)
 	{ "front_led_lan", "2" },
+#else
+	{ "front_led_lan", "1" },
+#endif
 	{ "front_led_wif", "1" },
 	{ "front_led_usb", "1" },
 	{ "front_led_pwr", "1" },
@@ -728,7 +703,7 @@ struct nvram_pair router_defaults[] = {
 #else
 	{ "nf_max_conn", "8192" },
 #endif
-	{ "nf_alg_ftp0", "21" },
+	{ "nf_alg_ftp0", "" },
 	{ "nf_alg_ftp1", "" },
 	{ "nf_alg_pptp", "0" },
 	{ "nf_alg_h323", "0" },
