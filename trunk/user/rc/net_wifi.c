@@ -34,6 +34,7 @@
 static int
 wif_control(const char *wifname, int is_up)
 {
+	logmessage(LOGNAME, "%s: ifname: %s, isup: %d", __func__, wifname, is_up);
 	return doSystem("ifconfig %s %s 2>/dev/null", wifname, (is_up) ? "up" : "down");
 }
 
@@ -423,26 +424,6 @@ stop_wifi_all_rt(void)
 #endif
 }
 
-void
-set_wifi_rssi_threshold(const char* ifname, int is_aband)
-{
-	int kickrssi = 0;
-	int assocrssi = 0;
-
-	if (is_aband) {
-		kickrssi = nvram_get_int("wl_KickStaRssiLow");
-		assocrssi = nvram_get_int("wl_AssocReqRssiThres");
-	} else {
-		kickrssi = nvram_get_int("rt_KickStaRssiLow");
-		assocrssi = nvram_get_int("rt_AssocReqRssiThres");
-	}
-
-	if (kickrssi <= 0 && kickrssi >= -100)
-		doSystem("iwpriv %s set %s=%d", ifname, "KickStaRssiLow", kickrssi);
-	if (assocrssi <= 0 && assocrssi >= -100)
-		doSystem("iwpriv %s set %s=%d", ifname, "AssocReqRssiThres", assocrssi);
-}
-
 void 
 start_wifi_ap_wl(int radio_on)
 {
@@ -464,14 +445,12 @@ start_wifi_ap_wl(int radio_on)
 		wif_control(IFNAME_5G_MAIN, 1);
 		br_add_del_if(IFNAME_BR, IFNAME_5G_MAIN, 1);
 		wif_control_m2u(1, IFNAME_5G_MAIN);
-		set_wifi_rssi_threshold(IFNAME_5G_MAIN, 1);
 		
 		if (is_guest_allowed_wl())
 		{
 			wif_control(IFNAME_5G_GUEST, 1);
 			br_add_del_if(IFNAME_BR, IFNAME_5G_GUEST, 1);
 			wif_control_m2u(1, IFNAME_5G_GUEST);
-			set_wifi_rssi_threshold(IFNAME_5G_GUEST, 1);
 		}
 	}
 #endif
@@ -521,14 +500,12 @@ start_wifi_ap_rt(int radio_on)
 		wif_control(IFNAME_2G_MAIN, 1);
 		br_add_del_if(IFNAME_BR, IFNAME_2G_MAIN, 1);
 		wif_control_m2u(0, IFNAME_2G_MAIN);
-		set_wifi_rssi_threshold(IFNAME_2G_MAIN, 0);
 		
 		if (is_guest_allowed_rt())
 		{
 			wif_control(IFNAME_2G_GUEST, 1);
 			br_add_del_if(IFNAME_BR, IFNAME_2G_GUEST, 1);
 			wif_control_m2u(0, IFNAME_2G_GUEST);
-			set_wifi_rssi_threshold(IFNAME_2G_GUEST, 0);
 		}
 	}
 #endif
@@ -729,6 +706,7 @@ restart_wifi_wl(int radio_on, int need_reload_conf)
 		LED_CONTROL(BOARD_GPIO_LED_SW5G, LED_ON);
 #endif
 #endif
+	system("/usr/bin/iappd.sh restart");
 }
 
 void
@@ -760,6 +738,7 @@ restart_wifi_rt(int radio_on, int need_reload_conf)
 	if (radio_on)
 		LED_CONTROL(BOARD_GPIO_LED_SW2G, LED_ON);
 #endif
+	system("/usr/bin/iappd.sh restart");
 }
 
 int is_need_8021x(char *auth_mode)

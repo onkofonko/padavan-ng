@@ -75,6 +75,7 @@ struct nvram_pair router_defaults[] = {
 	{ "wan_hostname", "" },			/* WAN hostname */
 	{ "wan_vci", "" },			/* WAN vendor class identifier (OPT-60) */
 	{ "wan_ttl_fix", "0" },
+	{ "wan_ttl_value", "0" },
 	{ "wan_hwaddr_x", "" },
 	{ "wan_nat_x", "1" },
 	{ "wan_mtu", "1500" },
@@ -132,6 +133,7 @@ struct nvram_pair router_defaults[] = {
 	{ "wan_ppp_peer", "" },			/* VPN server address */
 	{ "wan_ppp_auth", "0" },		/* PPP authentication */
 	{ "wan_ppp_mppe", "0" },		/* MPPE encryption */
+	{ "wan_ppp_lcp", "1" },
 	{ "wan_ppp_alcp", "0" },		/* Adaptive LCP Echo */
 	{ "wan_ppp_pppd", "" },			/* Custom PPPD options */
 
@@ -198,7 +200,7 @@ struct nvram_pair router_defaults[] = {
 #else
 	{ "wl_HT_BW", "1" },
 #endif
-	{ "wl_txbf", "0" },
+	{ "wl_txbf", "1" },
 	{ "wl_ssid2",  DEF_WLAN_5G_SSID },
 	{ "wl_mode_x", "0" },
 	{ "wl_wdsapply_x", "0" },
@@ -216,13 +218,23 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_stream_rx", STR(BOARD_NUM_ANT_5G_RX) },
 	{ "wl_preamble", "1" },
 	{ "wl_greenap", "0" },
-	{ "wl_ldpc", "0" },
+	{ "wl_ldpc", "2" },
 	{ "wl_HT_RDG", "0" },
+#if defined (USE_WID_5G) && (USE_WID_5G==7615 || USE_WID_5G==7915)
+	{ "wl_HT_AMSDU", "1" },
+	{ "wl_HT_BAWinSize", "256" },
+	{ "wl_mumimo", "0" },
+#else
 	{ "wl_HT_AMSDU", "0" },
-	{ "wl_HT_MpduDensity", "5" },
 	{ "wl_HT_BAWinSize", "64" },
+#endif
+	{ "wl_HT_80211KV", "1" },
+	{ "wl_HT_80211R", "0" },
+	{ "wl_HT_MpduDensity", "5" },
 	{ "wl_HT_AutoBA", "1" },
 	{ "wl_VgaClamp", "0" },
+	{ "wl_KickStaRssiLow", "0" },
+	{ "wl_AssocReqRssiThres", "0" },
 
 	// guest AP 5Ghz
 	{ "wl_guest_enable", "0" },
@@ -239,11 +251,6 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_guest_wpa_psk", "" },
 	{ "wl_guest_macrule", "0" },
 	{ "wl_guest_mcs_mode", "0" },
-
-#if defined (USE_WID_5G) && USE_WID_5G==7615
-	{ "wl_band_steering", "0" },
-	{ "wl_mumimo", "0" },
-#endif
 
 	// ApCli 5Ghz
 	{ "wl_sta_ssid", "" },
@@ -312,13 +319,23 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_stream_rx", STR(BOARD_NUM_ANT_2G_RX) },
 	{ "rt_preamble", "1" },
 	{ "rt_greenap", "0" },
-	{ "rt_ldpc", "0" },
 	{ "rt_HT_RDG", "0" },
 	{ "rt_HT_AMSDU", "0" },
+	{ "rt_HT_80211KV", "1" },
+	{ "rt_HT_80211R", "0" },
 	{ "rt_HT_MpduDensity", "5" },
+#if defined (USE_WID_2G) && (USE_WID_2G==7615 || USE_WID_2G==7915)
+	{ "rt_HT_BAWinSize", "256" },
+	{ "rt_ldpc", "1" },
+	{ "rt_turbo_qam", "1" },
+#else
 	{ "rt_HT_BAWinSize", "64" },
+	{ "rt_ldpc", "0" },
+#endif
 	{ "rt_HT_AutoBA", "1" },
 	{ "rt_VgaClamp", "0" },
+	{ "rt_KickStaRssiLow", "0" },
+	{ "rt_AssocReqRssiThres", "0" },
 
 	// guest AP 2.4Ghz
 	{ "rt_guest_enable", "0" },
@@ -335,9 +352,6 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_guest_wpa_psk", "" },
 	{ "rt_guest_macrule", "0" },
 	{ "rt_guest_mcs_mode", "0" },
-
-	// band steering AP 2.4Ghz
-	{ "rt_band_steering", "0" },
 
 #if defined (USE_WID_2G) && USE_WID_2G==7615
 	{ "rt_turbo_qam", "1" },
@@ -819,3 +833,5 @@ struct nvram_pair tables_defaults[] = {
 
 	{ 0, 0 }
 };
+
+
