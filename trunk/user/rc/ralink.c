@@ -712,9 +712,9 @@ gen_ralink_config(int is_soc_ap, int is_aband, int disable_autoscan)
 	fprintf(fp, "TxCmdMode=%d\n", 1);
 	fprintf(fp, "AMSDU_NUM=%d\n", 4);
 	fprintf(fp, "CP_SUPPORT=%d\n", 2);
-	fprintf(fp, "PMFMFPC=%d\n", 0);
+	fprintf(fp, "PMFMFPC=%d\n", 1);
 	fprintf(fp, "PMFMFPR=%d\n", 0);
-	fprintf(fp, "PMFSHA256=%d\n", 0);
+	fprintf(fp, "PMFSHA256=%d\n", 1);
 	fprintf(fp, "RED_Enable=%d\n", 1);
 #endif
 
