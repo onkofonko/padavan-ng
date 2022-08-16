@@ -269,7 +269,7 @@ BITSIZEOF_SIG_ATOMIC_T =
 BITSIZEOF_SIZE_T = 
 BITSIZEOF_WCHAR_T = 
 BITSIZEOF_WINT_T = 
-BUILDINFO = root@a0f89c46d7e6, 14 Aug 2022 20:03
+BUILDINFO = root@a0f89c46d7e6, 16 Aug 2022 17:08
 CC = /opt/padavan-ng/trunk/../toolchain/out/bin/mipsel-linux-uclibc-gcc -mips32r2 -march=mips32r2 -mtune=1004kc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -Os -fomit-frame-pointer -fno-stack-protector -femit-struct-debug-baseonly -fno-var-tracking -pipe -Dlinux -D__linux__ -Dunix -DEMBED -I/opt/padavan-ng/trunk/stage/include -Wall -Wno-trigraphs -Wno-strict-aliasing -Wno-format-security -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-format-truncation -Wno-format-overflow -Wno-misleading-indentation -fconserve-stack -fno-strict-overflow -fno-var-tracking-assignments -fno-merge-all-constants -fmerge-constants -fno-stack-check -fno-delete-null-pointer-checks -Wno-pointer-sign -ffunction-sections -fdata-sections -ffunction-sections -fdata-sections
