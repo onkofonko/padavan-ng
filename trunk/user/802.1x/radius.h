@@ -58,7 +58,17 @@ enum { RADIUS_ATTR_USER_NAME = 1,
        RADIUS_ATTR_NAS_PORT_TYPE = 61,
        RADIUS_ATTR_CONNECT_INFO = 77,
        RADIUS_ATTR_EAP_MESSAGE = 79,
-       RADIUS_ATTR_MESSAGE_AUTHENTICATOR = 80
+       RADIUS_ATTR_MESSAGE_AUTHENTICATOR = 80,
+//YF: updated from Hostapd 1.0
+       RADIUS_ATTR_TUNNEL_PRIVATE_GROUP_ID = 81,
+       RADIUS_ATTR_ACCT_INTERIM_INTERVAL = 85,
+       RADIUS_ATTR_CHARGEABLE_USER_IDENTITY = 89,
+       RADIUS_ATTR_NAS_IPV6_ADDRESS = 95,
+/* ellis: updated for WPA3 SUITEB*/
+       RADIUS_ATTR_WLAN_PAIRWISE_CIPHER = 186,
+       RADIUS_ATTR_WLAN_GROUP_CIPHER = 187,
+       RADIUS_ATTR_WLAN_AKM_SUITE = 188,
+       RADIUS_ATTR_WLAN_GROUP_MGMT_CIPHER = 189,
 };
 
 
@@ -73,6 +83,7 @@ enum { RADIUS_ATTR_USER_NAME = 1,
 /* RFC 2548 - Microsoft Vendor-specific RADIUS Attributes */
 #define RADIUS_VENDOR_ID_MICROSOFT 311
 
+#define RADIUS_VENDOR_ID_WFA 40808
 struct radius_attr_vendor_microsoft {
 	u8 vendor_type;
 	u8 vendor_length;
@@ -117,6 +128,158 @@ struct radius_msg {
 /* MAC address ASCII format for non-802.1X use */
 #define RADIUS_ADDR_FORMAT "%02x%02x%02x%02x%02x%02x"
 
+/* RSN attribute */
+enum {
+	SEC_CIPHER_NONE,
+	SEC_CIPHER_WEP40,
+	SEC_CIPHER_WEP104,
+	SEC_CIPHER_WEP128,
+	SEC_CIPHER_TKIP,
+	SEC_CIPHER_CCMP128,
+	SEC_CIPHER_CCMP256,
+	SEC_CIPHER_GCMP128,
+	SEC_CIPHER_GCMP256,
+	SEC_CIPHER_BIP_CMAC128,
+	SEC_CIPHER_BIP_CMAC256,
+	SEC_CIPHER_BIP_GMAC128,
+	SEC_CIPHER_BIP_GMAC256,
+	SEC_CIPHER_WPI_SMS4, /* WPI SMS4 support */
+	SEC_CIPHER_MAX /* Not a real mode, defined as upper bound */
+};
+
+#define IS_CIPHER_NONE(_Cipher)          (((_Cipher) & (1 << SEC_CIPHER_NONE)) > 0)
+#define IS_CIPHER_WEP40(_Cipher)          (((_Cipher) & (1 << SEC_CIPHER_WEP40)) > 0)
+#define IS_CIPHER_WEP104(_Cipher)        (((_Cipher) & (1 << SEC_CIPHER_WEP104)) > 0)
+#define IS_CIPHER_WEP128(_Cipher)        (((_Cipher) & (1 << SEC_CIPHER_WEP128)) > 0)
+#define IS_CIPHER_WEP(_Cipher)              (((_Cipher) & ((1 << SEC_CIPHER_WEP40) | (1 << SEC_CIPHER_WEP104) | (1 << SEC_CIPHER_WEP128))) > 0)
+#define IS_CIPHER_TKIP(_Cipher)              (((_Cipher) & (1 << SEC_CIPHER_TKIP)) > 0)
+#define IS_CIPHER_WEP_TKIP_ONLY(_Cipher)     ((IS_CIPHER_WEP(_Cipher) || IS_CIPHER_TKIP(_Cipher)) && (_Cipher < (1 << SEC_CIPHER_CCMP128)))
+#define IS_CIPHER_CCMP128(_Cipher)      (((_Cipher) & (1 << SEC_CIPHER_CCMP128)) > 0)
+#define IS_CIPHER_CCMP256(_Cipher)      (((_Cipher) & (1 << SEC_CIPHER_CCMP256)) > 0)
+#define IS_CIPHER_GCMP128(_Cipher)     (((_Cipher) & (1 << SEC_CIPHER_GCMP128)) > 0)
+#define IS_CIPHER_GCMP256(_Cipher)     (((_Cipher) & (1 << SEC_CIPHER_GCMP256)) > 0)
+#define IS_CIPHER_BIP_CMAC128(_Cipher)     (((_Cipher) & (1 << SEC_CIPHER_BIP_CMAC128)) > 0)
+#define IS_CIPHER_BIP_CMAC256(_Cipher)     (((_Cipher) & (1 << SEC_CIPHER_BIP_CMAC256)) > 0)
+#define IS_CIPHER_BIP_GMAC128(_Cipher)     (((_Cipher) & (1 << SEC_CIPHER_BIP_GMAC128)) > 0)
+#define IS_CIPHER_BIP_GMAC256(_Cipher)     (((_Cipher) & (1 << SEC_CIPHER_BIP_GMAC256)) > 0)
+
+
+enum {
+	SEC_AKM_OPEN,
+	SEC_AKM_SHARED,
+	SEC_AKM_AUTOSWITCH,
+	SEC_AKM_WPA1, /* Enterprise security over 802.1x */
+	SEC_AKM_WPA1PSK,
+	SEC_AKM_WPANone, /* For Win IBSS, directly PTK, no handshark */
+	SEC_AKM_WPA2, /* Enterprise security over 802.1x */
+	SEC_AKM_WPA2PSK,
+	SEC_AKM_FT_WPA2,
+	SEC_AKM_FT_WPA2PSK,
+	SEC_AKM_WPA2_SHA256,
+	SEC_AKM_WPA2PSK_SHA256,
+	SEC_AKM_TDLS,
+	SEC_AKM_SAE_SHA256,
+	SEC_AKM_FT_SAE_SHA256,
+	SEC_AKM_SUITEB_SHA256,
+	SEC_AKM_SUITEB_SHA384,
+	SEC_AKM_FT_WPA2_SHA384,
+	SEC_AKM_WAICERT, /* WAI certificate authentication */
+	SEC_AKM_WAIPSK, /* WAI pre-shared key */
+	SEC_AKM_OWE,
+	SEC_AKM_MAX /* Not a real mode, defined as upper bound */
+};
+
+#define IS_AKM_OPEN(_AKMMap)                           ((_AKMMap & (1 << SEC_AKM_OPEN)) > 0)
+#define IS_AKM_SHARED(_AKMMap)                       ((_AKMMap & (1 << SEC_AKM_SHARED)) > 0)
+#define IS_AKM_AUTOSWITCH(_AKMMap)              ((_AKMMap & (1 << SEC_AKM_AUTOSWITCH)) > 0)
+#define IS_AKM_WPA1(_AKMMap)                           ((_AKMMap & (1 << SEC_AKM_WPA1)) > 0)
+#define IS_AKM_WPA1PSK(_AKMMap)                    ((_AKMMap & (1 << SEC_AKM_WPA1PSK)) > 0)
+#define IS_AKM_WPANONE(_AKMMap)                  ((_AKMMap & (1 << SEC_AKM_WPANone)) > 0)
+#define IS_AKM_WPA2(_AKMMap)                          ((_AKMMap & (1 << SEC_AKM_WPA2)) > 0)
+#define IS_AKM_WPA2PSK(_AKMMap)                    ((_AKMMap & (1 << SEC_AKM_WPA2PSK)) > 0)
+#define IS_AKM_FT_WPA2(_AKMMap)                     ((_AKMMap & (1 << SEC_AKM_FT_WPA2)) > 0)
+#define IS_AKM_FT_WPA2PSK(_AKMMap)              ((_AKMMap & (1 << SEC_AKM_FT_WPA2PSK)) > 0)
+#define IS_AKM_WPA2_SHA256(_AKMMap)            ((_AKMMap & (1 << SEC_AKM_WPA2_SHA256)) > 0)
+#define IS_AKM_WPA2PSK_SHA256(_AKMMap)      ((_AKMMap & (1 << SEC_AKM_WPA2PSK_SHA256)) > 0)
+#define IS_AKM_TDLS(_AKMMap)                             ((_AKMMap & (1 << SEC_AKM_TDLS)) > 0)
+#define IS_AKM_SAE_SHA256(_AKMMap)                ((_AKMMap & (1 << SEC_AKM_SAE_SHA256)) > 0)
+#define IS_AKM_FT_SAE_SHA256(_AKMMap)          ((_AKMMap & (1 << SEC_AKM_FT_SAE_SHA256)) > 0)
+#define IS_AKM_SUITEB_SHA256(_AKMMap)          ((_AKMMap & (1 << SEC_AKM_SUITEB_SHA256)) > 0)
+#define IS_AKM_SUITEB_SHA384(_AKMMap)          ((_AKMMap & (1 << SEC_AKM_SUITEB_SHA384)) > 0)
+#define IS_AKM_FT_WPA2_SHA384(_AKMMap)      ((_AKMMap & (1 << SEC_AKM_FT_WPA2_SHA384)) > 0)
+#define IS_AKM_WAICERT(_AKMMap)                      ((_AKMMap & (1 << SEC_AKM_WAICERT)) > 0)
+#define IS_AKM_WPIPSK(_AKMMap)                        ((_AKMMap & (1 << SEC_AKM_WAIPSK)) > 0)
+#define IS_AKM_OWE(_AKMMap)      ((_AKMMap & (1 << SEC_AKM_OWE)) > 0)
+
+
+#define WPA_PROTO_WPA BIT(0)
+#define WPA_PROTO_RSN BIT(1)
+#define WPA_PROTO_WAPI BIT(2)
+#define WPA_PROTO_OSEN BIT(3)
+
+#define WPA_SELECTOR_LEN 4
+#define WPA_VERSION 1
+#define RSN_SELECTOR_LEN 4
+#define RSN_VERSION 1
+
+#define RSN_SELECTOR(a, b, c, d) \
+	((((u32) (a)) << 24) | (((u32) (b)) << 16) | (((u32) (c)) << 8) | \
+	 (u32) (d))
+
+#define WPA_AUTH_KEY_MGMT_NONE RSN_SELECTOR(0x00, 0x50, 0xf2, 0)
+#define WPA_AUTH_KEY_MGMT_UNSPEC_802_1X RSN_SELECTOR(0x00, 0x50, 0xf2, 1)
+#define WPA_AUTH_KEY_MGMT_PSK_OVER_802_1X RSN_SELECTOR(0x00, 0x50, 0xf2, 2)
+#define WPA_AUTH_KEY_MGMT_CCKM RSN_SELECTOR(0x00, 0x40, 0x96, 0)
+#define WPA_CIPHER_SUITE_NONE RSN_SELECTOR(0x00, 0x50, 0xf2, 0)
+#define WPA_CIPHER_SUITE_TKIP RSN_SELECTOR(0x00, 0x50, 0xf2, 2)
+#define WPA_CIPHER_SUITE_CCMP RSN_SELECTOR(0x00, 0x50, 0xf2, 4)
+
+
+#define RSN_AUTH_KEY_MGMT_UNSPEC_802_1X RSN_SELECTOR(0x00, 0x0f, 0xac, 1)
+#define RSN_AUTH_KEY_MGMT_PSK_OVER_802_1X RSN_SELECTOR(0x00, 0x0f, 0xac, 2)
+#define RSN_AUTH_KEY_MGMT_FT_802_1X RSN_SELECTOR(0x00, 0x0f, 0xac, 3)
+#define RSN_AUTH_KEY_MGMT_FT_PSK RSN_SELECTOR(0x00, 0x0f, 0xac, 4)
+#define RSN_AUTH_KEY_MGMT_802_1X_SHA256 RSN_SELECTOR(0x00, 0x0f, 0xac, 5)
+#define RSN_AUTH_KEY_MGMT_PSK_SHA256 RSN_SELECTOR(0x00, 0x0f, 0xac, 6)
+#define RSN_AUTH_KEY_MGMT_TPK_HANDSHAKE RSN_SELECTOR(0x00, 0x0f, 0xac, 7)
+#define RSN_AUTH_KEY_MGMT_SAE RSN_SELECTOR(0x00, 0x0f, 0xac, 8)
+#define RSN_AUTH_KEY_MGMT_FT_SAE RSN_SELECTOR(0x00, 0x0f, 0xac, 9)
+#define RSN_AUTH_KEY_MGMT_802_1X_SUITE_B RSN_SELECTOR(0x00, 0x0f, 0xac, 11)
+#define RSN_AUTH_KEY_MGMT_802_1X_SUITE_B_192 RSN_SELECTOR(0x00, 0x0f, 0xac, 12)
+#define RSN_AUTH_KEY_MGMT_FT_802_1X_SUITE_B_192 \
+RSN_SELECTOR(0x00, 0x0f, 0xac, 13)
+#define RSN_AUTH_KEY_MGMT_FILS_SHA256 RSN_SELECTOR(0x00, 0x0f, 0xac, 14)
+#define RSN_AUTH_KEY_MGMT_FILS_SHA384 RSN_SELECTOR(0x00, 0x0f, 0xac, 15)
+#define RSN_AUTH_KEY_MGMT_FT_FILS_SHA256 RSN_SELECTOR(0x00, 0x0f, 0xac, 16)
+#define RSN_AUTH_KEY_MGMT_FT_FILS_SHA384 RSN_SELECTOR(0x00, 0x0f, 0xac, 17)
+#define RSN_AUTH_KEY_MGMT_OWE RSN_SELECTOR(0x00, 0x0f, 0xac, 18)
+#define RSN_AUTH_KEY_MGMT_CCKM RSN_SELECTOR(0x00, 0x40, 0x96, 0x00)
+#define RSN_AUTH_KEY_MGMT_OSEN RSN_SELECTOR(0x50, 0x6f, 0x9a, 0x01)
+#define RSN_AUTH_KEY_MGMT_DPP RSN_SELECTOR(0x50, 0x6f, 0x9a, 0x02)
+
+#define RSN_CIPHER_SUITE_NONE RSN_SELECTOR(0x00, 0x0f, 0xac, 0)
+#define RSN_CIPHER_SUITE_WEP40 RSN_SELECTOR(0x00, 0x0f, 0xac, 1)
+#define RSN_CIPHER_SUITE_TKIP RSN_SELECTOR(0x00, 0x0f, 0xac, 2)
+#if 0
+#define RSN_CIPHER_SUITE_WRAP RSN_SELECTOR(0x00, 0x0f, 0xac, 3)
+#endif
+#define RSN_CIPHER_SUITE_CCMP RSN_SELECTOR(0x00, 0x0f, 0xac, 4)
+#define RSN_CIPHER_SUITE_WEP104 RSN_SELECTOR(0x00, 0x0f, 0xac, 5)
+#define RSN_CIPHER_SUITE_AES_128_CMAC RSN_SELECTOR(0x00, 0x0f, 0xac, 6)
+#define RSN_CIPHER_SUITE_NO_GROUP_ADDRESSED RSN_SELECTOR(0x00, 0x0f, 0xac, 7)
+#define RSN_CIPHER_SUITE_GCMP RSN_SELECTOR(0x00, 0x0f, 0xac, 8)
+#define RSN_CIPHER_SUITE_GCMP_256 RSN_SELECTOR(0x00, 0x0f, 0xac, 9)
+#define RSN_CIPHER_SUITE_CCMP_256 RSN_SELECTOR(0x00, 0x0f, 0xac, 10)
+#define RSN_CIPHER_SUITE_BIP_GMAC_128 RSN_SELECTOR(0x00, 0x0f, 0xac, 11)
+#define RSN_CIPHER_SUITE_BIP_GMAC_256 RSN_SELECTOR(0x00, 0x0f, 0xac, 12)
+#define RSN_CIPHER_SUITE_BIP_CMAC_256 RSN_SELECTOR(0x00, 0x0f, 0xac, 13)
+#define RSN_CIPHER_SUITE_SMS4 RSN_SELECTOR(0x00, 0x14, 0x72, 1)
+#define RSN_CIPHER_SUITE_CKIP RSN_SELECTOR(0x00, 0x40, 0x96, 0)
+#define RSN_CIPHER_SUITE_CKIP_CMIC RSN_SELECTOR(0x00, 0x40, 0x96, 1)
+#define RSN_CIPHER_SUITE_CMIC RSN_SELECTOR(0x00, 0x40, 0x96, 2)
+/* KRK is defined for nl80211 use only */
+#define RSN_CIPHER_SUITE_KRK RSN_SELECTOR(0x00, 0x40, 0x96, 255)
+
 struct radius_msg *Radius_msg_new(u8 code, u8 identifier);
 int Radius_msg_initialize(struct radius_msg *msg, size_t init_len);
 void Radius_msg_set_hdr(struct radius_msg *msg, u8 code, u8 identifier);
@@ -159,4 +322,35 @@ static inline int Radius_msg_get_attr_int32(struct radius_msg *msg, u8 type, u32
 	return 0;
 }
 
+enum { RADIUS_VENDOR_ATTR_WFA_REMEDIATION = 1,
+       RADIUS_VENDOR_ATTR_WFA_HS2AP = 2,
+       RADIUS_VENDOR_ATTR_WFA_HS2STA = 3,
+       RADIUS_VENDOR_ATTR_WFA_DEAUTH = 4,
+	   RADIUS_VENDOR_ATTR_WFA_SESSION_INFO = 5
+};
+
+struct radius_attr_vendor_wfa {
+	u8 vendor_subtype;
+	u8 vendor_sublength;
+} __attribute__ ((packed));
+
+struct wnm_req_data {
+	u32 ifindex;
+	u8	peer_mac_addr[6];
+	u32 type;
+	u32	req_len;
+	u8	req[256];
+};
+
+struct btm_req_data {
+	u32 ifindex;
+	u8 peer_mac_addr[6];
+	u32 req_len;
+	u8  req[260];
+} __attribute__ ((packed));
+
+struct radius_attr_vendor {
+	u8 vendor_type;
+	u8 vendor_length;
+} STRUCT_PACKED;
 #endif /* RADIUS_H */

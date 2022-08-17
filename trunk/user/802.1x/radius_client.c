@@ -62,7 +62,7 @@ static int Radius_client_retransmit(rtapd *rtapd, struct radius_msg_list *entry,
 {
 	int s;
 
-#ifdef MULTIPLE_RADIUS
+#if MULTIPLE_RADIUS
 	s = rtapd->radius->mbss_auth_serv_sock[entry->ApIdx];
 #else
 	s = rtapd->radius->auth_serv_sock;
@@ -91,14 +91,14 @@ static void Radius_client_timer(void *eloop_ctx, void *timeout_ctx)
 	rtapd *rtapd = eloop_ctx;
 	time_t now, first;
 	struct radius_msg_list *entry, *prev, *tmp;
-#ifdef MULTIPLE_RADIUS
+#if MULTIPLE_RADIUS
 	int	i;
 	int mbss_auth_failover[MAX_MBSSID_NUM];
 #else
 	int auth_failover = 0;
 #endif
 
-#ifdef MULTIPLE_RADIUS
+#if MULTIPLE_RADIUS
 	for (i = 0; i < MAX_MBSSID_NUM; i++)
 		mbss_auth_failover[i] = 0;
 #endif
@@ -131,7 +131,7 @@ static void Radius_client_timer(void *eloop_ctx, void *timeout_ctx)
 		{
 			if (entry->msg_type == RADIUS_AUTH)
 			{
-#ifdef MULTIPLE_RADIUS
+#if MULTIPLE_RADIUS
 				mbss_auth_failover[entry->ApIdx]++;
 #else
 				auth_failover++;
@@ -153,7 +153,7 @@ static void Radius_client_timer(void *eloop_ctx, void *timeout_ctx)
 			first = now;
 		eloop_register_timeout(first - now, 0, Radius_client_timer, rtapd, NULL);
 	}
-#ifdef MULTIPLE_RADIUS
+#if MULTIPLE_RADIUS
 	for (i = 0; i < rtapd->conf->SsidNum; i++)
 	{	
 		if (mbss_auth_failover[i] && rtapd->conf->mbss_num_auth_servers[i] > 1)
@@ -166,7 +166,15 @@ static void Radius_client_timer(void *eloop_ctx, void *timeout_ctx)
 				next = rtapd->conf->mbss_auth_servers[i];
 			rtapd->conf->mbss_auth_server[i] = next;
 			Radius_change_server(rtapd, next, old, rtapd->radius->mbss_auth_serv_sock[i], 1);
-			DBGPRINT(RT_DEBUG_WARN, "Radius_client_timer : ready to change RADIUS server for %s%d\n", rtapd->prefix_wlan_name, i);
+
+			if (i == 0)
+			{
+				DBGPRINT(RT_DEBUG_WARN, "Radius_client_timer : ready to change RADIUS server for %s\n", rtapd->main_wlan_name);
+			}
+			else
+			{
+				DBGPRINT(RT_DEBUG_WARN, "Radius_client_timer : ready to change RADIUS server for %s%d\n", rtapd->prefix_wlan_name, i);
+			}
 		}	
 	}
 #else
@@ -253,21 +261,40 @@ int Radius_client_send(rtapd *rtapd, struct radius_msg *msg, RadiusType msg_type
 	char *name;
 	int s, res = 0;
 
-#ifdef MULTIPLE_RADIUS
+#if 1 //change to sendto
+	struct sockaddr_in serv;
+	memset(&serv, 0, sizeof(serv));
+	serv.sin_family = AF_INET;	
+#endif
+#if MULTIPLE_RADIUS
 	shared_secret = rtapd->conf->mbss_auth_server[ApIdx]->shared_secret;
 	shared_secret_len = rtapd->conf->mbss_auth_server[ApIdx]->shared_secret_len;
 	s = rtapd->radius->mbss_auth_serv_sock[ApIdx];
 	DBGPRINT(RT_DEBUG_TRACE, "Send packet to server (%s)\n",
-			inet_ntoa(rtapd->conf->mbss_auth_server[ApIdx]->addr));
+						inet_ntoa(rtapd->conf->mbss_auth_server[ApIdx]->addr));
 #else
 	shared_secret = rtapd->conf->auth_server->shared_secret;
 	shared_secret_len = rtapd->conf->auth_server->shared_secret_len;
 	s = rtapd->radius->auth_serv_sock;
-#endif
+#endif	
 	Radius_msg_finish(msg, shared_secret, shared_secret_len);
 	name = "authentication";
 
+#if MULTIPLE_RADIUS
+	serv.sin_addr.s_addr = rtapd->conf->mbss_auth_server[ApIdx]->addr.s_addr;
+	serv.sin_port = htons(rtapd->conf->mbss_auth_server[ApIdx]->port);
+#else
+	serv.sin_addr.s_addr = rtapd->conf->auth_server->addr.s_addr;
+	serv.sin_port = htons(rtapd->conf->auth_server->port);
+#endif
+
+#if 1 //change to sendto
+	res = sendto( s, msg->buf, msg->buf_used, 0, ( struct sockaddr * )&serv,
+	sizeof(serv) );
+#else
 	res = send(s, msg->buf, msg->buf_used, 0);
+#endif
+
 	if (res < 0)
 		perror("send[RADIUS]");
 
@@ -286,6 +313,7 @@ static void Radius_client_receive(int sock, void *eloop_ctx, void *sock_ctx)
 	struct radius_rx_handler *handlers;
 	size_t num_handlers;
 	struct radius_msg_list *req, *prev_req;
+	int invalid_authenticator = 0;
 
 	DBGPRINT(RT_DEBUG_TRACE, "RADIUS_CLIENT_RECEIVE : msg_type= %d \n", msg_type);
 	len = recv(sock, buf, sizeof(buf), 0);
@@ -357,14 +385,17 @@ static void Radius_client_receive(int sock, void *eloop_ctx, void *sock_ctx)
 			case RADIUS_RX_QUEUED:
 			Radius_client_msg_free(req);
 			return;
+			case RADIUS_RX_INVALID_AUTHENTICATOR:
+			invalid_authenticator++;
+			/* continue */
 			case RADIUS_RX_UNKNOWN:
 			/* continue with next handler */
 			break;
 		}
 	}
 
-	DBGPRINT(RT_DEBUG_ERROR,"No RADIUS RX handler found (type=%d code=%d id=%d) - dropping "
-		   "packet\n", msg_type, msg->hdr->code, msg->hdr->identifier);
+	DBGPRINT(RT_DEBUG_ERROR,"No RADIUS RX handler found (type=%d code=%d id=%d) %s- dropping "
+		   "packet\n", msg_type, msg->hdr->code, msg->hdr->identifier, invalid_authenticator ? " [INVALID AUTHENTICATOR]" : "");
 	Radius_client_msg_free(req);
 
  fail:
@@ -468,29 +499,37 @@ Radius_change_server(rtapd *rtapd, struct hostapd_radius_server *nserv,
 		perror("bind");
 		return -1;
 	}*/
+/*
+code disabled to prevent possible socket connection error when
+port number is configured from driver's .dat file
+*/
+/*
+	memset(&serv, 0, sizeof(serv));
+	serv.sin_family = AF_INET;
+	serv.sin_addr.s_addr = rtapd->conf->own_ip_addr.s_addr;
+	serv.sin_port = htons(rtapd->conf->own_radius_port);
+
+	if (bind(sock, (struct sockaddr *) &serv, sizeof(serv)) < 0)
+	{
+		perror("bind");
+		return -1;
+	}
+	DBGPRINT(RT_DEBUG_TRACE,"%s: bind sock:%d to port: %d\n", __FUNCTION__, sock,  ntohs(serv.sin_port));
+*/
+
+#if 0 //change to sendto
 	memset(&serv, 0, sizeof(serv));
 	serv.sin_family = AF_INET;
 	serv.sin_addr.s_addr = nserv->addr.s_addr;
 	serv.sin_port = htons(nserv->port);
-#if 0
 	if (connect(sock, (struct sockaddr *) &serv, sizeof(serv)) < 0)
 	{
 		perror("connect[radius]");
 		return -1;
 	}
-#else /* add error handling */
-	{
-		int try = 0;
-		while (connect(sock, (struct sockaddr *) &serv, sizeof(serv)) < 0)
-		{
-			if((try & 0xf) == 0)
-				perror("connect[radius]");
-			sleep(10);
-			try++;
-		}
-	}
 #endif
-	DBGPRINT(RT_DEBUG_TRACE, "Radius_change_server :: Connect to Radius Server (%s:%d)\n", inet_ntoa(nserv->addr), nserv->port);
+
+	DBGPRINT(RT_DEBUG_TRACE, "Radius_change_server :: change to Radius Server(%s)\n", inet_ntoa(nserv->addr));
 	return 0;
 }
 
@@ -500,7 +539,7 @@ static void Radius_retry_primary_timer(void *eloop_ctx, void *timeout_ctx)
 	struct hostapd_radius_server *oserv;
 
 	DBGPRINT(RT_DEBUG_TRACE, "RUN Radius_retry_primary_timer.....\n");
-#ifdef MULTIPLE_RADIUS
+#if MULTIPLE_RADIUS
 	int	i;
 
 	for (i = 0; i < rtapd->conf->SsidNum; i++)
@@ -527,12 +566,20 @@ static void Radius_retry_primary_timer(void *eloop_ctx, void *timeout_ctx)
 		eloop_register_timeout(rtapd->conf->radius_retry_primary_interval, 0, Radius_retry_primary_timer, rtapd, NULL);
 }
 
-#ifdef MULTIPLE_RADIUS
+#if MULTIPLE_RADIUS
 static int Radius_client_init_auth(rtapd *rtapd, int apidx)
 {		
 	if (rtapd->conf->mbss_auth_server[apidx]->addr.s_addr == 0)
 	{
-		DBGPRINT(RT_DEBUG_WARN, "Radius_client_init_auth: can't create auth RADIUS socket for %s%d (it's invalid IP)\n", rtapd->prefix_wlan_name, apidx);
+		if (apidx == 0)
+		{
+			DBGPRINT(RT_DEBUG_WARN, "Radius_client_init_auth: can't create auth RADIUS socket for %s (it's invalid IP)\n", rtapd->main_wlan_name);
+		}
+		else
+		{
+			DBGPRINT(RT_DEBUG_WARN, "Radius_client_init_auth: can't create auth RADIUS socket for %s%d (it's invalid IP)\n", rtapd->prefix_wlan_name, apidx);
+		}
+		
 		return -1;
 	}
 
@@ -577,8 +624,8 @@ static int Radius_client_init_auth(rtapd *rtapd)
 
 int Radius_client_init(rtapd *rtapd)
 {
-#ifdef MULTIPLE_RADIUS
-	int i, ready_sock_count = 0, bReInit = 1;
+#if MULTIPLE_RADIUS
+	int	i, ready_sock_count = 0, bReInit = 1;
 #endif
 
 	if (rtapd->radius == NULL)
@@ -589,7 +636,7 @@ int Radius_client_init(rtapd *rtapd)
 		
 		memset(rtapd->radius, 0, sizeof(struct radius_client_data));
 
-#ifdef MULTIPLE_RADIUS
+#if MULTIPLE_RADIUS
 		for (i = 0; i < MAX_MBSSID_NUM; i++)
 			rtapd->radius->mbss_auth_serv_sock[i] = -1;
 
@@ -599,7 +646,7 @@ int Radius_client_init(rtapd *rtapd)
 #endif
 	}
 	
-#ifdef MULTIPLE_RADIUS
+#if MULTIPLE_RADIUS	
 	// Create socket for auth RADIUS
 	for (i = 0; i < rtapd->conf->SsidNum; i++)
 	{

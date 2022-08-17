@@ -173,4 +173,20 @@ empty or unsuitable, the broadcast key would be generated randomly by the 802.1x
 The 802.1x daemon need to read RT2860AP.dat to decide whether the broadcast key is generated
 randomly or not, so please update the RT2860AP.dat and restart rtdot1xd if those correlative parameters are changed. 
 
+VIII. Radius MAC Authentication (New on 2012/6/5)
+=================================================================
+One of the most popular Wi-Fi access control mechanisms is MAC address check via RADIUS server authentication.
+	Key Point:
+	1. Using STA Auth Frame (retry) to get Auth Result.
+	2. Auth Result Cache sync between Driver side and 1xDaemon.
 
+	Driver Command:
+	1. Enable Radius MAC Auth function per SSID
+		iwpriv ra0 set RADIUS_MacAuth_Enable=1 (Default: disable)
+	2. Set 1XDaemon Radius MAC Auth Cache Timeout
+		iwpriv ra0 set RADIUS_CacheTimeout=10 (Default: 30s)
+		1xDaemon must restart or reload configuration if the value changed
+	3. Show Driver Side Radius Cache
+		iwpriv ra0 show RadiusAclCache (Debug Purpose)
+
+	

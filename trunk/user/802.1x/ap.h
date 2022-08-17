@@ -25,6 +25,10 @@ struct sta_info {
 	struct sta_info         *hnext; /* next entry in hash table list */
 	u8                      addr[6];
 	u16                     aid; /* STA's unique AID (1 .. 2007) or 0 if not yet assigned */
+	u32                     akm;
+	u32                     pairwise_cipher;
+	u32                     group_cipher;
+	u32                     group_mgmt_cipher;
 	u32                     flags;
 	u16                     capability;
 	u16                     listen_interval; /* or beacon_int for APs */
@@ -60,6 +64,13 @@ struct sta_info {
 
 	// From which raw socket
 	int						SockNum;
+	
+#if HOTSPOT_R2	
+	/* Hotspot-R2 related data */
+	u8						hs_version;
+	u8						hs_ie_exist;
+	u16						ppsmo_id;
+#endif	
 };
 
 #define MAX_STA_COUNT           1024

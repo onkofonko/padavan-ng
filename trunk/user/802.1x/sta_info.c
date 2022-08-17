@@ -49,7 +49,42 @@ struct sta_info* Ap_get_sta(rtapd *apd, u8 *sa, u8 *apidx, u16 ethertype, int so
 		else
 			s->ApIdx = 0;
 
-		DBGPRINT(RT_DEBUG_TRACE,"Create a new STA(in %s%d)\n", apd->prefix_wlan_name, s->ApIdx);
+		if (s->ApIdx == 0)
+		{
+			DBGPRINT(RT_DEBUG_TRACE,"Create a new STA(in %s%d)\n", apd->main_wlan_name);
+		}
+		else
+		{
+			DBGPRINT(RT_DEBUG_TRACE,"Create a new STA(in %s%d)\n", apd->prefix_wlan_name, s->ApIdx);
+		}
+
+		DOT1X_QUERY_STA_AID qStaAid;
+        	memset(&qStaAid, 0, sizeof(DOT1X_QUERY_STA_AID));
+        	memcpy(qStaAid.StaAddr, sa, MAC_ADDR_LEN);
+
+        	if (RT_ioctl(apd->ioctl_sock, RT_PRIV_IOCTL, (char *)&qStaAid, sizeof(DOT1X_QUERY_STA_AID),
+                	 			apd->prefix_wlan_name, s->ApIdx, OID_802_DOT1X_QUERY_STA_AID))
+		{
+			DBGPRINT(RT_DEBUG_ERROR,"IOCTL ERROR with OID_802_DOT1X_QUERY_STA_AID\n");
+		}
+		s->aid = qStaAid.aid;
+		DBGPRINT(RT_DEBUG_TRACE,"STA:" MACSTR " AID: %d\n", MAC2STR(sa), s->aid);
+
+		DOT1X_QUERY_STA_RSN sta_rsn;
+        	memset(&sta_rsn, 0, sizeof(DOT1X_QUERY_STA_RSN));
+        	memcpy(sta_rsn.sta_addr, sa, MAC_ADDR_LEN);
+
+        	if (RT_ioctl(apd->ioctl_sock, RT_PRIV_IOCTL, (char *)&sta_rsn, sizeof(DOT1X_QUERY_STA_RSN),
+                	 			apd->prefix_wlan_name, s->ApIdx, OID_802_DOT1X_QUERY_STA_RSN))
+		{
+			DBGPRINT(RT_DEBUG_ERROR,"IOCTL ERROR with OID_802_DOT1X_QUERY_STA_RSN\n");
+		}
+		s->akm = sta_rsn.akm;
+		s->pairwise_cipher = sta_rsn.pairwise_cipher;
+		s->group_cipher = sta_rsn.group_cipher;
+		s->group_mgmt_cipher = sta_rsn.group_mgmt_cipher;
+		DBGPRINT(RT_DEBUG_TRACE,"STA:" MACSTR " AKM: %x, Pairwise: %x, Group: %x, Group mgmt: %x\n",
+			MAC2STR(sa), s->akm, s->pairwise_cipher, s->group_cipher, s->group_mgmt_cipher);
 
 		s->SockNum = sock;
 		memcpy(s->addr, sa, ETH_ALEN);
@@ -62,7 +97,14 @@ struct sta_info* Ap_get_sta(rtapd *apd, u8 *sa, u8 *apidx, u16 ethertype, int so
 	}
 	else
 	{
-		DBGPRINT(RT_DEBUG_TRACE,"A STA has existed(in %s%d)\n", apd->prefix_wlan_name, s->ApIdx);
+		if (s->ApIdx == 0)
+		{
+			DBGPRINT(RT_DEBUG_TRACE,"A STA has existed(in %s)\n", apd->prefix_wlan_name);
+		}
+		else
+		{
+			DBGPRINT(RT_DEBUG_TRACE,"A STA has existed(in %s%d)\n", apd->prefix_wlan_name, s->ApIdx);
+		}
 	}	
 	
 	return s;
@@ -146,8 +188,8 @@ void Ap_free_sta(rtapd *apd, struct sta_info *sta)
 	Ap_sta_hash_del(apd, sta);
 	Ap_sta_list_del(apd, sta);
 
-	if (sta->aid > 0)
-		apd->sta_aid[sta->aid - 1] = NULL;
+	//if (sta->aid > 0)
+	//	apd->sta_aid[sta->aid - 1] = NULL;
 
 	apd->num_sta--;
 
