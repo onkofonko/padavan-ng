@@ -736,11 +736,7 @@ again:
 					(ifa->ifa_flags & IFF_LOOPBACK) ||
 					(ifa->ifa_flags & IFF_SLAVE) ||
 					(ifname && strcmp(ifa->ifa_name, ifname)) ||
-					(!strcmp(ifa->ifa_name, "LeafNets")) ||
-					(!strncmp(ifa->ifa_name, "docker", 6)) ||
-					(!strncmp(ifa->ifa_name, "veth", 4)) ||
-					(!strncmp(ifa->ifa_name, "tun", 3)) ||
-					(!strncmp(ifa->ifa_name, "zt", 2)) ||
+					(strncmp(ifa->ifa_name, "br0", 3)) ||
 					(sv->mcast_addr &&
 					!(ifa->ifa_flags & IFF_MULTICAST)))
 					continue;
