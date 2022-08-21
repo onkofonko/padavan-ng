@@ -314,7 +314,7 @@ config MBSS_AS_WDS_AP_SUPPORT
 	bool "MBSS AS WDS AP Support"
 	depends on MT7615_AP
 	depends on MT7615_AP_MBSS
-	default y
+	default n
 
 config DSCP_QOS_MAP_SUPPORT
 	bool "Dscp Qos Mapping Support"
@@ -389,7 +389,7 @@ config GREENAP_SUPPORT
 
 config TXRX_STAT_SUPPORT
 	bool "TxRx Stats Support"
-	default y
+	default n
 
 config PCIE_ASPM_DYM_CTRL_SUPPORT
 	bool "Pcie Aspm Dynamic Control Support"
@@ -414,12 +414,12 @@ config EVENT_NOTIFIER_SUPPORT
 config AIR_MONITOR
 	bool "Air Monitor"
 	depends on MT7615_AP
-	default y
+	default n
 
 config WNM_SUPPORT
 	bool "802.11v WNM Support"
 	depends on MT7615_AP
-	default y
+	default n
 
 config WPA3_SUPPORT
 	bool "WPA3 support"
