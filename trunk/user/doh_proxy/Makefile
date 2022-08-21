@@ -28,6 +28,3 @@ clean:
 
 romfs:
 	$(ROMFSINST) $(SRC_NAME)/build/https_dns_proxy /usr/sbin/doh_proxy
-	$(ROMFSINST) $(SRC_NAME)/build/https_dns_proxy /usr/sbin/development_build_with_http3.sh
-
-
