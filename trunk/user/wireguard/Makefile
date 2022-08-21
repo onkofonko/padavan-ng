@@ -1,4 +1,4 @@
-SRC_NAME=wireguard-git
+SRC_NAME= wireguard-1.0.20210914
 
 CFLAGS +=$(COPT) -ffunction-sections -fdata-sections -fvisibility=hidden
 LDFLAGS += -Wl,--gc-sections
