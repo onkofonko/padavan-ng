@@ -1,4 +1,4 @@
-SRC_NAME=tor-0.4.X.X
+SRC_NAME=tor-0.4.7.10
 
 CFLAGS +=$(COPT) -ffunction-sections -fdata-sections -fvisibility=hidden
 LDFLAGS += -Wl,--gc-sections
