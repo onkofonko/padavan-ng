@@ -75,7 +75,6 @@ struct nvram_pair router_defaults[] = {
 	{ "wan_hostname", "" },			/* WAN hostname */
 	{ "wan_vci", "" },			/* WAN vendor class identifier (OPT-60) */
 	{ "wan_ttl_fix", "0" },
-	{ "wan_ttl_value", "0" },
 	{ "wan_hwaddr_x", "" },
 	{ "wan_nat_x", "1" },
 	{ "wan_mtu", "1500" },
@@ -133,7 +132,6 @@ struct nvram_pair router_defaults[] = {
 	{ "wan_ppp_peer", "" },			/* VPN server address */
 	{ "wan_ppp_auth", "0" },		/* PPP authentication */
 	{ "wan_ppp_mppe", "0" },		/* MPPE encryption */
-	{ "wan_ppp_lcp", "1" },
 	{ "wan_ppp_alcp", "0" },		/* Adaptive LCP Echo */
 	{ "wan_ppp_pppd", "" },			/* Custom PPPD options */
 
