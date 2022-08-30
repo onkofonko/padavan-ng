@@ -606,7 +606,7 @@ struct nvram_pair router_defaults[] = {
 	{ "sw_mode", "1" },
 #endif
 
-	{ "telnetd", "1" },
+	{ "telnetd", "0" },
 	{ "sshd_enable", "0" },
 	{ "sshd_enable_gp", "0" },
 	{ "wins_enable", "0" },
@@ -624,7 +624,7 @@ struct nvram_pair router_defaults[] = {
 	{ "dnscrypt_force_dns", "0" },
 	{ "dnscrypt_options", "-e 4096 -S -m 0" },
 #endif
-	{ "lltd_enable", "1" },
+	{ "lltd_enable", "0" },
 	{ "adsc_enable", "0" },
 	{ "crond_enable", "0" },
 	{ "crond_log", "0" },
