@@ -286,6 +286,7 @@ ISP_Authentication_host=IP-адрес сервера проверки подли
 ISP_Authentication_user=Логин:
 ISP_Authentication_pass=Пароль:
 PPP_L2TPD=Управляющий L2TP-клиент:
+PPP_LCP=Автоматически отправлять запросы LCP?
 PPP_AdaptiveLCP=Адаптивный интервал LCP Echo:
 PPP_DefaultGW=Использовать шлюз по умолчанию из туннеля?
 MAN_VIPTV_desc=Настройка IP-адреса MAN для VLAN CPU (IPTV)
