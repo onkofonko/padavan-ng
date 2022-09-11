@@ -1036,6 +1036,16 @@ function simplyMAC(fullMAC){
                                                 </select>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <th><#WAN_TTL_Value#></th>
+                                            <td>
+                                                <select name="wan_ttl_value" class="input">
+                                                    <option value="0" <% nvram_match_x("", "wan_ttl_value", "0", "selected"); %>><#WAN_TTL_Value_Item0#> (*)</option>
+                                                    <option value="64" <% nvram_match_x("", "wan_ttl_value", "64", "selected"); %>><#WAN_TTL_Value_Item1#></option>
+                                                    <option value="128" <% nvram_match_x("", "wan_ttl_value", "128", "selected"); %>><#WAN_TTL_Value_Item2#></option>
+                                                </select>
+                                            </td>
+                                        </tr>
                                     </table>
 
                                     <table width="100%" align="center" cellpadding="4" cellspacing="0" class="table" id="tbl_viptv_sect" style="display:none">
