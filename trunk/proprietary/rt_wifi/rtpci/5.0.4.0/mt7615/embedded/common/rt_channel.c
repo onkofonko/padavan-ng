@@ -310,7 +310,7 @@ CH_DESC Country_Region22_ChDesc_5GHZ[] = {
 /* special for Belarus */
 CH_DESC Country_Region34_ChDesc_5GHZ[] = {
 	{36, 8, CHANNEL_DEFAULT_PROP},
-	{132, 3, CHANNEL_DEFAULT_PROP},
+	{132, 4, CHANNEL_DEFAULT_PROP},
 	{}
 };
 
@@ -511,8 +511,8 @@ CH_DESP Country_BB_ChDesp[] = {
 CH_DESP Country_BY_ChDesp[] = {
 	{ 1,   13, 20, BOTH, FALSE},	/*2402~2482MHz, Ch 1~13,   Max BW: 40 */
 	{ 36,   4, 20, BOTH, FALSE},	/*5170~5250MHz, Ch 36~48, Max BW: 40 */
-	{ 52,   4, 20, BOTH, TRUE},	/*5250~5330MHz, Ch 52~64, Max BW: 40 */
-	{ 100, 11, 27, BOTH, TRUE},	/*5490~5710MHz, Ch 100~140, Max BW: 40 */
+	{ 52,   4, 20, BOTH, FALSE},	/*5250~5330MHz, Ch 52~64, Max BW: 40 */
+	{ 132,  4, 20, BOTH, FALSE},	/*5650~5730MHz, Ch 132~144, Max BW: 40 */
 	{ 0},			/* end*/
 };
 /*Belgium*/
@@ -1312,6 +1312,10 @@ CH_DESP Country_TR_ChDesp[] = {
 /*Ukraine*/
 CH_DESP Country_UA_ChDesp[] = {
 	{ 1,   13, 20, BOTH, FALSE},	/*2402~2482MHz, Ch 1~13,   Max BW: 40 */
+	{ 36,   4, 20, BOTH, FALSE},	/*5170~5250MHz, Ch 36~48, Max BW: 40 */
+	{ 52,   4, 20, BOTH, FALSE},	/*5250~5330MHz, Ch 52~64, Max BW: 40 */
+	{ 100, 11, 20, BOTH, FALSE},	/*5490~5710MHz, Ch 100~140, Max BW: 40 */
+	{ 149,  5, 20, BOTH, FALSE},	/*5735~5835MHz, Ch 149~165, Max BW: 40 */
 	{ 0},			/* end*/
 };
 /*United Arab Emirates*/
@@ -1439,7 +1443,7 @@ CH_REGION ChRegion[] = {
 	{"BH", CE, TRUE, Country_BH_ChDesp}, /* Bahrain */
 	{"BD", CE, TRUE, Country_BD_ChDesp}, /* Bangladesh */
 	{"BB", CE, TRUE, Country_BB_ChDesp}, /* Barbados */
-	{"BY", CE, TRUE, Country_BY_ChDesp}, /* Belarus */
+	{"BY", CE, FALSE, Country_BY_ChDesp}, /* Belarus */
 	{"BE", CE, TRUE, Country_BE_ChDesp}, /* Belgium */
 	{"BZ", CE, TRUE, Country_BZ_ChDesp}, /* Belize */
 	{"BO", CE, TRUE, Country_BO_ChDesp}, /* Bolivia */
@@ -1535,7 +1539,7 @@ CH_REGION ChRegion[] = {
 	{"TT", CE, TRUE, Country_TT_ChDesp}, /* Trinidad and Tobago */
 	{"TN", CE, TRUE, Country_TN_ChDesp}, /* Tunisia */
 	{"TR", CE, TRUE, Country_TR_ChDesp}, /* Turkey */
-	{"UA", CE, TRUE, Country_UA_ChDesp}, /* Ukraine */
+	{"UA", CE, FALSE, Country_UA_ChDesp}, /* Ukraine */
 	{"AE", CE, TRUE, Country_AE_ChDesp}, /* United Arab Emirates */
 	{"GB", CE, TRUE, Country_GB_ChDesp}, /* United Kingdom */
 	{"US", FCC, FALSE, Country_US_ChDesp}, /* United States */
