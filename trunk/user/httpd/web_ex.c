@@ -2207,24 +2207,28 @@ ej_firmware_caps_hook(int eid, webs_t wp, int argc, char **argv)
 #endif
 #if defined (USE_WID_5G) && (USE_WID_5G==7610 || USE_WID_5G==7612 || USE_WID_5G==7615) && BOARD_HAS_5G_11AC
 	int has_5g_vht = 1;
+	int has_5g_band_steering = 1;
 #else
 	int has_5g_vht = 0;
+	int has_5g_band_steering = 0;
 #endif
 #if defined (USE_WID_5G) && USE_WID_5G==7615 && BOARD_HAS_5G_11AC
 	int has_5g_mumimo = 1;
 	int has_5g_txbf = 1;
-	int has_5g_band_steering = 1;
+//	int has_5g_band_steering = 1;
 	int has_5g_160mhz = 1;
 #else
 	int has_5g_mumimo = 0;
 	int has_5g_txbf = 0;
-	int has_5g_band_steering = 0;
+//	int has_5g_band_steering = 0;
 	int has_5g_160mhz = 0;
 #endif
 #if defined (USE_WID_2G) && USE_WID_2G==7615
+	int has_2g_band_steering = 1;
 	int has_2g_turbo_qam = 1;
 	int has_2g_airtimefairness = 1;
 #else
+	int has_2g_band_steering = 0;
 	int has_2g_turbo_qam = 0;
 	int has_2g_airtimefairness = 0;
 #endif
@@ -2315,6 +2319,7 @@ ej_firmware_caps_hook(int eid, webs_t wp, int argc, char **argv)
 		"function support_5g_stream_rx() { return %d;}\n"
 		"function support_2g_stream_tx() { return %d;}\n"
 		"function support_2g_stream_rx() { return %d;}\n"
+		"function support_2g_band_steering() { return %d;}\n"
 		"function support_2g_turbo_qam() { return %d;}\n"
 		"function support_2g_airtimefairness() { return %d;}\n"
 		"function support_5g_txbf() { return %d;}\n"
@@ -2350,6 +2355,7 @@ ej_firmware_caps_hook(int eid, webs_t wp, int argc, char **argv)
 		BOARD_NUM_ANT_5G_RX,
 		BOARD_NUM_ANT_2G_TX,
 		BOARD_NUM_ANT_2G_RX,
+		has_2g_band_steering,
 		has_2g_turbo_qam,
 		has_2g_airtimefairness,
 		has_5g_txbf,
