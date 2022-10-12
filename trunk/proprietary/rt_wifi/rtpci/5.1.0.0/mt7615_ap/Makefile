@@ -683,7 +683,7 @@ ifeq ($(CONFIG_AIRPLAY_SUPPORT),y)
     EXTRA_CFLAGS += -DAIRPLAY_SUPPORT
 endif
 
-ifeq ($(CONFIG_RT_BAND_STEERING),y)
+ifeq ($(CONFIG_BAND_STEERING),y)
     EXTRA_CFLAGS += -DBAND_STEERING
     ap_objs +=  $(SRC_EMBEDDED_DIR)/ap/ap_band_steering.o
 endif
