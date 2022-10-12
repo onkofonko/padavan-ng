@@ -373,7 +373,7 @@ function openLink(s) {
                                             <th colspan="2" style="background-color: #E3E3E3;"><#t2Misc#></th>
                                         </tr>
                                         <tr id="row_zram">
-                                            <th><#Adm_System_zram#></th>
+                                            <th><a class="help_tooltip"  href="javascript:void(0);" onmouseover="openTooltip(this, 11, 5);"><#Adm_System_zram_itemname#></a></th>
                                             <td>
                                                 <select name="zram_enable" class="input">
                                                     <option value="0"   <% nvram_match_x("","zram_enable",  "0","selected"); %>><#btn_Disable#></option>

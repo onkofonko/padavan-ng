@@ -86,7 +86,8 @@ helpcontent[11] = new Array("",
 				"<#LANHostConfig_x_ServerLogEnable_itemdesc#>",
 				"<#LANHostConfig_x_TimeZone_itemdesc#>",
 				"<#LANHostConfig_x_NTPServer_itemdesc#>",
-				"<#LANHostConfig_x_Password_itemdesc#>");
+				"<#LANHostConfig_x_Password_itemdesc#>",
+				"<#Adm_System_zram_itemdesc#>");
 //Log
 helpcontent[12] = new Array("",
 				"<#General_x_SystemUpTime_itemdesc#>",

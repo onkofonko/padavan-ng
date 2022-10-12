@@ -218,7 +218,7 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_stream_rx", STR(BOARD_NUM_ANT_5G_RX) },
 	{ "wl_preamble", "1" },
 	{ "wl_greenap", "0" },
-	{ "wl_ldpc", "0" },
+	{ "wl_ldpc", "3" },
 	{ "wl_HT_RDG", "0" },
 #if defined (USE_WID_5G) && (USE_WID_5G==7615 || USE_WID_5G==7915)
 	{ "wl_HT_AMSDU", "0" },
@@ -360,7 +360,6 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_band_steering", "0" },
 
 #if defined (USE_WID_2G) && USE_WID_2G==7615
-	{ "rt_turbo_qam", "1" },
 	{ "rt_airtimefairness", "0" },
 #endif
 
