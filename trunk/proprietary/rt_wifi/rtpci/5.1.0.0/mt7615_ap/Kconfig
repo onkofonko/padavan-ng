@@ -419,7 +419,7 @@ config AIR_MONITOR
 config WNM_SUPPORT
 	bool "802.11v WNM Support"
 	depends on MT7615_AP
-	default n
+	default y
 
 config WPA3_SUPPORT
 	bool "WPA3 support"
