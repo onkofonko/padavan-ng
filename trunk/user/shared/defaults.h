@@ -33,20 +33,20 @@
 #define DEF_LAN_DHCP_END	"192.168.1.244"
 #define DEF_LAN_MASK		"255.255.255.0"
 
-#define DEF_WLAN_2G_CC		"GB"
-#define DEF_WLAN_5G_CC		"GB"
-#define DEF_WLAN_2G_SSID	"Padavan"
-#define DEF_WLAN_5G_SSID	"Padavan_5G"
-#define DEF_WLAN_2G_GSSID	"Padavan_GUEST"
-#define DEF_WLAN_5G_GSSID	"Padavan_GUEST_5G"
+#define DEF_WLAN_2G_CC		"UA"
+#define DEF_WLAN_5G_CC		"UA"
+#define DEF_WLAN_2G_SSID	"Padavan_2.4GHz"
+#define DEF_WLAN_5G_SSID	"Padavan_5GHz"
+#define DEF_WLAN_2G_GSSID	"Padavan_GUEST_2.4GHz"
+#define DEF_WLAN_5G_GSSID	"Padavan_GUEST_5GHz"
 #define DEF_WLAN_2G_PSK		"1234567890"
 #define DEF_WLAN_5G_PSK		"1234567890"
 
 #define DEF_ROOT_PASSWORD	"admin"
 #define DEF_SMB_WORKGROUP	"WORKGROUP"
-#define DEF_TIMEZONE		"GMT0"
+#define DEF_TIMEZONE		"EET-2EETDST"
 #define DEF_NTP_SERVER0		"pool.ntp.org"
-#define DEF_NTP_SERVER1		"time.nist.gov"
+#define DEF_NTP_SERVER1		"time.in.ua"
 #ifdef SUPPORT_OPENSSL_EC
 #define DEF_HTTPS_CIPH_LIST	"ECDH+CHACHA20:ECDH+AESGCM:DH+AESGCM:DH+AES256:DH+AES:DH+3DES:RSA+AES:RSA+3DES:!ADH:!MD5:!DSS"
 #else
