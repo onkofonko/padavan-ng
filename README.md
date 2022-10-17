@@ -21,3 +21,15 @@ Contributors of this project are not responsible for what happens next.
 
 P.S.
 Original project author is Padavan. Old repository here: [rt-n56u project](https://bitbucket.org/padavan/rt-n56u)
+
+### Compilation Instructions ###
+
+* Install dependencies
+
+```shell
+# OS: Ubuntu-22.04 LTS (arm64v8/aarch64) [Should also work on x64]
+sudo apt update
+sudo apt upgrade
+sudo apt install ca-certificates autoconf autoconf-archive automake autopoint bison build-essential cmake cpio curl doxygen fakeroot flex gawk gettext git gperf help2man htop kmod libblkid-dev libc-ares-dev libcurl4-openssl-dev libdevmapper-dev libev-dev libevent-dev libgmp3-dev libkeyutils-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libsqlite3-dev libssl-dev libtool libtool-bin libudev-dev libxml2-dev  locales mc nano pkg-config ppp-dev python3 python3-docutils texinfo unzip uuid uuid-dev vim wget xxd zlib1g-dev
+
+```
