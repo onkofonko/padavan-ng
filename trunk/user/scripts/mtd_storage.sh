@@ -245,14 +245,17 @@ echo 4096 131072  6291456 > /proc/sys/net/ipv4/tcp_rmem
 echo 4194304 >/proc/sys/net/core/rmem_max
 echo 212992 > /proc/sys/net/core/rmem_default
 
-#drop caches
+### drop caches
 sync && echo 3 > /proc/sys/vm/drop_caches
-# Roaming assistant for mt76xx WiFi
+
+### Roaming assistant for mt76xx WiFi
 #iwpriv ra0 set KickStaRssiLow=-85
 #iwpriv ra0 set AssocReqRssiThres=-80
 #iwpriv rai0 set KickStaRssiLow=-85
 #iwpriv rai0 set AssocReqRssiThres=-80
 
+### UPnP solution when router without external IP
+#echo "ext_ip=1.1.1.1" >> /etc/miniupnpd.conf && killall miniupnpd && miniupnpd -f /etc/miniupnpd.conf
 
 EOF
 		chmod 755 "$script_started"
@@ -293,6 +296,8 @@ EOF
 ### \$1 - WAN action (up/down)
 ### \$2 - WAN interface name (e.g. eth3 or ppp0)
 ### \$3 - WAN IPv4 address
+### Delay script execution
+sleep 10
 
 EOF
 		chmod 755 "$script_postw"
