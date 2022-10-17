@@ -356,8 +356,8 @@ function done_validating(action){
                                             <th><#WLANConfig11n_80211kv#></th>
                                             <td>
                                                 <select name="rt_HT_80211KV" class="input">
-                                                    <option value="0" <% nvram_match_x("", "rt_HT_80211KV", "0", "selected"); %>><#btn_Disable#></option>
-                                                    <option value="1" <% nvram_match_x("", "rt_HT_80211KV", "1", "selected"); %>><#btn_Enable#> (*)</option>
+                                                    <option value="0" <% nvram_match_x("", "rt_HT_80211KV", "0", "selected"); %>><#btn_Disable#> (*)</option>
+                                                    <option value="1" <% nvram_match_x("", "rt_HT_80211KV", "1", "selected"); %>><#btn_Enable#></option>
                                                 </select>
                                             </td>
                                         </tr>
