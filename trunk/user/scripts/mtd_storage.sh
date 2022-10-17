@@ -282,6 +282,10 @@ EOF
 ### Custom user script
 ### Called after internal iptables reconfig (firewall update)
 
+### Rediret all DNS queries to internal service
+#iptables -t nat -I PREROUTING -i br0 -p udp --dport 53 -j DNAT --to $(nvram get lan_ipaddr)
+#iptables -t nat -I PREROUTING -i br0 -p tcp --dport 53 -j DNAT --to $(nvram get lan_ipaddr)
+
 EOF
 		chmod 755 "$script_postf"
 	fi
