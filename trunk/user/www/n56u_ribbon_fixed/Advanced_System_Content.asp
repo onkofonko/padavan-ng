@@ -378,7 +378,7 @@ function openLink(s) {
                                                 <select name="zram_enable" class="input">
                                                     <option value="0"   <% nvram_match_x("","zram_enable",  "0","selected"); %>><#btn_Disable#></option>
                                                     <option value="1"   <% nvram_match_x("","zram_enable",  "1","selected"); %>>25% Ram</option>
-                                                    <option value="2"   <% nvram_match_x("","zram_enable",  "2","selected"); %>>50% Ram</option>
+                                                    <option value="2"   <% nvram_match_x("","zram_enable",  "2","selected"); %>>50% Ram (*)</option>
                                                 </select>
                                             </td>
                                         </tr>
