@@ -324,7 +324,7 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_greenap", "0" },
 	{ "rt_HT_RDG", "0" },
 	{ "rt_HT_AMSDU", "0" },
-	{ "rt_HT_80211KV", "1" },
+	{ "rt_HT_80211KV", "0" },
 	{ "rt_HT_80211R", "0" },
 	{ "rt_HT_MpduDensity", "5" },
 #if defined (USE_WID_2G) && (USE_WID_2G==7615 || USE_WID_2G==7915)
