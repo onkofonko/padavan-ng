@@ -60,7 +60,7 @@ typedef unsigned long long _u64;
 #define CONTROL_PIPE_REQ_LNS_REMOVE 'w'     /* Get status of LNS */
 
 #define BINARY "xl2tpd"
-#define SERVER_VERSION "xl2tpd-1.3.16"
+#define SERVER_VERSION "xl2tpd-1.3.17"
 #define VENDOR_NAME "xelerance.com"
 #ifndef PPPD
 #define PPPD		"/usr/sbin/pppd"
@@ -180,7 +180,7 @@ struct tunnel
     int rxspeed;		/* Receive bps */
     int txspeed;		/* Transmit bps */
     int udp_fd;			/* UDP fd */
-    int pppox_fd;		/* PPPOX tunnel fd */
+    int pppox_fd;			/* PPPOX tunnel fd */
     struct call *self;
     struct lns *lns;            /* LNS that owns us */
     struct lac *lac;            /* LAC that owns us */
@@ -258,6 +258,7 @@ extern int get_entropy (unsigned char *, int);
 #define route_msg(args...) l2tp_log(LOG_ERR, ## args)
 extern int route_add(const struct in_addr inetaddr, int any_dgw, struct rtentry *rt);
 extern int route_del(struct rtentry *rt);
+
 
 /*
  * This is just some stuff to take

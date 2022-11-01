@@ -432,7 +432,7 @@ int start_pppd (struct call *c, struct ppp_opts *opts)
        if (flags == -1 || fcntl(fd2, F_SETFL, flags | O_NONBLOCK) == -1) {
            l2tp_log (LOG_WARNING, "%s: Unable to set PPPoL2TP socket nonblock.\n",
                 __FUNCTION__);
-           close(fd2);
+	   close(fd2);
            return -EINVAL;
        }
        memset(&sax, 0, sizeof(sax));
@@ -574,16 +574,14 @@ int start_pppd (struct call *c, struct ppp_opts *opts)
         }
 
         /* close the UDP socket fd */
-        if(server_socket != -1) {
+        if(server_socket!=-1) {
             close (server_socket);
             server_socket = -1;
         }
 
         /* close the control pipe fd */
-        if(control_fd != -1) {
+        if(control_fd!=-1)
             close (control_fd);
-            control_fd = -1;
-        }
 
         if( c->dialing[0] )
         {
@@ -717,6 +715,7 @@ void schedule_redial(struct lac *lac)
     }
 }
 
+
 static struct tunnel *l2tp_call (char *host, int port, struct lac *lac,
                           struct lns *lns)
 {
@@ -731,8 +730,9 @@ static struct tunnel *l2tp_call (char *host, int port, struct lac *lac,
     hp = gethostbyname (host);
     if (!hp)
     {
-        l2tp_log (LOG_WARNING, "Host name lookup failed for %s.\n", host);
-        schedule_redial(lac);
+        l2tp_log (LOG_WARNING, "Host name lookup failed for %s.\n",
+             host);
+	schedule_redial(lac);
         return NULL;
     }
     bcopy (hp->h_addr, &addr.s_addr, hp->h_length);
@@ -746,8 +746,9 @@ static struct tunnel *l2tp_call (char *host, int port, struct lac *lac,
     tmp = get_call (0, 0, addr, port, IPSEC_SAREF_NULL, IPSEC_SAREF_NULL);
     if (!tmp)
     {
-        l2tp_log (LOG_WARNING, "%s: Unable to create tunnel to %s.\n", __FUNCTION__, host);
-        schedule_redial(lac);
+        l2tp_log (LOG_WARNING, "%s: Unable to create tunnel to %s.\n", __FUNCTION__,
+             host);
+	schedule_redial(lac);
         return NULL;
     }
     tmp->container->tid = 0;
@@ -2090,3 +2091,4 @@ route_add(const struct in_addr inetaddr, int any_dgw, struct rtentry *rt)
 
 	return -1;
 }
+
