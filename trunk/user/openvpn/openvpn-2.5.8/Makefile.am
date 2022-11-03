@@ -50,7 +50,7 @@ BUILT_SOURCES = \
 	config-version.h
 endif
 
-SUBDIRS = build distro include src sample doc tests
+SUBDIRS = build distro include src
 
 dist_doc_DATA = \
 	README \
