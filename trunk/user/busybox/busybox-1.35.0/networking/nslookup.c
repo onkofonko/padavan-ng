@@ -407,7 +407,7 @@ static NOINLINE int parse_reply(const unsigned char *msg, size_t len)
 				//printf("Unable to uncompress domain: %s\n", strerror(errno));
 				return -1;
 			}
-			printf(format, ns_rr_name(rr), dname);
+			printf(format, ns_rr_name(rr), printable_string(dname));
 			break;
 
 		case ns_t_mx:
@@ -422,7 +422,7 @@ static NOINLINE int parse_reply(const unsigned char *msg, size_t len)
 				//printf("Cannot uncompress MX domain: %s\n", strerror(errno));
 				return -1;
 			}
-			printf("%s\tmail exchanger = %d %s\n", ns_rr_name(rr), n, dname);
+			printf("%s\tmail exchanger = %d %s\n", ns_rr_name(rr), n, printable_string(dname));
 			break;
 
 		case ns_t_txt:
@@ -434,7 +434,7 @@ static NOINLINE int parse_reply(const unsigned char *msg, size_t len)
 			if (n > 0) {
 				memset(dname, 0, sizeof(dname));
 				memcpy(dname, ns_rr_rdata(rr) + 1, n);
-				printf("%s\ttext = \"%s\"\n", ns_rr_name(rr), dname);
+				printf("%s\ttext = \"%s\"\n", ns_rr_name(rr), printable_string(dname));
 			}
 			break;
 
@@ -454,7 +454,7 @@ static NOINLINE int parse_reply(const unsigned char *msg, size_t len)
 			}
 
 			printf("%s\tservice = %u %u %u %s\n", ns_rr_name(rr),
-				ns_get16(cp), ns_get16(cp + 2), ns_get16(cp + 4), dname);
+				ns_get16(cp), ns_get16(cp + 2), ns_get16(cp + 4), printable_string(dname));
 			break;
 
 		case ns_t_soa:
@@ -483,7 +483,7 @@ static NOINLINE int parse_reply(const unsigned char *msg, size_t len)
 				return -1;
 			}
 
-			printf("\tmail addr = %s\n", dname);
+			printf("\tmail addr = %s\n", printable_string(dname));
 			cp += n;
 
 			printf("\tserial = %lu\n", ns_get32(cp));
