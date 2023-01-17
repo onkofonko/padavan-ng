@@ -16,6 +16,9 @@ ifdef CONFIG_BLK_DEV_SD
 	$(ROMFSINST) /sbin/hddtune.sh
 	$(ROMFSINST) /sbin/spindown.sh
 endif
+ifdef CONFIG_MTD_UBI
+	$(ROMFSINST) /sbin/rwfs2ubi.sh
+endif
 	# FIXME:
 ifneq (,$(filter -DBOARD_ARCHER_MR200,$(CFLAGS)))
 	echo "\nadb wait-for-device\nadb shell chmod +x /WEBSERVER/www/cgi-bin/*\nadb shell httpd -h /WEBSERVER/www/" >> $(INSTALLDIR)/sbin/dev_init.sh ;\
