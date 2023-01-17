@@ -1,0 +1,291 @@
+diff -urN dnsmasq-2.88-orig/Makefile dnsmasq-2.88/Makefile
+--- dnsmasq-2.88-orig/Makefile	2022-12-05 01:00:54.000000000 +0300
++++ dnsmasq-2.88/Makefile	2023-01-07 23:34:16.831611700 +0300
+@@ -18,14 +18,14 @@
+ 
+ # Variables you may well want to override.
+ 
+-PREFIX        = /usr/local
++PREFIX        = /usr
+ BINDIR        = $(PREFIX)/sbin
+ MANDIR        = $(PREFIX)/share/man
+ LOCALEDIR     = $(PREFIX)/share/locale
+ BUILDDIR      = $(SRC)
+ DESTDIR       = 
+-CFLAGS        = -Wall -W -O2
+-LDFLAGS       = 
++CFLAGS        = -Wall -W -O2 -ffunction-sections -fdata-sections
++LDFLAGS       = -Wl,--gc-sections
+ COPTS         = 
+ RPM_OPT_FLAGS = 
+ LIBS          = 
+diff -urN dnsmasq-2.88-orig/src/config.h dnsmasq-2.88/src/config.h
+--- dnsmasq-2.88-orig/src/config.h	2022-12-05 01:00:54.000000000 +0300
++++ dnsmasq-2.88/src/config.h	2023-01-07 23:34:16.850607300 +0300
+@@ -46,7 +46,7 @@
+ #define DEFLEASE 3600 /* default DHCPv4 lease time, one hour */
+ #define DEFLEASE6 (3600*24) /* default lease time for DHCPv6. One day. */
+ #define CHUSER "nobody"
+-#define CHGRP "dip"
++#define CHGRP "nogroup"
+ #define TFTP_MAX_CONNECTIONS 50 /* max simultaneous connections */
+ #define LOG_MAX 5 /* log-queue length */
+ #define RANDFILE "/dev/urandom"
+@@ -185,6 +185,8 @@
+ #define HAVE_LOOP
+ #define HAVE_DUMPFILE
+ 
++#define LEASEFILE "/tmp/dnsmasq.leases"
++
+ /* Build options which require external libraries.
+    
+    Defining HAVE_<opt>_STATIC as _well_ as HAVE_<opt> will link the library statically.
+@@ -264,6 +266,8 @@
+ #  ifndef IPV6_V6ONLY
+ #    define IPV6_V6ONLY 26
+ #  endif
++#elif !defined(NO_IPV6)
++#  define NO_IPV6
+ #endif
+ 
+ /* This is for glibc 2.x */
+diff -urN dnsmasq-2.88-orig/src/dnsmasq.c dnsmasq-2.88/src/dnsmasq.c
+--- dnsmasq-2.88-orig/src/dnsmasq.c	2022-12-05 01:00:54.000000000 +0300
++++ dnsmasq-2.88/src/dnsmasq.c	2023-01-07 23:34:16.869606800 +0300
+@@ -103,10 +103,6 @@
+   
+   read_opts(argc, argv, compile_opts);
+  
+-#ifdef HAVE_LINUX_NETWORK
+-  daemon->kernel_version = kernel_version();
+-#endif
+-
+   if (daemon->edns_pktsz < PACKETSZ)
+     daemon->edns_pktsz = PACKETSZ;
+ 
+diff -urN dnsmasq-2.88-orig/src/dnsmasq.h dnsmasq-2.88/src/dnsmasq.h
+--- dnsmasq-2.88-orig/src/dnsmasq.h	2022-12-05 01:00:54.000000000 +0300
++++ dnsmasq-2.88/src/dnsmasq.h	2023-01-07 23:34:16.888603100 +0300
+@@ -1247,7 +1247,7 @@
+   int inotifyfd;
+ #endif
+ #if defined(HAVE_LINUX_NETWORK)
+-  int netlinkfd, kernel_version;
++  int netlinkfd;
+ #elif defined(HAVE_BSD_NETWORK)
+   int dhcp_raw_fd, dhcp_icmp_fd, routefd;
+ #endif
+@@ -1452,9 +1452,6 @@
+ void close_fds(long max_fd, int spare1, int spare2, int spare3);
+ int wildcard_match(const char* wildcard, const char* match);
+ int wildcard_matchn(const char* wildcard, const char* match, int num);
+-#ifdef HAVE_LINUX_NETWORK
+-int kernel_version(void);
+-#endif
+ 
+ /* log.c */
+ void die(char *message, char *arg1, int exit_code) ATTRIBUTE_NORETURN;
+diff -urN dnsmasq-2.88-orig/src/ipset.c dnsmasq-2.88/src/ipset.c
+--- dnsmasq-2.88-orig/src/ipset.c	2022-12-05 01:00:54.000000000 +0300
++++ dnsmasq-2.88/src/ipset.c	2023-01-07 23:34:16.904603000 +0300
+@@ -70,7 +70,7 @@
+ 
+ #define NL_ALIGN(len) (((len)+3) & ~(3))
+ static const struct sockaddr_nl snl = { .nl_family = AF_NETLINK };
+-static int ipset_sock, old_kernel;
++static int ipset_sock;
+ static char *buffer;
+ 
+ static inline void add_attr(struct nlmsghdr *nlh, uint16_t type, size_t len, const void *data)
+@@ -85,12 +85,7 @@
+ 
+ void ipset_init(void)
+ {
+-  old_kernel = (daemon->kernel_version < KERNEL_VERSION(2,6,32));
+-  
+-  if (old_kernel && (ipset_sock = socket(AF_INET, SOCK_RAW, IPPROTO_RAW)) != -1)
+-    return;
+-  
+-  if (!old_kernel && 
++  if (
+       (buffer = safe_malloc(BUFF_SZ)) &&
+       (ipset_sock = socket(AF_NETLINK, SOCK_RAW, NETLINK_NETFILTER)) != -1 &&
+       (bind(ipset_sock, (struct sockaddr *)&snl, sizeof(snl)) != -1))
+@@ -147,65 +142,14 @@
+   return errno == 0 ? 0 : -1;
+ }
+ 
+-
+-static int old_add_to_ipset(const char *setname, const union all_addr *ipaddr, int remove)
+-{
+-  socklen_t size;
+-  struct ip_set_req_adt_get {
+-    unsigned op;
+-    unsigned version;
+-    union {
+-      char name[IPSET_MAXNAMELEN];
+-      uint16_t index;
+-    } set;
+-    char typename[IPSET_MAXNAMELEN];
+-  } req_adt_get;
+-  struct ip_set_req_adt {
+-    unsigned op;
+-    uint16_t index;
+-    uint32_t ip;
+-  } req_adt;
+-  
+-  if (strlen(setname) >= sizeof(req_adt_get.set.name)) 
+-    {
+-      errno = ENAMETOOLONG;
+-      return -1;
+-    }
+-  
+-  req_adt_get.op = 0x10;
+-  req_adt_get.version = 3;
+-  strcpy(req_adt_get.set.name, setname);
+-  size = sizeof(req_adt_get);
+-  if (getsockopt(ipset_sock, SOL_IP, 83, &req_adt_get, &size) < 0)
+-    return -1;
+-  req_adt.op = remove ? 0x102 : 0x101;
+-  req_adt.index = req_adt_get.set.index;
+-  req_adt.ip = ntohl(ipaddr->addr4.s_addr);
+-  if (setsockopt(ipset_sock, SOL_IP, 83, &req_adt, sizeof(req_adt)) < 0)
+-    return -1;
+-  
+-  return 0;
+-}
+-
+-
+-
+ int add_to_ipset(const char *setname, const union all_addr *ipaddr, int flags, int remove)
+ {
+   int ret = 0, af = AF_INET;
+ 
+   if (flags & F_IPV6)
+-    {
+       af = AF_INET6;
+-      /* old method only supports IPv4 */
+-      if (old_kernel)
+-	{
+-	  errno = EAFNOSUPPORT ;
+-	  ret = -1;
+-	}
+-    }
+-  
+-  if (ret != -1) 
+-    ret = old_kernel ? old_add_to_ipset(setname, ipaddr, remove) : new_add_to_ipset(setname, ipaddr, af, remove);
++
++  ret = new_add_to_ipset(setname, ipaddr, af, remove);
+ 
+   if (ret == -1)
+      my_syslog(LOG_ERR, _("failed to update ipset %s: %s"), setname, strerror(errno));
+diff -urN dnsmasq-2.88-orig/src/lease.c dnsmasq-2.88/src/lease.c
+--- dnsmasq-2.88-orig/src/lease.c	2022-12-05 01:00:54.000000000 +0300
++++ dnsmasq-2.88/src/lease.c	2023-01-07 23:34:16.920601800 +0300
+@@ -951,8 +951,11 @@
+   struct dhcp_lease *lease_tmp;
+   char *new_name = NULL, *new_fqdn = NULL;
+ 
++#if 0
++/* disable warning, noisy */
+   if (config_domain && (!domain || !hostname_isequal(domain, config_domain)))
+     my_syslog(MS_DHCP | LOG_WARNING, _("Ignoring domain %s for DHCP host name %s"), config_domain, name);
++#endif
+   
+   if (lease->hostname && name && hostname_isequal(lease->hostname, name))
+     {
+diff -urN dnsmasq-2.88-orig/src/network.c dnsmasq-2.88/src/network.c
+--- dnsmasq-2.88-orig/src/network.c	2022-12-05 01:00:54.000000000 +0300
++++ dnsmasq-2.88/src/network.c	2023-01-07 23:34:16.938657200 +0300
+@@ -1619,7 +1619,10 @@
+ 	  break;
+       if (iface)
+ 	{
++#if 0
++/* disable warning, noisy */
+ 	  my_syslog(LOG_WARNING, _("ignoring nameserver %s - local interface"), daemon->namebuff);
++#endif
+ 	  serv->flags |= SERV_MARK;
+ 	  continue;
+ 	}
+diff -urN dnsmasq-2.88-orig/src/rfc2131.c dnsmasq-2.88/src/rfc2131.c
+--- dnsmasq-2.88-orig/src/rfc2131.c	2022-12-05 01:00:54.000000000 +0300
++++ dnsmasq-2.88/src/rfc2131.c	2023-01-07 23:34:16.957600500 +0300
+@@ -1699,7 +1699,7 @@
+ static void log_packet(char *type, void *addr, unsigned char *ext_mac, 
+ 		       int mac_len, char *interface, char *string, char *err, u32 xid)
+ {
+-  if (!err && !option_bool(OPT_LOG_OPTS) && option_bool(OPT_QUIET_DHCP))
++  if (/*!err && */!option_bool(OPT_LOG_OPTS) && option_bool(OPT_QUIET_DHCP))
+     return;
+   
+   daemon->addrbuff[0] = 0;
+diff -urN dnsmasq-2.88-orig/src/rfc3315.c dnsmasq-2.88/src/rfc3315.c
+--- dnsmasq-2.88-orig/src/rfc3315.c	2022-12-05 01:00:54.000000000 +0300
++++ dnsmasq-2.88/src/rfc3315.c	2023-01-07 23:34:16.977608700 +0300
+@@ -178,8 +178,11 @@
+ 	  
+       if (!state->context)
+ 	{
++#if 0
++/* disable DHCPv6 noaddr messages, noisy */
+ 	  my_syslog(MS_DHCP | LOG_WARNING, 
+ 		    _("no address range available for DHCPv6 request via %s"), state->iface_name);
++#endif
+ 	  return 0;
+ 	}
+ 
+@@ -796,7 +799,7 @@
+ 	    for (c = state->context; c; c = c->current)
+ 	      if (!(c->flags & CONTEXT_RA_STATELESS))
+ 		{
+-		  log6_packet(state, state->lease_allocate ? "DHCPREPLY" : "DHCPADVERTISE", NULL, _("no addresses available"));
++		  log6_quiet(state, state->lease_allocate ? "DHCPREPLY" : "DHCPADVERTISE", NULL, _("no addresses available"));
+ 		  break;
+ 		}
+ 	  }
+@@ -911,7 +914,7 @@
+ 	    put_opt6_short(DHCP6NOADDRS);
+ 	    put_opt6_string(_("no addresses available"));
+ 	    end_opt6(o1);
+-	    log6_packet(state, "DHCPREPLY", NULL, _("no addresses available"));
++	    log6_quiet(state, "DHCPREPLY", NULL, _("no addresses available"));
+ 	  }
+ 
+ 	tagif = add_options(state, 0);
+@@ -1024,9 +1027,6 @@
+ 		    message = _("address invalid");
+ 		  } 
+ 
+-		if (message && (message != state->hostname))
+-		  log6_packet(state, "DHCPREPLY", &req_addr, message);	
+-		else
+ 		  log6_quiet(state, "DHCPREPLY", &req_addr, message);
+ 	
+ 		o1 =  new_opt6(OPTION6_IAADDR);
+diff -urN dnsmasq-2.88-orig/src/util.c dnsmasq-2.88/src/util.c
+--- dnsmasq-2.88-orig/src/util.c	2022-12-05 01:00:54.000000000 +0300
++++ dnsmasq-2.88/src/util.c	2023-01-07 23:34:16.994600700 +0300
+@@ -855,22 +855,3 @@
+ 
+   return (!num) || (*wildcard == *match);
+ }
+-
+-#ifdef HAVE_LINUX_NETWORK
+-int kernel_version(void)
+-{
+-  struct utsname utsname;
+-  int version;
+-  char *split;
+-  
+-  if (uname(&utsname) < 0)
+-    die(_("failed to find kernel version: %s"), NULL, EC_MISC);
+-  
+-  split = strtok(utsname.release, ".");
+-  version = (split ? atoi(split) : 0);
+-  split = strtok(NULL, ".");
+-  version = version * 256 + (split ? atoi(split) : 0);
+-  split = strtok(NULL, ".");
+-  return version * 256 + (split ? atoi(split) : 0);
+-}
+-#endif
