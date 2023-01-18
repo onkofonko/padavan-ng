@@ -548,7 +548,8 @@ function show_footer(){
 	footer_code = '<div align="center" class="bottom-image"></div>\n';
 	footer_code +='<div align="center" class="copyright"><#footer_copyright_desc#></div>\n';
 	footer_code +='<div align="center">\n';
-	footer_code +='  <span>Compiled with Prometheus</span></br>\n';
+	footer_code +='  <span>Compiled by <a href="https://gitlab.com/timofeev36/padavan-ng">Stepan</a></span></br>\n';
+	footer_code +='  <span>Firmware distribution is prohibited</span></br>\n';
 	footer_code +='  <span>Non-Commercial Use Only</span></br>\n';
 	footer_code +='</div>\n';
 
