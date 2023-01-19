@@ -1,4 +1,4 @@
-SRC_NAME=zlib-1.2.12
+SRC_NAME=zlib-1.2.13
 SRC_URL=http://www.zlib.net/$(SRC_NAME).tar.gz
 
 all: download_test extract_test config_test
@@ -24,7 +24,7 @@ config_test:
 configure:
 	( cd $(SRC_NAME) ; \
 	./configure \
-		--prefix= \
+		--prefix=$(STAGEDIR) \
 		--shared ; \
 	)
 
@@ -35,7 +35,7 @@ clean:
 	rm -f config_done
 
 install:
-	$(MAKE) -C $(SRC_NAME) install DESTDIR=$(STAGEDIR)
+	$(MAKE) -C $(SRC_NAME) install DESTDIR=""
 
 romfs:
 	cp -fP $(DESTDIR)/lib/libz.so* $(ROMFSDIR)/lib
