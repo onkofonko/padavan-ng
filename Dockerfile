@@ -2,7 +2,7 @@ FROM ubuntu:jammy
 
 ENV PROJECT="padavan-ng"
 
-ENV PROJECT_REPO="https://gitlab.com/mahtabctg/${PROJECT}.git" \
+ENV PROJECT_REPO="https://gitlab.com/timofeev36/${PROJECT}.git" \
     BASE_DIR="/opt" \
     DEBIAN_FRONTEND="noninteractive"
 
@@ -15,6 +15,7 @@ RUN apt update && \
     autopoint \
     bison \
     build-essential \
+    ca-certificates \
     cmake \
     cpio \
     curl \
@@ -34,17 +35,23 @@ RUN apt update && \
     libdevmapper-dev \
     libev-dev \
     libevent-dev \
+    libexif-dev \
+    libflac-dev \
     libgmp3-dev \
+    libid3tag0-dev \
+    libjpeg-dev \
     libkeyutils-dev \
     libltdl-dev \
     libmpc-dev \
     libmpfr-dev \
     libncurses5-dev \
+    libogg-dev \
     libsqlite3-dev \
     libssl-dev \
     libtool \
     libtool-bin \
     libudev-dev \
+    libvorbis-dev \
     libxml2-dev \
     locales \
     mc \
