@@ -1,4 +1,5 @@
-SRC_NAME=minidlna-git
+SRC_NAME=minidlna-1.3.2
+SRC_URL=https://sourceforge.net/projects/minidlna/files/minidlna/1.3.2/minidlna-1.3.2.tar.gz
 
 DLNA_CFLAGS  += -ffunction-sections -fdata-sections -fvisibility=hidden
 DLNA_CFLAGS  += -Os -Wall -g -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64
@@ -11,8 +12,20 @@ DLNA_LIBS += -ldl -lm -lpthread -lz -lexif -ljpeg -lsqlite3 -lid3tag -lFLAC -lvo
 
 THISDIR = $(shell pwd)
 
+#all: download_test extract_test config_test
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
+
+download_test:
+	( if [ ! -f $(SRC_NAME).tar.gz ]; then \
+		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.gz $(SRC_URL); \
+	fi )
+
+extract_test:
+	( if [ ! -d $(SRC_NAME) ]; then \
+		tar xzf $(SRC_NAME).tar.gz; \
+		patch -d $(SRC_NAME) -p1 -i ../minidlna-orig.patch; \
+	fi )
 
 config_test:
 	( if [ -f ./config_done ]; then \
@@ -23,6 +36,7 @@ config_test:
 
 configure:
 	( cd $(SRC_NAME) ; \
+	./autogen.sh ; \
 	ac_cv_lib_avformat_av_open_input_file=yes \
 	CFLAGS="$(DLNA_CFLAGS)" LDFLAGS="$(DLNA_LDFLAGS)" LIBS="$(DLNA_LIBS)" \
 	./configure \
@@ -48,4 +62,3 @@ clean:
 
 romfs:
 	$(ROMFSINST) $(THISDIR)/$(SRC_NAME)/minidlnad /usr/bin/minidlnad
-

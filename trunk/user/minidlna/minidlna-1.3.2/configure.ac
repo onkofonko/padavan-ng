@@ -404,7 +404,7 @@ for dir in "" /usr/local $SEARCH_DIR; do
     AC_CHECK_LIB([exif], [exif_data_new_from_file], [LIBEXIF_LIBS="-lexif"], [unset ac_cv_lib_exif_exif_data_new_from_file; LDFLAGS="$LDFLAGS_SAVE"; continue])
     break
 done
-test x"$ac_cv_lib_jpeg_jpeg_set_defaults" = x"yes" || AC_MSG_ERROR([Could not find libexif])
+test x"$ac_cv_lib_exif_exif_data_new_from_file" = x"yes" || AC_MSG_ERROR([Could not find libexif])
 AC_SUBST(LIBEXIF_LIBS)
 
 LDFLAGS_SAVE="$LDFLAGS"
@@ -569,6 +569,23 @@ AC_ARG_ENABLE(tivo,
 	fi
 	],[
 		AM_CONDITIONAL(TIVO_SUPPORT, false)
+		AC_MSG_RESULT([no])
+	]
+)
+
+AC_MSG_CHECKING([whether to enable ASUS support])
+AC_ARG_ENABLE(asus,
+	[  --enable-asus           enable ASUS support],[
+	if test "$enableval" = "yes"; then
+		AC_DEFINE(ASUS_SUPPORT, 1, [Define to 1 if you want to enable ASUS support])
+		AM_CONDITIONAL(ASUS_SUPPORT, true)
+		AC_MSG_RESULT([yes])
+	else
+		AM_CONDITIONAL(ASUS_SUPPORT, false)
+		AC_MSG_RESULT([no])
+	fi
+	],[
+		AM_CONDITIONAL(ASUS_SUPPORT, false)
 		AC_MSG_RESULT([no])
 	]
 )
