@@ -1,4 +1,4 @@
-SRC_NAME=nghttp2-1.49.0
+SRC_NAME=nghttp2-1.51.0
 
 CFLAGS += -fPIC
 CXXFLAGS += -fPIC
