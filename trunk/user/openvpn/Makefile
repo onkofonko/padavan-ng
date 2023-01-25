@@ -16,6 +16,7 @@ download_test:
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
 		tar xzf $(SRC_NAME).tar.gz; \
+		patch -d $(SRC_NAME) -p1 -i ../openvpn-orig.patch; \
 	fi )
 
 config_test:
