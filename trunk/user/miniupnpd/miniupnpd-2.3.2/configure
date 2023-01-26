@@ -1,5 +1,5 @@
 #! /bin/sh
-# $Id: configure,v 1.120 2022/05/18 07:50:48 nanard Exp $
+# $Id: configure,v 1.121 2022/10/21 19:43:44 nanard Exp $
 # vim: tabstop=4 shiftwidth=4 noexpandtab
 #
 # miniupnp daemon
@@ -469,7 +469,7 @@ case $OS_NAME in
 		echo "#endif" >> ${CONFIGFILE}
 		FW=iptables
 		;;
-		RT-N56U)
+	RT-N56U)
 		OS_VERSION=3.4.3.9
 		OS_URL=https://bitbucket.org/padavan/rt-n56u/
 		FW=iptables
@@ -573,7 +573,6 @@ case $OS_NAME in
 	RT-N56U)
 		#echo "#define LIB_UUID" >> ${CONFIGFILE}
 		;;
-
 	*)
 		if grep uuid_create /usr/include/uuid.h > /dev/null 2>&1 ; then
 			echo "#define BSD_UUID" >> ${CONFIGFILE}
@@ -692,6 +691,14 @@ else
 fi
 echo "" >> ${CONFIGFILE}
 
+echo "/* Uncomment the following line to enable description regex filter */" >> ${CONFIGFILE}
+if [ -n "$REGEX" ]; then
+	echo "#define ENABLE_REGEX" >> ${CONFIGFILE}
+else
+	echo "/*#define ENABLE_REGEX*/" >> ${CONFIGFILE}
+fi
+echo "" >> ${CONFIGFILE}
+
 echo "/* Define one or none of the two following macros in order to make some" >> ${CONFIGFILE}
 echo " * clients happy. It will change the XML Root Description of the IGD." >> ${CONFIGFILE}
 echo " * Enabling the Layer3Forwarding Service seems to be the more compatible" >> ${CONFIGFILE}
@@ -753,14 +760,6 @@ echo "#ifdef ENABLE_IPV6" >> ${CONFIGFILE}
 echo "#define ENABLE_6FC_SERVICE" >> ${CONFIGFILE}
 echo "#endif /* ENABLE_IPV6 */" >> ${CONFIGFILE}
 echo "#endif /* IGD_V2 */" >> ${CONFIGFILE}
-echo "" >> ${CONFIGFILE}
-
-echo "/* Uncomment the following line to enable description regex filter */" >> ${CONFIGFILE}
-if [ -n "$REGEX" ]; then
-	echo "#define ENABLE_REGEX" >> ${CONFIGFILE}
-else
-	echo "/*#define ENABLE_REGEX*/" >> ${CONFIGFILE}
-fi
 echo "" >> ${CONFIGFILE}
 
 echo "/* UPnP Events support. Working well enough to be enabled by default." >> ${CONFIGFILE}
@@ -862,4 +861,3 @@ echo "#endif /* ${CONFIGMACRO} */" >> ${CONFIGFILE}
 ${MV} ${CONFIGFILE} ${CONFIGFILE_FINAL}
 
 exit 0
-

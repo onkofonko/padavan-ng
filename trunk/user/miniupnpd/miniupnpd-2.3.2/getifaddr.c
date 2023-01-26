@@ -147,8 +147,9 @@ err:
 		if(mask) *mask = ((struct sockaddr_in *)candidate->ifa_netmask)->sin_addr;
 	}
 	freeifaddrs(ifap);
-#endif
+
 	return 0;
+#endif
 }
 
 #ifdef ENABLE_PCP

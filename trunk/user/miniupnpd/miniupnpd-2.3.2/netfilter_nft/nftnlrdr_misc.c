@@ -1,4 +1,4 @@
-/* $Id: nftnlrdr_misc.c,v 1.14 2021/08/21 08:24:38 nanard Exp $ */
+/* $Id: nftnlrdr_misc.c,v 1.18 2023/01/19 23:15:03 nanard Exp $ */
 /* vim: tabstop=4 shiftwidth=4 noexpandtab
  * MiniUPnP project
  * http://miniupnp.free.fr/ or https://miniupnp.tuxfamily.org/
