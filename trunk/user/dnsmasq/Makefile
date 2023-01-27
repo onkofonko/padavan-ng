@@ -1,5 +1,5 @@
 SRC_NAME=dnsmasq-2.88
-SRC_URL=http://www.thekelleys.org.uk/dnsmasq/$(SRC_NAME).tar.xz
+SRC_URL=https://thekelleys.org.uk/dnsmasq/$(SRC_NAME).tar.xz
 
 COPTS := -DHAVE_BROKEN_RTC -DNO_INOTIFY -DNO_AUTH -DNO_LOOP -DNO_DUMPFILE
 ifndef CONFIG_IPV6
