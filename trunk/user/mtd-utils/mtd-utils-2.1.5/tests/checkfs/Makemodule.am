@@ -1,0 +1,10 @@
+checkfs_SOURCES = tests/checkfs/checkfs.c tests/checkfs/comm.c
+checkfs_SOURCES += tests/checkfs/common.h
+checkfs_CPPFLAGS = $(AM_CPPFLAGS)
+
+makefiles_SOURCES = tests/checkfs/makefiles.c
+makefiles_CPPFLAGS = $(AM_CPPFLAGS)
+
+EXTRA_DIST += tests/checkfs/README
+
+test_PROGRAMS += makefiles checkfs

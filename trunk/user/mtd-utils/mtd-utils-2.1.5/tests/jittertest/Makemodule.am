@@ -1,0 +1,11 @@
+JitterTest_SOURCES = tests/jittertest/JitterTest.c
+JitterTest_CPPFLAGS = $(AM_CPPFLAGS)
+
+plotJittervsFill_SOURCES = tests/jittertest/plotJittervsFill.c
+plotJittervsFill_CPPFLAGS = $(AM_CPPFLAGS)
+
+test_PROGRAMS += JitterTest plotJittervsFill
+
+test_SCRIPTS += tests/jittertest/filljffs2.sh
+
+EXTRA_DIST += tests/jittertest/README tests/jittertest/filljffs2.sh
