@@ -148,7 +148,7 @@ struct nvram_pair router_defaults[] = {
 	{ "http_lanport", "80" },		/* HTTP LAN port to listen on */
 	{ "https_lport", "443" },		/* HTTPS LAN port to listen on */
 	{ "https_clist", DEF_HTTPS_CIPH_LIST },	/* HTTPS SSL cipher list */
-	{ "fw_dos_x", "0" },			// oleg patch
+	{ "fw_dos_x", "1" },			/* DoS Attacks Protection */
 	{ "dr_enable_x", "1" },			// oleg patch
 	{ "mr_enable_x", "0" },			// oleg patch
 	{ "mr_qleave_x", "1" },
@@ -712,7 +712,7 @@ struct nvram_pair router_defaults[] = {
 #endif
 	{ "sw_nat_mode", "0" },
 	{ "sfe_enable",  "0" },
-	{ "fw_syn_cook", "0" },
+	{ "fw_syn_cook", "1" },		/* Prevent SYN Flood Attack */
 	{ "fw_mac_drop", "0" },
 	{ "nf_nat_type", "2" },
 	{ "nf_nat_loop", "1" },
