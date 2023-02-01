@@ -307,6 +307,29 @@ CH_DESC Country_Region22_ChDesc_5GHZ[] = {
 	{}
 };
 
+/* special for Belarus */
+CH_DESC Country_Region34_ChDesc_5GHZ[] = {
+	{36, 8, CHANNEL_DEFAULT_PROP},
+	{132, 4, CHANNEL_DEFAULT_PROP},
+	{}
+};
+
+/* special for Ukraine */
+CH_DESC Country_Region35_ChDesc_5GHZ[] = {
+	{36, 8, CHANNEL_DEFAULT_PROP},
+	{100, 11, CHANNEL_DEFAULT_PROP},
+	{149, 5, CHANNEL_DEFAULT_PROP},
+	{}
+};
+
+/* special for Russia */
+CH_DESC Country_Region36_ChDesc_5GHZ[] = {
+	{36, 8, CHANNEL_DEFAULT_PROP},
+	{132, 4, CHANNEL_DEFAULT_PROP},
+	{149, 5, CHANNEL_DEFAULT_PROP},
+	{}
+};
+
 COUNTRY_REGION_CH_DESC Country_Region_ChDesc_5GHZ[] = {
 	{REGION_0_A_BAND, Country_Region0_ChDesc_5GHZ},
 	{REGION_1_A_BAND, Country_Region1_ChDesc_5GHZ},
@@ -331,6 +354,9 @@ COUNTRY_REGION_CH_DESC Country_Region_ChDesc_5GHZ[] = {
 	{REGION_20_A_BAND, Country_Region20_ChDesc_5GHZ},
 	{REGION_21_A_BAND, Country_Region21_ChDesc_5GHZ},
 	{REGION_22_A_BAND, Country_Region22_ChDesc_5GHZ},
+	{REGION_34_A_BAND, Country_Region34_ChDesc_5GHZ},
+	{REGION_35_A_BAND, Country_Region35_ChDesc_5GHZ},
+	{REGION_36_A_BAND, Country_Region36_ChDesc_5GHZ},
 	{}
 };
 
@@ -502,9 +528,9 @@ CH_DESP Country_BB_ChDesp[] = {
 /*Belarus*/
 CH_DESP Country_BY_ChDesp[] = {
 	{ 1,   13, 20, BOTH, FALSE},	/*2402~2482MHz, Ch 1~13,   Max BW: 40 */
-	{ 36,   4, 23, BOTH, FALSE},	/*5170~5250MHz, Ch 36~48, Max BW: 40 */
-	{ 52,   4, 23, BOTH, TRUE},	/*5250~5330MHz, Ch 52~64, Max BW: 40 */
-	{ 100, 11, 30, BOTH, TRUE},	/*5490~5710MHz, Ch 100~140, Max BW: 40 */
+	{ 36,   4, 20, BOTH, FALSE},	/*5170~5250MHz, Ch 36~48, Max BW: 40 */
+	{ 52,   4, 20, BOTH, FALSE},	/*5250~5330MHz, Ch 52~64, Max BW: 40 */
+	{ 132,  4, 20, BOTH, FALSE},	/*5650~5730MHz, Ch 132~144, Max BW: 40 */
 	{ 0},			/* end*/
 };
 /*Belgium*/
@@ -1519,10 +1545,11 @@ CH_DESP Country_RO_ChDesp[] = {
 };
 /*Russian Federation*/
 CH_DESP Country_RU_ChDesp[] = {
-	{ 1,   13, 23, BOTH, FALSE},	/*2402~2482MHz, Ch 1~13,   Max BW: 40 */
+	{ 1,   13, 20, BOTH, FALSE},	/*2402~2482MHz, Ch 1~13,   Max BW: 40 */
 	{ 36,   4, 20, BOTH, FALSE},	/*5170~5250MHz, Ch 36~48, Max BW: 40 */
-	{ 132,  4, 20, BOTH, TRUE},	/*5650~5710MHz, Ch 132~144, Max BW: 40 */
-	{ 149,  5, 30, BOTH, FALSE},	/*5735~5835MHz, Ch 149~165, Max BW: 20 */
+	{ 52,   4, 20, BOTH, FALSE}, 	/*5250~5330MHz, Ch 52~64, Max BW: 40 */
+	{ 132,  4, 20, BOTH, FALSE},	/*5650~5730MHz, Ch 132~144, Max BW: 40 */
+	{ 149,  5, 20, BOTH, FALSE},	/*5735~5835MHz, Ch 149~165, Max BW: 40 */
 	{ 0},			/* end*/
 };
 /*Rwanda*/
@@ -1832,8 +1859,8 @@ CH_DESP Country_UG_ChDesp[] = {
 CH_DESP Country_UA_ChDesp[] = {
 	{ 1,   13, 20, BOTH, FALSE},	/*2402~2482MHz, Ch 1~13,   Max BW: 40 */
 	{ 36,   4, 20, BOTH, FALSE},	/*5170~5250MHz, Ch 36~48, Max BW: 40 */
-	{ 52,   4, 20, BOTH, TRUE},	/*5250~5330MHz, Ch 52~64, Max BW: 40 */
-	{ 100, 11, 20, BOTH, TRUE},	/*5490~5710MHz, Ch 100~140, Max BW: 40 */
+	{ 52,   4, 20, BOTH, FALSE},	/*5250~5330MHz, Ch 52~64, Max BW: 40 */
+	{ 100, 11, 20, BOTH, FALSE},	/*5490~5710MHz, Ch 100~140, Max BW: 40 */
 	{ 149,  5, 20, BOTH, FALSE},	/*5735~5835MHz, Ch 149~165, Max BW: 40 */
 	{ 0},			/* end*/
 };
@@ -2004,7 +2031,7 @@ CH_REGION ChRegion[] = {
 	{"BH", CE, TRUE, Country_BH_ChDesp}, /* Bahrain */
 	{"BD", CE, TRUE, Country_BD_ChDesp}, /* Bangladesh */
 	{"BB", CE, TRUE, Country_BB_ChDesp}, /* Barbados */
-	{"BY", CE, TRUE, Country_BY_ChDesp}, /* Belarus */
+	{"BY", CE, FALSE, Country_BY_ChDesp}, /* Belarus */
 	{"BE", CE, TRUE, Country_BE_ChDesp}, /* Belgium */
 	{"BZ", CE, TRUE, Country_BZ_ChDesp}, /* Belize */
 	{"BJ", CE, TRUE, Country_BJ_ChDesp}, /* Benin */
@@ -2160,7 +2187,7 @@ CH_REGION ChRegion[] = {
 	{"TM", CE, TRUE, Country_TM_ChDesp}, /* Turkmenistan */
 	{"TV", CE, TRUE, Country_TV_ChDesp}, /* Tuvalu */
 	{"UG", CE, TRUE, Country_UG_ChDesp}, /* Uganda */
-	{"UA", CE, TRUE, Country_UA_ChDesp}, /* Ukraine */
+	{"UA", CE, FALSE, Country_UA_ChDesp}, /* Ukraine */
 	{"AE", CE, TRUE, Country_AE_ChDesp}, /* United Arab Emirates */
 	{"GB", CE, TRUE, Country_GB_ChDesp}, /* United Kingdom */
 	{"US", FCC, FALSE, Country_US_ChDesp}, /* United States */
