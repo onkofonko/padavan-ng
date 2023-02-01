@@ -1,10 +1,9 @@
 THISDIR = $(shell pwd)
-EXEC = ralinkiappd
+EXEC = mtkiappd
 OBJS = rtmpiapp.o mt_iapp_util.o
 
 # If you want to debug daemon, add following line
-CFLAGS += -I./ -DDBG -DSYSLOG -ffunction-sections -fdata-sections -fvisibility=hidden
-LDFLAGS += -Wl,--gc-sections
+CFLAGS += -I./ -DDBG 
 #-DSYSLOG
 $(EXEC): $(OBJS)
 	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
@@ -12,6 +11,7 @@ $(EXEC): $(OBJS)
 romfs:
 	$(ROMFSINST) /sbin/$(EXEC)
 	$(ROMFSINST) -p +x $(THISDIR)/iappd.sh /usr/bin/iappd.sh
+	
 
 clean:
-	rm -f core *.o ralinkiappd
+	rm -f core *.o mtkiappd

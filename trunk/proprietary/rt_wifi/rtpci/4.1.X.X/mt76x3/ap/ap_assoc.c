@@ -710,15 +710,28 @@ static USHORT APBuildAssociation(
  Note:
  ========================================================================
 */
-static BOOLEAN IAPP_L2_Update_Frame_Send(RTMP_ADAPTER *pAd, UINT8 *mac, INT wdev_idx)
+BOOLEAN IAPP_L2_Update_Frame_Send(RTMP_ADAPTER *pAd, UINT8 *mac, INT wdev_idx)
 {
 
 	NDIS_PACKET	*pNetBuf;
-
+#if defined(CONFIG_WIFI_PKT_FWD) || defined(CONFIG_WIFI_PKT_FWD_MODULE)
+#if (MT7615_MT7603_COMBO_FORWARDING == 1)
+	struct wifi_dev *wdev;
+	wdev = pAd->wdev_list[wdev_idx];
+	if (!VALID_MBSS(pAd, wdev_idx))
+		return FALSE;
+#endif
+#endif
 	pNetBuf = RtmpOsPktIappMakeUp(get_netdev_from_bssid(pAd, wdev_idx), mac);
 	if (pNetBuf == NULL)
 		return FALSE;
 
+#if defined(CONFIG_WIFI_PKT_FWD) || defined(CONFIG_WIFI_PKT_FWD_MODULE)
+#if (MT7615_MT7603_COMBO_FORWARDING == 1)
+	if (wf_fwd_needed_hook != NULL && wf_fwd_needed_hook() == TRUE)
+		set_wf_fwd_cb(pAd, pNetBuf, wdev);
+#endif /* CONFIG_WIFI_PKT_FWD */
+#endif
 	/* UCOS: update the built-in bridge, too (don't use gmac.xmit()) */
 	announce_802_3_packet(pAd, pNetBuf, OPMODE_AP);
 
@@ -729,7 +742,7 @@ static BOOLEAN IAPP_L2_Update_Frame_Send(RTMP_ADAPTER *pAd, UINT8 *mac, INT wdev
 #endif /* IAPP_SUPPORT */
 
 
-/* 
+/*
     ==========================================================================
     Description:
         MLME message sanity check

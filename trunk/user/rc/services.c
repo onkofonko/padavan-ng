@@ -608,7 +608,7 @@ start_services_once(int is_ap_mode)
 	start_crond();
 	start_networkmap(1);
 	start_rstats();
-
+	system("/usr/bin/iappd.sh start");
 	return 0;
 }
 

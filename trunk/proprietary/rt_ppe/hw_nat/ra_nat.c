@@ -41,7 +41,6 @@
 #include <linux/if_pppox.h>
 #include <linux/ppp_defs.h>
 #include <linux/pci.h>
-
 #include <net/netevent.h>
 #include "ra_nat_compat.h"
 #include "ra_nat.h"
@@ -63,7 +62,6 @@
 #endif
 
 #define MAX_IF_HASH_NUM		256	/* must be 2^X */
-
 struct timer_list hwnat_clear_entry_timer;
 static void hwnat_clear_entry(unsigned long data)
 {
@@ -73,7 +71,6 @@ static void hwnat_clear_entry(unsigned long data)
 
 }
 void foe_clear_entry(struct neighbour *neigh);
-
 static int wifi_offload __read_mostly = 0;
 module_param(wifi_offload, int, S_IRUGO);
 MODULE_PARM_DESC(wifi_offload, "PPE IPv4 NAT offload for wifi/extif");
@@ -2697,7 +2694,6 @@ int PpeEcHandler(int engine_init)
 
 	return 0;
 }
-
 void foe_clear_entry(struct neighbour *neigh)
 {
 	int hash_index, clear;
@@ -2779,7 +2775,6 @@ static int wh2_netevent_handler(struct notifier_block *unused,
 static struct notifier_block Hnat_netevent_nb __read_mostly = {
         .notifier_call = wh2_netevent_handler,
 };
-
 /*
  * PPE Enabled: GMAC<->PPE<->CPU
  * PPE Disabled: GMAC<->CPU
