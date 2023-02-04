@@ -202,7 +202,7 @@ struct nvram_pair router_defaults[] = {
 #endif
 	{ "wl_txbf", "1" },
 	{ "wl_ssid2",  DEF_WLAN_5G_SSID },
-	{ "wl_mode_x", "0" },
+	{ "wl_mode_x", "0" },		/* 5G Wireless Bridge Mode */
 	{ "wl_wdsapply_x", "0" },
 	{ "wl_wdsnum_x", "0" },
 	{ "wl_wep_x", "0" },
@@ -217,19 +217,20 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_stream_tx", STR(BOARD_NUM_ANT_5G_TX) },
 	{ "wl_stream_rx", STR(BOARD_NUM_ANT_5G_RX) },
 	{ "wl_preamble", "1" },
-	{ "wl_greenap", "0" },
+	{ "wl_greenap", "0" },		/* 5G GreenAP */
 	{ "wl_ldpc", "3" },
 	{ "wl_HT_RDG", "0" },
-#if defined (USE_WID_5G) && (USE_WID_5G==7615 || USE_WID_5G==7915)
+#if defined (USE_WID_5G) && USE_WID_5G==7615
 	{ "wl_HT_AMSDU", "0" },
 	{ "wl_HT_BAWinSize", "256" },
 	{ "wl_mumimo", "1" },
+	{ "wl_band_steering", "0" },		/* band steering AP 5Ghz */
 #else
 	{ "wl_HT_AMSDU", "0" },
 	{ "wl_HT_BAWinSize", "64" },
 #endif
-	{ "wl_HT_80211KV", "1" },
-	{ "wl_HT_80211R", "0" },
+	{ "wl_HT_80211KV", "0" },
+	{ "wl_HT_80211R", "0" },		/* Fast Roaming AP 5Ghz */
 	{ "wl_HT_MpduDensity", "5" },
 	{ "wl_HT_AutoBA", "1" },
 	{ "wl_VgaClamp", "0" },
@@ -252,9 +253,6 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_guest_macrule", "0" },
 	{ "wl_guest_mcs_mode", "0" },
 
-	// band steering AP 5Ghz
-	{ "wl_band_steering", "0" },
-
 	// ApCli 5Ghz
 	{ "wl_sta_ssid", "" },
 	{ "wl_sta_auth_mode", "open" },
@@ -270,14 +268,14 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_ssid", DEF_WLAN_2G_SSID },
 	{ "rt_gmode", "5" },			/* g/n mixed */
 	{ "rt_mcs_mode", "0" },
-	{ "rt_channel", "0" },
+	{ "rt_channel", "0" },			/* Channel number */
 	{ "rt_bcn", "100" },
 	{ "rt_dtim", "1" },
 	{ "rt_gmode_protection", "auto" },
 	{ "rt_rts", "2347" },
 	{ "rt_frag", "2346" },
 	{ "rt_ap_isolate", "0" },
-	{ "rt_closed", "0" },
+	{ "rt_closed", "0" },			/* Closed (hidden) network */
 	{ "rt_macmode", "disabled" },
 	{ "rt_mrate", "2" },
 	{ "rt_mode", "ap" },
@@ -306,7 +304,7 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_radius_key", "" },
 	{ "rt_radio_x", "1" },
 	{ "rt_ssid2", DEF_WLAN_2G_SSID },
-	{ "rt_mode_x", "0" },
+	{ "rt_mode_x", "0" },		/* 2G Wireless Bridge Mode */
 	{ "rt_wdsapply_x", "0" },
 	{ "rt_wdsnum_x", "0" },
 	{ "rt_wep_x", "0" },
@@ -321,16 +319,18 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_stream_tx", STR(BOARD_NUM_ANT_2G_TX) },
 	{ "rt_stream_rx", STR(BOARD_NUM_ANT_2G_RX) },
 	{ "rt_preamble", "1" },
-	{ "rt_greenap", "0" },
+	{ "rt_greenap", "0" },		/* 2G GreenAP */
 	{ "rt_HT_RDG", "0" },
 	{ "rt_HT_AMSDU", "0" },
 	{ "rt_HT_80211KV", "0" },
-	{ "rt_HT_80211R", "0" },
+	{ "rt_HT_80211R", "0" },	/* Fast Roaming AP 2.4Ghz */
 	{ "rt_HT_MpduDensity", "5" },
-#if defined (USE_WID_2G) && (USE_WID_2G==7615 || USE_WID_2G==7915)
+	{ "rt_band_steering", "0" },	/* band steering AP 2.4Ghz */
+#if defined (USE_WID_2G) && USE_WID_2G==7615
 	{ "rt_HT_BAWinSize", "256" },
 	{ "rt_ldpc", "1" },
 	{ "rt_turbo_qam", "1" },
+	{ "rt_airtimefairness", "0" },
 #else
 	{ "rt_HT_BAWinSize", "64" },
 	{ "rt_ldpc", "0" },
@@ -356,13 +356,6 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_guest_macrule", "0" },
 	{ "rt_guest_mcs_mode", "0" },
 
-	// band steering AP 2.4Ghz
-	{ "rt_band_steering", "0" },
-
-#if defined (USE_WID_2G) && USE_WID_2G==7615
-	{ "rt_airtimefairness", "0" },
-#endif
-
 	// ApCli 2.4Ghz
 	{ "rt_sta_ssid", "" },
 	{ "rt_sta_auth_mode", "open" },
@@ -375,8 +368,8 @@ struct nvram_pair router_defaults[] = {
 	// USB related
 	{ "acc_num", "0" },
 	{ "enable_ftp", "0" },
-	{ "enable_samba", "1" },
-	{ "st_samba_fp", "1" },
+	{ "enable_samba", "0" },
+	{ "st_samba_fp", "0" },
 	{ "st_samba_mode", "1" },
 	{ "st_samba_lmb", "1" },
 	{ "st_samba_workgroup", DEF_SMB_WORKGROUP },
@@ -416,7 +409,7 @@ struct nvram_pair router_defaults[] = {
 	{ "hdd_spindt", "0" },
 	{ "hdd_apmoff", "0" },
 
-	{ "ip6_service", "" },
+	{ "ip6_service", "" },			/* IPV6 */
 	{ "ip6_ppe_on", "0" },
 	{ "ip6_wan_if", "0" },
 
@@ -711,7 +704,7 @@ struct nvram_pair router_defaults[] = {
 	{ "hw_nat_mode", "1" },
 #endif
 	{ "sw_nat_mode", "0" },
-	{ "sfe_enable",  "0" },
+	{ "sfe_enable",  "2" },
 	{ "fw_syn_cook", "1" },		/* Prevent SYN Flood Attack */
 	{ "fw_mac_drop", "0" },
 	{ "nf_nat_type", "2" },
