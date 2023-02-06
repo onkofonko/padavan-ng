@@ -1766,6 +1766,7 @@ IPRemote=IP (remote)
 Login=Login
 BTN_SHUTDOWN=Shutdown
 JS_shutdown=You need manually power on after shutdown!!! Continue to shutdown?
+BTN_FREEMEMORY=FreeMemory
 Reboot_Schedule=Enable Reboot Schedule
 Reboot_Schedule_Date=Reboot Schedule Date
 Reboot_Schedule_Time=Reboot Schedule Time
