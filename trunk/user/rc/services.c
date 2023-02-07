@@ -608,6 +608,9 @@ start_services_once(int is_ap_mode)
 	start_crond();
 	start_networkmap(1);
 	start_rstats();
+	system("/usr/bin/iappd.sh restart");
+	system("modprobe xt_TPROXY");
+	system("/usr/bin/iappd.sh test");
 	return 0;
 }
 
