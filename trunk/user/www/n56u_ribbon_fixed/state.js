@@ -678,6 +678,8 @@ function shutdown(){
 }
 
 function freememory(){
+	if(!confirm('<#JS_freememory#>'))
+		return;
 	var $j = jQuery.noConflict();
 	$j.post('/apply.cgi',
 	{
