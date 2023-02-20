@@ -1,7 +1,7 @@
-diff -urN curl-7.77.0-ref/Makefile.am curl-7.77.0/Makefile.am
---- curl-7.77.0-ref/Makefile.am	2021-04-12 10:31:13.000000000 +0300
-+++ curl-7.77.0/Makefile.am	2021-07-08 14:08:40.951714100 +0300
-@@ -195,7 +195,7 @@
+diff -urN curl-7.88.0-orig/Makefile.am curl-7.88.0/Makefile.am
+--- curl-7.88.0-orig/Makefile.am	2023-02-13 09:37:04.000000000 +0200
++++ curl-7.88.0/Makefile.am	2023-02-20 03:52:42.616759187 +0200
+@@ -158,7 +158,7 @@
  bin_SCRIPTS = curl-config
  
  SUBDIRS = lib src
@@ -10,7 +10,7 @@ diff -urN curl-7.77.0-ref/Makefile.am curl-7.77.0/Makefile.am
  
  pkgconfigdir = $(libdir)/pkgconfig
  pkgconfig_DATA = libcurl.pc
-@@ -309,8 +309,6 @@
+@@ -272,8 +272,6 @@
  # We extend the standard install with a custom hook:
  install-data-hook:
  	(cd include && $(MAKE) install)
@@ -19,10 +19,10 @@ diff -urN curl-7.77.0-ref/Makefile.am curl-7.77.0/Makefile.am
  
  # We extend the standard uninstall with a custom hook:
  uninstall-hook:
-diff -urN curl-7.77.0-ref/configure.ac curl-7.77.0/configure.ac
---- curl-7.77.0-ref/configure.ac	2021-05-25 13:50:36.000000000 +0300
-+++ curl-7.77.0/configure.ac	2021-07-08 14:09:15.204592800 +0300
-@@ -4235,24 +4235,12 @@
+diff -urN curl-7.88.0-orig/configure.ac curl-7.88.0/configure.ac
+--- curl-7.88.0-orig/configure.ac	2023-02-13 09:37:04.000000000 +0200
++++ curl-7.88.0/configure.ac	2023-02-20 03:52:42.616759187 +0200
+@@ -4643,29 +4643,14 @@
  fi
  
  AC_CONFIG_FILES([Makefile \
@@ -37,17 +37,22 @@ diff -urN curl-7.77.0-ref/configure.ac curl-7.77.0/configure.ac
             lib/Makefile \
             scripts/Makefile \
             lib/libcurl.vers \
+            lib/libcurl.plist \
 -           tests/Makefile \
+-           tests/config \
 -           tests/certs/Makefile \
 -           tests/certs/scripts/Makefile \
 -           tests/data/Makefile \
 -           tests/server/Makefile \
 -           tests/libtest/Makefile \
 -           tests/unit/Makefile \
+-           tests/tests-httpd/config.ini \
+-           tests/tests-httpd/Makefile \
             packages/Makefile \
             packages/vms/Makefile \
             curl-config \
-@@ -4262,7 +4250,7 @@
+            libcurl.pc
+@@ -4674,7 +4659,7 @@
  
  CURL_GENERATE_CONFIGUREHELP_PM
  
@@ -56,10 +61,10 @@ diff -urN curl-7.77.0-ref/configure.ac curl-7.77.0/configure.ac
  
  AC_MSG_NOTICE([Configured to build curl/libcurl:
  
-diff -urN curl-7.77.0-ref/src/Makefile.am curl-7.77.0/src/Makefile.am
---- curl-7.77.0-ref/src/Makefile.am	2021-04-12 10:31:13.000000000 +0300
-+++ curl-7.77.0/src/Makefile.am	2021-07-08 14:08:40.951714100 +0300
-@@ -43,7 +43,7 @@
+diff -urN curl-7.88.0-orig/src/Makefile.am curl-7.88.0/src/Makefile.am
+--- curl-7.88.0-orig/src/Makefile.am	2023-02-13 09:37:04.000000000 +0200
++++ curl-7.88.0/src/Makefile.am	2023-02-20 03:52:42.616759187 +0200
+@@ -45,7 +45,7 @@
  
  bin_PROGRAMS = curl
  
