@@ -1,4 +1,4 @@
-/* $Id: upnppinhole.c,v 1.15 2021/08/21 08:12:49 nanard Exp $ */
+/* $Id: upnppinhole.c,v 1.16 2023/01/28 16:04:01 nanard Exp $ */
 /* vim: tabstop=4 shiftwidth=4 noexpandtab
  * MiniUPnP project
  * http://miniupnp.free.fr/ or https://miniupnp.tuxfamily.org/
