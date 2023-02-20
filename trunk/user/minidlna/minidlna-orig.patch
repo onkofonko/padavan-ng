@@ -1,7 +1,7 @@
-diff -urw minidlna-1.3.0-ref/configure.ac minidlna-1.3.0/configure.ac
---- minidlna-1.3.0-ref/configure.ac	2020-12-03 08:55:05.343293200 +0300
-+++ minidlna-1.3.0/configure.ac	2020-12-03 08:17:49.173485100 +0300
-@@ -561,6 +561,23 @@
+diff -urw minidlna-1.3.2-orig/configure.ac minidlna-1.3.2/configure.ac
+--- minidlna-1.3.2-orig/configure.ac	2022-08-30 08:42:54.000000000 +0300
++++ minidlna-1.3.2/configure.ac	2023-02-20 09:57:08.312916470 +0200
+@@ -573,6 +573,23 @@
  	]
  )
  
@@ -25,9 +25,9 @@ diff -urw minidlna-1.3.0-ref/configure.ac minidlna-1.3.0/configure.ac
  AC_MSG_CHECKING([whether to enable generic NETGEAR device support])
  AC_ARG_ENABLE(netgear,
  	[  --enable-netgear        enable generic NETGEAR device support],[
-diff -urw minidlna-1.3.0-ref/containers.c minidlna-1.3.0/containers.c
---- minidlna-1.3.0-ref/containers.c	2020-12-03 08:55:05.367624300 +0300
-+++ minidlna-1.3.0/containers.c	2020-12-03 08:08:16.116193800 +0300
+diff -urw minidlna-1.3.2-orig/containers.c minidlna-1.3.2/containers.c
+--- minidlna-1.3.2-orig/containers.c	2022-08-30 08:42:54.000000000 +0300
++++ minidlna-1.3.2/containers.c	2023-02-20 09:57:08.312916470 +0200
 @@ -23,25 +23,50 @@
  #include "containers.h"
  #include "log.h"
@@ -113,9 +113,9 @@ diff -urw minidlna-1.3.0-ref/containers.c minidlna-1.3.0/containers.c
  check_magic_container(const char *id, int flags)
  {
  	int i;
-diff -urw minidlna-1.3.0-ref/containers.h minidlna-1.3.0/containers.h
---- minidlna-1.3.0-ref/containers.h	2020-12-03 08:55:05.424228800 +0300
-+++ minidlna-1.3.0/containers.h	2020-12-03 08:08:16.117626900 +0300
+diff -urw minidlna-1.3.2-orig/containers.h minidlna-1.3.2/containers.h
+--- minidlna-1.3.2-orig/containers.h	2022-08-30 08:42:54.000000000 +0300
++++ minidlna-1.3.2/containers.h	2023-02-20 09:57:08.312916470 +0200
 @@ -16,6 +16,14 @@
   * along with MiniDLNA. If not, see <http://www.gnu.org/licenses/>.
   */
@@ -142,9 +142,9 @@ diff -urw minidlna-1.3.0-ref/containers.h minidlna-1.3.0/containers.h
 -struct magic_container_s *check_magic_container(const char *id, int flags);
 +const struct magic_container_s *in_magic_container(const char *id, int flags, const char **real_id);
 +const struct magic_container_s *check_magic_container(const char *id, int flags);
-diff -urw minidlna-1.3.0-ref/icons.c minidlna-1.3.0/icons.c
---- minidlna-1.3.0-ref/icons.c	2020-12-03 08:55:05.465273400 +0300
-+++ minidlna-1.3.0/icons.c	2020-12-03 08:17:49.179260400 +0300
+diff -urw minidlna-1.3.2-orig/icons.c minidlna-1.3.2/icons.c
+--- minidlna-1.3.2-orig/icons.c	2022-08-30 08:42:54.000000000 +0300
++++ minidlna-1.3.2/icons.c	2023-02-20 09:57:08.316916212 +0200
 @@ -18,7 +18,668 @@
   * along with MiniDLNA. If not, see <http://www.gnu.org/licenses/>.
   */
@@ -815,9 +815,9 @@ diff -urw minidlna-1.3.0-ref/icons.c minidlna-1.3.0/icons.c
  /* NG_Icon_48x48.png */
  unsigned char
  png_sm[] =   "\x89\x50\x4e\x47\x0d\x0a\x1a\x0a\x00\x00\x00\x0d\x49\x48\x44\x52\x00\x00\x00\x30\x00\x00\x00\x30"
-diff -urw minidlna-1.3.0-ref/image_utils.c minidlna-1.3.0/image_utils.c
---- minidlna-1.3.0-ref/image_utils.c	2020-12-03 08:55:05.503290100 +0300
-+++ minidlna-1.3.0/image_utils.c	2020-12-03 08:35:25.690683000 +0300
+diff -urw minidlna-1.3.2-orig/image_utils.c minidlna-1.3.2/image_utils.c
+--- minidlna-1.3.2-orig/image_utils.c	2022-08-30 08:42:54.000000000 +0300
++++ minidlna-1.3.2/image_utils.c	2023-02-20 09:57:08.316916212 +0200
 @@ -822,7 +822,8 @@
  	if((data = malloc(row_stride)) == NULL)
  	{
@@ -828,9 +828,9 @@ diff -urw minidlna-1.3.0-ref/image_utils.c minidlna-1.3.0/image_utils.c
  		jpeg_destroy_compress(&cinfo);
  		return NULL;
  	}
-diff -urw minidlna-1.3.0-ref/libav.h minidlna-1.3.0/libav.h
---- minidlna-1.3.0-ref/libav.h	2020-12-03 08:55:05.410490700 +0300
-+++ minidlna-1.3.0/libav.h	2020-12-03 08:23:41.857303400 +0300
+diff -urw minidlna-1.3.2-orig/libav.h minidlna-1.3.2/libav.h
+--- minidlna-1.3.2-orig/libav.h	2022-08-30 08:42:54.000000000 +0300
++++ minidlna-1.3.2/libav.h	2023-02-20 09:57:08.316916212 +0200
 @@ -211,7 +211,7 @@
  static inline int
  lav_is_thumbnail_stream(AVStream *s, uint8_t **data, int *size)
@@ -840,9 +840,9 @@ diff -urw minidlna-1.3.0-ref/libav.h minidlna-1.3.0/libav.h
  	if (s->disposition & AV_DISPOSITION_ATTACHED_PIC &&
  	    lav_codec_id(s) == AV_CODEC_ID_MJPEG)
  	{
-diff -urw minidlna-1.3.0-ref/metadata.c minidlna-1.3.0/metadata.c
---- minidlna-1.3.0-ref/metadata.c	2020-12-03 08:55:05.409700800 +0300
-+++ minidlna-1.3.0/metadata.c	2020-12-03 08:42:03.443888200 +0300
+diff -urw minidlna-1.3.2-orig/metadata.c minidlna-1.3.2/metadata.c
+--- minidlna-1.3.2-orig/metadata.c	2022-08-30 08:42:54.000000000 +0300
++++ minidlna-1.3.2/metadata.c	2023-02-20 09:57:08.320915954 +0200
 @@ -604,7 +604,7 @@
  	if( ed->size )
  	{
@@ -852,10 +852,10 @@ diff -urw minidlna-1.3.0-ref/metadata.c minidlna-1.3.0/metadata.c
  		{
  			imsrc = image_new_from_jpeg(NULL, 0, ed->data, ed->size, 1, ROTATE_NONE);
  			if( imsrc )
-diff -urw minidlna-1.3.0-ref/minidlna.c minidlna-1.3.0/minidlna.c
---- minidlna-1.3.0-ref/minidlna.c	2020-12-03 08:55:05.365598500 +0300
-+++ minidlna-1.3.0/minidlna.c	2020-12-03 08:45:06.561454600 +0300
-@@ -341,14 +341,17 @@
+diff -urw minidlna-1.3.2-orig/minidlna.c minidlna-1.3.2/minidlna.c
+--- minidlna-1.3.2-orig/minidlna.c	2022-08-30 08:42:54.000000000 +0300
++++ minidlna-1.3.2/minidlna.c	2023-02-20 09:57:08.320915954 +0200
+@@ -340,14 +340,17 @@
  	return new_db;
  }
  
@@ -875,7 +875,7 @@ diff -urw minidlna-1.3.0-ref/minidlna.c minidlna-1.3.0/minidlna.c
  
  	if (!new_db)
  	{
-@@ -385,18 +388,23 @@
+@@ -384,18 +387,23 @@
  		}
  		sqlite3_free_table(result);
  	}
@@ -900,7 +900,7 @@ diff -urw minidlna-1.3.0-ref/minidlna.c minidlna-1.3.0/minidlna.c
  		else
  			DPRINTF(E_WARN, L_GENERAL, "Database version mismatch (%d => %d); need to recreate...\n",
  				ret, DB_VERSION);
-@@ -410,7 +418,7 @@
+@@ -409,7 +417,7 @@
  		if (CreateDatabase() != 0)
  			DPRINTF(E_FATAL, L_GENERAL, "ERROR: Failed to create sqlite database!  Exiting...\n");
  	}
@@ -909,7 +909,7 @@ diff -urw minidlna-1.3.0-ref/minidlna.c minidlna-1.3.0/minidlna.c
  	{
  #if USE_FORK
  		sqlite3_close(db);
-@@ -956,6 +964,9 @@
+@@ -955,6 +963,9 @@
  			SETFLAG(SYSTEMD_MASK);
  			break;
  #endif
@@ -919,7 +919,7 @@ diff -urw minidlna-1.3.0-ref/minidlna.c minidlna-1.3.0/minidlna.c
  		case 'V':
  			printf("Version " MINIDLNA_VERSION "\n");
  			exit(0);
-@@ -990,6 +1001,7 @@
+@@ -989,6 +1000,7 @@
  #if defined(__linux__) || defined(__APPLE__)
  			"\t-S changes behaviour for systemd/launchd\n"
  #endif
@@ -927,9 +927,9 @@ diff -urw minidlna-1.3.0-ref/minidlna.c minidlna-1.3.0/minidlna.c
  			"\t-V print the version number\n",
  			argv[0], pidfilename);
  		return 1;
-diff -urw minidlna-1.3.0-ref/scanner.c minidlna-1.3.0/scanner.c
---- minidlna-1.3.0-ref/scanner.c	2020-12-03 08:55:05.341835100 +0300
-+++ minidlna-1.3.0/scanner.c	2020-12-03 08:48:47.187792200 +0300
+diff -urw minidlna-1.3.2-orig/scanner.c minidlna-1.3.2/scanner.c
+--- minidlna-1.3.2-orig/scanner.c	2022-08-30 08:42:54.000000000 +0300
++++ minidlna-1.3.2/scanner.c	2023-02-20 09:57:08.320915954 +0200
 @@ -529,30 +529,7 @@
  int
  CreateDatabase(void)
@@ -1080,9 +1080,9 @@ diff -urw minidlna-1.3.0-ref/scanner.c minidlna-1.3.0/scanner.c
  
  	fill_playlists();
  
-diff -urw minidlna-1.3.0-ref/sql.c minidlna-1.3.0/sql.c
---- minidlna-1.3.0-ref/sql.c	2020-12-03 08:55:05.420998700 +0300
-+++ minidlna-1.3.0/sql.c	2020-12-03 08:08:16.121083400 +0300
+diff -urw minidlna-1.3.2-orig/sql.c minidlna-1.3.2/sql.c
+--- minidlna-1.3.2-orig/sql.c	2022-08-30 08:42:54.000000000 +0300
++++ minidlna-1.3.2/sql.c	2023-02-20 09:57:08.320915954 +0200
 @@ -65,122 +65,72 @@
  	return ret;
  }
@@ -1264,9 +1264,9 @@ diff -urw minidlna-1.3.0-ref/sql.c minidlna-1.3.0/sql.c
  }
  
  char *
-diff -urw minidlna-1.3.0-ref/upnpdescgen.c minidlna-1.3.0/upnpdescgen.c
---- minidlna-1.3.0-ref/upnpdescgen.c	2020-12-03 08:55:05.422253300 +0300
-+++ minidlna-1.3.0/upnpdescgen.c	2020-12-03 08:24:37.857546300 +0300
+diff -urw minidlna-1.3.2-orig/upnpdescgen.c minidlna-1.3.2/upnpdescgen.c
+--- minidlna-1.3.2-orig/upnpdescgen.c	2022-08-30 08:42:54.000000000 +0300
++++ minidlna-1.3.2/upnpdescgen.c	2023-02-20 09:57:08.324915697 +0200
 @@ -525,6 +525,7 @@
  			pile[top].eltname = eltname;
  		}
@@ -1275,9 +1275,9 @@ diff -urw minidlna-1.3.0-ref/upnpdescgen.c minidlna-1.3.0/upnpdescgen.c
  }
  
  /* genRootDesc() :
-diff -urw minidlna-1.3.0-ref/upnpglobalvars.c minidlna-1.3.0/upnpglobalvars.c
---- minidlna-1.3.0-ref/upnpglobalvars.c	2020-12-03 08:55:05.413019400 +0300
-+++ minidlna-1.3.0/upnpglobalvars.c	2020-12-03 08:17:49.191957700 +0300
+diff -urw minidlna-1.3.2-orig/upnpglobalvars.c minidlna-1.3.2/upnpglobalvars.c
+--- minidlna-1.3.2-orig/upnpglobalvars.c	2022-08-30 08:42:54.000000000 +0300
++++ minidlna-1.3.2/upnpglobalvars.c	2023-02-20 09:57:08.324915697 +0200
 @@ -60,7 +60,7 @@
  struct runtime_vars_s runtime_vars;
  uint32_t runtime_flags = INOTIFY_MASK | TIVO_BONJOUR_MASK | SUBTITLES_MASK;
@@ -1290,7 +1290,7 @@ diff -urw minidlna-1.3.0-ref/upnpglobalvars.c minidlna-1.3.0/upnpglobalvars.c
 diff -urw minidlna-1.3.0-ref/upnpglobalvars.h minidlna-1.3.0/upnpglobalvars.h
 --- minidlna-1.3.0-ref/upnpglobalvars.h	2020-12-03 08:55:05.348310700 +0300
 +++ minidlna-1.3.0/upnpglobalvars.h	2020-12-03 08:38:34.234543200 +0300
-@@ -196,18 +196,19 @@
+@@ -199,18 +199,19 @@
  #define MERGE_MEDIA_DIRS_MASK 0x0020
  #define WIDE_LINKS_MASK       0x0040
  #ifdef HAVE_AVAHI
@@ -1313,10 +1313,10 @@ diff -urw minidlna-1.3.0-ref/upnpglobalvars.h minidlna-1.3.0/upnpglobalvars.h
  
  extern const char *pidfilename;
  
-diff -urw minidlna-1.3.0-ref/upnphttp.c minidlna-1.3.0/upnphttp.c
---- minidlna-1.3.0-ref/upnphttp.c	2020-12-03 08:55:05.414016700 +0300
-+++ minidlna-1.3.0/upnphttp.c	2020-12-03 08:22:20.840694400 +0300
-@@ -1074,7 +1074,7 @@
+diff -urw minidlna-1.3.2-orig/upnphttp.c minidlna-1.3.2/upnphttp.c
+--- minidlna-1.3.2-orig/upnphttp.c	2022-08-30 08:42:54.000000000 +0300
++++ minidlna-1.3.2/upnphttp.c	2023-02-20 09:57:08.324915697 +0200
+@@ -1105,7 +1105,7 @@
  		n = recv(h->ev.fd, buf, 2048, 0);
  		if(n<0)
  		{
@@ -1325,7 +1325,7 @@ diff -urw minidlna-1.3.0-ref/upnphttp.c minidlna-1.3.0/upnphttp.c
  			h->state = 100;
  		}
  		else if(n==0)
-@@ -1120,7 +1120,7 @@
+@@ -1151,7 +1151,7 @@
  		n = recv(h->ev.fd, buf, sizeof(buf), 0);
  		if(n < 0)
  		{
@@ -1334,7 +1334,7 @@ diff -urw minidlna-1.3.0-ref/upnphttp.c minidlna-1.3.0/upnphttp.c
  			h->state = 100;
  		}
  		else if(n == 0)
-@@ -1465,7 +1465,7 @@
+@@ -1504,7 +1504,7 @@
  	int fd;
  	struct string_s str;
  
@@ -1343,7 +1343,7 @@ diff -urw minidlna-1.3.0-ref/upnphttp.c minidlna-1.3.0/upnphttp.c
  	{
  		DPRINTF(E_WARN, L_HTTP, "Client tried to specify transferMode as Streaming with an image!\n");
  		Send406(h);
-@@ -1570,7 +1570,7 @@
+@@ -1609,7 +1609,7 @@
  	ExifLoader *l;
  	struct string_s str;
  
@@ -1352,7 +1352,7 @@ diff -urw minidlna-1.3.0-ref/upnphttp.c minidlna-1.3.0/upnphttp.c
  	{
  		DPRINTF(E_WARN, L_HTTP, "Client tried to specify transferMode as Streaming with an image!\n");
  		Send406(h);
-@@ -1713,7 +1713,7 @@
+@@ -1752,7 +1752,7 @@
  		goto resized_error;
  	}
  #endif
@@ -1361,9 +1361,9 @@ diff -urw minidlna-1.3.0-ref/upnphttp.c minidlna-1.3.0/upnphttp.c
  	{
  		DPRINTF(E_WARN, L_HTTP, "Client tried to specify transferMode as Streaming with an image!\n");
  		Send406(h);
-diff -urw minidlna-1.3.0-ref/upnpsoap.c minidlna-1.3.0/upnpsoap.c
---- minidlna-1.3.0-ref/upnpsoap.c	2020-12-03 08:55:05.333753200 +0300
-+++ minidlna-1.3.0/upnpsoap.c	2020-12-03 08:08:16.124074500 +0300
+diff -urw minidlna-1.3.2-orig/upnpsoap.c minidlna-1.3.2/upnpsoap.c
+--- minidlna-1.3.2-orig/upnpsoap.c	2022-08-30 08:42:54.000000000 +0300
++++ minidlna-1.3.2/upnpsoap.c	2023-02-20 09:57:08.324915697 +0200
 @@ -804,7 +804,7 @@
  }
  
@@ -1391,9 +1391,9 @@ diff -urw minidlna-1.3.0-ref/upnpsoap.c minidlna-1.3.0/upnpsoap.c
  	char *zErrMsg = NULL;
  	char *sql, *ptr;
  	struct Response args;
-diff -urw minidlna-1.3.0-ref/utils.c minidlna-1.3.0/utils.c
---- minidlna-1.3.0-ref/utils.c	2020-12-03 08:55:05.417036700 +0300
-+++ minidlna-1.3.0/utils.c	2020-12-03 08:17:49.216379200 +0300
+diff -urw minidlna-1.3.2-orig/utils.c minidlna-1.3.2/utils.c
+--- minidlna-1.3.2-orig/utils.c	2022-08-30 08:42:54.000000000 +0300
++++ minidlna-1.3.2/utils.c	2023-02-20 09:57:08.324915697 +0200
 @@ -400,6 +400,7 @@
  		ends_with(file, ".mts") || ends_with(file, ".m2ts")  ||
  		ends_with(file, ".m2t") || ends_with(file, ".mkv")   ||
