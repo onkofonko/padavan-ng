@@ -1,3 +1,27 @@
+Thursday, January 12, 2023 / The Tcpdump Group
+  Summary for 4.99.3 tcpdump release
+    Updated printers:
+      PTP: Use the proper values for the control field and print un-allocated
+        values for the message field as "Reserved" instead of "none".
+    Source code:
+      smbutil.c: Replace obsolete function call (asctime)
+    Building and testing:
+      cmake: Update the minimum required version to 2.8.12 (except Windows).
+      CI: Introduce and use TCPDUMP_CMAKE_TAINTED.
+      Makefile.in: Add the releasecheck target.
+      Makefile.in: Add "make -s install" in the releasecheck target.
+      Cirrus CI: Run the "make releasecheck" command in the Linux task.
+      Makefile.in: Add the whitespacecheck target.
+      Cirrus CI: Run the "make whitespacecheck" command in the Linux task.
+      Address all shellcheck warnings in update-test.sh.
+      Makefile.in: Get rid of a remain of gnuc.h.
+    Documentation:
+      Reformat the installation notes (INSTALL.txt) in Markdown.
+      Convert CONTRIBUTING to Markdown.
+      CONTRIBUTING.md: Document the use of "protocol: " in a commit summary.
+      Add a README file for NetBSD.
+      Fix CMake build to set man page section numbers in tcpdump.1
+
 Saturday, December 31, 2022 / The Tcpdump Group
   Summary for 4.99.2 tcpdump release
     Updated printers:
