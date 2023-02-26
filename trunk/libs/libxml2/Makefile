@@ -1,7 +1,19 @@
-SRC_NAME=libxml2-2.9.14
+SRC_NAME=libxml2-2.10.3
+SRC_URL=https://gitlab.gnome.org/GNOME/libxml2/-/archive/v2.10.3/libxml2-v2.10.3.tar.gz
 
+#all: download_test extract_test config_test
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
+
+download_test:
+	( if [ ! -f $(SRC_NAME).tar.gz ]; then \
+		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.gz $(SRC_URL); \
+	fi )
+
+extract_test:
+	( if [ ! -d $(SRC_NAME) ]; then \
+		tar zxf $(SRC_NAME).tar.gz ; \
+	fi )
 
 config_test:
 	( if [ -f ./config_done ]; then \
