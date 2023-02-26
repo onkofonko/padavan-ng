@@ -1,7 +1,20 @@
 SRC_NAME=libmnl-1.0.5
+SRC_URL=https://www.netfilter.org/projects/libmnl/files/$(SRC_NAME).tar.bz2
 
+#all: download_test extract_test config_test
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
+
+download_test:
+	( if [ ! -f $(SRC_NAME).tar.bz2 ]; then \
+		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.bz2 $(SRC_URL); \
+	fi )
+
+extract_test:
+	( if [ ! -d $(SRC_NAME) ]; then \
+		tar xjf $(SRC_NAME).tar.bz2; \
+		patch -d $(SRC_NAME) -p1 -i ../libmnl-disable_examples.patch; \
+	fi )
 
 config_test:
 	( if [ -f ./config_done ]; then \
