@@ -1,10 +1,22 @@
 SRC_NAME=https_dns_proxy-master
+SRC_URL=https://github.com/aarond10/https_dns_proxy/archive/refs/heads/master.zip
 
 CFLAGS  += -O2 -ffunction-sections -fdata-sections -fvisibility=hidden -fPIC
 LDFLAGS += -Wl,--gc-sections,-rpath-link,$(STAGEDIR)/lib -lcurl -lssl -lcrypto -lz
 
+#all: download_test extract_test config_test
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)/build
+
+download_test:
+	( if [ ! -f $(SRC_NAME).zip ]; then \
+		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).zip $(SRC_URL); \
+	fi )
+
+extract_test:
+	( if [ ! -d $(SRC_NAME) ]; then \
+		unzip -qq $(SRC_NAME).zip ; \
+	fi )
 
 config_test:
 	( if [ -f ./config_done ]; then \
