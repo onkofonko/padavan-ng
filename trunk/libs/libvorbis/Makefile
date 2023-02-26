@@ -1,7 +1,8 @@
 SRC_NAME=libvorbis-1.3.7
-SRC_URL=http://downloads.xiph.org/releases/vorbis/$(SRC_NAME).tar.xz
+SRC_URL=https://downloads.xiph.org/releases/vorbis/$(SRC_NAME).tar.xz
 
-all: download_test extract_test config_test
+#all: download_test extract_test config_test
+all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
 
 download_test:
