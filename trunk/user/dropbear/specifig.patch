@@ -1,0 +1,28 @@
+diff -urN dropbear-2022.83-orig/configure.ac dropbear-2022.83-orig/configure.ac
+--- dropbear-2022.83-orig/configure.ac	2022-11-14 16:30:00.000000000 +0200
++++ dropbear-2022.83/configure.ac	2023-02-27 16:14:41.372087661 +0200
+@@ -127,2 +127,2 @@
+-			TESTFLAGS="-fstack-protector --param=ssp-buffer-size=4"
++			TESTFLAGS=""
+			CFLAGS="$TESTFLAGS $CFLAGS"
+diff -urN dropbear-2022.83-orig/default_options.h dldropbear-2022.83/default_options.h
+--- dropbear-2022.83-orig/default_options.h	2022-11-14 16:30:00.000000000 +0200
++++ dropbear-2022.83/default_options.h	2023-02-27 16:14:41.372087661 +0200
+@@ -19,12 +19,12 @@
+ #define DROPBEAR_DEFADDRESS ""
+
+ /* Default hostkey paths - these can be specified on the command line.
+  * Homedir is prepended if path begins with ~/
+  */
+-#define DSS_PRIV_FILENAME "/etc/dropbear/dropbear_dss_host_key"
+-#define RSA_PRIV_FILENAME "/etc/dropbear/dropbear_rsa_host_key"
+-#define ECDSA_PRIV_FILENAME "/etc/dropbear/dropbear_ecdsa_host_key"
+-#define ED25519_PRIV_FILENAME "/etc/dropbear/dropbear_ed25519_host_key"
++#define DSS_PRIV_FILENAME "/etc/storage/dropbear/dss_host_key"
++#define RSA_PRIV_FILENAME "/etc/storage/dropbear/rsa_host_key"
++#define ECDSA_PRIV_FILENAME "/etc/storage/dropbear/ecdsa_host_key"
++#define ED25519_PRIV_FILENAME "/etc/storage/dropbear/ed25519_host_key"
+
+ /* Set NON_INETD_MODE if you require daemon functionality (ie Dropbear listens
+  * on chosen ports and keeps accepting connections. This is the default.
+
