@@ -38,9 +38,8 @@ typedef unsigned long long _u64;
 #include "aaa.h"
 #include "common.h"
 #include "ipsecmast.h"
-#include <net/route.h>
 
-#define CONTROL_PIPE "/var/run/l2tp-control"
+#define CONTROL_PIPE "/var/run/xl2tpd/l2tp-control"
 #define CONTROL_PIPE_MESSAGE_SIZE 1024
 #define UNUSED(x) (void)(x)
 
@@ -60,12 +59,12 @@ typedef unsigned long long _u64;
 #define CONTROL_PIPE_REQ_LNS_REMOVE 'w'     /* Get status of LNS */
 
 #define BINARY "xl2tpd"
-#define SERVER_VERSION "xl2tpd-1.3.17"
+#define SERVER_VERSION "xl2tpd-1.3.18"
 #define VENDOR_NAME "xelerance.com"
 #ifndef PPPD
 #define PPPD		"/usr/sbin/pppd"
 #endif
-#define CALL_PPP_OPTS ""
+#define CALL_PPP_OPTS "defaultroute"
 #define FIRMWARE_REV	0x0690  /* Revision of our firmware (software, in this case) */
 
 #define HELLO_DELAY 60          /* How often to send a Hello message */
@@ -185,7 +184,6 @@ struct tunnel
     struct lns *lns;            /* LNS that owns us */
     struct lac *lac;            /* LAC that owns us */
     struct in_pktinfo my_addr;  /* Address of my endpoint */
-    struct rtentry rt;		/* Route added to destination */
     char hostname[MAXSTRLEN];   /* Remote hostname */
     char vendor[MAXSTRLEN];     /* Vendor of remote product */
     struct challenge chal_us;   /* Their Challenge to us */
@@ -252,12 +250,6 @@ extern int get_entropy (unsigned char *, int);
 #define MIN(a,b) (((a)<(b)) ? (a) : (b))
 #endif
 #endif
-
-/* Route manipulation */
-#define sin_addr(s) (((struct sockaddr_in *)(s))->sin_addr)
-#define route_msg(args...) l2tp_log(LOG_ERR, ## args)
-extern int route_add(const struct in_addr inetaddr, int any_dgw, struct rtentry *rt);
-extern int route_del(struct rtentry *rt);
 
 
 /*
