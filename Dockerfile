@@ -2,7 +2,7 @@ FROM ubuntu:jammy
 
 ENV PROJECT="padavan-ng"
 
-ENV PROJECT_REPO="https://gitlab.com/timofeev36/${PROJECT}.git" \
+ENV PROJECT_REPO="https://gitlab.com/hadzhioglu/${PROJECT}.git" \
     BASE_DIR="/opt" \
     DEBIAN_FRONTEND="noninteractive"
 

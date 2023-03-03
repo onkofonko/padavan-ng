@@ -1,5 +1,5 @@
 Readme 
-[Padavan-ng build by Stepan]
+[Padavan-ng build by Hadzhioglu]
 
 OS: Ubuntu-22.04 LTS (arm64v8/aarch64) [Should also work on x64]
 Installation type: Docker Container [Should also work on VM and Native installation]
