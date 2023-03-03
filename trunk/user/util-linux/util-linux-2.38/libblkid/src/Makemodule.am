@@ -26,94 +26,35 @@ libblkid_la_SOURCES = \
 	libblkid/src/verify.c \
 	libblkid/src/version.c \
 	\
-	libblkid/src/partitions/aix.c \
-	libblkid/src/partitions/aix.h \
-	libblkid/src/partitions/atari.c \
 	libblkid/src/partitions/bsd.c \
 	libblkid/src/partitions/dos.c \
 	libblkid/src/partitions/gpt.c \
 	libblkid/src/partitions/mac.c \
-	libblkid/src/partitions/minix.c \
 	libblkid/src/partitions/partitions.c \
 	libblkid/src/partitions/partitions.h \
-	libblkid/src/partitions/sgi.c \
-	libblkid/src/partitions/solaris_x86.c \
-	libblkid/src/partitions/sun.c \
-	libblkid/src/partitions/ultrix.c \
-	libblkid/src/partitions/unixware.c \
 	\
-	libblkid/src/superblocks/adaptec_raid.c \
-	libblkid/src/superblocks/apfs.c \
-	libblkid/src/superblocks/bcache.c \
-	libblkid/src/superblocks/befs.c \
-	libblkid/src/superblocks/bfs.c \
 	libblkid/src/superblocks/bitlocker.c \
-	libblkid/src/superblocks/bluestore.c \
-	libblkid/src/superblocks/btrfs.c \
-	libblkid/src/superblocks/cramfs.c \
-	libblkid/src/superblocks/ddf_raid.c \
-	libblkid/src/superblocks/drbd.c \
-	libblkid/src/superblocks/drbdproxy_datalog.c \
-	libblkid/src/superblocks/drbdmanage.c \
 	libblkid/src/superblocks/exfat.c \
-	libblkid/src/superblocks/exfs.c \
 	libblkid/src/superblocks/ext.c \
-	libblkid/src/superblocks/f2fs.c \
-	libblkid/src/superblocks/gfs.c \
 	libblkid/src/superblocks/hfs.c \
-	libblkid/src/superblocks/highpoint_raid.c \
-	libblkid/src/superblocks/hpfs.c \
-	libblkid/src/superblocks/iso9660.c \
-	libblkid/src/superblocks/isw_raid.c \
-	libblkid/src/superblocks/jfs.c \
-	libblkid/src/superblocks/jmicron_raid.c \
-	libblkid/src/superblocks/linux_raid.c \
-	libblkid/src/superblocks/lsi_raid.c \
-	libblkid/src/superblocks/luks.c \
-	libblkid/src/superblocks/lvm.c \
-	libblkid/src/superblocks/minix.c \
-	libblkid/src/superblocks/mpool.c \
-	libblkid/src/superblocks/netware.c \
-	libblkid/src/superblocks/nilfs.c \
 	libblkid/src/superblocks/ntfs.c \
-	libblkid/src/superblocks/refs.c \
-	libblkid/src/superblocks/nvidia_raid.c \
-	libblkid/src/superblocks/ocfs.c \
-	libblkid/src/superblocks/promise_raid.c \
-	libblkid/src/superblocks/reiserfs.c \
-	libblkid/src/superblocks/romfs.c \
-	libblkid/src/superblocks/silicon_raid.c \
-	libblkid/src/superblocks/squashfs.c \
-	libblkid/src/superblocks/stratis.c \
 	libblkid/src/superblocks/superblocks.c \
 	libblkid/src/superblocks/superblocks.h \
 	libblkid/src/superblocks/swap.c \
-	libblkid/src/superblocks/sysv.c \
 	libblkid/src/superblocks/ubi.c \
 	libblkid/src/superblocks/ubifs.c \
-	libblkid/src/superblocks/udf.c \
-	libblkid/src/superblocks/ufs.c \
-	libblkid/src/superblocks/vdo.c \
 	libblkid/src/superblocks/vfat.c \
-	libblkid/src/superblocks/via_raid.c \
-	libblkid/src/superblocks/vmfs.c \
-	libblkid/src/superblocks/vxfs.c \
 	libblkid/src/superblocks/xfs.c \
 	libblkid/src/superblocks/zfs.c \
-	libblkid/src/superblocks/zonefs.c \
-	libblkid/src/superblocks/erofs.c \
 	\
 	libblkid/src/topology/topology.c \
 	libblkid/src/topology/topology.h
 
 if LINUX
 libblkid_la_SOURCES += \
-	libblkid/src/topology/dm.c \
-	libblkid/src/topology/evms.c \
 	libblkid/src/topology/ioctl.c \
-	libblkid/src/topology/lvm.c \
-	libblkid/src/topology/md.c \
 	libblkid/src/topology/sysfs.c
+
 endif
 
 libblkid_la_LIBADD = libcommon.la

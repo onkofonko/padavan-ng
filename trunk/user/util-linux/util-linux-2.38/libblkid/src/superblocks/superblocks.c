@@ -89,7 +89,6 @@ static int blkid_probe_set_usage(blkid_probe pr, int usage);
  */
 static const struct blkid_idinfo *idinfos[] =
 {
-
 	/* Filesystems */
 	&vfat_idinfo,
 	&swsuspend_idinfo,

@@ -375,5 +375,3 @@ unsigned long blkid_topology_get_dax(blkid_topology tp)
 {
 	return tp->dax;
 }
-
-

@@ -29091,30 +29091,30 @@ fi
 
 
 # Check whether --enable-blkid was given.
-#if test "${enable_blkid+set}" = set; then :
-  #enableval=$enable_blkid;
-#else
+if test "${enable_blkid+set}" = set; then :
+  enableval=$enable_blkid;
+else
 
 
-  #if test "x$ul_default_estate" != x; then
-    #enable_blkid=$ul_default_estate
-  #else
-  #  enable_blkid=check
-  #fi
+  if test "x$ul_default_estate" != x; then
+    enable_blkid=$ul_default_estate
+  else
+    enable_blkid=check
+  fi
 
 
-#fi
+fi
 
- 
-  #if test "x$enable_blkid" = xno; then
-   #build_blkid=no
-#else
-  # build_blkid=yes
-#fi
 
- build_blkid=yes
- enable_blkid=yes
- 
+
+  if test "x$enable_blkid" = xno; then
+   build_blkid=no
+else
+   build_blkid=yes
+fi
+
+
+
 
   if test "x$build_blkid" != xno; then
     case $enable_blkid:$build_libblkid in #(
@@ -40619,7 +40619,7 @@ cat >>$CONFIG_STATUS <<_ACEOF || ac_write_fail=1
 _ACAWK
 cat >>"\$ac_tmp/subs1.awk" <<_ACAWK &&
   for (key in S) S_is_set[key] = 1
-  FS = ""
+  FS = ""
 
 }
 {
@@ -40751,7 +40751,7 @@ s/'"$ac_delim"'/"\\\
 
 cat >>$CONFIG_STATUS <<_ACEOF || ac_write_fail=1
   for (key in D) D_is_set[key] = 1
-  FS = ""
+  FS = ""
 }
 /^[\t ]*#[\t ]*(define|undef)[\t ]+$ac_word_re([\t (]|\$)/ {
   line = \$ 0
