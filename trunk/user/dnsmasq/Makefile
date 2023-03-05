@@ -24,6 +24,7 @@ extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
 		tar xJf $(SRC_NAME).tar.xz; \
 		patch -d $(SRC_NAME) -p1 -i ../dnsmasq-orig.patch; \
+		patch -d $(SRC_NAME) -p1 -i ../100-remove-old-runtime-kernel-support.patch; \
 	fi )
 
 clean:
