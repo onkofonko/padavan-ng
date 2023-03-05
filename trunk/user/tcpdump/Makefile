@@ -16,6 +16,7 @@ download_test:
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
 		tar xzf $(SRC_NAME).tar.gz; \
+		patch -d $(SRC_NAME) -p1 -i ../001-remove_pcap_debug.patch; \
 		patch -d $(SRC_NAME) -p1 -i ../100-tcpdump_mini.patch; \
 	fi )
 	
