@@ -53,6 +53,7 @@ download_test:
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
 		tar zxf $(SRC_NAME).tar.gz; \
+		patch -d $(SRC_NAME) -p1 -i ../openssl-orig.patch; \
 	fi )
 
 config_test:
