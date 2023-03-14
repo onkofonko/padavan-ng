@@ -874,6 +874,7 @@ Wireless_name=Имя беспроводной сети
 Wireless_Radio=Радиомодуль беспроводной LAN
 WEPKey=WEP-ключ
 WPA-PSKKey=Ключ WPA-PSK:
+IP_Address=IP-адрес
 LAN_IP=IP-адрес LAN
 MAC_Address=MAC-адрес
 ConnectionStatus=Статус подключения:

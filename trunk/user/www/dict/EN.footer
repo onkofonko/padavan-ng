@@ -870,6 +870,7 @@ Wireless_name=Wireless Name
 Wireless_Radio=Wireless Radio
 WEPKey=WEP Key
 WPA-PSKKey=WPA-PSK Key:
+IP_Address=IP Address
 LAN_IP=LAN IP
 MAC_Address=MAC Address
 ConnectionStatus=Connection Status:
