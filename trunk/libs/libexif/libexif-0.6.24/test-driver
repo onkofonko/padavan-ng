@@ -3,7 +3,7 @@
 
 scriptversion=2018-03-07.03; # UTC
 
-# Copyright (C) 2011-2020 Free Software Foundation, Inc.
+# Copyright (C) 2011-2021 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -58,26 +58,21 @@ trs_file=  # Where to save the metadata of the test run.
 expect_failure=no
 color_tests=no
 enable_hard_errors=yes
-while test $# -gt 1; do
- arg=${1%=*}
- val=${1#*=}
- if [ $arg = $val ]; then
-   val=$2
-   shift
- fi
- case $arg in
+while test $# -gt 0; do
+  case $1 in
   --help) print_usage; exit $?;;
   --version) echo "test-driver $scriptversion"; exit $?;;
-  --test-name) test_name=$val;;
-  --log-file) log_file=$val;;
-  --trs-file) trs_file=$val;;
-  --color-tests) color_tests=$val;;
-  --expect-failure) expect_failure=$val;;
-  --enable-hard-errors) enable_hard_errors=$val;;
-  --) break;;
+  --test-name) test_name=$2; shift;;
+  --log-file) log_file=$2; shift;;
+  --trs-file) trs_file=$2; shift;;
+  --color-tests) color_tests=$2; shift;;
+  --expect-failure) expect_failure=$2; shift;;
+  --enable-hard-errors) enable_hard_errors=$2; shift;;
+  --) shift; break;;
   -*) usage_error "invalid option: '$1'";;
+   *) break;;
   esac
-  [ $arg != $val ] && shift
+  shift
 done
 
 missing_opts=
@@ -110,8 +105,11 @@ trap "st=130; $do_exit" 2
 trap "st=141; $do_exit" 13
 trap "st=143; $do_exit" 15
 
-# Test script is run here.
-"$@" >$log_file 2>&1
+# Test script is run here. We create the file first, then append to it,
+# to ameliorate tests themselves also writing to the log file. Our tests
+# don't, but others can (automake bug#35762).
+: >"$log_file"
+"$@" >>"$log_file" 2>&1
 estatus=$?
 
 if test $enable_hard_errors = no && test $estatus -eq 99; then
@@ -133,7 +131,7 @@ esac
 # know whether the test passed or failed simply by looking at the '.log'
 # file, without the need of also peaking into the corresponding '.trs'
 # file (automake bug#11814).
-echo "$res $test_name (exit status: $estatus)" >>$log_file
+echo "$res $test_name (exit status: $estatus)" >>"$log_file"
 
 # Report outcome to console.
 echo "${col}${res}${std}: $test_name"
