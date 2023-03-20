@@ -1,6 +1,6 @@
-diff -urN curl-7.88.0-orig/Makefile.am curl-7.88.0/Makefile.am
---- curl-7.88.0-orig/Makefile.am	2023-02-13 09:37:04.000000000 +0200
-+++ curl-7.88.0/Makefile.am	2023-02-20 03:52:42.616759187 +0200
+diff -urN curl-8.0.1-orig/Makefile.am curl-8.0.1/Makefile.am
+--- curl-8.0.1-orig/Makefile.am	2023-03-18 01:34:19.000000000 +0200
++++ curl-8.0.1/Makefile.am	2023-03-20 23:33:14.435430034 +0200
 @@ -158,7 +158,7 @@
  bin_SCRIPTS = curl-config
  
@@ -19,10 +19,10 @@ diff -urN curl-7.88.0-orig/Makefile.am curl-7.88.0/Makefile.am
  
  # We extend the standard uninstall with a custom hook:
  uninstall-hook:
-diff -urN curl-7.88.0-orig/configure.ac curl-7.88.0/configure.ac
---- curl-7.88.0-orig/configure.ac	2023-02-13 09:37:04.000000000 +0200
-+++ curl-7.88.0/configure.ac	2023-02-20 03:52:42.616759187 +0200
-@@ -4643,29 +4643,14 @@
+diff -urN curl-8.0.1-orig/configure.ac curl-8.0.1/configure.ac
+--- curl-8.0.1-orig/configure.ac	2023-03-20 13:38:42.000000000 +0200
++++ curl-8.0.1/configure.ac	2023-03-20 23:33:14.439429023 +0200
+@@ -4648,29 +4648,14 @@
  fi
  
  AC_CONFIG_FILES([Makefile \
@@ -46,24 +46,15 @@ diff -urN curl-7.88.0-orig/configure.ac curl-7.88.0/configure.ac
 -           tests/server/Makefile \
 -           tests/libtest/Makefile \
 -           tests/unit/Makefile \
--           tests/tests-httpd/config.ini \
--           tests/tests-httpd/Makefile \
+-           tests/http/config.ini \
+-           tests/http/Makefile \
             packages/Makefile \
             packages/vms/Makefile \
             curl-config \
             libcurl.pc
-@@ -4674,7 +4659,7 @@
- 
- CURL_GENERATE_CONFIGUREHELP_PM
- 
--XC_AMEND_DISTCLEAN([lib src tests/unit tests/server tests/libtest docs/examples])
-+XC_AMEND_DISTCLEAN([lib src])
- 
- AC_MSG_NOTICE([Configured to build curl/libcurl:
- 
-diff -urN curl-7.88.0-orig/src/Makefile.am curl-7.88.0/src/Makefile.am
---- curl-7.88.0-orig/src/Makefile.am	2023-02-13 09:37:04.000000000 +0200
-+++ curl-7.88.0/src/Makefile.am	2023-02-20 03:52:42.616759187 +0200
+diff -urN curl-8.0.1-orig/src/Makefile.am curl-8.0.1/src/Makefile.am
+--- curl-8.0.1-orig/src/Makefile.am	2023-03-18 01:34:19.000000000 +0200
++++ curl-8.0.1/src/Makefile.am	2023-03-20 23:33:14.439429023 +0200
 @@ -45,7 +45,7 @@
  
  bin_PROGRAMS = curl
