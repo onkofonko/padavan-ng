@@ -30,7 +30,7 @@
 #define rtnl_log(x, ...)
 
 static inline struct rtnl_handler *
-find_handler(struct rtnl_handle *rtnl_handle, u_int16_t type)
+find_handler(struct rtnl_handle *rtnl_handle, uint16_t type)
 {
 	struct rtnl_handler *h;
 	for (h = rtnl_handle->handlers; h; h = h->next) {
@@ -41,7 +41,7 @@ find_handler(struct rtnl_handle *rtnl_handle, u_int16_t type)
 }
 
 static int call_handler(struct rtnl_handle *rtnl_handle,
-			u_int16_t type,
+			uint16_t type,
 			struct nlmsghdr *hdr)
 {
 	struct rtnl_handler *h = find_handler(rtnl_handle, type);

@@ -24,13 +24,22 @@
 #include "rtnl.h"
 #include "linux_list.h"
 
+/**
+ * \defgroup iftable Functions in iftable.c [DEPRECATED]
+ * This documentation is provided for the benefit of maintainers of legacy code.
+ *
+ * New applications should use
+ * [libmnl](https://netfilter.org/projects/libmnl/doxygen/html/).
+ * @{
+ */
+
 struct ifindex_node {
 	struct list_head head;
 
-	u_int32_t	index;
-	u_int32_t	type;
-	u_int32_t	alen;
-	u_int32_t	flags;
+	uint32_t	index;
+	uint32_t	type;
+	uint32_t	alen;
+	uint32_t	flags;
 	char		addr[8];
 	char		name[16];
 };
@@ -333,3 +342,7 @@ int nlif_fd(struct nlif_handle *h)
 
 	return -1;
 }
+
+/**
+ * @}
+ */

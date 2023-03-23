@@ -297,7 +297,7 @@ top_srcdir = @top_srcdir@
 # http://sources.redhat.com/autobook/autobook/autobook_91.html
 LIBVERSION = 2:0:2
 AM_CPPFLAGS = -I$(top_srcdir)/include
-AM_CFLAGS = -Wall
+AM_CFLAGS = -Wall -fvisibility=hidden -D'NFNL_EXPORT=__attribute__((visibility("default")))'
 iftest_SOURCES = iftest.c
 iftest_LDADD = ../src/libnfnetlink.la
 iftest_LDFLAGS = -dynamic -ldl

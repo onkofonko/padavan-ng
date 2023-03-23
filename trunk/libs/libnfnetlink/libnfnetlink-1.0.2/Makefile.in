@@ -101,7 +101,7 @@ DIST_COMMON = $(srcdir)/Makefile.am $(top_srcdir)/configure \
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
-CONFIG_CLEAN_FILES = libnfnetlink.pc
+CONFIG_CLEAN_FILES = doxygen.cfg libnfnetlink.pc
 CONFIG_CLEAN_VPATH_FILES =
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -184,9 +184,9 @@ am__define_uniq_tagged_files = \
   unique=`for i in $$list; do \
     if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
   done | $(am__uniquify_input)`
-am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/libnfnetlink.pc.in \
-	$(top_srcdir)/Make_global.am $(top_srcdir)/build-aux/ar-lib \
-	$(top_srcdir)/build-aux/compile \
+am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/doxygen.cfg.in \
+	$(srcdir)/libnfnetlink.pc.in $(top_srcdir)/Make_global.am \
+	$(top_srcdir)/build-aux/ar-lib $(top_srcdir)/build-aux/compile \
 	$(top_srcdir)/build-aux/config.guess \
 	$(top_srcdir)/build-aux/config.sub \
 	$(top_srcdir)/build-aux/install-sh \
@@ -194,8 +194,7 @@ am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/libnfnetlink.pc.in \
 	$(top_srcdir)/build-aux/missing COPYING README \
 	build-aux/ar-lib build-aux/compile build-aux/config.guess \
 	build-aux/config.sub build-aux/install-sh build-aux/ltmain.sh \
-	build-aux/missing config.guess config.sub depcomp install-sh \
-	ltmain.sh missing
+	build-aux/missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -365,7 +364,7 @@ top_srcdir = @top_srcdir@
 # http://sources.redhat.com/autobook/autobook/autobook_91.html
 LIBVERSION = 2:0:2
 AM_CPPFLAGS = -I$(top_srcdir)/include
-AM_CFLAGS = -Wall
+AM_CFLAGS = -Wall -fvisibility=hidden -D'NFNL_EXPORT=__attribute__((visibility("default")))'
 ACLOCAL_AMFLAGS = -I m4
 EXTRA_DIST = $(man_MANS)
 SUBDIRS = src include utils
@@ -410,6 +409,8 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
+doxygen.cfg: $(top_builddir)/config.status $(srcdir)/doxygen.cfg.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
 libnfnetlink.pc: $(top_builddir)/config.status $(srcdir)/libnfnetlink.pc.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
