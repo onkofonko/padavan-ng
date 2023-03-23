@@ -1,6 +1,6 @@
 diff --git a/Makefile.in b/Makefile.in
---- a/Makefile.in	2023-02-02 14:21:54.000000000 +0200
-+++ b/Makefile.in	2023-03-12 01:57:47.677925349 +0200
+--- a/Makefile.in	2023-03-15 23:28:19.000000000 +0200
++++ b/Makefile.in	2023-03-23 00:35:37.465673933 +0200
 @@ -202,6 +202,7 @@
  libssh.a: $(LIBSSH_OBJS)
  	$(AR) rv $@ $(LIBSSH_OBJS)
@@ -57,8 +57,8 @@ diff --git a/Makefile.in b/Makefile.in
  	rm -f Makefile buildpkg.sh config.h config.status
  	rm -f survey.sh openbsd-compat/regress/Makefile *~ 
 diff --git a/pathnames.h b/pathnames.h
---- a/pathnames.h	2023-02-02 14:21:54.000000000 +0200
-+++ b/pathnames.h	2023-03-12 01:57:47.677925349 +0200
+--- a/pathnames.h	2023-03-15 23:28:19.000000000 +0200
++++ b/pathnames.h	2023-03-23 00:35:37.465673933 +0200
 @@ -41,7 +41,7 @@
  #define _PATH_HOST_ED25519_KEY_FILE	SSHDIR "/ssh_host_ed25519_key"
  #define _PATH_HOST_XMSS_KEY_FILE	SSHDIR "/ssh_host_xmss_key"
