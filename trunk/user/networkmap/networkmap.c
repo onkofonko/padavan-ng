@@ -336,8 +336,8 @@ lookup_static_dhcp_list(struct in_addr *dst_ip, NET_CLIENT* pnet_client)
 		sprintf(nvram_name, "dhcp_staticname_x%d", i);
 		sname = nvram_safe_get(nvram_name);
 		if (src_ip.s_addr == dst_ip->s_addr && is_valid_hostname(sname)) {
-			strncpy(pnet_client->device_name, sname, 18);
-			pnet_client->device_name[18] = 0;
+			strncpy(pnet_client->device_name, sname, 32);
+			pnet_client->device_name[32] = 0;
 			break;
 		}
 	}
@@ -350,13 +350,13 @@ fixup_hostname(NET_CLIENT* pnet_client)
 	char *hname = (char *)pnet_client->device_name;
 	char *p = hname;
 
-	for (i = 0; i < 18; i++) {
+	for (i = 0; i < 32; i++) {
 		if (*p < 0x20)
 			*p = 0x0;
 		p++;
 	}
 
-	hname[18] = '\0';
+	hname[32] = '\0';
 	trim_r(hname);
 }
 
@@ -375,7 +375,7 @@ resolve_hostname(struct in_addr *dst_ip, NET_CLIENT *pnet_client)
 			 hname, sizeof(hname), NULL, 0, NI_NAMEREQD|NI_NOFQDN) != 0)
 		return -1;
 
-	strncpy(pnet_client->device_name, hname, 18);
+	strncpy(pnet_client->device_name, hname, 32);
 	fixup_hostname(pnet_client);
 
 	if (!pnet_client->device_name[0])
