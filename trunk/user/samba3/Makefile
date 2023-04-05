@@ -12,7 +12,7 @@ endif
 THISDIR = $(shell pwd)
 
 all: config_test
-	$(MAKE) -C $(SRC_NAME) all
+	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME) all
 
 config_test:
 	( if [ -f ./config_done ]; then \

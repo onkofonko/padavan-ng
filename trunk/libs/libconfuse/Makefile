@@ -3,7 +3,7 @@ SRC_NAME=confuse-3.3
 CFLAGS += -Os
 
 all: config_test
-	$(MAKE) -C $(SRC_NAME)
+	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
 
 config_test:
 	( if [ -f ./config_done ]; then \

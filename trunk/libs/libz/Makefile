@@ -1,7 +1,8 @@
 SRC_NAME=zlib-1.2.13
 SRC_URL=https://www.zlib.net/$(SRC_NAME).tar.gz
 
-all: download_test extract_test config_test
+#all: download_test extract_test config_test
+all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
 
 download_test:

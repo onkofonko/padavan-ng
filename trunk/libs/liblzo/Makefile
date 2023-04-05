@@ -3,7 +3,8 @@ SRC_URL=http://www.oberhumer.com/opensource/lzo/download/$(SRC_NAME).tar.gz
 
 CFLAGS += -O2
 
-all: download_test extract_test config_test
+#all: download_test extract_test config_test
+all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
 
 download_test:
