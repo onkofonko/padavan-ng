@@ -1,5 +1,5 @@
-SRC_NAME=libxml2-2.10.3
-SRC_URL=https://gitlab.gnome.org/GNOME/libxml2/-/archive/v2.10.3/libxml2-v2.10.3.tar.gz
+SRC_NAME=libxml2-v2.10.4
+SRC_URL=https://gitlab.gnome.org/GNOME/libxml2/-/archive/v2.10.4/$(SRC_NAME).tar.gz
 
 #all: download_test extract_test config_test
 all: config_test
@@ -24,7 +24,7 @@ config_test:
 
 configure:
 	( cd $(SRC_NAME) ; \
-        ./autogen.sh;\
+        ./autogen.sh ;\
 	./configure \
 		--prefix= \
 		--enable-static \
