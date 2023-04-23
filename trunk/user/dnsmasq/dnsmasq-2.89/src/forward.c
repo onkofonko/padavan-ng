@@ -1246,7 +1246,7 @@ void reply_query(int fd, time_t now)
       server->edns_pktsz = SAFE_PKTSZ;
       server->pktsz_reduced = now;
       (void)prettyprint_addr(&server->addr, daemon->addrbuff);
-      my_syslog(LOG_WARNING, _("reducing DNS packet size for nameserver %s to %d"), daemon->addrbuff, SAFE_PKTSZ);
+      my_syslog(LOG_INFO, _("reducing DNS packet size for nameserver %s to %d"), daemon->addrbuff, SAFE_PKTSZ);
     }
 
   forward->sentto = server;
