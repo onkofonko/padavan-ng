@@ -1,5 +1,5 @@
-SRC_NAME=libxml2-v2.11.0
-SRC_URL=https://gitlab.gnome.org/GNOME/libxml2/-/archive/v2.11.0/$(SRC_NAME).tar.gz
+SRC_NAME=libxml2-v2.11.1
+SRC_URL=https://gitlab.gnome.org/GNOME/libxml2/-/archive/v2.11.1/$(SRC_NAME).tar.gz
 
 #all: download_test extract_test config_test
 all: config_test
