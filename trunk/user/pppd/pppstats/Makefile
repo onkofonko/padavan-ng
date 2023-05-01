@@ -16,7 +16,7 @@ LIBS =
 
 INSTALL= install
 
-CFLAGS = $(COPTS) $(COMPILE_FLAGS)
+CFLAGS += $(COPTS) $(COMPILE_FLAGS)
 
 all: pppstats
 
@@ -26,7 +26,7 @@ install: pppstats
 	$(INSTALL) -c -m 444 pppstats.8 $(MANDIR)
 
 pppstats: $(PPPSTATSRCS)
-	$(CC) $(CFLAGS) -o pppstats $(LDFLAGS) pppstats.c $(LIBS)
+	$(CC) $(CFLAGS) -o pppstats pppstats.c $(LIBS)
 
 clean:
 	rm -f pppstats *~ #* core

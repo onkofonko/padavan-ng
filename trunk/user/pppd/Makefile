@@ -16,11 +16,11 @@ LDFLAGS += -Wl,--gc-sections
 MFLAGS=$(if $(CONFIG_IPV6),HAVE_INET6=y,)
 
 all:
-	cd chat; $(MAKE) -j$(HOST_NCPU) COPTS="$(CFLAGS)" $(MFLAGS) all
-	cd pppd/plugins; $(MAKE) -j$(HOST_NCPU) COPTS="$(CFLAGS)" $(MFLAGS) all
-	cd pppd; $(MAKE) -j$(HOST_NCPU) COPTS="$(CFLAGS)" $(MFLAGS) all
-	cd pppstats; $(MAKE) -j$(HOST_NCPU) COPTS="$(CFLAGS)" $(MFLAGS) all
-	cd pppdump; $(MAKE) -j$(HOST_NCPU) COPTS="$(CFLAGS)" $(MFLAGS) all
+	cd chat; $(MAKE) $(MFLAGS) all
+	cd pppd/plugins; $(MAKE) $(MFLAGS) all
+	cd pppd; $(MAKE) $(MFLAGS) all
+	cd pppstats; $(MAKE) $(MFLAGS) all
+	cd pppdump; $(MAKE) $(MFLAGS) all
 
 romfs:
 	cd pppd; $(MAKE) $(MFLAGS) all

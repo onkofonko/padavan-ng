@@ -18,13 +18,13 @@ INSTALL	= install
 # Version is set ONLY IN THE MAKEFILE!  Don't delete this!
 PLUGINVERSION=0.8.5
 
-COPTS=-O2 -g
-CFLAGS = $(COPTS) -I. -I../.. -I../../.. -I../../../include '-DPLUGINVERSION="$(PLUGINVERSION)"'
+COPTS=
+CFLAGS += $(COPTS) -I. -I../.. -I../../.. -I../../../include '-DPLUGINVERSION="$(PLUGINVERSION)"'
 
 all: pptp.so
 
 pptp.so: libplugin.a pptp.o
-	$(LD) -o pptp.so -shared --gc-sections pptp.o libplugin.a
+	$(LD) -o pptp.so -shared pptp.o libplugin.a
 
 install: all
 	$(INSTALL) -d -m 755 $(LIBDIR)

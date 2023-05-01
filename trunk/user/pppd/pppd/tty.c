@@ -83,6 +83,7 @@
 #include <netdb.h>
 #include <utmp.h>
 #include <pwd.h>
+#include <setjmp.h>
 #include <sys/param.h>
 #include <sys/types.h>
 #include <sys/wait.h>

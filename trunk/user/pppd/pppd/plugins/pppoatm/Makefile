@@ -1,6 +1,6 @@
-COPTS	= -O2 -g
-CFLAGS	= $(COPTS) -I../.. -I../../../include -fPIC
-LDFLAGS	+= -shared
+COPTS	= 
+CFLAGS	+= $(COPTS) -I../.. -I../../../include -fPIC
+LDFLAGS	= -shared
 INSTALL	= install
 
 #***********************************************************************
@@ -32,7 +32,7 @@ endif
 all: $(PLUGIN)
 
 $(PLUGIN): $(PLUGIN_OBJS)
-	$(CC) $(CFLAGS) -o $@ -shared $(LDFLAGS) $^ $(LIBS)
+	$(CC) $(CFLAGS) -o $@ -shared $^ $(LIBS)
 
 install: all
 	$(INSTALL) -d -m 755 $(LIBDIR)
