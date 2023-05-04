@@ -259,10 +259,16 @@ stop_zram(void)
 void
 start_zram(void)
 {
+	const char *clzx[2] = {"lzo", "lz4"};
 	int disksize = get_zram_disksize();
+
 	if (disksize) {
 		module_smart_load("zram", "num_devices=1");
 		sleep(1);
+		if (!is_module_loaded("zram"))
+			return;
+
+		fput_string("/sys/block/zram0/comp_algorithm", clzx[nvram_safe_get_int("zram_clzx", 0, 0, 1)]);
 		fput_int("/sys/block/zram0/disksize", disksize);
 		doSystem("mkswap /dev/zram0");
 		doSystem("swapon -p 32767 -d /dev/zram0");

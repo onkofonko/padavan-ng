@@ -539,6 +539,7 @@
 			{"lltd_enable", "", NULL, EVM_RESTART_LLTD},
 #if defined (SUPPORT_ZRAM)
 			{"zram_enable", "", NULL, EVM_RESTART_ZRAM},
+			{"zram_clzx", "", NULL, EVM_RESTART_ZRAM},
 #endif
 			{"adsc_enable", "", NULL, EVM_RESTART_ADSC},
 			{"crond_enable", "", NULL, EVM_RESTART_CROND},

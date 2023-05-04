@@ -71,9 +71,14 @@ function initial(){
 		showhide_div('row_pass1', 1);
 		showhide_div('row_pass2', 1);
 	}
+
 	if (!found_support_zram()) {
 		showhide_div("row_zram", 0);
+		showhide_div('row_zram_clzx', 0);
+	}else{
+		zram_enable_change();
 	}
+
 	load_body();
 }
 
@@ -184,6 +189,11 @@ function openLink(s) {
 	var tourl = "http://support.ntp.org/bin/view/Servers/WebHome";
 	link = window.open(tourl, "NTPLink", link_params);
 	if (!link.opener) link.opener = self;
+}
+
+function zram_enable_change() {
+	var v = (document.form.zram_enable.value == "0") ? 0 : 1;
+	showhide_div('row_zram_clzx', v);
 }
 
 function check_Timefield_checkbox(){	// To check Date checkbox checked or not and control Time field disabled or not
@@ -477,10 +487,19 @@ function updateDateTime()
                                         <tr id="row_zram">
                                             <th><a class="help_tooltip"  href="javascript:void(0);" onmouseover="openTooltip(this, 11, 5);"><#Adm_System_zram_itemname#></a></th>
                                             <td>
-                                                <select name="zram_enable" class="input">
+                                                <select name="zram_enable" class="input" onchange="zram_enable_change();">
                                                     <option value="0"   <% nvram_match_x("","zram_enable",  "0","selected"); %>><#btn_Disable#></option>
                                                     <option value="1"   <% nvram_match_x("","zram_enable",  "1","selected"); %>>25% Ram</option>
                                                     <option value="2"   <% nvram_match_x("","zram_enable",  "2","selected"); %>>50% Ram (*)</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr id="row_zram_clzx">
+                                            <th><#Adm_System_zram_clzx#></th>
+                                            <td>
+                                                <select name="zram_clzx" class="input">
+                                                    <option value="0"   <% nvram_match_x("","zram_clzx",  "0","selected"); %>>LZO</option>
+                                                    <option value="1"   <% nvram_match_x("","zram_clzx",  "1","selected"); %>>LZ4</option>
                                                 </select>
                                             </td>
                                         </tr>

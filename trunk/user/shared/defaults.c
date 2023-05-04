@@ -635,6 +635,7 @@ struct nvram_pair router_defaults[] = {
 
 #if defined(SUPPORT_ZRAM)
 	{ "zram_enable", "0" },
+	{ "zram_clzx", "0" },
 #endif
 
 #if defined(BOARD_N65U)
