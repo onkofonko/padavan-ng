@@ -498,7 +498,7 @@ function updateDateTime()
                                             <th><#Adm_System_zram_clzx#></th>
                                             <td>
                                                 <select name="zram_clzx" class="input">
-                                                    <option value="0"   <% nvram_match_x("","zram_clzx",  "0","selected"); %>>LZO</option>
+                                                    <option value="0"   <% nvram_match_x("","zram_clzx",  "0","selected"); %>>LZO (*)</option>
                                                     <option value="1"   <% nvram_match_x("","zram_clzx",  "1","selected"); %>>LZ4</option>
                                                 </select>
                                             </td>
