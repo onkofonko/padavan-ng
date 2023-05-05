@@ -61,7 +61,7 @@ else
 	rm -f $(THISDIR)/$(SRC_NAME)/extensions/libxt_string.*
 endif
 	( cd $(SRC_NAME) ; \
-        ./autogen.sh;\
+	./autogen.sh ; \
 	./configure \
 		--prefix= \
 		--enable-static \
