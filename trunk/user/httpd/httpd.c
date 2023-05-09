@@ -196,7 +196,7 @@ is_uaddr_localhost(const uaddr *ip)
 {
 	if (
 #if defined (USE_IPV6)
-	    ((ip->family == AF_INET6) && 
+	    ((ip->family == AF_INET6) &&
 	    ((memcmp(&ip->addr.in6, &in6addr_loopback, sizeof(struct in6_addr)) == 0) ||
 	     (memcmp(&ip->addr.in6, &in6in4addr_loopback, sizeof(struct in6_addr)) == 0))) ||
 	    ((ip->family == AF_INET) && (ip->addr.in4.s_addr == 0x100007f))
@@ -275,7 +275,7 @@ find_mac_from_ip(const uaddr *ip, unsigned char *p_out_mac, int *p_out_lan)
 	if (fp) {
 		// skip first line
 		fgets(buffer, sizeof(buffer), fp);
-		
+
 		while (fgets(buffer, sizeof(buffer), fp)) {
 			arp_flags = 0;
 			if (sscanf(buffer, "%s %*s 0x%x %31s %*s %31s", s_addr2, &arp_flags, arp_mac, arp_if) == 4) {
@@ -289,7 +289,7 @@ find_mac_from_ip(const uaddr *ip, unsigned char *p_out_mac, int *p_out_lan)
 				}
 			}
 		}
-		
+
 		fclose(fp);
 	}
 
@@ -356,7 +356,7 @@ is_safe_ipaddr(const uaddr *ip)
 
 	if (ip->family == AF_INET6) {
 		ip6 = &ip->addr.in6;
-		
+
 		/* check IPv4-Mapped IPv6 Addresses */
 		if (IN6_IS_ADDR_V4MAPPED(ip6)) {
 			ip4_6.s_addr = ip6->s6_addr32[3];
@@ -388,7 +388,7 @@ is_safe_ipaddr(const uaddr *ip)
 			mask6 = &((struct sockaddr_in6 *)ife->ifa_netmask)->sin6_addr;
 			if (IN6_IS_ADDR_LINKLOCAL(addr6))
 				continue;
-			
+
 			if ((addr6->s6_addr32[0] & mask6->s6_addr32[0]) == (ip6->s6_addr32[0] & mask6->s6_addr32[0]) &&
 			    (addr6->s6_addr32[1] & mask6->s6_addr32[1]) == (ip6->s6_addr32[1] & mask6->s6_addr32[1]) &&
 			    (addr6->s6_addr32[2] & mask6->s6_addr32[2]) == (ip6->s6_addr32[2] & mask6->s6_addr32[2]) &&
@@ -406,7 +406,7 @@ is_safe_ipaddr(const uaddr *ip)
 			mask4 = &((struct sockaddr_in *)ife->ifa_netmask)->sin_addr;
 			if (mask4->s_addr == INADDR_ANY || addr4->s_addr == INADDR_BROADCAST)
 				continue;
-			
+
 			if ((addr4->s_addr & mask4->s_addr) == (ip4->s_addr & mask4->s_addr)) {
 				result = 1;
 				break;
@@ -691,7 +691,7 @@ match_one( const char *pattern, int patternlen, const char *string )
 				/* Single-wildcard matches anything but slash. */
 				i = strcspn( string, "/" );
 			}
-			
+
 			pl = patternlen - ( p - pattern );
 			for ( ; i >= 0; --i )
 				if ( match_one( p, pl, &(string[i]) ) )
@@ -750,7 +750,7 @@ try_pull_data(FILE *conn_fp, int conn_fd)
 	if (flags != -1 && fcntl(conn_fd, F_SETFL, flags | O_NONBLOCK) != -1) {
 		if (fgetc(conn_fp) != EOF)
 			fgetc(conn_fp);
-		
+
 		fcntl(conn_fd, F_SETFL, flags);
 	}
 }
@@ -802,17 +802,17 @@ set_preferred_lang(char *cur)
 		p = strtok (p, "\r\n ,;");
 		if (p == NULL)
 			break;
-		
+
 		for (p_lt = language_tables; p_lt->Lang != NULL; ++p_lt) {
 			if (strcasecmp(p, p_lt->Lang)==0) {
 				p_lang = p_lt->Target_Lang;
 				break;
 			}
 		}
-		
+
 		if (p_lang)
 			break;
-		
+
 		p+=strlen(p)+1;
 	}
 
@@ -822,7 +822,7 @@ set_preferred_lang(char *cur)
 			nvram_set("preferred_lang", p_lang);
 		else
 			nvram_set("preferred_lang", "EN");
-		
+
 		return 1;
 	}
 
@@ -1213,7 +1213,7 @@ main(int argc, char **argv)
 
 	while (!daemon_exit) {
 		fd_set rfds;
-		
+
 		rfds = active_rfds;
 		max_fd = -1;
 		if (pool.count < MAX_CONN_ACCEPT) {
@@ -1224,10 +1224,10 @@ main(int argc, char **argv)
 				}
 			}
 		}
-		
+
 		TAILQ_FOREACH(item, &pool.head, entry)
 			max_fd = (item->fd > max_fd) ? item->fd : max_fd;
-		
+
 		/* wait for new connection or incoming request */
 		tv.tv_sec = MAX_CONN_TIMEOUT;
 		tv.tv_usec = 0;
@@ -1241,7 +1241,7 @@ main(int argc, char **argv)
 				httpd_log("Failed to select open sockets (errno: %d). EXITING", errno);
 			break;
 		}
-		
+
 		/* check and accept new connection */
 		if (selected) {
 			int is_accept = 0;
@@ -1250,7 +1250,7 @@ main(int argc, char **argv)
 					item = malloc(sizeof(*item));
 					if (!item)
 						continue;
-					
+
 					item->fd = accept(listen_fd[i], &item->usa.sa, &sz);
 					if (item->fd >= 0) {
 #if defined (SUPPORT_HTTPS)
@@ -1276,21 +1276,21 @@ main(int argc, char **argv)
 					}
 				}
 			}
-			
+
 			/* Continue waiting */
 			if (is_accept)
 				continue;
 		}
-		
+
 		/* Check and process pending or expired requests */
 		TAILQ_FOREACH_SAFE(item, &pool.head, entry, next) {
 			if (selected && !FD_ISSET(item->fd, &rfds))
 				continue;
-			
+
 			FD_CLR(item->fd, &active_rfds);
 			TAILQ_REMOVE(&pool.head, item, entry);
 			pool.count--;
-			
+
 			if (selected) {
 				FILE *conn_fp;
 #if defined (SUPPORT_HTTPS)
@@ -1314,12 +1314,12 @@ main(int argc, char **argv)
 				if (--selected == 0)
 					next = NULL;
 			}
-			
+
 			if (item->fd >= 0) {
 				shutdown(item->fd, SHUT_RDWR);
 				close(item->fd);
 			}
-			
+
 			free(item);
 		}
 	}
@@ -1330,7 +1330,7 @@ main(int argc, char **argv)
 			shutdown(item->fd, SHUT_RDWR);
 			close(item->fd);
 		}
-		
+
 		free(item);
 	}
 
