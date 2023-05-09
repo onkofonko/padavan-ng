@@ -508,6 +508,8 @@ EOF
 	# create user dns dhcp_conf
 	if [ ! -f "$user_dhcp_conf" ] ; then
 		cat > "$user_dhcp_conf" <<EOF
+# Custom user hosts for dhcp_hostsfile
+# Example:
 #6C:96:CF:E0:95:55,192.168.1.10,iMac
 
 EOF
