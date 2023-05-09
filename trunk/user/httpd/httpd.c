@@ -888,6 +888,10 @@ handle_request(FILE *conn_fp, const conn_item_t *item)
 			cp = cur + 15;
 			cp += strspn( cp, " \t" );
 			clen = strtoul( cp, NULL, 0 );
+			if ((clen < 0) || (clen > 50000000)) {
+				send_error( 400, "Bad Request", NULL, "Content length invalid.", conn_fp);
+				return;
+			}
 		}
 		else if (strncasecmp( cur, "If-Modified-Since:", 18) == 0) {
 			cp = cur + 18;
@@ -900,11 +904,6 @@ handle_request(FILE *conn_fp, const conn_item_t *item)
 			*cp = '\0';
 			cur = ++cp;
 		}
-	}
-
-	if (clen < 0 || clen > 50000000) {
-		send_error( 400, "Bad Request", NULL, "Content length invalid.", conn_fp);
-		return;
 	}
 
 	if (strcasecmp(method, "get") == 0)
@@ -950,6 +949,7 @@ handle_request(FILE *conn_fp, const conn_item_t *item)
 	usockaddr_to_uaddr(&item->usa, &conn_ip);
 
 	login_state = http_login_check(&conn_ip);
+
 	if (login_state == 0) {
 		if (strstr(file, ".htm") != NULL || strstr(file, ".asp") != NULL) {
 			file = "Nologin.asp";

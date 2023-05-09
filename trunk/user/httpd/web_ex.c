@@ -1246,7 +1246,7 @@ update_variables_ex(int eid, webs_t wp, int argc, char **argv)
 #endif
 						if (!strcmp(group_id, "rt_RBRList") || !strcmp(group_id, "rt_ACLList"))
 							rt_modified |= WIFI_COMMON_CHANGE_BIT;
-						
+
 						nvram_modified = 1;
 						nvram_set_int_temp(group_id, 0);
 						nvram_clr_group_temp(v);

@@ -568,12 +568,12 @@
 #if BOARD_NUM_ETH_EPHY > 5
 			{"ether_link_lan5", "", NULL, EVM_RESTART_SWITCH_CFG},
 			{"ether_flow_lan5", "", NULL, EVM_RESTART_SWITCH_CFG},
+#endif
 #if BOARD_NUM_ETH_EPHY > 6
 			{"ether_link_lan6", "", NULL, EVM_RESTART_SWITCH_CFG},
 			{"ether_flow_lan6", "", NULL, EVM_RESTART_SWITCH_CFG},
 			{"ether_link_lan7", "", NULL, EVM_RESTART_SWITCH_CFG},
 			{"ether_flow_lan7", "", NULL, EVM_RESTART_SWITCH_CFG},
-#endif
 #endif
 			{"controlrate_unknown_unicast", "", NULL, EVM_RESTART_SWITCH_CFG},
 			{"controlrate_unknown_multicast", "", NULL, EVM_RESTART_SWITCH_CFG},
@@ -970,6 +970,7 @@
 #if defined(USE_USB_SUPPORT)
 		{EVM_RESTART_SPOOLER,		EVT_RESTART_SPOOLER,		RCN_RESTART_SPOOLER,	0},
 		{EVM_RESTART_HDDTUNE,		EVT_RESTART_HDDTUNE,		RCN_RESTART_HDDTUNE,	0},
+#endif
 #if defined(APP_FTPD)
 		{EVM_RESTART_FTPD,		EVT_RESTART_FTPD,		RCN_RESTART_FTPD,	EVM_RESTART_FIREWALL},
 #endif
@@ -990,7 +991,6 @@
 #endif
 #if defined(APP_ARIA)
 		{EVM_RESTART_ARIA,		EVT_RESTART_ARIA,		RCN_RESTART_ARIA,	EVM_RESTART_FIREWALL},
-#endif
 #endif
 #if defined(APP_SMBD) || defined(APP_NMBD)
 		{EVM_RESTART_NMBD,		EVT_RESTART_NMBD,		RCN_RESTART_NMBD,	0},
