@@ -321,7 +321,6 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_stream_rx", STR(BOARD_NUM_ANT_2G_RX) },
 	{ "rt_preamble", "1" },
 	{ "rt_greenap", "0" },		/* 2G GreenAP */
-	{ "rt_ldpc", "0" },
 	{ "rt_HT_RDG", "0" },
 	{ "rt_HT_AMSDU", "0" },
 	{ "rt_HT_80211KV", "0" },
@@ -331,6 +330,7 @@ struct nvram_pair router_defaults[] = {
 #if defined (USE_WID_2G) && USE_WID_2G==7615
 	{ "rt_HT_BAWinSize", "256" },
 	{ "rt_ldpc", "1" },
+	{ "rt_turbo_qam", "1" },
 	{ "rt_airtimefairness", "0" },
 #else
 	{ "rt_HT_BAWinSize", "64" },
@@ -356,11 +356,6 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_guest_wpa_psk", "" },
 	{ "rt_guest_macrule", "0" },
 	{ "rt_guest_mcs_mode", "0" },
-
-#if defined (USE_WID_2G) && USE_WID_2G==7615
-	{ "rt_turbo_qam", "1" },
-	{ "rt_airtimefairness", "0" },
-#endif
 
 	// ApCli 2.4Ghz
 	{ "rt_sta_ssid", "" },
