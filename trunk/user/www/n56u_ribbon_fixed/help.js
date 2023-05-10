@@ -207,19 +207,19 @@ function openTooltip(obj, hint_array_id, hint_show_id)
 function openHint(hint_array_id, hint_show_id){
 	if (help_enable == "0" && hint_show_id > 0)
 		return;
-	
+
 	$('hintofPM').style.display = "";
-	
+
 	showtext($('helpname'), "<#CTL_help#>");
-	
+
 	if($("statusframe")){
 		$("statusframe").src = "";
 		$("statusframe").style.display = "none";
 	}
-	
+
 	$('hint_body').style.display = "";
 	$("statusframe").style.display = "none";
-	
+
 	showtext($('helpname'), "<#CTL_help#>");
 	showtext($('hint_body'), helpcontent[hint_array_id][hint_show_id]);
 }

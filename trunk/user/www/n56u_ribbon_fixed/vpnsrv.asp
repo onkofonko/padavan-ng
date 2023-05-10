@@ -86,11 +86,11 @@ function initial(){
 function applyRule(){
 	if(validForm()){
 		showLoading();
-		
+
 		document.form.action_mode.value = " Restart ";
 		document.form.current_page.value = "/vpnsrv.asp";
 		document.form.next_page.value = "";
-		
+
 		document.form.submit();
 	}
 }
@@ -168,7 +168,7 @@ function validForm(){
 	if (mode == "2") {
 		if(!validate_range(document.form.vpns_ov_port, 1, 65535))
 			return false;
-		
+
 		if (document.form.vpns_ov_mode.value == "1")
 			return valid_vpn_subnet(document.form.vpns_vnet);
 	}
@@ -177,7 +177,7 @@ function validForm(){
 			return false;
 		if(!validate_range(document.form.vpns_mru, 1000, 1460))
 			return false;
-		
+
 		if (document.form.vpns_vuse.value != "0")
 			return valid_vpn_subnet(document.form.vpns_vnet);
 	}
@@ -295,12 +295,12 @@ function change_vpns_type(){
 
 	if (is_ov){
 		showhide_div('row_vpns_cast', 0);
-		
+
 		$("col_pass").innerHTML = "";
 		$("div_acl_info").innerHTML = "<#VPNS_Accnt_Info2#></br><#VPNS_Accnt_Info3#>";
 		inputCtrl(document.form.vpns_pass_x_0, 0);
 		document.form.vpns_pass_x_0.value = "";
-		
+
 		if (openssl_util_found() && login_safe() && openvpn_srv_cert_found()) {
 			if (!support_openssl_ec()) {
 				var o = document.form.vpns_exp_rb;
@@ -308,16 +308,16 @@ function change_vpns_type(){
 			}
 			showhide_div('row_vpns_exp', 1);
 		}
-		
+
 		change_vpns_ov_atls();
 		change_vpns_ov_tcv2();
 	}else{
 		showhide_div('tab_vpns_acl', 1);
-		
+
 		$("col_pass").innerHTML = "<#ISP_Authentication_pass#>";
 		$("div_acl_info").innerHTML = "<#VPNS_Accnt_Info1#></br><#VPNS_Accnt_Info4#>";
 		inputCtrl(document.form.vpns_pass_x_0, 1);
-		
+
 		showhide_div('row_vpns_vuse', 1);
 		showhide_div('row_vpns_actl', (fw_enable_x == "1"));
 	}
@@ -427,21 +427,21 @@ function markGroupACL(o, c, b) {
 			alert("<#JS_itemlimit1#> " + c + " <#JS_itemlimit2#>");
 			return false;
 		}
-		
+
 		if (document.form.vpns_user_x_0.value==""){
 			alert("<#JS_fieldblank#>");
 			document.form.vpns_user_x_0.focus();
 			document.form.vpns_user_x_0.select();
 			return false;
 		}
-		
+
 		if (document.form.vpns_type.value == "2" && document.form.vpns_addr_x_0.value == "") {
 			alert("<#JS_fieldblank#>");
 			document.form.vpns_addr_x_0.focus();
 			document.form.vpns_addr_x_0.select();
 			return false;
 		}
-		
+
 		acl_addr = parseInt(document.form.vpns_addr_x_0.value);
 		if ((document.form.vpns_addr_x_0.value != "") && (acl_addr<2 || acl_addr>254)){
 			alert("IP octet value should be between 2 and 254!");
@@ -449,12 +449,12 @@ function markGroupACL(o, c, b) {
 			document.form.vpns_addr_x_0.select();
 			return false;
 		}
-		
+
 		if (document.form.vpns_rnet_x_0.value.length > 0 || document.form.vpns_rmsk_x_0.value.length > 0) {
 			if (!valid_rlan_subnet(document.form.vpns_rnet_x_0, document.form.vpns_rmsk_x_0))
 				return false;
 		}
-		
+
 		for(i=0; i< ACLList.length; i++){
 			if(document.form.vpns_user_x_0.value==ACLList[i][0]) {
 				alert('<#JS_duplicate#>' + ' (' + ACLList[i][0] + ')' );
@@ -598,18 +598,18 @@ function showACLList(vnet_show,rnet_show,is_openvpn){
 				if (ACLList[i][3] != "" && ACLList[i][4] != "")
 					acl_rnet = ACLList[i][3] + ' / ' + ACLList[i][4];
 			}
-			
+
 			if (is_openvpn){
 				if (openssl_util_found() && openvpn_srv_cert_found() && login_safe())
 					acl_pass = '<a href="javascript:export_client_ovpn(\'' + ACLList[i][0] + '\');"><#VPNS_Export#></a>';
 			}else
 				acl_pass = '*****';
-			
+
 			if (ACLList[i][2] == "")
 				acl_addr = '*';
 			else
 				acl_addr = addr_part + ACLList[i][2];
-			
+
 			code += '<tr id="row' + i + '">';
 			code += '<td width="20%">&nbsp;' + ACLList[i][0] + '</td>';
 			code += '<td width="20%">&nbsp;' + acl_pass + '</td>';
@@ -899,13 +899,13 @@ function getHash(){
                                             <option value="6" <% nvram_match_x("", "vpns_ov_ciph", "6","selected"); %>>[DES-EDE3-CBC] 3DES, 192 bit</option>
                                             <option value="7" <% nvram_match_x("", "vpns_ov_ciph", "7","selected"); %>>[DESX-CBC] DES-X, 192 bit</option>
                                             <option value="8" <% nvram_match_x("", "vpns_ov_ciph", "8","selected"); %>>[AES-256-CBC] AES, 256 bit</option>
-                                            <option value="9" <% nvram_match_x("", "vpns_ov_ciph", "9","selected"); %>>[CAMELLIA-128-CBC] CAM, 128 bit</option>
-                                            <option value="10" <% nvram_match_x("", "vpns_ov_ciph", "10","selected"); %>>[CAMELLIA-192-CBC] CAM, 192 bit</option>
-                                            <option value="11" <% nvram_match_x("", "vpns_ov_ciph", "11","selected"); %>>[CAMELLIA-256-CBC] CAM, 256 bit</option>
-                                            <option value="12" <% nvram_match_x("", "vpns_ov_ciph", "12","selected"); %>>[AES-128-GCM] AES-GCM, 128 bit</option>
-                                            <option value="13" <% nvram_match_x("", "vpns_ov_ciph", "13","selected"); %>>[AES-192-GCM] AES-GCM, 192 bit</option>
-                                            <option value="14" <% nvram_match_x("", "vpns_ov_ciph", "14","selected"); %>>[AES-256-GCM] AES-GCM, 256 bit</option>
-                                            <option value="15" <% nvram_match_x("", "vpns_ov_ciph", "15","selected"); %>>[CHACHA20-POLY1305], 256 bit</option>
+                                            <option value="9" <% nvram_match_x("", "vpns_ov_ciph", "9","selected"); %>>[CAMELLIA-128-CBC] CAM, 128 bit</option>
+                                            <option value="10" <% nvram_match_x("", "vpns_ov_ciph", "10","selected"); %>>[CAMELLIA-192-CBC] CAM, 192 bit</option>
+                                            <option value="11" <% nvram_match_x("", "vpns_ov_ciph", "11","selected"); %>>[CAMELLIA-256-CBC] CAM, 256 bit</option>
+                                            <option value="12" <% nvram_match_x("", "vpns_ov_ciph", "12","selected"); %>>[AES-128-GCM] AES-GCM, 128 bit</option>
+                                            <option value="13" <% nvram_match_x("", "vpns_ov_ciph", "13","selected"); %>>[AES-192-GCM] AES-GCM, 192 bit</option>
+                                            <option value="14" <% nvram_match_x("", "vpns_ov_ciph", "14","selected"); %>>[AES-256-GCM] AES-GCM, 256 bit</option>
+                                            <option value="15" <% nvram_match_x("", "vpns_ov_ciph", "15","selected"); %>>[CHACHA20-POLY1305], 256 bit</option>
                                         </select>
                                     </td>
                                 </tr>

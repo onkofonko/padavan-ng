@@ -197,13 +197,13 @@ function calc_speed(now_perf){
 		}
 		if(p !== undefined){
 			var diff_rx = 0, diff_tx = 0;
-			
+
 			if(p.id != c.id) {
 				p.id = c.id;
 				p.rx = 0;
 				p.tx = 0;
 			}
-			
+
 			if(c.rx < p.rx){
 				if (p.rx <= 0xFFFFFFFF && p.rx > 0xE0000000)
 					diff_rx = (0xFFFFFFFF - p.rx) + c.rx;
@@ -211,41 +211,41 @@ function calc_speed(now_perf){
 				diff_rx = (c.rx - p.rx);
 			}
 			diff_rx = diff_rx * 1000 / diff_time;
-			
+
 			h.rx.splice(0, 1);
 			h.rx.push(diff_rx);
 			if (diff_rx > h.rx_max)
 				h.rx_max = diff_rx;
-			
+
 			t = 0;
 			for (j = (h.rx.length - updateAvgLen); j < h.rx.length; ++j)
 				t += h.rx[j];
 			h.rx_avg = t / updateAvgLen;
-			
+
 			if(c.tx < p.tx){
 				if (p.tx <= 0xFFFFFFFF && p.tx > 0xE0000000)
 					diff_tx = (0xFFFFFFFF - p.tx) + c.tx;
 			} else {
 				diff_tx = (c.tx - p.tx);
 			}
-			
+
 			diff_tx = diff_tx * 1000 / diff_time;
 			h.tx.splice(0, 1);
 			h.tx.push(diff_tx);
 			if (diff_tx > h.tx_max)
 				h.tx_max = diff_tx;
-			
+
 			t = 0;
 			for (j = (h.tx.length - updateAvgLen); j < h.tx.length; ++j)
 				t += h.tx[j];
 			h.tx_avg = t / updateAvgLen;
-			
+
 			diff_rx = diff_rx*8/1000000;
 			diff_tx = diff_tx*8/1000000;
-			
+
 			speed_rx[i].push([x, diff_rx]);
 			speed_tx[i].push([x, diff_tx]);
-			
+
 			if(i === last_netdev){
 				netChart.series[0].addPoint([x, diff_rx], false, false);
 				netChart.series[1].addPoint([x, diff_tx], false, false);

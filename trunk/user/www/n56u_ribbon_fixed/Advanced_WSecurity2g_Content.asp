@@ -35,11 +35,11 @@ function initial(){
 function applyRule(){
 	if(validForm()){
 		showLoading();
-		
+
 		document.form.action_mode.value = " Apply ";
 		document.form.current_page.value = "/Advanced_WSecurity2g_Content.asp";
 		document.form.next_page.value = "";
-		
+
 		document.form.submit();
 	}
 }

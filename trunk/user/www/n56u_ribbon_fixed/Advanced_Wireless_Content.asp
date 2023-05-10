@@ -118,16 +118,16 @@ function applyRule(){
 		    document.form.wl_radio_time2_x_startmin,
 		    document.form.wl_radio_time2_x_endhour,
 		    document.form.wl_radio_time2_x_endmin);
-		
+
 		showLoading();
-		
+
 		document.form.action_mode.value = " Apply ";
 		document.form.current_page.value = "/Advanced_Wireless_Content.asp";
 		document.form.next_page.value = "";
-		
+
 		if(auth_mode == "wpa" || auth_mode == "wpa2" || auth_mode == "radius")
 			document.form.next_page.value = "/Advanced_WSecurity_Content.asp";
-		
+
 		inputCtrl(document.form.wl_crypto, 1);
 		inputCtrl(document.form.wl_wpa_psk, 1);
 		inputCtrl(document.form.wl_wep_x, 1);
@@ -138,7 +138,7 @@ function applyRule(){
 		inputCtrl(document.form.wl_key4, 1);
 		inputCtrl(document.form.wl_phrase_x, 1);
 		inputCtrl(document.form.wl_wpa_gtk_rekey, 1);
-		
+
 		document.form.submit();
 	}
 }
@@ -205,7 +205,7 @@ function validForm(){
 	if(auth_mode == "psk"){
 		if(!validate_psk(document.form.wl_wpa_psk))
 			return false;
-		
+
 		if(!validate_range(document.form.wl_wpa_gtk_rekey, 0, 2592000))
 			return false;
 	}
@@ -230,12 +230,12 @@ function change_key_des(){
 	var objs = getElementsByName_iefix("span", "key_des");
 	var wep_type = document.form.wl_wep_x.value;
 	var str = "";
-	
+
 	if(wep_type == "1")
 		str = "(<#WLANConfig11b_WEPKey_itemtype1#>)";
 	else if(wep_type == "2")
 		str = "(<#WLANConfig11b_WEPKey_itemtype2#>)";
-	
+
 	for(var i = 0; i < objs.length; ++i)
 		showtext(objs[i], str);
 }
@@ -245,7 +245,7 @@ function validate_wlphrase(s, v, obj){
 		is_wlphrase(s, v, obj);
 		return(false);
 	}
-	
+
 	return true;
 }
 
@@ -453,7 +453,7 @@ function validate_wlphrase(s, v, obj){
                                                     <option value="open" <% nvram_match_x("", "wl_auth_mode", "open", "selected"); %>>Open System</option>
                                                     <option value="shared" <% nvram_match_x("", "wl_auth_mode", "shared", "selected"); %>>Shared Key</option>
                                                     <option value="psk" <% nvram_double_match_x("", "wl_auth_mode", "psk", "", "wl_wpa_mode", "1", "selected"); %>>WPA-Personal</option>
-                                                    <option value="psk" <% nvram_double_match_x("", "wl_auth_mode", "psk", "", "wl_wpa_mode", "2", "selected"); %>>WPA2-Personal</option>
+                                                    <option value="psk" <% nvram_double_match_x("", "wl_auth_mode", "psk", "", "wl_wpa_mode", "2", "selected"); %>>WPA2-Personal (*)</option>
                                                     <option value="psk" <% nvram_double_match_x("", "wl_auth_mode", "psk", "", "wl_wpa_mode", "0", "selected"); %>>WPA-Auto-Personal</option>
                                                     <option value="wpa" <% nvram_double_match_x("", "wl_auth_mode", "wpa", "", "wl_wpa_mode", "3", "selected"); %>>WPA-Enterprise (Radius)</option>
                                                     <option value="wpa2" <% nvram_match_x("", "wl_auth_mode", "wpa2", "selected"); %>>WPA2-Enterprise (Radius)</option>

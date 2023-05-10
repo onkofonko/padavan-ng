@@ -117,27 +117,27 @@ function validForm(){
 		addr_obj = document.form.wan_ipaddr;
 		mask_obj = document.form.wan_netmask;
 		gate_obj = document.form.wan_gateway;
-		
+
 		if(!validate_ipaddr_final(addr_obj, 'wan_ipaddr')
 				|| !validate_ipaddr_final(mask_obj, 'wan_netmask')
 				|| !validate_ipaddr_final(gate_obj, 'wan_gateway')
 				)
 			return false;
-		
+
 		if(gate_obj.value == addr_obj.value){
 			alert("<#IPConnection_warning_WANIPEQUALGatewayIP#>");
 			gate_obj.select();
 			gate_obj.focus();
 			return false;
 		}
-		
+
 		if(matchSubnet2(lan_addr, lan_mask, addr_obj.value, mask_obj.value)){
 			alert("<#JS_validsubnet#>");
 			mask_obj.focus();
 			mask_obj.select();
 			return false;
 		}
-		
+
 		if(!validate_range(document.form.wan_mtu, 1300, 1500))
 			return false;
 	}
@@ -200,7 +200,7 @@ function validForm(){
 			if(!validate_range(document.form.vlan_pri_cpu, 0, 7))
 				return false;
 		}
-		
+
 		vlan_obj = document.form.vlan_vid_iptv;
 		if(vlan_obj.value.length > 0){
 			if(vlan_obj.value!="2" && !validate_range(vlan_obj, min_vlan, 4094))
@@ -208,7 +208,7 @@ function validForm(){
 			if(!validate_range(document.form.vlan_pri_iptv, 0, 7))
 				return false;
 		}
-		
+
 		if (wan_stb_x == "1" || wan_stb_x == "6" || wan_stb_x == "7"){
 			vlan_obj = document.form.vlan_vid_lan1;
 			if(vlan_obj.value.length > 0){
@@ -218,7 +218,7 @@ function validForm(){
 					return false;
 			}
 		}
-		
+
 		if (wan_stb_x == "2" || wan_stb_x == "6" || wan_stb_x == "7"){
 			vlan_obj = document.form.vlan_vid_lan2;
 			if(vlan_obj.value.length > 0){
@@ -228,7 +228,7 @@ function validForm(){
 					return false;
 			}
 		}
-		
+
 		if (wan_stb_x == "3" || wan_stb_x == "5" || wan_stb_x == "7"){
 			vlan_obj = document.form.vlan_vid_lan3;
 			if(vlan_obj.value.length > 0){
@@ -238,7 +238,7 @@ function validForm(){
 					return false;
 			}
 		}
-		
+
 		if (wan_stb_x == "4" || wan_stb_x == "5"){
 			vlan_obj = document.form.vlan_vid_lan4;
 			if(vlan_obj.value.length > 0){
@@ -248,7 +248,7 @@ function validForm(){
 					return false;
 			}
 		}
-		
+
 		if (document.form.viptv_mode.value == "2"){
 			addr_obj = document.form.viptv_ipaddr;
 			mask_obj = document.form.viptv_netmask;
@@ -257,7 +257,7 @@ function validForm(){
 				|| !validate_ipaddr_final(mask_obj, 'viptv_netmask')
 				)
 				return false;
-			
+
 			if(matchSubnet2(lan_addr, lan_mask, addr_obj.value, mask_obj.value)){
 				alert("<#JS_validsubnet#>");
 				mask_obj.focus();
@@ -318,12 +318,12 @@ function change_wan_type(wan_type, flag){
 	if(is_pppoe||is_pptp||is_l2tp){
 		$("dhcp_sect_desc").innerHTML = "<#WAN_MAN_desc#>";
 		$("dhcp_auto_desc").innerHTML = "<#WAN_MAN_DHCP#>";
-		
+
 		var dhcp_sect = 1;
 		if (is_pppoe && document.form.wan_pppoe_man.value != "1")
 			dhcp_sect = 0;
 		showhide_div("tbl_dhcp_sect", dhcp_sect);
-		
+
 		showhide_div("row_ppp_peer", is_pptp||is_l2tp);
 		showhide_div("row_ppp_mppe", is_pptp||is_l2tp);
 		showhide_div("row_pppoe_svc", is_pppoe);
@@ -367,9 +367,9 @@ function fixed_change_wan_type(wan_type){
 	if(wan_type == "static"){
 		inputRCtrl2(document.form.wan_dnsenable_x, 1);
 		$j('#wan_dnsenable_x_on_of').iState(0);
-		
+
 		set_wan_dns_auto(0);
-		
+
 		if(flag == true && document.form.wan_dns1_x.value.length == 0)
 			document.form.wan_dns1_x.focus();
 	}
@@ -436,12 +436,12 @@ function change_wan_dhcp_enable(wan_type){
 		var dhcp_auto = original_wan_dhcp_auto;
 		inputRCtrl2(document.form.x_DHCPClient, !dhcp_auto);
 		$j('#x_DHCPClient_on_of').iState(dhcp_auto);
-		
+
 		inputCtrl(document.form.x_DHCPClient[0], 1);
 		inputCtrl(document.form.x_DHCPClient[1], 1);
 		$j('input[name="x_DHCPClient"]').removeAttr('disabled');
 		$j('#x_DHCPClient_on_of').iClickable(1);
-		
+
 		set_wan_dhcp_auto(dhcp_auto);
 	}
 	else if(wan_type == "static"){
@@ -452,7 +452,7 @@ function change_wan_dhcp_enable(wan_type){
 		inputCtrl(document.form.x_DHCPClient[1], 0);
 		$j('input[name="x_DHCPClient"]').attr('disabled','disabled');
 		$j('#x_DHCPClient_on_of').iClickable(0);
-		
+
 		set_wan_dhcp_auto(0);
 	}
 	else{
@@ -463,7 +463,7 @@ function change_wan_dhcp_enable(wan_type){
 		inputCtrl(document.form.x_DHCPClient[1], 0);
 		$j('input[name="x_DHCPClient"]').attr('disabled','disabled');
 		$j('#x_DHCPClient_on_of').iClickable(0);
-		
+
 		set_wan_dhcp_auto(1);
 	}
 }

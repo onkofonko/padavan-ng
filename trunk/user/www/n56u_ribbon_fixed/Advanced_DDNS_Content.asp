@@ -63,7 +63,7 @@ var ddns_list = [
 	[ 0x0f, "SPDYN.DE",             "", "https://spdyn.de/" ],
 	[ 0x0f, "WWW.STRATO.DE",        "", "https://www.strato.de/" ],
 	[ 0x0f, "CLOUDXNS.NET",         "", "https://www.cloudxns.net/" ],
-	[ 0x0f, "3322.ORG",             "", "http://www.pubyun.com/" ],
+	[ 0x0f, "WWW.PUBYUN.COM",       "(3322.NET)", "http://www.pubyun.com/accounts/signin/" ],
 	[ 0x0f, "DNSPOD.CN",            "", "https://www.dnspod.cn/" ],
 	[ 0x0f, "DYNU.COM",             "", "https://www.dynu.com/" ],
 	[ 0x0f, "SELFHOST.DE",          "", "https://selfhost.de/cgi-bin/selfhost" ],
@@ -291,11 +291,11 @@ function show_asus_alert(hname)
 	else if(ddns_return_code == 'register,296')
 		alert("<#LANHostConfig_x_DDNS_alarm_6#>");
 	else if(ddns_return_code == 'register,297'){
-		document.form.ddns_hostname_x.value = ""; 
+		document.form.ddns_hostname_x.value = "";
 		alert("<#LANHostConfig_x_DDNS_alarm_7#>");
 	}
 	else if(ddns_return_code == 'register,298'){
-		document.form.ddns_hostname_x.value = ""; 
+		document.form.ddns_hostname_x.value = "";
 		alert("<#LANHostConfig_x_DDNS_alarm_8#>");
 	}
 	else if(ddns_return_code == 'register,299')
@@ -380,11 +380,11 @@ function validForm(){
 function applyRule(){
 	if(validForm()){
 		showLoading();
-		
+
 		document.form.action_mode.value = " Apply ";
 		document.form.current_page.value = "/Advanced_DDNS_Content.asp";
 		document.form.next_page.value = "";
-		
+
 		document.form.submit();
 	}
 }

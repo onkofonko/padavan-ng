@@ -78,7 +78,7 @@ function initial(){
 		http_proto_change();
 	}
 	change_crond_enabled();
-	
+
 	if(found_app_tor() || found_app_privoxy() || found_app_dnscrypt()){
 		showhide_div('tbl_anon', 1);
 	}
@@ -88,7 +88,7 @@ function initial(){
 		showhide_div('row_tor_conf', 0);
 	}else
 		change_tor_enabled();
-		
+
 	if(!found_app_privoxy()){
 		showhide_div('row_privoxy', 0);
 		showhide_div('row_privoxy_conf', 0);
@@ -97,7 +97,7 @@ function initial(){
 		showhide_div('row_privoxy_trust', 0);
 	}else
 		change_privoxy_enabled();
-		
+
 	if(!found_app_dnscrypt()){
 		showhide_div('row_dnscrypt', 0);
 		showhide_div('row_dnscrypt_resolver', 0);
@@ -112,11 +112,11 @@ function initial(){
 function applyRule(){
 	if(validForm()){
 		showLoading();
-		
+
 		document.form.action_mode.value = " Apply ";
 		document.form.current_page.value = "/Advanced_Services_Content.asp";
 		document.form.next_page.value = "";
-		
+
 		document.form.submit();
 	}
 

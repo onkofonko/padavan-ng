@@ -90,13 +90,13 @@ function applyRule(){
 			document.form.filter_lw_time_x_startmin,
 			document.form.filter_lw_time_x_endhour,
 			document.form.filter_lw_time_x_endmin);
-		
+
 		showLoading();
-		
+
 		document.form.action_mode.value = " Restart ";
 		document.form.current_page.value = "/Advanced_Firewall_Content.asp";
 		document.form.next_page.value = "";
-		
+
 		document.form.submit();
 	}
 }
@@ -121,7 +121,7 @@ function validForm(){
 			|| !validate_timerange(document.form.filter_lw_time_x_endmin, 3)
 			)
 		return false;
-		
+
 		var starttime = eval(document.form.filter_lw_time_x_starthour.value + document.form.filter_lw_time_x_startmin.value);
 		var endtime = eval(document.form.filter_lw_time_x_endhour.value + document.form.filter_lw_time_x_endmin.value);
 		if(starttime == endtime){
@@ -177,12 +177,12 @@ function change_wizard(o, id){
 					obj.options[8].selected = 1;
 				else if(wItem[i][2] == "OTHER")
 					obj.options[9].selected = 1;
-				
+
 				if (obj.options.selectedIndex == 9)
 					document.form.filter_lw_protono_x_0.value = wItem[i][1];
 				else
 					document.form.filter_lw_dstport_x_0.value = wItem[i][1];
-				
+
 				break;
 			}
 		}
@@ -257,7 +257,7 @@ function markGroupLWF(o, c, b) {
 				return false;
 			}else if (!validate_range(obj, 0, 255))
 				return false;
-			
+
 			for (i = 0; i < LWFilterList.length; i++) {
 				if (document.form.filter_lw_srcip_x_0.value == LWFilterList[i][0] &&
 						document.form.filter_lw_dstip_x_0.value == LWFilterList[i][2] &&
@@ -274,7 +274,7 @@ function markGroupLWF(o, c, b) {
 				return false;
 			if (!validate_portrange(document.form.filter_lw_dstport_x_0, ""))
 				return false;
-			
+
 			if (document.form.filter_lw_srcip_x_0.value == "" &&
 					document.form.filter_lw_dstip_x_0.value == "" &&
 					document.form.filter_lw_srcport_x_0.value == "" &&

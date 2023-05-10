@@ -305,9 +305,9 @@ function dec_html(all_disk_order){
 			TotalSize = simpleNum(foreign_disk_total_size()[all_disk_order]);
 		else
 			TotalSize = simpleNum(blank_disk_total_size()[all_disk_order-foreign_disks().length]);
-		
+
 		all_accessable_size = simpleNum2(computeallpools(all_disk_order, "size")-computeallpools(all_disk_order, "size_in_use"));
-		
+
 		percentbar = simpleNum2((all_accessable_size)/TotalSize*100);
 		percentbar = Math.round(100-percentbar);
 		if(percentbar >= 66 && percentbar < 85)

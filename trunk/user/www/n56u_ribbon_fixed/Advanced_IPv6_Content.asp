@@ -54,7 +54,7 @@ function initial(){
 function applyRule(){
 	if(validForm()){
 		showLoading();
-		
+
 		document.form.current_page.value = "/Advanced_IPv6_Content.asp";
 		document.form.next_page.value = "";
 		document.form.action_mode.value = " Apply ";
@@ -182,7 +182,7 @@ function change_ip6_service(){
 		$('row_ip6_6rd_size').style.display="none";
 		$('row_ip6_6rd_dhcp').style.display="none";
 	}
-	
+
 	if (ip6_con=="static") {
 		$('tbl_ip6_sit').style.display="none";
 		$('row_ip6_wan_dhcp').style.display="none";
@@ -236,17 +236,17 @@ function change_ip6_service(){
 		inputRCtrl2(document.form.ip6_lan_auto, 0);
 		$j('#ip6_dns_auto_on_of').iState(0);
 		$j('#ip6_lan_auto_on_of').iState(1);
-		
+
 		if (wan_proto == "static") {
 			document.form.ip6_6rd_dhcp.selectedIndex = 0;
 			inputCtrl(document.form.ip6_6rd_dhcp, 0);
 		}
-		
+
 		if (document.form.ip6_6rd_dhcp.value == "1") {
 			if (wan_proto != "dhcp")
 				warn = true;
 		}
-		
+
 		if (ppp) warn = true;
 	}
 	else {

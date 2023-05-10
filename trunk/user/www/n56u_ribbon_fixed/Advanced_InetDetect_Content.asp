@@ -34,11 +34,11 @@ function initial(){
 function applyRule(){
 	if(validForm()){
 		showLoading();
-		
+
 		document.form.action_mode.value = " Apply ";
 		document.form.current_page.value = "/Advanced_InetDetect_Content.asp";
 		document.form.next_page.value = "";
-		
+
 		document.form.submit();
 	}
 }
@@ -65,7 +65,7 @@ function validForm(){
 	if (document.form.di_poll_mode.value == "1"){
 		if(!validate_range(document.form.di_lost_delay, 0, 600))
 			return false;
-		
+
 		if (document.form.di_lost_action.value == "2" && !get_ap_mode()){
 			if(!validate_range(document.form.di_recon_pause, 0, 600))
 				return false;

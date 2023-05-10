@@ -222,7 +222,7 @@ function fill_wan_bytes(rx,tx,now){
 		last_bytes_rx = rx;
 		last_bytes_tx = tx;
 		last_time = now;
-		
+
 		$("WANBytesRX").innerHTML = '<i class="icon-arrow-down"></i>'+bytesToIEC(rx,2);
 		$("WANBytesTX").innerHTML = '<i class="icon-arrow-up"></i>'+bytesToIEC(tx,2);
 		$("WANBRateRX").innerHTML = '<i class="icon-arrow-down"></i>'+kbitsToRate(diff_rx,2);

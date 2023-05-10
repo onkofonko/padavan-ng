@@ -55,11 +55,11 @@ function initial(){
 function applyRule(){
 	if(validForm()){
 		showLoading();
-		
+
 		document.form.action_mode.value = " Apply ";
 		document.form.current_page.value = "/Advanced_Exposed_Content.asp";
 		document.form.next_page.value = "";
-		
+
 		document.form.submit();
 	}
 }
@@ -79,13 +79,13 @@ function setClientIP(num){
 function showLANIPList(){
 	var code = "";
 	var show_name = "";
-	
+
 	for(var i = 0; i < clients_info.length ; i++){
 		if(clients_info[i][0] && clients_info[i][0].length > 20)
 			show_name = clients_info[i][0].substring(0, 18) + "..";
 		else
 			show_name = clients_info[i][0];
-		
+
 		if(clients_info[i][1]){
 			code += '<a href="javascript:void(0)"><div onclick="setClientIP('+i+');"><strong>'+clients_info[i][1]+'</strong>';
 			if(show_name && show_name.length > 0)
@@ -100,7 +100,7 @@ function showLANIPList(){
 }
 
 function pullLANIPList(obj){
-	
+
 	if(isMenuopen == 0){
 		$j(obj).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-up');
 		$("ClientList_Block").style.display = 'block';

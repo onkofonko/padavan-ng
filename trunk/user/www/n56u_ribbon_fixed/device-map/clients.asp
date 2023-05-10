@@ -75,7 +75,7 @@ function prepare_clients(){
 			if(!checkDuplicateName(list_of_BlockedClient[i][0], clients)){
 				k = clients.length;
 				clients[k] = new Array(8);
-				
+
 				clients[k][0] = "*";
 				clients[k][1] = "*";
 				clients[k][2] = list_of_BlockedClient[i][0];
@@ -84,9 +84,9 @@ function prepare_clients(){
 				clients[k][5] = "6";
 				clients[k][6] = "0";
 				clients[k][7] = "b";
-				
+
 				var mac_up = list_of_BlockedClient[i][0].toUpperCase();
-				
+
 				for(j = 0; j < m_dhcp.length; ++j){
 					if (mac_up == m_dhcp[j][0].toUpperCase()){
 						if (m_dhcp[j][2] != null && m_dhcp[j][2].length > 0)
@@ -97,7 +97,7 @@ function prepare_clients(){
 				}
 			}
 		}
-		
+
 		for(i = 0; i < clients.length; ++i){
 			if(!checkDuplicateName(clients[i][2], list_of_BlockedClient)){
 				clients[i][7] = "u";
@@ -190,15 +190,15 @@ function show_clients(){
 	var i, j, k;
 	var table1, table2;
 	var addClient, clientType, clientName, clientIP, clientMAC, clientBlock;
-	
+
 	table1 = $('Clients_table');
 	table2 = $('xClients_table');
-	
+
 	while (table1.rows.length > 2)
 		table1.deleteRow(-1);
 	while (table2.rows.length > 2)
 		table2.deleteRow(-1);
-	
+
 	var hasBlocked = false;
 	for(j=0, i=0, k=0; j < clients.length; j++){
 		if(clients[j][7] == "u" || sw_mode == "3"){

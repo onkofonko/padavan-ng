@@ -151,16 +151,16 @@ function redraw_speed(){
 		var h = speed_history[i];
 		if ((typeof(h.rx) === 'undefined') || (typeof(h.tx) === 'undefined'))
 			continue;
-		
+
 		netChart.series[0].setData(prepareData(x, h.rx), false);
 		netChart.series[1].setData(prepareData(x, h.tx), false);
-		
+
 		if (netdev !== i){
 			netdev = i;
 			setChartTitle(i);
 			E('sel_netif').value = 'speed-tab-' + i;
 		}
-		
+
 		break;
 	}
 

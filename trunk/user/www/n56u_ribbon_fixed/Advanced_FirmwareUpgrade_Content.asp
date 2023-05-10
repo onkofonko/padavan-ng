@@ -215,7 +215,6 @@ function submitInternet(v){
                                             <li><#FW_n2#></li>
                                         </ol>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -224,9 +223,7 @@ function submitInternet(v){
             </div>
         </div>
     </div>
-
     </form>
-
     <div id="footer"></div>
 </div>
 <form method="post" name="bigtmp_action" action="">

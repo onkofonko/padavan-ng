@@ -88,13 +88,13 @@ function applyRule(){
 			updateDateTime();
 		}
 		showLoading();
-		
+
 		if(document.form.http_passwd2.value.length > 0)
 			document.form.http_passwd.value = document.form.http_passwd2.value;
 		document.form.action_mode.value = " Apply ";
 		document.form.current_page.value = "/Advanced_System_Content.asp";
 		document.form.next_page.value = "";
-		
+
 		document.form.submit();
 	}
 }
@@ -115,10 +115,10 @@ function validForm(){
 
 	if(document.form.http_passwd2.value != document.form.v_password2.value){
 		showtext($("alert_msg"),"*<#File_Pop_content_alert_desc7#>");
-		
+
 		document.form.http_passwd2.focus();
 		document.form.http_passwd2.select();
-		
+
 		return false;
 	}
 
@@ -175,9 +175,9 @@ function blanktest(obj, flag){
 			obj.value = decodeURIComponent(value2);
 		else
 			obj.value = "";
-		
+
 		alert("<#JS_Shareblanktest#>");
-		
+
 		return false;
 	}
 

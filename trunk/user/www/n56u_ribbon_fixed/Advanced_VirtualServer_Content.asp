@@ -160,7 +160,7 @@ function change_wizard(o, id){
 	var obj = document.form.vts_proto_x_0;
 	if(id == "KnownApps"){
 		$("KnownGames").value = 0;
-		
+
 		for(i = 0; i < wItem.length; ++i){
 			if(wItem[i][0] != null && o.value == i){
 				if(wItem[i][2] == "TCP")
@@ -171,7 +171,7 @@ function change_wizard(o, id){
 					obj.options[2].selected = 1;
 				else
 					obj.options[3].selected = 1;
-				
+
 				document.form.vts_ipaddr_x_0.value = client_ip;
 				if (obj.options.selectedIndex == 3)
 					document.form.vts_protono_x_0.value = wItem[i][1];
@@ -181,12 +181,12 @@ function change_wizard(o, id){
 				break;
 			}
 		}
-		
+
 		document.form.vts_lport_x_0.value = "";
 	}
 	else if(id == "KnownGames"){
 		$("KnownApps").value = 0;
-		
+
 		for(i = 0; i < wItem2.length; ++i){
 			if(wItem2[i][0] != null && o.value == i){
 				if(wItem2[i][2] == "TCP")
@@ -197,7 +197,7 @@ function change_wizard(o, id){
 					obj.options[2].selected = 1;
 				else
 					obj.options[3].selected = 1;
-				
+
 				document.form.vts_ipaddr_x_0.value = client_ip;
 				if (obj.options.selectedIndex == 3)
 					document.form.vts_protono_x_0.value = wItem2[i][1];
@@ -251,7 +251,7 @@ function markGroupVS(o, c, b) {
 				return false;
 			}else if (!validate_range(obj, 0, 255))
 				return false;
-			
+
 			for(i=0; i< VSList.length; i++){
 				if (VSList[i][3] == 'OTHER' && VSList[i][4] == obj.value) {
 					alert('<#JS_duplicate#>' + ' (Protocol ' + VSList[i][4] + ')' );
@@ -309,7 +309,7 @@ function split_vts_rule(s){
 		document.form.vts_port_x_0.value = this.vts_rule_array[0];
 		this.vts_rule_array.shift();
 	}
-	
+
 	for(i=0; i< VSList.length; i++){
 		if(entry_cmp(VSList[i][3].toLowerCase(), document.form.vts_proto_x_0.value.toLowerCase(), 5)==0){
 			if(!(portrange_min(document.form.vts_port_x_0.value, 11) > portrange_max(VSList[i][0], 11) ||
@@ -346,7 +346,7 @@ function split_vts_rule(s){
 			}
 		}
 	}
-	
+
 	if (count_dup != "0"){
 		alert('<#JS_duplicate#>');
 		split_vts_rule();
@@ -374,7 +374,7 @@ function showLANIPList(){
 			show_name = clients_info[i][0].substring(0, 18) + "..";
 		else
 			show_name = clients_info[i][0];
-		
+
 		if(clients_info[i][1]){
 			code += '<a href="javascript:void(0)"><div onclick="setClientIP('+i+');"><strong>'+clients_info[i][1]+'</strong>';
 			if(show_name && show_name.length > 0)

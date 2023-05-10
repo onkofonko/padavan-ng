@@ -129,7 +129,7 @@ function fill_port_link(oname,ins1g,pid){
 		idx = ether_link_mode(pid);
 	add_option(o, "Auto", "0", idx==0);
 	if (ins1g)
-		add_option(o, "1000 Mbps, Full Duplex: [AN]", "1", idx==1);
+	add_option(o, "1000 Mbps, Full Duplex: [AN]", "1", idx==1);
 	add_option(o, "100 Mbps, Full Duplex: [AN]", "2", idx==2);
 	add_option(o, "100 Mbps, Half Duplex: [AN]", "3", idx==3);
 	add_option(o, "10 Mbps, Full Duplex: [AN]", "4", idx==4);

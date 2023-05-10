@@ -94,9 +94,9 @@ function applyRule(){
 		    document.form.rt_guest_time2_x_startmin,
 		    document.form.rt_guest_time2_x_endhour,
 		    document.form.rt_guest_time2_x_endmin);
-		
+
 		showLoading();
-		
+
 		document.form.action_mode.value = " Apply ";
 		document.form.current_page.value = "/Advanced_WGuest2g_Content.asp";
 		document.form.next_page.value = "";
@@ -184,7 +184,7 @@ function change_guest_auth_mode(mflag) {
 	{
 		inputCtrl(document.form.rt_guest_crypto, 1);
 		inputCtrl(document.form.rt_guest_wpa_psk, 1);
-		
+
 		if(opts[opts.selectedIndex].text == "WPA2-Personal")
 		{
 			if (mflag == 1) {

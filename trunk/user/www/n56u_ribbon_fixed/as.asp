@@ -63,14 +63,14 @@ function show_sitemap(){
 		for(var m = 1; m < tabtitle[l].length; m++){
 			if(tablink[l][m] == "")
 				continue;
-			
+
 			map_code += '    <li>\n';
 			map_code += '        <a href="'+tablink[l][m]+'">'
 			map_code += tabtitle[l][m];
 			map_code += '</a>\n    </li>\n';
 		}
 		map_code += '</ul>\n';
-		
+
 		var n = (l/4 < 1)?0:3;
 		$("menu_body").rows[n+2].cells[l%4].innerHTML = map_code;
 	}

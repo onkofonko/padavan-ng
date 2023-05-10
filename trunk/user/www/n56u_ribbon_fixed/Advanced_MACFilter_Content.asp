@@ -61,7 +61,7 @@ function initial(){
 function applyRule(){
 	if(prevent_lock()){
 		showLoading();
-		
+
 		if (document.form.macfilter_enable_x.value == "0")
 			document.form.action_mode.value = " Apply ";
 		else
@@ -119,7 +119,7 @@ function showLANIPList(){
 			show_name = clients_info[i][0].substring(0, 18) + "..";
 		else
 			show_name = clients_info[i][0];
-		
+
 		if(clients_info[i][2]){
 			code += '<a href="javascript:void(0)"><div onclick="setClientMAC('+i+');"><strong>'+clients_info[i][1]+'</strong>';
 			code += ' ['+clients_info[i][2]+']';
@@ -130,7 +130,7 @@ function showLANIPList(){
 	}
 	if (code == "")
 		code = '<div style="text-align: center;" onclick="hideClients_Block();"><#Nodata#></div>';
-	code +='<!--[if lte IE 6.5]><iframe class="hackiframe2"></iframe><![endif]-->';	
+	code +='<!--[if lte IE 6.5]><iframe class="hackiframe2"></iframe><![endif]-->';
 	$("ClientList_Block").innerHTML = code;
 }
 
@@ -219,7 +219,7 @@ function markGroupMAC(o, c, b) {
 	if(b == " Add "){
 		if (validNewRow(c) == false)
 			return false;
-		
+
 		updateDT();
 	}
 	pageChanged = 0;
@@ -249,12 +249,12 @@ function format_date(nvdate) {
 		caption = caption + ", <#DAY_Sat#>";
 	if (getDateCheck(nvdate, 0) == true)
 		caption = caption + ", <#DAY_Sun#>";
-	
+
 	if (caption == "")
 		caption = "-";
 	else
 		caption = caption.substring(2);
-	
+
 	return caption;
 }
 
@@ -265,7 +265,7 @@ function showMFList(){
 
 	if(MACList.length == 0) {
 		code +='<tr><td colspan="4" style="text-align: center;"><div class="alert alert-info"><#IPConnection_VSList_Norule#></div></td></tr>';
-		
+
 		document.form.macfilter_time_x_0.value = (temp_time == '') ? "00002359" : temp_time;
 		document.form.macfilter_date_x_0.value = (temp_date == '') ? "1111111" : temp_date;
 	}
@@ -282,7 +282,7 @@ function showMFList(){
 		code += '<td colspan="3">&nbsp;</td>'
 		code += '<td><button class="btn btn-danger" type="submit" onclick="return markGroupMAC(this, 64, \' Del \');" name="MFList"><i class="icon icon-minus icon-white"></i></button></td>';
 		code += '</tr>'
-		
+
 		var last_row = MACList.length - 1;
 		document.form.macfilter_time_x_0.value = (temp_time == '') ? MACList[last_row][1] : temp_time;
 		document.form.macfilter_date_x_0.value = (temp_date == '') ? MACList[last_row][2] : temp_date;

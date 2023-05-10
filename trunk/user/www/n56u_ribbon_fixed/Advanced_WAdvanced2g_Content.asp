@@ -57,9 +57,9 @@ function initial(){
 		}
 	}
 
-	if (support_2g_stream_tx()<4) 
+	if (support_2g_stream_tx()<4)
 		document.form.rt_stream_tx.remove(3);
-	if (support_2g_stream_tx()<3) 
+	if (support_2g_stream_tx()<3)
 		document.form.rt_stream_tx.remove(2);
 	if (support_2g_stream_tx()<2) {
 		document.form.rt_stream_tx.remove(1);
@@ -105,11 +105,11 @@ function change_wmm() {
 function applyRule(){
 	if(validForm()){
 		showLoading();
-		
+
 		document.form.action_mode.value = " Apply ";
 		document.form.current_page.value = "/Advanced_WAdvanced2g_Content.asp";
 		document.form.next_page.value = "";
-		
+
 		document.form.submit();
 	}
 }

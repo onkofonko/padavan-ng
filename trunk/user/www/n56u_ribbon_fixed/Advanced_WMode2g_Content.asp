@@ -212,7 +212,7 @@ function showLANIPList(){
 				show_name = wds_aplist[i][0].substring(0, 14) + "..";
 			else
 				show_name = wds_aplist[i][0];
-			
+
 			if(wds_aplist[i][1] && wds_aplist[i][1].length > 0){
 				code += '<a href="javascript:void(0)"><div onclick="setClientIP('+i+');"><strong>'+show_name+'</strong>';
 				code += ' ['+wds_aplist[i][1]+']';

@@ -842,7 +842,7 @@ function validate_portrange(o,v) {
             o.select();
             return false;
         }
-    } // wrong port 
+    } // wrong port
     else {
         if (prev == -2) {
             if (num == 65535) o.value = num;

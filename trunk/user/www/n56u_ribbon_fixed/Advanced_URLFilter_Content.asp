@@ -78,13 +78,13 @@ function applyRule(){
 			document.form.url_time_x_startmin,
 			document.form.url_time_x_endhour,
 			document.form.url_time_x_endmin);
-		
+
 		showLoading();
-		
+
 		document.form.action_mode.value = " Restart ";
 		document.form.current_page.value = "/Advanced_URLFilter_Content.asp";
 		document.form.next_page.value = "";
-		
+
 		document.form.submit();
 	}
 }
@@ -110,7 +110,7 @@ function validForm(){
 			){
 			return false;
 		}
-		
+
 		var starttime = eval(document.form.url_time_x_starthour.value + document.form.url_time_x_startmin.value);
 		var endtime = eval(document.form.url_time_x_endhour.value + document.form.url_time_x_endmin.value);
 		if(starttime == endtime){
@@ -144,13 +144,13 @@ function setClientMAC(num){
 function showLANIPList(){
 	var code = "";
 	var show_name = "";
-	
+
 	for(var i = 0; i < clients_info.length ; i++){
 		if(clients_info[i][0] && clients_info[i][0].length > 20)
 			show_name = clients_info[i][0].substring(0, 18) + "..";
 		else
 			show_name = clients_info[i][0];
-		
+
 		if(clients_info[i][2]){
 			code += '<a href="javascript:void(0)"><div onclick="setClientMAC('+i+');"><strong>'+clients_info[i][1]+'</strong>';
 			code += ' ['+clients_info[i][2]+']';
@@ -161,7 +161,7 @@ function showLANIPList(){
 	}
 	if (code == "")
 		code = '<div style="text-align: center;" onclick="hideClients_Block();"><#Nodata#></div>';
-	code +='<!--[if lte IE 6.5]><iframe class="hackiframe2"></iframe><![endif]-->';	
+	code +='<!--[if lte IE 6.5]><iframe class="hackiframe2"></iframe><![endif]-->';
 	$("ClientList_Block").innerHTML = code;
 }
 

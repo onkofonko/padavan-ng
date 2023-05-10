@@ -38,13 +38,13 @@ var isMenuopen = 0;
 
 function initial(){
 	show_banner(1);
-	
+
 	show_menu(5,2,4);
-	
+
 	show_footer();
-	
+
 	change_mac_enabled();
-	
+
 	showACLList();
 	showLANIPList();
 }
@@ -100,16 +100,16 @@ function setClientMAC(num){
 function showLANIPList(){
 	var code = "";
 	var show_name = "";
-	
+
 	for(var i = 0; i < clients_info.length ; i++){
 		if(clients_info[i][3] != 10)
 			continue;
-		
+
 		if(clients_info[i][0] && clients_info[i][0].length > 20)
 			show_name = clients_info[i][0].substring(0, 18) + "..";
 		else
 			show_name = clients_info[i][0];
-		
+
 		if(clients_info[i][2]){
 			code += '<a href="javascript:void(0)"><div onclick="setClientMAC('+i+');"><strong>'+clients_info[i][1]+'</strong>';
 			code += ' ['+clients_info[i][2]+']';
@@ -120,7 +120,7 @@ function showLANIPList(){
 	}
 	if (code == "")
 		code = '<div style="text-align: center;" onclick="hideClients_Block();"><#Nodata#></div>';
-	code +='<!--[if lte IE 6.5]><iframe class="hackiframe2"></iframe><![endif]-->';	
+	code +='<!--[if lte IE 6.5]><iframe class="hackiframe2"></iframe><![endif]-->';
 	$("ClientList_Block").innerHTML = code;
 }
 
