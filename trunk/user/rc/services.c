@@ -197,7 +197,7 @@ is_sshd_run(void)
 		if (pids("sshd"))
 			return 1;
 	}
-	
+
 	return 0;
 }
 
@@ -427,12 +427,12 @@ start_httpd(int restart_fw)
 			http_port = 80;
 			nvram_set_int("http_lanport", http_port);
 		}
-		
+
 		sprintf(http_port_s, "%d", http_port);
-		
+
 		httpd_argv[argv_index++] = "-p";
 		httpd_argv[argv_index++] = http_port_s;
-		
+
 		restart_fw_need |= nvram_get_int("misc_http_x");
 	}
 
@@ -443,12 +443,12 @@ start_httpd(int restart_fw)
 			https_port = 443;
 			nvram_set_int("https_lport", https_port);
 		}
-		
+
 		sprintf(https_port_s, "%d", https_port);
-		
+
 		httpd_argv[argv_index++] = "-s";
 		httpd_argv[argv_index++] = https_port_s;
-		
+
 		restart_fw_need |= nvram_get_int("https_wopen");
 	}
 #endif
@@ -531,7 +531,7 @@ start_logger(int showinfo)
 	{
 		// wait for logger daemon started
 		usleep(300000);
-		
+
 #if 0
 #if defined (VENDOR_ASUS)
 		logmessage(LOGNAME, "bootloader version: %s", nvram_safe_get("blver"));
@@ -597,7 +597,7 @@ start_services_once(int is_ap_mode)
 	if (!is_ap_mode) {
 		if (!is_upnp_run())
 			start_upnp();
-		
+
 		if (!nvram_match("lan_stp", "0")) {
 			br_set_stp(IFNAME_BR, 1);
 			br_set_fd(IFNAME_BR, 15);

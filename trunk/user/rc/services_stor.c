@@ -145,14 +145,14 @@ write_vsftpd_conf(void)
 	fprintf(fp, "max_clients=%d\n", i_maxuser);
 	fprintf(fp, "max_per_ip=%d\n", i_maxuser);
 	fprintf(fp, "ftpd_banner=Welcome to %s FTP service.\n", nvram_safe_get("productid"));
-	
+
 	fclose(fp);
 }
 
 void
 run_ftp(void)
 {
-	if (nvram_match("enable_ftp", "0")) 
+	if (nvram_match("enable_ftp", "0"))
 		return;
 
 	if (is_ftp_run())
@@ -583,6 +583,7 @@ write_nfsd_exports(void)
 	const char *exports_file = "/etc/exports";
 	const char *exports_rule = "async,insecure,no_root_squash,no_subtree_check";
 	char *nfsmm, *acl_addr, *acl_mask;
+
 #if defined (USE_IPV6)
 	int ipv6_type;
 	char *acl_addr6, *acl_len6;
@@ -628,7 +629,7 @@ write_nfsd_exports(void)
 		} else
 #endif
 			ip2class(acl_addr, acl_mask, acl_vpn, sizeof(acl_vpn));
-		
+
 		if (strcmp(acl_lan, acl_vpn) == 0)
 			acl_vpn[0] = 0;
 	}
@@ -640,13 +641,13 @@ write_nfsd_exports(void)
 		while (fgets(line, sizeof(line), procpt)) {
 			if (sscanf(line, "%31s %255s %31s %3[^\n]", devname, mpname, fstype, fsmode) != 4)
 				continue;
-			
+
 			if (strcmp(fstype, "fuseblk") == 0)
 				continue;
-			
+
 			if (!is_valid_storage_device(devname))
 				continue;
-			
+
 			if (strncmp(mpname, "/media/", 7) == 0) {
 				fsmode[2] = 0;
 				nfsmm = (strcmp(fsmode, "ro") == 0) ? "ro" : "rw";
@@ -662,7 +663,7 @@ write_nfsd_exports(void)
 				fprintf(fp, "\n");
 			}
 		}
-		
+
 		fclose(procpt);
 	}
 
@@ -729,7 +730,7 @@ int create_mp_link(char *search_dir, char *link_path, int force_first_valid)
 		while (fgets(line, sizeof(line), procpt)) {
 			if (sscanf(line, "%31s %255s %31s %*[^\n]", devname, mpname, fstype) != 3)
 				continue;
-			
+
 #if 0
 			if (only_ext_xfs) {
 				if (strcmp(fstype, "xfs") && strcmp(fstype, "exfat") && strncmp(fstype, "ext", 3))
@@ -755,11 +756,11 @@ int create_mp_link(char *search_dir, char *link_path, int force_first_valid)
 							break;
 						}
 					}
-				
+
 				}
 			}
 		}
-		
+
 		fclose(procpt);
 	}
 
@@ -935,7 +936,7 @@ void stop_itunes(void)
 	kill_services(svcs, 5, 1);
 }
 
-static void 
+static void
 update_firefly_conf(const char *link_path, const char *conf_path, const char *conf_file)
 {
 	FILE *fp1, *fp2;
@@ -1217,16 +1218,16 @@ umount_ejected(void)
 						break;
 					}
 				}
-				
+
 				if (!active) {
 					umount(mpname);
 					rmdir(mpname);
 				}
-				
+
 				fclose(procpt2);
 			}
 		}
-		
+
 		fclose(procpt);
 	}
 
@@ -1246,7 +1247,7 @@ umount_dev(const char *dev_name, int is_root_dev)
 	if (procpt) {
 		while (fgets(line, sizeof(line), procpt)) {
 			int is_our_dev = 0;
-			
+
 			if (sscanf(line, "%31s %255s %*[^\n]", devname, mpname) != 2)
 				continue;
 			if (strncmp(devname, "/dev/sd", 7) == 0) {
@@ -1277,7 +1278,7 @@ umount_dev(const char *dev_name, int is_root_dev)
 					break;
 			}
 		}
-		
+
 		fclose(procpt);
 	}
 }
@@ -1294,11 +1295,11 @@ count_stor_mountpoint(void)
 		while (fgets(line, sizeof(line), procpt)) {
 			if (sscanf(line, "%31s %*[^\n]", devname) != 1)
 				continue;
-			
+
 			if (is_valid_storage_device(devname))
 				count++;
 		}
-		
+
 		fclose(procpt);
 	}
 
@@ -1500,7 +1501,7 @@ safe_remove_stor_device(int port_b, int port_e, const char *dev_name, int do_spi
 		else
 			unload_nfsd();
 #endif
-	
+
 	} else if (has_swapon_port) {
 		for (port = port_b; port <= port_e; port++)
 			umount_stor_path(disks_info, port, dev_name, do_spindown);

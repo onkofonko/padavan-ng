@@ -103,11 +103,11 @@ openvpn_check_key(const char *key_name, int is_server)
 	snprintf(key_file, sizeof(key_file), "%s/%s", (is_server) ? SERVER_CERT_DIR : CLIENT_CERT_DIR, key_name);
 
 	if (!check_if_file_exist(key_file)) {
-		logmessage(LOGNAME, "Unable to start %s: key file \"%s\" not found!", 
+		logmessage(LOGNAME, "Unable to start %s: key file \"%s\" not found!",
 			(is_server) ? SERVER_LOG_NAME : CLIENT_LOG_NAME, key_file);
 
 		if (is_server)
-			logmessage(SERVER_LOG_NAME, "Please manual build the certificates via \"%s\" script.", 
+			logmessage(SERVER_LOG_NAME, "Please manual build the certificates via \"%s\" script.",
 				"openvpn-cert.sh");
 		return 0;
 	}
@@ -1115,7 +1115,6 @@ ovpn_server_expcli_main(int argc, char **argv)
 	openvpn_add_key(fp, SERVER_CERT_DIR, openvpn_server_keys[0], "ca");
 	openvpn_add_key(fp, tmp_ovpn_path, openvpn_client_keys[1], "cert");
 	openvpn_add_key(fp, tmp_ovpn_path, openvpn_client_keys[2], "key");
-
 	if (i_atls == 1) {
 		openvpn_add_key(fp, SERVER_CERT_DIR, openvpn_server_keys[4], "tls-auth");
 		fprintf(fp, "key-direction %d\n", 1);

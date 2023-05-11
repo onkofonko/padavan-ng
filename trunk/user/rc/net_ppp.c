@@ -66,18 +66,18 @@ safe_start_xl2tpd(void)
 		char sa_v[INET_ADDRSTRLEN], sp_b[INET_ADDRSTRLEN], sp_e[INET_ADDRSTRLEN];
 		unsigned int vaddr, vmask, vp_b, vp_e;
 		struct in_addr pool_in;
-		
+
 		get_vpns_pool(nvram_get_int("vpns_vuse"), &vaddr, &vmask, &vp_b, &vp_e);
-		
+
 		pool_in.s_addr = htonl(vaddr);
 		strcpy(sa_v, inet_ntoa(pool_in));
-		
+
 		pool_in.s_addr = htonl((vaddr & vmask) | vp_b);
 		strcpy(sp_b, inet_ntoa(pool_in));
-		
+
 		pool_in.s_addr = htonl((vaddr & vmask) | vp_e);
 		strcpy(sp_e, inet_ntoa(pool_in));
-		
+
 		fprintf(fp, "[lns default]\n");
 		fprintf(fp, "hostname = %s\n", get_our_hostname());
 		fprintf(fp, "local ip = %s\n", sa_v);
@@ -92,7 +92,7 @@ safe_start_xl2tpd(void)
 			    "length bit = yes\n"
 			    "require chap = yes\n"
 			    "refuse pap = yes\n\n");
-		
+
 		has_lac_lns++;
 	}
 
@@ -104,10 +104,10 @@ safe_start_xl2tpd(void)
 	    )
 	{
 		char options[64], lac_name[8];
-		
+
 		snprintf(lac_name, sizeof(lac_name), "ISP%d", unit);
 		snprintf(options, sizeof(options), "/tmp/ppp/options.wan%d", unit);
-		
+
 		fprintf(fp, "[lac %s]\n", lac_name);
 		fprintf(fp, "pppoptfile = %s\n", options);
 		fprintf(fp, "lns = %s\n", get_wan_ppp_peer(unit));
@@ -121,7 +121,7 @@ safe_start_xl2tpd(void)
 			    "redial timeout = 15\n"
 			    "tx bps = 100000000\n"
 			    "rx bps = 100000000\n\n");
-		
+
 		has_lac_lns++;
 	}
 
@@ -140,9 +140,9 @@ safe_start_xl2tpd(void)
 			    "redial timeout = 15\n"
 			    "tx bps = 100000000\n"
 			    "rx bps = 100000000\n\n");
-		
+
 		nvram_set_int_temp("l2tp_cli_t", 1);
-		
+
 		has_lac_lns++;
 	}
 
@@ -294,7 +294,7 @@ launch_wan_pppd(int unit, int wan_proto)
 		mru_max = 1500;
 		mtu = get_wan_unit_value_int(unit, "pptp_mtu");
 		mru = get_wan_unit_value_int(unit, "pptp_mru");
-		
+
 		fprintf(fp, "plugin pptp.so\n");
 		fprintf(fp, "pptp_server '%s'\n", get_wan_ppp_peer(unit));
 		fprintf(fp, "route_rdgw %d\n", 1);
@@ -307,7 +307,7 @@ launch_wan_pppd(int unit, int wan_proto)
 		mru_max = 1500;
 		mtu = get_wan_unit_value_int(unit, "l2tp_mtu");
 		mru = get_wan_unit_value_int(unit, "l2tp_mru");
-		
+
 		// L2TP: Don't wait for LCP term responses; exit immediately when killed
 		fprintf(fp, "lcp-max-terminate %d\n", 0);
 	}
@@ -315,21 +315,21 @@ launch_wan_pppd(int unit, int wan_proto)
 	if (wan_proto == IPV4_WAN_PROTO_PPPOE) {
 		int demand;
 		char *pppoe_ac, *pppoe_sv;
-		
+
 		mtu = get_wan_unit_value_int(unit, "pppoe_mtu");
 		mru = get_wan_unit_value_int(unit, "pppoe_mru");
-		
+
 		fprintf(fp, "plugin rp-pppoe.so\n");
 		fprintf(fp, "nic-%s\n", get_man_ifname(unit));
-		
+
 		pppoe_ac = get_wan_unit_value(unit, "pppoe_ac");
 		if (*pppoe_ac)
 			fprintf(fp, "rp_pppoe_ac '%s'\n", pppoe_ac);
-		
+
 		pppoe_sv = get_wan_unit_value(unit, "pppoe_service");
 		if (*pppoe_sv)
 			fprintf(fp, "rp_pppoe_service '%s'\n", pppoe_sv);
-		
+
 		demand = get_wan_unit_value_int(unit, "pppoe_idletime");
 		if (demand > 0 && get_wan_unit_value_int(unit, "pppoe_demand") > 0) {
 			fprintf(fp, "idle %d ", demand);
@@ -391,11 +391,12 @@ launch_wan_pppd(int unit, int wan_proto)
 		fprintf(fp, "nomppe nomppc\n");
 	}
 
+	/* echo failures (6*60s) */
 	if (get_wan_unit_value_int(unit, "ppp_lcp") > 0) {
-		/* echo failures (6*20s) */
-		fprintf(fp, "lcp-echo-interval %d\n", 20);
+		fprintf(fp, "lcp-echo-interval %d\n", 60);
 		fprintf(fp, "lcp-echo-failure %d\n", 6);
 	}
+
 	if (get_wan_unit_value_int(unit, "ppp_alcp") > 0)
 		fprintf(fp, "lcp-echo-adaptive\n");
 
@@ -421,18 +422,18 @@ launch_wan_pppd(int unit, int wan_proto)
 		if (nvram_match("wan_l2tpd", "1")) {
 			svcs[0] = "l2tpd";
 			kill_services(svcs, 5, 1);
-			
+
 			nvram_set_int_temp("l2tp_wan_t", 0);
-			
+
 			start_rpl2tp(unit);
 		} else
 #endif
 		{
 			svcs[0] = "xl2tpd";
 			kill_services(svcs, 5, 1);
-			
+
 			nvram_set_int_temp("l2tp_wan_t", 1);
-			
+
 			safe_start_xl2tpd();
 		}
 	} else {
@@ -505,7 +506,7 @@ ipup_main(int argc, char **argv)
 
 	if ((value = getenv("IPLOCAL"))) {
 		ifconfig(ppp_ifname, IFUP, value, ppp_mask);
-		
+
 		set_wan_unit_value(unit, "ipaddr", value);
 		set_wan_unit_value(unit, "netmask", ppp_mask);
 	}

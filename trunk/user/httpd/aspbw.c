@@ -50,7 +50,7 @@ int f_write(const char *path, const void *buffer, int len, unsigned flags, unsig
 
 // for bandwidth =========================================================
 
-int f_exists(const char *path)	// note: anything but a directory
+int f_exists(const char *path)  // note: anything but a directory
 {
 	struct stat st;
 	return (stat(path, &st) == 0) && (!S_ISDIR(st.st_mode));
