@@ -873,7 +873,6 @@ static const struct inadyn_system_t {
 	const char *system;
 } inadyn_systems[] = {
 	{ "WWW.DYNDNS.ORG",       "default@dyndns.org"         },
-	{ "WWW.TZO.COM",          "default@tzo.com"            },
 	{ "WWW.ZONEEDIT.COM",     "default@zoneedit.com"       },
 	{ "WWW.EASYDNS.COM",      "default@easydns.com"        },
 	{ "WWW.NO-IP.COM",        "default@no-ip.com"          },
@@ -881,11 +880,8 @@ static const struct inadyn_system_t {
 	{ "WWW.DNSEXIT.COM",      "default@dnsexit.com"        },
 	{ "WWW.CHANGEIP.COM",     "default@changeip.com"       },
 	{ "WWW.SITELUTIONS.COM",  "default@sitelutions.com"    },
-	{ "WWW.ZERIGO.COM",       "default@zerigo.com"         },
 	{ "WWW.DHIS.ORG",         "default@dhis.org"           },
-	{ "WWW.NIC.RU",           "default@nic.ru"             },
 	{ "WWW.DUCKDNS.ORG",      "default@duckdns.org"        },
-	{ "WWW.DTDNS.COM",        "default@dtdns.com"          },
 	{ "WWW.OVH.COM",          "default@ovh.com"            },
 	{ "WWW.LOOPIA.COM",       "default@loopia.com"         },
 	{ "WWW.DUIADNS.NET",      "default@duiadns.net"        },
@@ -910,7 +906,6 @@ static const struct inadyn_system_t {
 	{ "PDD.YANDEX.RU",        "default@pdd.yandex.ru"      },
 	{ "CLOUDFLARE.COM",       "default@cloudflare.com"     },
 	{ "ORAY.COM",             "default@oray.com"           },
-	{ "WWW.PUBYUN.COM",       "dyndns@3322.org"            },
 	{ "CUSTOM",               "custom"                     },
 	{ NULL, NULL }
 };
