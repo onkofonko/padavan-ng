@@ -158,7 +158,7 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_country_code", DEF_WLAN_5G_CC },		/* Country Code (default obtained from driver) */
 	{ "wl_ssid", DEF_WLAN_5G_SSID },		/* Service set ID (network name) */
 #if BOARD_HAS_5G_11AC
-	{ "wl_gmode", "4" },			/* A/N/AC Mixed */
+	{ "wl_gmode", "3" },			/* N/AC Mixed */
 #else
 	{ "wl_gmode", "2" },			/* A/N Mixed */
 #endif
