@@ -1,5 +1,5 @@
 SRC_NAME=pcre-8.45
-SRC_URL=https://downloads.sourceforge.net/project/pcre/pcre/8.45/pcre-8.45.zip
+SRC_URL=https://downloads.sourceforge.net/project/pcre/pcre/8.45/$(SRC_NAME).zip
 
 #all: download_test extract_test config_test
 all: config_test
