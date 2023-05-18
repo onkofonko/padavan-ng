@@ -466,7 +466,7 @@ function validate_wlphrase(s, v, obj){
                                             <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 0, 6);"><#WLANConfig11b_WPAType_itemname#></a></th>
                                             <td>
                                                 <select name="wl_crypto" class="input" onChange="return change_common_wl(this, 'WLANConfig11a', 'wl_crypto')">
-                                                    <option value="aes" <% nvram_match_x("", "wl_crypto", "aes", "selected"); %>>AES (*)</option>
+                                                    <option value="aes" <% nvram_match_x("", "wl_crypto", "aes", "selected"); %>>AES</option>
                                                     <option value="tkip+aes" <% nvram_match_x("", "wl_crypto", "tkip+aes", "selected"); %>>TKIP+AES</option>
                                                 </select>
                                             </td>
