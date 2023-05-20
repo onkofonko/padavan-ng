@@ -1,6 +1,6 @@
-diff -urN busybox-1.36.0-ref/Makefile busybox-1.36.0/Makefile
---- busybox-1.36.0-ref/Makefile	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/Makefile	2023-03-21 01:09:06.535843207 +0200
+diff -urN busybox-1.36.1-ref/Makefile busybox-1.36.1/Makefile
+--- busybox-1.36.1-ref/Makefile	2023-05-19 01:31:00.000000000 +0300
++++ busybox-1.36.1/Makefile	2023-05-19 23:01:27.841392431 +0300
 @@ -278,8 +278,8 @@
  # We need some generic definitions
  include $(srctree)/scripts/Kbuild.include
@@ -12,9 +12,9 @@ diff -urN busybox-1.36.0-ref/Makefile busybox-1.36.0/Makefile
  
  # For maximum performance (+ possibly random breakage, uncomment
  # the following)
-diff -urN busybox-1.35.0-ref/debianutils/start_stop_daemon.c busybox-1.35.0/debianutils/start_stop_daemon.c
---- busybox-1.35.0-ref/debianutils/start_stop_daemon.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.35.0/debianutils/start_stop_daemon.c	2023-03-21 01:09:06.535843207 +0200
+diff -urN busybox-1.36.1-ref/debianutils/start_stop_daemon.c busybox-1.36.1/debianutils/start_stop_daemon.c
+--- busybox-1.36.1-ref/debianutils/start_stop_daemon.c	2023-01-03 16:14:43.000000000 +0200
++++ busybox-1.36.1/debianutils/start_stop_daemon.c	2023-05-19 23:01:27.841392431 +0300
 @@ -549,16 +549,8 @@
  	if (opt & OPT_c) {
  		struct bb_uidgid_t ugid;
@@ -34,9 +34,9 @@ diff -urN busybox-1.35.0-ref/debianutils/start_stop_daemon.c busybox-1.35.0/debi
  	}
  	/* Try:
  	 * strace -oLOG start-stop-daemon -S -x /bin/usleep -a qwerty 500000
-diff -urN busybox-1.36.0-ref/include/volume_id.h busybox-1.36.0/include/volume_id.h
---- busybox-1.36.0-ref/include/volume_id.h	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/include/volume_id.h	2023-03-21 01:09:06.535843207 +0200
+diff -urN busybox-1.36.1-ref/include/volume_id.h busybox-1.36.1/include/volume_id.h
+--- busybox-1.36.1-ref/include/volume_id.h	2021-01-01 12:52:27.000000000 +0200
++++ busybox-1.36.1/include/volume_id.h	2023-05-19 23:01:27.841392431 +0300
 @@ -26,6 +26,7 @@
   * 0: no UUID= or LABEL= prefix found
   * 1: UUID= or LABEL= prefix found. In this case,
@@ -45,9 +45,9 @@ diff -urN busybox-1.36.0-ref/include/volume_id.h busybox-1.36.0/include/volume_i
   */
  int resolve_mount_spec(char **fsname);
  int add_to_uuid_cache(const char *device);
-diff -urN busybox-1.36.0-ref/libbb/Kbuild.src busybox-1.36.0/libbb/Kbuild.src
---- busybox-1.36.0-ref/libbb/Kbuild.src	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/libbb/Kbuild.src	2023-03-21 01:09:06.539842998 +0200
+diff -urN busybox-1.36.1-ref/libbb/Kbuild.src busybox-1.36.1/libbb/Kbuild.src
+--- busybox-1.36.1-ref/libbb/Kbuild.src	2023-01-03 16:14:43.000000000 +0200
++++ busybox-1.36.1/libbb/Kbuild.src	2023-05-19 23:01:27.845392295 +0300
 @@ -140,6 +140,7 @@
  lib-$(CONFIG_UDPSVD) += udp_io.o
  lib-$(CONFIG_TRACEROUTE) += udp_io.o
@@ -56,9 +56,9 @@ diff -urN busybox-1.36.0-ref/libbb/Kbuild.src busybox-1.36.0/libbb/Kbuild.src
  
  lib-$(CONFIG_LOSETUP) += loop.o
  lib-$(CONFIG_FEATURE_MOUNT_LOOP) += loop.o
-diff -urN busybox-1.36.0-ref/libbb/appletlib.c busybox-1.36.0/libbb/appletlib.c
---- busybox-1.36.0-ref/libbb/appletlib.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/libbb/appletlib.c	2023-03-21 01:09:06.539842998 +0200
+diff -urN busybox-1.36.1-ref/libbb/appletlib.c busybox-1.36.1/libbb/appletlib.c
+--- busybox-1.36.1-ref/libbb/appletlib.c	2023-01-03 16:14:43.000000000 +0200
++++ busybox-1.36.1/libbb/appletlib.c	2023-05-19 23:01:27.845392295 +0300
 @@ -692,12 +692,6 @@
  			continue;
  	}
@@ -90,9 +90,9 @@ diff -urN busybox-1.36.0-ref/libbb/appletlib.c busybox-1.36.0/libbb/appletlib.c
  
  	if (strcmp(argv[1], "--help") == 0) {
  		/* "busybox --help [<applet>]" */
-diff -urN busybox-1.36.0-ref/libbb/bb_strtonum.c busybox-1.36.0/libbb/bb_strtonum.c
---- busybox-1.36.0-ref/libbb/bb_strtonum.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/libbb/bb_strtonum.c	2023-03-21 01:09:06.539842998 +0200
+diff -urN busybox-1.36.1-ref/libbb/bb_strtonum.c busybox-1.36.1/libbb/bb_strtonum.c
+--- busybox-1.36.1-ref/libbb/bb_strtonum.c	2021-01-01 12:52:27.000000000 +0200
++++ busybox-1.36.1/libbb/bb_strtonum.c	2023-05-19 23:01:27.845392295 +0300
 @@ -55,13 +55,16 @@
  {
  	unsigned long long v;
@@ -143,9 +143,9 @@ diff -urN busybox-1.36.0-ref/libbb/bb_strtonum.c busybox-1.36.0/libbb/bb_strtonu
  	errno = 0;
  	v = strtoul(arg, endp, base);
  	if (v > UINT_MAX) return ret_ERANGE();
-diff -urN busybox-1.36.0-ref/libbb/find_pid_by_name.c busybox-1.36.0/libbb/find_pid_by_name.c
---- busybox-1.36.0-ref/libbb/find_pid_by_name.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/libbb/find_pid_by_name.c	2023-03-21 01:09:06.539842998 +0200
+diff -urN busybox-1.36.1-ref/libbb/find_pid_by_name.c busybox-1.36.1/libbb/find_pid_by_name.c
+--- busybox-1.36.1-ref/libbb/find_pid_by_name.c	2021-01-01 12:52:27.000000000 +0200
++++ busybox-1.36.1/libbb/find_pid_by_name.c	2023-05-19 23:01:27.845392295 +0300
 @@ -85,16 +85,10 @@
  	procps_status_t* p = NULL;
  
@@ -164,9 +164,9 @@ diff -urN busybox-1.36.0-ref/libbb/find_pid_by_name.c busybox-1.36.0/libbb/find_
  		) {
  			pidList = xrealloc_vector(pidList, 2, i);
  			pidList[i++] = p->pid;
-diff -urN busybox-1.36.0-ref/libbb/udp_io.c busybox-1.36.0/libbb/udp_io.c
---- busybox-1.36.0-ref/libbb/udp_io.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/libbb/udp_io.c	2023-03-21 01:09:06.539842998 +0200
+diff -urN busybox-1.36.1-ref/libbb/udp_io.c busybox-1.36.1/libbb/udp_io.c
+--- busybox-1.36.1-ref/libbb/udp_io.c	2021-01-01 12:52:27.000000000 +0200
++++ busybox-1.36.1/libbb/udp_io.c	2023-05-19 23:01:27.849392159 +0300
 @@ -24,6 +24,7 @@
  #endif
  #if ENABLE_FEATURE_IPV6 && defined(IPV6_RECVPKTINFO)
@@ -211,9 +211,9 @@ diff -urN busybox-1.36.0-ref/libbb/udp_io.c busybox-1.36.0/libbb/udp_io.c
  			break;
  		}
  # endif
-diff -urN busybox-1.36.0-ref/modutils/insmod.c busybox-1.36.0/modutils/insmod.c
---- busybox-1.36.0-ref/modutils/insmod.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/modutils/insmod.c	2023-03-21 01:09:06.543842789 +0200
+diff -urN busybox-1.36.1-ref/modutils/insmod.c busybox-1.36.1/modutils/insmod.c
+--- busybox-1.36.1-ref/modutils/insmod.c	2021-01-01 12:52:27.000000000 +0200
++++ busybox-1.36.1/modutils/insmod.c	2023-05-19 23:01:27.849392159 +0300
 @@ -20,6 +20,8 @@
  
  #include "libbb.h"
@@ -265,9 +265,9 @@ diff -urN busybox-1.36.0-ref/modutils/insmod.c busybox-1.36.0/modutils/insmod.c
  	rc = bb_init_module(filename, parse_cmdline_module_options(argv, /*quote_spaces:*/ 0));
  	if (rc)
  		bb_error_msg("can't insert '%s': %s", filename, moderror(rc));
-diff -urN busybox-1.36.0-ref/modutils/modutils-24.c busybox-1.36.0/modutils/modutils-24.c
---- busybox-1.36.0-ref/modutils/modutils-24.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/modutils/modutils-24.c	2023-03-21 01:09:06.543842789 +0200
+diff -urN busybox-1.36.1-ref/modutils/modutils-24.c busybox-1.36.1/modutils/modutils-24.c
+--- busybox-1.36.1-ref/modutils/modutils-24.c	2023-01-03 16:14:43.000000000 +0200
++++ busybox-1.36.1/modutils/modutils-24.c	2023-05-19 23:01:27.849392159 +0300
 @@ -795,7 +795,7 @@
  arch_apply_relocation(struct obj_file *f,
  		struct obj_section *targsec,
@@ -309,9 +309,9 @@ diff -urN busybox-1.36.0-ref/modutils/modutils-24.c busybox-1.36.0/modutils/modu
  #endif
  
  	if (query_module(NULL, 0, NULL, 0, NULL))
-diff -urN busybox-1.36.0-ref/modutils/modutils.h busybox-1.36.0/modutils/modutils.h
---- busybox-1.36.0-ref/modutils/modutils.h	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/modutils/modutils.h	2023-03-21 01:09:06.543842789 +0200
+diff -urN busybox-1.36.1-ref/modutils/modutils.h busybox-1.36.1/modutils/modutils.h
+--- busybox-1.36.1-ref/modutils/modutils.h	2021-01-01 12:52:27.000000000 +0200
++++ busybox-1.36.1/modutils/modutils.h	2023-05-19 23:01:27.849392159 +0300
 @@ -101,6 +101,11 @@
  
  #if ENABLE_FEATURE_2_4_MODULES
@@ -324,9 +324,9 @@ diff -urN busybox-1.36.0-ref/modutils/modutils.h busybox-1.36.0/modutils/modutil
  #endif
  
  POP_SAVED_FUNCTION_VISIBILITY
-diff -urN busybox-1.36.0-ref/networking/arping.c busybox-1.36.0/networking/arping.c
---- busybox-1.36.0-ref/networking/arping.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/networking/arping.c	2023-03-21 01:09:06.543842789 +0200
+diff -urN busybox-1.36.1-ref/networking/arping.c busybox-1.36.1/networking/arping.c
+--- busybox-1.36.1-ref/networking/arping.c	2023-01-03 16:14:43.000000000 +0200
++++ busybox-1.36.1/networking/arping.c	2023-05-19 23:01:27.849392159 +0300
 @@ -28,7 +28,7 @@
  //usage:     "\n	-c N		Stop after sending N ARP requests"
  //usage:     "\n	-w TIMEOUT	Seconds to wait for ARP reply"
@@ -345,9 +345,9 @@ diff -urN busybox-1.36.0-ref/networking/arping.c busybox-1.36.0/networking/arpin
  	char *source = NULL;
  	char *target;
  	char *err_str;
-diff -urN busybox-1.36.0-ref/networking/ntpd.c busybox-1.36.0/networking/ntpd.c
---- busybox-1.36.0-ref/networking/ntpd.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/networking/ntpd.c	2023-03-21 01:09:06.547842581 +0200
+diff -urN busybox-1.36.1-ref/networking/ntpd.c busybox-1.36.1/networking/ntpd.c
+--- busybox-1.36.1-ref/networking/ntpd.c	2023-01-03 16:14:43.000000000 +0200
++++ busybox-1.36.1/networking/ntpd.c	2023-05-19 23:01:27.853392023 +0300
 @@ -72,7 +72,7 @@
  //kbuild:lib-$(CONFIG_NTPD) += ntpd.o
  
@@ -447,9 +447,9 @@ diff -urN busybox-1.36.0-ref/networking/ntpd.c busybox-1.36.0/networking/ntpd.c
  			IF_FEATURE_NTPD_SERVER("I:") /* compat */
  			"d" /* compat */
  			"46aAbgL" /* compat, ignored */
-diff -urN busybox-1.36.0-ref/networking/traceroute.c busybox-1.36.0/networking/traceroute.c
---- busybox-1.36.0-ref/networking/traceroute.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/networking/traceroute.c	2023-03-21 01:09:06.547842581 +0200
+diff -urN busybox-1.36.1-ref/networking/traceroute.c busybox-1.36.1/networking/traceroute.c
+--- busybox-1.36.1-ref/networking/traceroute.c	2021-09-30 01:04:47.000000000 +0300
++++ busybox-1.36.1/networking/traceroute.c	2023-05-19 23:01:27.853392023 +0300
 @@ -972,7 +972,7 @@
  		xmove_fd(xsocket(AF_INET6, SOCK_RAW, IPPROTO_ICMPV6), rcvsock);
  # if ENABLE_FEATURE_TRACEROUTE_VERBOSE
@@ -459,9 +459,9 @@ diff -urN busybox-1.36.0-ref/networking/traceroute.c busybox-1.36.0/networking/t
  # endif
  	}
  #endif
-diff -urN busybox-1.36.0-ref/networking/udhcp/Config.src busybox-1.36.0/networking/udhcp/Config.src
---- busybox-1.36.0-ref/networking/udhcp/Config.src	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/networking/udhcp/Config.src	2023-03-21 01:09:06.547842581 +0200
+diff -urN busybox-1.36.1-ref/networking/udhcp/Config.src busybox-1.36.1/networking/udhcp/Config.src
+--- busybox-1.36.1-ref/networking/udhcp/Config.src	2023-01-03 16:14:43.000000000 +0200
++++ busybox-1.36.1/networking/udhcp/Config.src	2023-05-19 23:01:27.853392023 +0300
 @@ -129,7 +129,7 @@
  	int "Maximum verbosity level (0..9)"
  	default 2
@@ -507,9 +507,9 @@ diff -urN busybox-1.36.0-ref/networking/udhcp/Config.src busybox-1.36.0/networki
 +	help
 +	  If selected, client will support DHCPv6 messages authentication,
 +	  currently HMAC-MD5 only.
-diff -urN busybox-1.36.0-ref/networking/udhcp/common.c busybox-1.36.0/networking/udhcp/common.c
---- busybox-1.36.0-ref/networking/udhcp/common.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/networking/udhcp/common.c	2023-03-21 01:09:06.551842372 +0200
+diff -urN busybox-1.36.1-ref/networking/udhcp/common.c busybox-1.36.1/networking/udhcp/common.c
+--- busybox-1.36.1-ref/networking/udhcp/common.c	2023-01-03 16:14:43.000000000 +0200
++++ busybox-1.36.1/networking/udhcp/common.c	2023-05-19 23:01:27.853392023 +0300
 @@ -69,7 +69,10 @@
  	{ OPTION_STRING                           , 0xd1 }, /* DHCP_PXE_CONF_FILE */
  	{ OPTION_STRING                           , 0xd2 }, /* DHCP_PXE_PATH_PREFIX */
@@ -521,9 +521,9 @@ diff -urN busybox-1.36.0-ref/networking/udhcp/common.c busybox-1.36.0/networking
  	{ OPTION_STATIC_ROUTES | OPTION_LIST      , 0xf9 }, /* DHCP_MS_STATIC_ROUTES */
  	{ OPTION_STRING                           , 0xfc }, /* DHCP_WPAD          */
  
-diff -urN busybox-1.36.0-ref/networking/udhcp/common.h busybox-1.36.0/networking/udhcp/common.h
---- busybox-1.36.0-ref/networking/udhcp/common.h	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/networking/udhcp/common.h	2023-03-21 01:09:06.551842372 +0200
+diff -urN busybox-1.36.1-ref/networking/udhcp/common.h busybox-1.36.1/networking/udhcp/common.h
+--- busybox-1.36.1-ref/networking/udhcp/common.h	2023-01-03 16:14:43.000000000 +0200
++++ busybox-1.36.1/networking/udhcp/common.h	2023-05-19 23:01:27.857391888 +0300
 @@ -183,6 +183,8 @@
  //#define DHCP_PXE_PATH_PREFIX  0xd2 /* 210: RFC 5071 Path prefix */
  //#define DHCP_REBOOT_TIME      0xd3 /* 211: RFC 5071 Reboot time */
@@ -552,9 +552,9 @@ diff -urN busybox-1.36.0-ref/networking/udhcp/common.h busybox-1.36.0/networking
 
  int udhcp_listen_socket(/*uint32_t ip,*/ int port, const char *inf) FAST_FUNC;
  
-diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6.h busybox-1.36.0/networking/udhcp/dhcp6.h
---- busybox-1.36.0-ref/networking/udhcp/dhcp6.h	1970-01-01 03:00:00.000000000 +0300
-+++ busybox-1.36.0/networking/udhcp/dhcp6.h	2023-03-21 01:09:06.551842372 +0200
+diff -urN busybox-1.36.1-ref/networking/udhcp/dhcp6.h busybox-1.36.1/networking/udhcp/dhcp6.h
+--- busybox-1.36.1-ref/networking/udhcp/dhcp6.h	1970-01-01 03:00:00.000000000 +0300
++++ busybox-1.36.1/networking/udhcp/dhcp6.h	2023-05-19 23:01:27.857391888 +0300
 @@ -0,0 +1,385 @@
 +/* vi: set sw=4 ts=4: */
 +/*
@@ -941,9 +941,9 @@ diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6.h busybox-1.36.0/networking/
 +};
 +
 +#endif /* __DHCP6_H_DEFINED */
-diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c.c busybox-1.36.0/networking/udhcp/dhcp6c.c
---- busybox-1.36.0-ref/networking/udhcp/dhcp6c.c	1970-01-01 03:00:00.000000000 +0300
-+++ busybox-1.36.0/networking/udhcp/dhcp6c.c	2023-03-21 01:09:06.551842372 +0200
+diff -urN busybox-1.36.1-ref/networking/udhcp/dhcp6c.c busybox-1.36.1/networking/udhcp/dhcp6c.c
+--- busybox-1.36.1-ref/networking/udhcp/dhcp6c.c	1970-01-01 03:00:00.000000000 +0300
++++ busybox-1.36.1/networking/udhcp/dhcp6c.c	2023-05-19 23:01:27.857391888 +0300
 @@ -0,0 +1,1370 @@
 +/* vi: set sw=4 ts=4: */
 +/*
@@ -2315,9 +2315,9 @@ diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c.c busybox-1.36.0/networking
 +	return 0;
 +}
 +#endif /* ENABLE_FEATURE_DHCP6_AUTH*/
-diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c.h busybox-1.36.0/networking/udhcp/dhcp6c.h
---- busybox-1.36.0-ref/networking/udhcp/dhcp6c.h	1970-01-01 03:00:00.000000000 +0300
-+++ busybox-1.36.0/networking/udhcp/dhcp6c.h	2023-03-21 01:09:06.551842372 +0200
+diff -urN busybox-1.36.1-ref/networking/udhcp/dhcp6c.h busybox-1.36.1/networking/udhcp/dhcp6c.h
+--- busybox-1.36.1-ref/networking/udhcp/dhcp6c.h	1970-01-01 03:00:00.000000000 +0300
++++ busybox-1.36.1/networking/udhcp/dhcp6c.h	2023-05-19 23:01:27.857391888 +0300
 @@ -0,0 +1,185 @@
 +/* vi: set sw=4 ts=4: */
 +/*
@@ -2504,9 +2504,9 @@ diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c.h busybox-1.36.0/networking
 +void client6_send(struct dhcp6_event *);
 +
 +POP_SAVED_FUNCTION_VISIBILITY
-diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c_auth.c busybox-1.36.0/networking/udhcp/dhcp6c_auth.c
---- busybox-1.36.0-ref/networking/udhcp/dhcp6c_auth.c	1970-01-01 03:00:00.000000000 +0300
-+++ busybox-1.36.0/networking/udhcp/dhcp6c_auth.c	2023-03-21 01:09:06.551842372 +0200
+diff -urN busybox-1.36.1-ref/networking/udhcp/dhcp6c_auth.c busybox-1.36.1/networking/udhcp/dhcp6c_auth.c
+--- busybox-1.36.1-ref/networking/udhcp/dhcp6c_auth.c	1970-01-01 03:00:00.000000000 +0300
++++ busybox-1.36.1/networking/udhcp/dhcp6c_auth.c	2023-05-19 23:01:27.857391888 +0300
 @@ -0,0 +1,234 @@
 +/* vi: set sw=4 ts=4: */
 +/*
@@ -2742,9 +2742,9 @@ diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c_auth.c busybox-1.36.0/netwo
 +	hmacmd5_sign(ctx, newdigest);
 +	return memcmp(digest, newdigest, MD5_DIGESTLENGTH);
 +}
-diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c_auth.h busybox-1.36.0/networking/udhcp/dhcp6c_auth.h
---- busybox-1.36.0-ref/networking/udhcp/dhcp6c_auth.h	1970-01-01 03:00:00.000000000 +0300
-+++ busybox-1.36.0/networking/udhcp/dhcp6c_auth.h	2023-03-21 01:09:06.551842372 +0200
+diff -urN busybox-1.36.1-ref/networking/udhcp/dhcp6c_auth.h busybox-1.36.1/networking/udhcp/dhcp6c_auth.h
+--- busybox-1.36.1-ref/networking/udhcp/dhcp6c_auth.h	1970-01-01 03:00:00.000000000 +0300
++++ busybox-1.36.1/networking/udhcp/dhcp6c_auth.h	2023-05-19 23:01:27.857391888 +0300
 @@ -0,0 +1,51 @@
 +/* vi: set sw=4 ts=4: */
 +/*
@@ -2797,9 +2797,9 @@ diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c_auth.h busybox-1.36.0/netwo
 +int dhcp6_auth_replaycheck(int, uint64_t, uint64_t);
 +
 +POP_SAVED_FUNCTION_VISIBILITY
-diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c_common.c busybox-1.36.0/networking/udhcp/dhcp6c_common.c
---- busybox-1.36.0-ref/networking/udhcp/dhcp6c_common.c	1970-01-01 03:00:00.000000000 +0300
-+++ busybox-1.36.0/networking/udhcp/dhcp6c_common.c	2023-03-21 01:09:06.551842372 +0200
+diff -urN busybox-1.36.1-ref/networking/udhcp/dhcp6c_common.c busybox-1.36.1/networking/udhcp/dhcp6c_common.c
+--- busybox-1.36.1-ref/networking/udhcp/dhcp6c_common.c	1970-01-01 03:00:00.000000000 +0300
++++ busybox-1.36.1/networking/udhcp/dhcp6c_common.c	2023-05-19 23:01:27.857391888 +0300
 @@ -0,0 +1,1856 @@
 +/* vi: set sw=4 ts=4: */
 +/*
@@ -4657,9 +4657,9 @@ diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c_common.c busybox-1.36.0/net
 +	}
 +}
 +#endif
-diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c_config.c busybox-1.36.0/networking/udhcp/dhcp6c_config.c
---- busybox-1.36.0-ref/networking/udhcp/dhcp6c_config.c	1970-01-01 03:00:00.000000000 +0300
-+++ busybox-1.36.0/networking/udhcp/dhcp6c_config.c	2023-03-21 01:09:06.555842163 +0200
+diff -urN busybox-1.36.1-ref/networking/udhcp/dhcp6c_config.c busybox-1.36.1/networking/udhcp/dhcp6c_config.c
+--- busybox-1.36.1-ref/networking/udhcp/dhcp6c_config.c	1970-01-01 03:00:00.000000000 +0300
++++ busybox-1.36.1/networking/udhcp/dhcp6c_config.c	2023-05-19 23:01:27.861391752 +0300
 @@ -0,0 +1,1437 @@
 +/* vi: set sw=4 ts=4: */
 +/*
@@ -6098,9 +6098,9 @@ diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c_config.c busybox-1.36.0/net
 +	ret = -1;
 +	goto cf_ret;
 +}
-diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c_config.h busybox-1.36.0/networking/udhcp/dhcp6c_config.h
---- busybox-1.36.0-ref/networking/udhcp/dhcp6c_config.h	1970-01-01 03:00:00.000000000 +0300
-+++ busybox-1.36.0/networking/udhcp/dhcp6c_config.h	2023-03-21 01:09:06.555842163 +0200
+diff -urN busybox-1.36.1-ref/networking/udhcp/dhcp6c_config.h busybox-1.36.1/networking/udhcp/dhcp6c_config.h
+--- busybox-1.36.1-ref/networking/udhcp/dhcp6c_config.h	1970-01-01 03:00:00.000000000 +0300
++++ busybox-1.36.1/networking/udhcp/dhcp6c_config.h	2023-05-19 23:01:27.861391752 +0300
 @@ -0,0 +1,254 @@
 +/* vi: set sw=4 ts=4: */
 +/*
@@ -6356,9 +6356,9 @@ diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c_config.h busybox-1.36.0/net
 +int read_config6(const char *file) FAST_FUNC;
 +
 +POP_SAVED_FUNCTION_VISIBILITY
-diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c_ia.c busybox-1.36.0/networking/udhcp/dhcp6c_ia.c
---- busybox-1.36.0-ref/networking/udhcp/dhcp6c_ia.c	1970-01-01 03:00:00.000000000 +0300
-+++ busybox-1.36.0/networking/udhcp/dhcp6c_ia.c	2023-03-21 01:09:06.555842163 +0200
+diff -urN busybox-1.36.1-ref/networking/udhcp/dhcp6c_ia.c busybox-1.36.1/networking/udhcp/dhcp6c_ia.c
+--- busybox-1.36.1-ref/networking/udhcp/dhcp6c_ia.c	1970-01-01 03:00:00.000000000 +0300
++++ busybox-1.36.1/networking/udhcp/dhcp6c_ia.c	2023-05-19 23:01:27.861391752 +0300
 @@ -0,0 +1,886 @@
 +/* vi: set sw=4 ts=4: */
 +/*
@@ -7246,9 +7246,9 @@ diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c_ia.c busybox-1.36.0/network
 +	free(ifpfx);
 +	return -1;
 +}
-diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c_script.c busybox-1.36.0/networking/udhcp/dhcp6c_script.c
---- busybox-1.36.0-ref/networking/udhcp/dhcp6c_script.c	1970-01-01 03:00:00.000000000 +0300
-+++ busybox-1.36.0/networking/udhcp/dhcp6c_script.c	2023-03-21 01:09:06.555842163 +0200
+diff -urN busybox-1.36.1-ref/networking/udhcp/dhcp6c_script.c busybox-1.36.1/networking/udhcp/dhcp6c_script.c
+--- busybox-1.36.1-ref/networking/udhcp/dhcp6c_script.c	1970-01-01 03:00:00.000000000 +0300
++++ busybox-1.36.1/networking/udhcp/dhcp6c_script.c	2023-05-19 23:01:27.861391752 +0300
 @@ -0,0 +1,152 @@
 +/* vi: set sw=4 ts=4: */
 +/*
@@ -7402,9 +7402,9 @@ diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c_script.c busybox-1.36.0/net
 +	}
 +	return 0;
 +}
-diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c_socket.c busybox-1.36.0/networking/udhcp/dhcp6c_socket.c
---- busybox-1.36.0-ref/networking/udhcp/dhcp6c_socket.c	1970-01-01 03:00:00.000000000 +0300
-+++ busybox-1.36.0/networking/udhcp/dhcp6c_socket.c	2023-03-21 01:09:06.555842163 +0200
+diff -urN busybox-1.36.1-ref/networking/udhcp/dhcp6c_socket.c busybox-1.36.1/networking/udhcp/dhcp6c_socket.c
+--- busybox-1.36.1-ref/networking/udhcp/dhcp6c_socket.c	1970-01-01 03:00:00.000000000 +0300
++++ busybox-1.36.1/networking/udhcp/dhcp6c_socket.c	2023-05-19 23:01:27.861391752 +0300
 @@ -0,0 +1,150 @@
 +/* vi: set sw=4 ts=4: */
 +/*
@@ -7556,9 +7556,9 @@ diff -urN busybox-1.36.0-ref/networking/udhcp/dhcp6c_socket.c busybox-1.36.0/net
 +	close(sk);
 +	return 0;
 +}
-diff -urN busybox-1.36.0-ref/networking/udhcp/dhcpc.c busybox-1.36.0/networking/udhcp/dhcpc.c
---- busybox-1.36.0-ref/networking/udhcp/dhcpc.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/networking/udhcp/dhcpc.c	2023-03-21 01:09:06.555842163 +0200
+diff -urN busybox-1.36.1-ref/networking/udhcp/dhcpc.c busybox-1.36.1/networking/udhcp/dhcpc.c
+--- busybox-1.36.1-ref/networking/udhcp/dhcpc.c	2023-01-03 16:14:43.000000000 +0200
++++ busybox-1.36.1/networking/udhcp/dhcpc.c	2023-05-19 23:01:27.861391752 +0300
 @@ -75,6 +75,7 @@
  	"background\0"     No_argument       "b"
  	)
@@ -7676,9 +7676,9 @@ diff -urN busybox-1.36.0-ref/networking/udhcp/dhcpc.c busybox-1.36.0/networking/
  			) {
  				goto ret0; /* iface is gone? */
  			}
-diff -urN busybox-1.36.0-ref/networking/udhcp/dhcpc.h busybox-1.36.0/networking/udhcp/dhcpc.h
---- busybox-1.36.0-ref/networking/udhcp/dhcpc.h	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/networking/udhcp/dhcpc.h	2023-03-21 01:09:06.559841954 +0200
+diff -urN busybox-1.36.1-ref/networking/udhcp/dhcpc.h busybox-1.36.1/networking/udhcp/dhcpc.h
+--- busybox-1.36.1-ref/networking/udhcp/dhcpc.h	2021-09-30 01:04:47.000000000 +0300
++++ busybox-1.36.1/networking/udhcp/dhcpc.h	2023-05-19 23:01:27.861391752 +0300
 @@ -9,6 +9,7 @@
  
  struct client_data_t {
@@ -7687,9 +7687,9 @@ diff -urN busybox-1.36.0-ref/networking/udhcp/dhcpc.h busybox-1.36.0/networking/
  	IF_FEATURE_UDHCP_PORT(uint16_t port;)
  	int ifindex;                    /* Index number of the interface to use */
  	uint32_t xid;
-diff -urN busybox-1.36.0-ref/networking/udhcp/dhcpd.c busybox-1.36.0/networking/udhcp/dhcpd.c
---- busybox-1.36.0-ref/networking/udhcp/dhcpd.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/networking/udhcp/dhcpd.c	2023-03-21 01:09:06.559841954 +0200
+diff -urN busybox-1.36.1-ref/networking/udhcp/dhcpd.c busybox-1.36.1/networking/udhcp/dhcpd.c
+--- busybox-1.36.1-ref/networking/udhcp/dhcpd.c	2023-01-03 16:14:43.000000000 +0200
++++ busybox-1.36.1/networking/udhcp/dhcpd.c	2023-05-19 23:01:27.861391752 +0300
 @@ -958,7 +958,7 @@
  	if (udhcp_read_interface(server_data.interface,
  			&server_data.ifindex,
@@ -7699,9 +7699,9 @@ diff -urN busybox-1.36.0-ref/networking/udhcp/dhcpd.c busybox-1.36.0/networking/
  	) {
  		retval = 1;
  		goto ret;
-diff -urN busybox-1.36.0-ref/networking/udhcp/dhcprelay.c busybox-1.36.0/networking/udhcp/dhcprelay.c
---- busybox-1.36.0-ref/networking/udhcp/dhcprelay.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/networking/udhcp/dhcprelay.c	2023-03-21 01:09:06.559841954 +0200
+diff -urN busybox-1.36.1-ref/networking/udhcp/dhcprelay.c busybox-1.36.1/networking/udhcp/dhcprelay.c
+--- busybox-1.36.1-ref/networking/udhcp/dhcprelay.c	2021-09-30 01:04:47.000000000 +0300
++++ busybox-1.36.1/networking/udhcp/dhcprelay.c	2023-05-19 23:01:27.865391616 +0300
 @@ -294,7 +294,7 @@
  	max_socket = init_sockets(iface_list, num_sockets, fds);
  
@@ -7720,9 +7720,9 @@ diff -urN busybox-1.36.0-ref/networking/udhcp/dhcprelay.c busybox-1.36.0/network
  					/* Fall back to our IP on server iface */
  // this makes more sense!
  					dhcp_msg.gateway_nip = our_nip;
-diff -urN busybox-1.36.0-ref/networking/udhcp/socket.c busybox-1.36.0/networking/udhcp/socket.c
---- busybox-1.36.0-ref/networking/udhcp/socket.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/networking/udhcp/socket.c	2023-03-21 01:09:06.559841954 +0200
+diff -urN busybox-1.36.1-ref/networking/udhcp/socket.c busybox-1.36.1/networking/udhcp/socket.c
+--- busybox-1.36.1-ref/networking/udhcp/socket.c	2021-09-30 01:04:47.000000000 +0300
++++ busybox-1.36.1/networking/udhcp/socket.c	2023-05-19 23:01:27.865391616 +0300
 @@ -25,7 +25,7 @@
  #include "common.h"
  #include <net/if.h>
@@ -7748,9 +7748,9 @@ diff -urN busybox-1.36.0-ref/networking/udhcp/socket.c busybox-1.36.0/networking
  	close(fd);
  	return 0;
  }
-diff -urN busybox-1.36.0-ref/networking/zcip.c busybox-1.36.0/networking/zcip.c
---- busybox-1.36.0-ref/networking/zcip.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/networking/zcip.c	2023-03-21 01:09:06.563841746 +0200
+diff -urN busybox-1.36.1-ref/networking/zcip.c busybox-1.36.1/networking/zcip.c
+--- busybox-1.36.1-ref/networking/zcip.c	2021-01-01 12:52:27.000000000 +0200
++++ busybox-1.36.1/networking/zcip.c	2023-05-19 23:01:27.865391616 +0300
 @@ -327,6 +327,7 @@
  	{
  		uint32_t t;
@@ -7759,9 +7759,9 @@ diff -urN busybox-1.36.0-ref/networking/zcip.c busybox-1.36.0/networking/zcip.c
  		srand(t);
  	}
  	// FIXME cases to handle:
-diff -urN busybox-1.36.0-ref/sysklogd/syslogd.c busybox-1.36.0/sysklogd/syslogd.c
---- busybox-1.36.0-ref/sysklogd/syslogd.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/sysklogd/syslogd.c	2023-03-21 01:09:06.563841746 +0200
+diff -urN busybox-1.36.1-ref/sysklogd/syslogd.c busybox-1.36.1/sysklogd/syslogd.c
+--- busybox-1.36.1-ref/sysklogd/syslogd.c	2021-01-01 12:52:27.000000000 +0200
++++ busybox-1.36.1/sysklogd/syslogd.c	2023-05-19 23:01:27.865391616 +0300
 @@ -832,9 +832,9 @@
  	 && msg[9] == ':' && msg[12] == ':' && msg[15] == ' '
  	) {
@@ -7775,9 +7775,9 @@ diff -urN busybox-1.36.0-ref/sysklogd/syslogd.c busybox-1.36.0/sysklogd/syslogd.
  		}
  		msg += 16;
  	}
-diff -urN busybox-1.36.0-ref/util-linux/fdisk.c busybox-1.36.0/util-linux/fdisk.c
---- busybox-1.36.0-ref/util-linux/fdisk.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/util-linux/fdisk.c	2023-03-21 01:09:06.563841746 +0200
+diff -urN busybox-1.36.1-ref/util-linux/fdisk.c busybox-1.36.1/util-linux/fdisk.c
+--- busybox-1.36.1-ref/util-linux/fdisk.c	2023-01-03 16:14:43.000000000 +0200
++++ busybox-1.36.1/util-linux/fdisk.c	2023-05-19 23:01:27.869391480 +0300
 @@ -484,10 +484,10 @@
  #define INIT_G() do { \
  	SET_PTR_TO_GLOBALS(xzalloc(sizeof(G))); \
@@ -7854,9 +7854,9 @@ diff -urN busybox-1.36.0-ref/util-linux/fdisk.c busybox-1.36.0/util-linux/fdisk.
  		g_cylinders, g_heads, g_sectors,
  		str_units(),
  		units_per_sector, sector_size, units_per_sector * sector_size
-diff -urN busybox-1.36.0-ref/util-linux/mdev.c busybox-1.36.0/util-linux/mdev.c
---- busybox-1.36.0-ref/util-linux/mdev.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/util-linux/mdev.c	2023-03-21 01:09:06.563841746 +0200
+diff -urN busybox-1.36.1-ref/util-linux/mdev.c busybox-1.36.1/util-linux/mdev.c
+--- busybox-1.36.1-ref/util-linux/mdev.c	2023-01-03 16:14:43.000000000 +0200
++++ busybox-1.36.1/util-linux/mdev.c	2023-05-19 23:01:27.869391480 +0300
 @@ -565,7 +565,8 @@
  
  /* mknod in /dev based on a path like "/sys/block/hda/hda1"
@@ -8009,9 +8009,9 @@ diff -urN busybox-1.36.0-ref/util-linux/mdev.c busybox-1.36.0/util-linux/mdev.c
  			 ACTION_RECURSE | ACTION_FOLLOWLINKS,
  			 fileAction, dirAction, temp);
  }
-diff -urN busybox-1.36.0-ref/util-linux/volume_id/get_devname.c busybox-1.36.0/util-linux/volume_id/get_devname.c
---- busybox-1.36.0-ref/util-linux/volume_id/get_devname.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/util-linux/volume_id/get_devname.c	2023-03-21 01:09:06.567841537 +0200
+diff -urN busybox-1.36.1-ref/util-linux/volume_id/get_devname.c busybox-1.36.1/util-linux/volume_id/get_devname.c
+--- busybox-1.36.1-ref/util-linux/volume_id/get_devname.c	2021-01-01 12:52:27.000000000 +0200
++++ busybox-1.36.1/util-linux/volume_id/get_devname.c	2023-05-19 23:01:27.869391480 +0300
 @@ -305,17 +305,20 @@
  
  int resolve_mount_spec(char **fsname)
@@ -8037,9 +8037,9 @@ diff -urN busybox-1.36.0-ref/util-linux/volume_id/get_devname.c busybox-1.36.0/u
  		*fsname = tmp;
  	return 1;
  }
-diff -urN busybox-1.36.0-ref/util-linux/volume_id/linux_swap.c busybox-1.36.0/util-linux/volume_id/linux_swap.c
---- busybox-1.36.0-ref/util-linux/volume_id/linux_swap.c	2023-01-05 17:26:49.000000000 +0200
-+++ busybox-1.36.0/util-linux/volume_id/linux_swap.c	2023-03-21 01:09:06.567841537 +0200
+diff -urN busybox-1.36.1-ref/util-linux/volume_id/linux_swap.c busybox-1.36.1/util-linux/volume_id/linux_swap.c
+--- busybox-1.36.1-ref/util-linux/volume_id/linux_swap.c	2021-01-01 12:52:27.000000000 +0200
++++ busybox-1.36.1/util-linux/volume_id/linux_swap.c	2023-05-19 23:01:27.873391344 +0300
 @@ -61,6 +61,7 @@
  			if (memcmp(buf, "SWAPSPACE2", 10) == 0
  			 || memcmp(buf, "S1SUSPEND", 9) == 0
