@@ -121,6 +121,13 @@ void acceptIgmp(int recvlen) {
     src       = ip->ip_src.s_addr;
     dst       = ip->ip_dst.s_addr;
 
+    /* filter local multicast 239.255.255.250 */
+    if (dst == htonl(0xEFFFFFFA))
+    {
+        my_log(LOG_NOTICE, 0, "The IGMP message was local multicast. Ignoring.");
+        return;
+    }
+
     /*
      * this is most likely a message from the kernel indicating that
      * a new src grp pair message has arrived and so, it would be
@@ -295,18 +302,16 @@ static void buildIgmp(uint32_t src, uint32_t dst, int type, int code, uint32_t g
 /*
  * Call build_igmp() to build an IGMP message in the output packet buffer.
  * Then send the message from the interface with IP address 'src' to
- * destination 'dst'. If struct ip_mreqn is present on the target OS, it is
- * used instead of 'src' to select the sending interface. 'src' is still used
- * as the source IP.
+ * destination 'dst'.
  */
-void sendIgmp(uint32_t src, uint32_t dst, int type, int code, uint32_t group, int datalen, int ifidx) {
+void sendIgmp(uint32_t src, uint32_t dst, int type, int code, uint32_t group, int datalen) {
     struct sockaddr_in sdst;
     int setloop = 0, setigmpsource = 0;
 
     buildIgmp(src, dst, type, code, group, datalen);
 
     if (IN_MULTICAST(ntohl(dst))) {
-        k_set_if(src, ifidx);
+        k_set_if(src);
         setigmpsource = 1;
         if (type != IGMP_DVMRP || dst == allhosts_group) {
             setloop = 1;
@@ -336,7 +341,7 @@ void sendIgmp(uint32_t src, uint32_t dst, int type, int code, uint32_t group, in
             k_set_loop(false);
         }
         // Restore original...
-        k_set_if(INADDR_ANY, 0);
+        k_set_if(INADDR_ANY);
     }
 
     my_log(LOG_DEBUG, 0, "SENT %s from %-15s to %s",
