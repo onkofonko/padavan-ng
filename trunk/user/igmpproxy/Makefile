@@ -1,4 +1,4 @@
-SRC_NAME=igmpproxy-0.3
+SRC_NAME=igmpproxy-0.1
 
 CFLAGS += -ffunction-sections -fdata-sections -fvisibility=hidden
 LDFLAGS += -Wl,--gc-sections
@@ -15,7 +15,6 @@ config_test:
 
 configure:
 	( cd $(SRC_NAME) ; \
-	./autogen.sh ; \
 	./configure \
 		--prefix=/ \
 		--host=$(HOST_TARGET) \
@@ -33,4 +32,3 @@ romfs:
 	cp $(SRC_NAME)/src/igmpproxy .
 	$(STRIP) igmpproxy
 	$(ROMFSINST) /bin/igmpproxy
-	
