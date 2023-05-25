@@ -25,6 +25,7 @@ extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
 		tar xzf $(SRC_NAME).tar.gz; \
 		patch -d $(SRC_NAME) -p1 -i ../miniupnpd-orig.patch; \
+		patch -d $(SRC_NAME) -p1 -i ../102-do-not-disable-port-forwarding-when-in-double-nat.patch; \
 	fi )
 
 clean:
