@@ -1,5 +1,6 @@
 SRC_NAME=dnsmasq-2.89
 SRC_URL=https://thekelleys.org.uk/dnsmasq/$(SRC_NAME).tar.xz
+THISDIR = $(shell pwd)
 
 COPTS := -DHAVE_BROKEN_RTC -DNO_INOTIFY -DNO_AUTH -DNO_LOOP -DNO_DUMPFILE
 ifndef CONFIG_IPV6
@@ -23,9 +24,9 @@ download_test:
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
 		tar xJf $(SRC_NAME).tar.xz; \
-		patch -d $(SRC_NAME) -p1 -i ../dnsmasq-orig.patch; \
-		patch -d $(SRC_NAME) -p1 -i ../100-remove-old-runtime-kernel-support.patch; \
-		patch -d $(SRC_NAME) -p1 -i ../200-set-MAX_PROCS-to-4-to-reduce-memory-usage.patch; \
+		find $(THISDIR)/patches -type f -name '*.patch' -print0 \
+		  | sort -z \
+		  | xargs -t -0 -n 1 patch -d $(SRC_NAME)  -p1 -i; \
 	fi )
 
 clean:
