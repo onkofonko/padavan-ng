@@ -12,6 +12,10 @@ ifeq ($(wildcard $(srctree)/include/linux/ptr_ring.h),)
 ccflags-y += -I$(kbuild-dir)/compat/ptr_ring/include
 endif
 
+ifeq ($(wildcard $(srctree)/include/linux/hashtable.h),)
+ccflags-y += -I$(kbuild-dir)/compat/hashtable/include
+endif
+
 ifeq ($(wildcard $(srctree)/include/linux/skb_array.h),)
 ccflags-y += -I$(kbuild-dir)/compat/skb_array/include
 endif
@@ -40,6 +44,12 @@ endif
 
 ifeq ($(wildcard $(srctree)/include/linux/simd.h),)
 ccflags-y += -I$(kbuild-dir)/compat/simd/include
+endif
+
+
+ifeq ($(wildcard $(srctree)/include/net/ip_tunnels.h),)
+ccflags-y += -I$(kbuild-dir)/compat/ip_tunnel/include
+wireguard-y += compat/ip_tunnel/ip_tunnel.o
 endif
 
 ifeq ($(wildcard $(srctree)/include/net/udp_tunnel.h),)
@@ -108,4 +118,9 @@ endif
 
 ifneq ($(shell grep -s -F "\#define LINUX_PACKAGE_ID \" Debian " "$(CURDIR)/include/generated/package.h"),)
 ccflags-y += -DISDEBIAN
+endif
+
+ifdef ISPADAVAN
+ccflags-y += -I$(kbuild-dir)/compat/sock/include
+wireguard-y += compat/sock/sock.o
 endif
