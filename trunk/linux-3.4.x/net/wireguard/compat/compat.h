@@ -9,6 +9,7 @@
 #include <linux/kconfig.h>
 #include <linux/version.h>
 #include <linux/types.h>
+#include <linux/netdevice.h>
 #include <generated/utsrelease.h>
 
 #define ISPADAVAN
@@ -1040,6 +1041,8 @@ static inline void __compat_icmp_ndo_send(struct sk_buff *skb_in, int type, int 
 out:
 	consume_skb(cloned_skb);
 }
+
+#if IS_ENABLED(CONFIG_IPV6)
 static inline void __compat_icmpv6_ndo_send(struct sk_buff *skb_in, u8 type, u8 code, __u32 info)
 {
 	struct sk_buff *cloned_skb = NULL;
@@ -1071,20 +1074,25 @@ static inline void __compat_icmpv6_ndo_send(struct sk_buff *skb_in, u8 type, u8 
 out:
 	consume_skb(cloned_skb);
 }
+#endif
 #else
 static inline void __compat_icmp_ndo_send(struct sk_buff *skb_in, int type, int code, __be32 info)
 {
 	memset(skb_in->cb, 0, sizeof(skb_in->cb));
 	icmp_send(skb_in, type, code, info);
 }
+#if IS_ENABLED(CONFIG_IPV6)
 static inline void __compat_icmpv6_ndo_send(struct sk_buff *skb_in, u8 type, u8 code, __u32 info)
 {
 	memset(skb_in->cb, 0, sizeof(skb_in->cb));
 	icmpv6_send(skb_in, type, code, info);
 }
 #endif
+#endif
 #define icmp_ndo_send __compat_icmp_ndo_send
+#if IS_ENABLED(CONFIG_IPV6)
 #define icmpv6_ndo_send __compat_icmpv6_ndo_send
+#endif
 #endif
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(4, 10, 0)

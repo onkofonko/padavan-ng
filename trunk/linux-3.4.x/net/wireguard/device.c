@@ -216,8 +216,10 @@ err_peer:
 err_icmp:
 	if (skb->protocol == htons(ETH_P_IP))
 		icmp_ndo_send(skb, ICMP_DEST_UNREACH, ICMP_HOST_UNREACH, 0);
+#if IS_ENABLED(CONFIG_IPV6)
 	else if (skb->protocol == htons(ETH_P_IPV6))
 		icmpv6_ndo_send(skb, ICMPV6_DEST_UNREACH, ICMPV6_ADDR_UNREACH, 0);
+#endif
 err:
 	++dev->stats.tx_errors;
 	kfree_skb(skb);
