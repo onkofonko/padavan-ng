@@ -1,5 +1,5 @@
-SRC_NAME=minidlna-1.3.2
-SRC_URL=https://sourceforge.net/projects/minidlna/files/minidlna/1.3.2/minidlna-1.3.2.tar.gz
+SRC_NAME=minidlna-1.3.3
+SRC_URL=https://sourceforge.net/projects/minidlna/files/minidlna/1.3.3/$(SRC_NAME).tar.gz
 
 DLNA_CFLAGS  += -ffunction-sections -fdata-sections -fvisibility=hidden
 DLNA_CFLAGS  += -Os -Wall -g -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64
