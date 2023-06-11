@@ -698,7 +698,7 @@ function freememory(){
 	$j.post('/apply.cgi',
 	{
 		'action_mode': ' FreeMemory ',
-		'current_page': 'Main_LogStatus_Content.asp'
+		'current_page': 'index.asp'
 	});
 }
 

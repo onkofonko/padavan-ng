@@ -3064,6 +3064,7 @@ apply_cgi(const char *url, webs_t wp)
 	{
 		doSystem("sync");
 		doSystem("echo 3 > /proc/sys/vm/drop_caches");
+		websRedirect(wp, current_url);
 		return 0;
 	}
 	else if (!strcmp(value, " RestoreNVRAM "))
