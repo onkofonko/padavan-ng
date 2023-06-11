@@ -37,7 +37,7 @@ GZIP_SUPPORT = 1
 # To build install the library and uncomment
 # the XZ_SUPPORT line below.
 #
-#XZ_SUPPORT = 1
+XZ_SUPPORT = 1
 
 
 ############ Building LZO support ##############
@@ -92,7 +92,7 @@ GZIP_SUPPORT = 1
 # in Mksquashfs.  Obviously the compression algorithm must have been
 # selected to be built
 #
-COMP_DEFAULT = gzip
+COMP_DEFAULT = xz
 
 
 ###############################################
@@ -248,9 +248,13 @@ endif
 
 ifeq ($(XZ_SUPPORT),1)
 CFLAGS += -DXZ_SUPPORT
+ifdef XZUTILSDIR
+INCLUDEDIR += -I$(XZUTILSDIR)/src/liblzma/api
+XZ_LIBDIR = -L$(XZUTILSDIR)/src/liblzma/.libs
+LIBS += $(XZUTILSDIR)/src/liblzma/.libs/liblzma.a
+endif
 MKSQUASHFS_OBJS += xz_wrapper.o
 UNSQUASHFS_OBJS += xz_wrapper.o
-LIBS += -llzma
 COMPRESSORS += xz
 endif
 
