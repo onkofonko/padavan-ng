@@ -509,7 +509,7 @@ function changeBgColor(obj, num){
                                             <th width="50%"><#DHCP_Verbose#></th>
                                             <td>
                                                 <select name="dhcp_verbose" class="input">
-                                                    <option value="0" <% nvram_match_x("", "dhcp_verbose", "0","selected"); %>><#CTL_Disabled#></option>
+                                                    <option value="0" <% nvram_match_x("", "dhcp_verbose", "0","selected"); %>><#CTL_Disabled#> (*)</option>
                                                     <option value="1" <% nvram_match_x("", "dhcp_verbose", "1","selected"); %>>DHCPv4</option>
                                                     <option value="2" <% nvram_match_x("", "dhcp_verbose", "2","selected"); %>>DHCPv6</option>
                                                     <option value="3" <% nvram_match_x("", "dhcp_verbose", "3","selected"); %>>DHCPv4 + DHCPv6</option>
