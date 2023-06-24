@@ -1,6 +1,6 @@
-diff -urw flac-1.4.2-orig/Makefile.am flac-1.4.2/Makefile.am
---- flac-1.4.2-orig/Makefile.am	2022-10-21 20:13:30.541380000 +0300
-+++ flac-1.4.2/Makefile.am	2023-02-20 09:05:38.887644780 +0200
+diff -urw flac-1.4.3-orig/Makefile.am flac-1.4.3/Makefile.am
+--- flac-1.4.3-orig/Makefile.am	2022-10-21 20:13:30.541380000 +0300
++++ flac-1.4.3/Makefile.am	2023-02-20 09:05:38.887644780 +0200
 @@ -31,7 +31,7 @@
  
  ACLOCAL_AMFLAGS = -I m4
@@ -10,9 +10,9 @@ diff -urw flac-1.4.2-orig/Makefile.am flac-1.4.2/Makefile.am
  
  if EXAMPLES
  SUBDIRS += examples
-diff -urw flac-1.4.2-orig/src/Makefile.am flac-1.4.2/src/Makefile.am
---- flac-1.4.2-orig/src/Makefile.am	2022-10-21 20:13:32.844220800 +0300
-+++ flac-1.4.2/src/Makefile.am	2023-02-20 09:05:38.887644780 +0200
+diff -urw flac-1.4.3-orig/src/Makefile.am flac-1.4.3/src/Makefile.am
+--- flac-1.4.3-orig/src/Makefile.am	2022-10-21 20:13:32.844220800 +0300
++++ flac-1.4.3/src/Makefile.am	2023-02-20 09:05:38.887644780 +0200
 @@ -27,13 +27,7 @@
  SUBDIRS = \
  	libFLAC \
