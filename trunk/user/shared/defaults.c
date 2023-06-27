@@ -34,6 +34,7 @@ struct nvram_pair router_defaults[] = {
 
 	/* Miscellaneous parameters */
 	{ "time_zone", DEF_TIMEZONE },
+	{ "preferred_lang", "" },
 	{ "log_float_ui", "1" },		/* WebUI syslog float panel mode */
 	{ "log_ipaddr", "" },			/* syslog recipient IP */
 	{ "log_port", "514" },			/* syslog recipient Port */
@@ -143,7 +144,7 @@ struct nvram_pair router_defaults[] = {
 	/* Web server parameters */
 	{ "http_username", SYS_USER_ROOT },	/* Username */
 	{ "http_passwd", DEF_ROOT_PASSWORD },	/* Password */
-	{ "http_access", "0" },			/* HTTP access (0: ALL, 1: LAN only, 2: LAN + Wireless MainAP) */
+	{ "http_access", "2" },			/* HTTP access (0: ALL, 1: LAN only, 2: LAN + Wireless MainAP) */
 	{ "http_proto", "0" },			/* HTTP proto (0: HTTP, 1: HTTPS, 2: Both) */
 	{ "http_lanport", "80" },		/* HTTP LAN port to listen on */
 	{ "https_lport", "443" },		/* HTTPS LAN port to listen on */
@@ -154,7 +155,7 @@ struct nvram_pair router_defaults[] = {
 	{ "mr_qleave_x", "1" },
 
 #if BOARD_HAS_5G_RADIO
-	/* 5G Wireless parameters */
+	/* 5Ghz Wireless parameters */
 	{ "wl_country_code", DEF_WLAN_5G_CC },		/* Country Code (default obtained from driver) */
 	{ "wl_ssid", DEF_WLAN_5G_SSID },		/* Service set ID (network name) */
 #if BOARD_HAS_5G_11AC
@@ -183,7 +184,7 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_key_type", "0" },			/* WEP key format (HEX/ASCII)*/
 	{ "wl_mrate", "2" },			/* Mcast Rate */
 	{ "wl_crypto", "aes" },			/* WPA data encryption */
-	{ "wl_wpa_psk", DEF_WLAN_5G_PSK },			/* WPA pre-shared key */
+	{ "wl_wpa_psk", DEF_WLAN_5G_PSK },	/* WPA pre-shared key */
 	{ "wl_wpa_gtk_rekey", "3600" },		/* GTK rotation interval */
 	{ "wl_radius_ipaddr", ""},		/* RADIUS server IP address */
 	{ "wl_radius_port", "1812" },		/* RADIUS server UDP port */
@@ -202,7 +203,7 @@ struct nvram_pair router_defaults[] = {
 #endif
 	{ "wl_txbf", "1" },
 	{ "wl_ssid2",  DEF_WLAN_5G_SSID },
-	{ "wl_mode_x", "0" },		/* 5G Wireless Bridge Mode */
+	{ "wl_mode_x", "0" },		/* 5Ghz Wireless Bridge Mode */
 	{ "wl_wdsapply_x", "0" },
 	{ "wl_wdsnum_x", "0" },
 	{ "wl_wep_x", "0" },
@@ -217,7 +218,7 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_stream_tx", STR(BOARD_NUM_ANT_5G_TX) },
 	{ "wl_stream_rx", STR(BOARD_NUM_ANT_5G_RX) },
 	{ "wl_preamble", "1" },
-	{ "wl_greenap", "0" },		/* 5G GreenAP */
+	{ "wl_greenap", "0" },		/* 5Ghz GreenAP */
 	{ "wl_ldpc", "3" },
 	{ "wl_HT_RDG", "0" },
 #if defined (USE_WID_5G) && USE_WID_5G==7615
@@ -264,7 +265,7 @@ struct nvram_pair router_defaults[] = {
 #endif
 
 #if BOARD_HAS_2G_RADIO
-	/* 2G Wireless parameters */
+	/* 2.4Ghz Wireless parameters */
 	{ "rt_country_code", DEF_WLAN_2G_CC },
 	{ "rt_ssid", DEF_WLAN_2G_SSID },
 	{ "rt_gmode", "5" },			/* g/n mixed */
@@ -305,7 +306,7 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_radius_key", "" },
 	{ "rt_radio_x", "1" },
 	{ "rt_ssid2", DEF_WLAN_2G_SSID },
-	{ "rt_mode_x", "0" },		/* 2G Wireless Bridge Mode */
+	{ "rt_mode_x", "0" },		/* 2.4Ghz Wireless Bridge Mode */
 	{ "rt_wdsapply_x", "0" },
 	{ "rt_wdsnum_x", "0" },
 	{ "rt_wep_x", "0" },
@@ -320,7 +321,7 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_stream_tx", STR(BOARD_NUM_ANT_2G_TX) },
 	{ "rt_stream_rx", STR(BOARD_NUM_ANT_2G_RX) },
 	{ "rt_preamble", "1" },
-	{ "rt_greenap", "0" },		/* 2G GreenAP */
+	{ "rt_greenap", "0" },		/* 2.4Ghz GreenAP */
 	{ "rt_HT_RDG", "0" },
 	{ "rt_HT_AMSDU", "0" },
 	{ "rt_HT_80211KV", "0" },
@@ -545,8 +546,6 @@ struct nvram_pair router_defaults[] = {
 	{ "ddns2_pass", "" },
 	{ "ddns2_ssl", "0" },
 	{ "asusddns_tos_agreement", "0" },
-
-	{ "preferred_lang", "" },
 
 	{ "modem_rule", "0" },
 	{ "modem_prio", "1" },
