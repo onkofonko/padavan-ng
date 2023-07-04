@@ -422,9 +422,9 @@ function change_crond_enabled(){
                                             <th width="50%"><#Adm_System_http_access#></th>
                                             <td>
                                                 <select name="http_access" class="input">
-                                                    <option value="0" <% nvram_match_x("", "http_access", "0","selected"); %>><#checkbox_No#> (*)</option>
+                                                    <option value="0" <% nvram_match_x("", "http_access", "0","selected"); %>><#checkbox_No#></option>
                                                     <option value="1" <% nvram_match_x("", "http_access", "1","selected"); %>>Wired clients only</option>
-                                                    <option value="2" <% nvram_match_x("", "http_access", "2","selected"); %>>Wired + Wireless MainAP clients</option>
+                                                    <option value="2" <% nvram_match_x("", "http_access", "2","selected"); %>>Wired and MainAP clients (*)</option>
                                                 </select>
                                             </td>
                                         </tr>
