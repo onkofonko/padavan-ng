@@ -1,5 +1,5 @@
-SRC_NAME=nghttp2-1.54.0
-SRC_URL=https://github.com/nghttp2/nghttp2/releases/download/v1.54.0/$(SRC_NAME).tar.xz
+SRC_NAME=nghttp2-1.55.0
+SRC_URL=https://github.com/nghttp2/nghttp2/releases/download/v1.55.0/$(SRC_NAME).tar.xz
 
 CFLAGS += -fPIC
 CXXFLAGS += -fPIC

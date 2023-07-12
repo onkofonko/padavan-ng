@@ -1,0 +1,203 @@
+commit 989d69be01bf1beaf70f5930e716975bbb84b9b9 (HEAD, tag: v1.55.0)
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-07-12
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-07-12
+
+    Update manual pages
+
+commit 2143f46f45f79fceeb902147723e42dbbb8914f6
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-07-12
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-07-12
+
+    Bump package version
+
+commit 5bbe86a7132e78965ce94b1ae6a1c67dc7f5e009
+Merge: 693372b6 3cc152a9
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-07-11
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-07-11
+
+    Merge pull request #1927 from nghttp2/bump-macos
+    
+    Bump macos to 12
+
+commit 3cc152a9a5ae54440b6aa1df7d1935a151966c6c
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-07-11
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-07-11
+
+    Bump macos to 12
+
+commit 693372b695b3fa2dd187b544cd74ab5975ad0e81
+Merge: 9dc39859 43e6a011
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-07-11
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-07-11
+
+    Merge pull request #1926 from nghttp2/bump-llhttp
+    
+    Bump llhttp to a0e744f850d8101a51284868ffdf745bcfe4fbcc
+
+commit 43e6a0118950e154613490f1ae4b07c6405bc236
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-07-11
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-07-11
+
+    Bump llhttp to a0e744f850d8101a51284868ffdf745bcfe4fbcc
+
+commit 9dc39859fcdd3dbf5104cc7aefa298c63b744ab0
+Merge: 42140d3a 5b350acc
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-07-11
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-07-11
+
+    Merge pull request #1925 from nghttp2/nghttpx-randomize-initial-quic-pkt-num
+    
+    nghttpx: Randomize initial QUIC packet number
+
+commit 5b350acc4cf150b829c679aa7cf865d5a05a5774
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-07-11
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-07-11
+
+    nghttpx: Randomize initial QUIC packet number
+
+commit 42140d3ade167de89a159fa5cde141721184e554
+Merge: 5c11ad80 dfa2a59f
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-07-09
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-07-09
+
+    Merge pull request #1923 from nghttp2/bump-ngtcp2
+    
+    Bump ngtcp2
+
+commit dfa2a59f99b0302f39f7aea73e343599987c8275
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-07-09
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-07-09
+
+    Bump ngtcp2
+
+commit 5c11ad80c03e3601d11d7d42e89593916a086e33
+Merge: 892a6162 ee4de34a
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-06-25
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-06-25
+
+    Merge pull request #1920 from nghttp2/gro
+    
+    h2load, nghttpx: Add UDP_GRO support
+
+commit ee4de34a425cad2cf9e9e861ecc108b62d699b8f
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-06-25
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-06-25
+
+    h2load, nghttpx: Add UDP_GRO support
+
+commit 892a6162ab37ff1642d04c2aaddac66c3a8f27c2
+Merge: e7f59406 811b3554
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-06-24
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-06-24
+
+    Merge pull request #1918 from nghttp2/mruby-cross
+    
+    mruby: Support cross build for autotools
+
+commit 811b3554a77c50db0df91d47a4fda6e41d9044d7
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-06-11
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-06-11
+
+    mruby: Support cross build for autotools
+    
+    Support mruby cross build, but now we are unable to specify host C/C++
+    compiler on cross build.
+    
+    Do not pass compiler and linker flags because mruby does its own.
+    
+    Cross build only works with autotools.  It does not work with cmake.
+
+commit e7f59406556c80904b81b593d38508591bb7523a
+Merge: 7872401f e4ad2921
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-06-11
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-06-11
+
+    Merge pull request #1917 from nghttp2/bump-go-dep
+    
+    Bump go package dependencies
+
+commit e4ad2921e5c649cf3b295918a88a0968a2f5ed2a
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-06-11
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-06-11
+
+    Bump go package dependencies
+
+commit 7872401f7392153e0c834c072a7f197be85ad65c
+Merge: 2c955ab7 2277f7cc
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-06-11
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-06-11
+
+    Merge pull request #1916 from nghttp2/bump-go
+    
+    Bump go to 1.20
+
+commit 2277f7cc68b2ae8008a7026171dd2c641207085b
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-06-11
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-06-11
+
+    Bump go to 1.20
+
+commit 2c955ab76b42dfce58e812da6bbe8a526a125fea
+Merge: 2571f78c 9fc1f851
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-06-08
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-06-08
+
+    Merge pull request #1915 from nghttp2/fix-build-without-libev
+    
+    Fix build error without libev
+
+commit 9fc1f85102cb57f5346c13108e577d2cb4e081cb
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-06-08
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-06-08
+
+    Fix build error without libev
+    
+    Check libev availability, and guard the usage of libev in util.h.
+
+commit 2571f78ce7a155c0b57552e7cf7533e256a6d12f
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-06-07
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-06-07
+
+    Bump package version
