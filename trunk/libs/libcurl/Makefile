@@ -72,6 +72,8 @@ configure:
 		--without-libssh2 \
 		--without-krb4 \
 		--with-nghttp2 \
+		--with-nghttp3 \
+		--with-ngtcp2 \
 		--without-nss \
 		--without-mbedtls \
 		--without-mesalink \
