@@ -124,6 +124,7 @@ dir_$(CONFIG_FIRMWARE_INCLUDE_DOH)		+= libcares
 # libcurl for Transmission and DoH proxy
 dir_$(LIBS_INCLUDE_LIBCURL)			+= libnghttp2
 dir_$(LIBS_INCLUDE_LIBCURL)			+= libnghttp3
+dir_$(LIBS_INCLUDE_LIBCURL)			+= libngtcp2
 dir_$(LIBS_INCLUDE_LIBCURL)			+= libcurl
 
 # aria2 shared libs

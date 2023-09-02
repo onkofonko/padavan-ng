@@ -1,0 +1,911 @@
+commit e16be88208fa0a7596d3626599f2933d76caafc6 (HEAD, tag: v0.19.0, origin/main, origin/HEAD, main)
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-09-02
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-09-02
+
+    Update AUTHORS
+
+commit 46cfb4bdde54821aabd3e73867d235e82717c35a
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-09-02
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-09-02
+
+    Bump package and library versions
+
+commit 91179a771d3364aa4770cb712d88bac3cb1f5d0e
+Merge: f89642a2 2121cb21
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-09-02
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-09-02
+
+    Merge pull request #925 from ngtcp2/fix-ecn-largest-acked-sent-time
+    
+    Fix ECN largest acked sent time
+
+commit 2121cb211517a41c127aa60a5692625d3f4fc326
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-09-02
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-09-02
+
+    Fix ECN largest acked sent time
+    
+    The largest acknowledged packet that ECN reacts to is the packet
+    referred in largest_ack field, not the largest packet newly
+    acknowledged.
+
+commit f89642a2ff1ed93fe52d685d81b1666d367e6a9f
+Merge: 0dfbe39e d4cd58df
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-09-02
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-09-02
+
+    Merge pull request #924 from ngtcp2/bump-picotls
+    
+    Bump picotls
+
+commit d4cd58df883fd6061336f99e83464f4d7d720504
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-09-02
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-09-02
+
+    Bump picotls
+
+commit 0dfbe39e41fec4a33f441f04a8e40a525f71d099
+Merge: d86d90b7 e37b7653
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-09-02
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-09-02
+
+    Merge pull request #923 from ngtcp2/bump-boringssl
+    
+    Bump boringssl
+
+commit d86d90b7972feb70756c38528bb3f1fcf29e927c
+Merge: af4e09e7 80c5dc6d
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-09-02
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-09-02
+
+    Merge pull request #922 from ngtcp2/more-retransmit-zero-length-frame-test
+    
+    Add more test for a retransmission of zero length STREAM frame
+
+commit e37b7653ed36741d722ecf33d7b6d5322b5ab803
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-09-02
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-09-02
+
+    Bump boringssl
+
+commit af4e09e7de275cd290c072d0c9724e1076dea838
+Merge: 54bef1a5 511a2276
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-09-02
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-09-02
+
+    Merge pull request #921 from ngtcp2/simplify-strm-streamfrq-pop
+    
+    Simplify ngtcp2_strm_streamfrq_pop
+
+commit 80c5dc6d471084532c24488c01e18df96691a16a
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-09-02
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-09-02
+
+    Add more test for a retransmission of zero length STREAM frame
+
+commit 511a2276547d90f447578985002cb3a2006b36f7
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-09-02
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-09-02
+
+    Simplify ngtcp2_strm_streamfrq_pop
+    
+    After some re-factorization, now there is no need to check the length
+    of streamfrq because strm_streamfrq_unacked_pop returns empty STREAM
+    frame for a specific case.
+
+commit 54bef1a5b0c975d9a50e1fd953e8d703b856c6d7
+Merge: c92c8af5 56d362a9
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-30
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-30
+
+    Merge pull request #920 from ngtcp2/infer-err
+    
+    Map NGTCP2_ERR_PKT_NUM_EXHAUSTED and NGTCP2_ERR_INTERNAL to NGTCP2_INTERNAL_ERROR
+
+commit 56d362a9cf45718be6b44593c99609b80be9e57c
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-30
+
+    Map NGTCP2_ERR_PKT_NUM_EXHAUSTED and NGTCP2_ERR_INTERNAL to NGTCP2_INTERNAL_ERROR
+
+commit c92c8af57a0671ce83829ffd6e4893833311ce9c
+Merge: 76757c8e 855e0ff1
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-30
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-30
+
+    Merge pull request #919 from jagerman/explicit-static-lib
+    
+    Make crypto static library targets explicitly STATIC
+
+commit 76757c8ef505d52193a036cbe63b4e5e05387e27
+Merge: 82eebb97 272d8861
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-30
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-30
+
+    Merge pull request #918 from ngtcp2/handshake-timeout-error
+    
+    Use NGTCP2_INTERNAL_ERROR for NGTCP2_ERR_HANDSHAKE_TIMEOUT
+
+commit 855e0ff1adcbb836aa90cac8d371cc67a1cbbc44
+Author:     Jason Rhinelander <jason@imaginary.ca>
+AuthorDate: 2023-08-29
+Commit:     Jason Rhinelander <jason@imaginary.ca>
+CommitDate: 2023-08-29
+
+    Make crypto libraries explicitly STATIC
+    
+    Not having the STATIC keyword in `add_library(...)` makes CMake go look
+    for a `BUILD_SHARED_LIBS` variable and, if set, makes the "static"
+    library crypto targets actually create a shared library.
+    
+    This causes a problem if including ngtcp2 as a subproject from some
+    other project that itself happens to have a default of true, resulting
+    in the "static" targets getting built dynamically.
+    
+    This fixes it by making the crypto static library targets explicitly
+    STATIC so that this cmake messiness doesn't happen (and also matches the
+    way the main ngtcp2_static target is created).
+
+commit 272d886106bb5201468ac5465978f64dd3366590
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-29
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-29
+
+    Use NGTCP2_INTERNAL_ERROR for NGTCP2_ERR_HANDSHAKE_TIMEOUT
+
+commit 82eebb9736efa78b476b11c1d536e870bef4df7d
+Merge: 950fd70d 82a1474c
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-29
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-29
+
+    Merge pull request #917 from ngtcp2/picotls-max-early-data-size
+    
+    picotls: max_early_data_size is of type size_t
+
+commit 82a1474c3c8254ad4521002e5dbc5f814d468715
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-29
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-29
+
+    picotls: max_early_data_size is of type size_t
+
+commit 950fd70d46bf9297aedd83b10e584bbe5867f131
+Merge: 53623e18 08359ece
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-28
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-28
+
+    Merge pull request #914 from ngtcp2/add-more-stream-blocked-tests
+    
+    Add more STREAM_DATA_BLOCKED/DATA_BLOCKED emission tests
+
+commit 08359ece1f62ade3ea2e561fbf1b812f145d18f3
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-28
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-28
+
+    Add more STREAM_DATA_BLOCKED/DATA_BLOCKED emission tests
+
+commit 53623e18ca2b49a631195b3d8351136dfd0f6865
+Merge: 81b51240 9721965c
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-27
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-27
+
+    Merge pull request #913 from ngtcp2/remove-tls-handshake-failed-state
+    
+    Remove unused NGTCP2_CS_*_TLS_HANDSHAKE_FAILED state
+
+commit 81b512409226d3a135ec82573931d05930cfc2b3
+Merge: 41d9b7e8 0ed8c173
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-27
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-27
+
+    Merge pull request #912 from ngtcp2/stream-overhead
+    
+    NGTCP2_MIN_COALESCED_PAYLOADLEN includes NGTCP2_STREAM_OVERHEAD
+
+commit 9721965c6959df784b46e6cd2e0d9eee4735e4e2
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-27
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-27
+
+    Remove unused NGTCP2_CS_*_TLS_HANDSHAKE_FAILED state
+
+commit 0ed8c173df7f360a4ed9981e7a439aa99bf6d0e2
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-27
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-27
+
+    NGTCP2_MIN_COALESCED_PAYLOADLEN includes NGTCP2_STREAM_OVERHEAD
+
+commit 41d9b7e80bc1f564d7ece2d9b0c4d2ec51ae4710
+Merge: acfc6e5c cf8789de
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-27
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-27
+
+    Merge pull request #911 from ngtcp2/fix-err-stream-data-blocked
+    
+    Fix handling of NGTCP2_ERR_STREAM_DATA_BLOCKED
+
+commit cf8789de7df863bec59a2adf262d7118258fbff3
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-27
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-27
+
+    Fix handling of NGTCP2_ERR_STREAM_DATA_BLOCKED
+    
+    Fix bug that NGTCP2_ERR_STREAM_DATA_BLOCKED is not returned to a
+    calling application when it should be.
+    
+    Make sure that 0-RTT packet contains PADDING even if it does not have
+    stream data.
+
+commit acfc6e5c6e1845aa97cbbb27031f767c4d644a24
+Merge: 11cc3bda d5be8f4a
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-27
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-27
+
+    Merge pull request #910 from ngtcp2/tweak-padding
+    
+    Tweak padding
+
+commit d5be8f4a41219ef7edc06357fece3c4ab0c2c9d0
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-27
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-27
+
+    Pad packets in 1-RTT packet even if it has no stream data
+    
+    Pad packets in 1-RTT packet even if it has no stream data.  This
+    allows us to coalesce 1-RTT packet without stream data to handshake
+    packets, such as NEW_CONNECTION_ID frames in server 0.5RTT data.
+
+commit 519d52e5e51ff5b760c11db0981ca7163075050e
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-27
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-27
+
+    Ensure pad is added if require_padding is true
+
+commit ec7fd1b1b3d71e641af5162ce5d95cc86b32b798
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-26
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-27
+
+    Honor given require_padding
+
+commit 11cc3bda24b4c9e5848c2b4c60550f75a4983b25
+Merge: 0d3b04de f233f45d
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-27
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-27
+
+    Merge pull request #908 from ngtcp2/no-state-check
+    
+    No need to check state
+
+commit f233f45ddac54d9bf4fd47ef46e15d623cabfd1e
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-27
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-27
+
+    No need to check state
+    
+    No need to check state because while server is writing handshake
+    packets, it is not in NGTCP2_CS_POST_HANDSHAKE state.
+
+commit 0d3b04ded0e8162b66dfa87187f68432e0b1f651
+Merge: 33bd79a9 d4696bc6
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-27
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-27
+
+    Merge pull request #907 from ngtcp2/discard-early-key-on-rejection
+    
+    Discard early key when early data is rejected
+
+commit d4696bc6e2134668cd3ce986b4a153dfc8392a13
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-27
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-27
+
+    Discard early key when early data is rejected
+
+commit 33bd79a97ed9be0fd399f399639c51793f0f2e78
+Merge: dee3fb02 d1c9bdcd
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-27
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-27
+
+    Merge pull request #906 from ngtcp2/ncid-in-05rtt
+    
+    Allow server to send NEW_CONNECTION_ID in 0.5 RTT data
+
+commit d1c9bdcd3bc1c82e7927fdf9df57da142707d920
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-26
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-26
+
+    Allow server to send NEW_CONNECTION_ID in 0.5 RTT data
+
+commit dee3fb021ce229115214e64dc10701750ccdc1ed
+Merge: b1897855 b6654229
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-26
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-26
+
+    Merge pull request #905 from ngtcp2/fix-keep-alive
+    
+    Do not send keep-alive PING in 0-RTT packet
+
+commit b6654229c2375491e54a4b3361a192da5b247382
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-26
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-26
+
+    Do not send keep-alive PING in 0-RTT packet
+    
+    Do not send keep-alive PING in 0-RTT packet.  Those PING frames should
+    be sent in 1-RTT packet after handshake completion.
+
+commit b1897855927937e642fe3fad224127810a77a204
+Merge: c589fca3 6e7f694a
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-26
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-26
+
+    Merge pull request #904 from ngtcp2/fix-0rtt-assertion-failure
+    
+    Fix assertion failure because 0RTT packet is not padded enough
+
+commit 6e7f694acd5784e5baf9906af99abece03b57dc3
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-26
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-26
+
+    Fix assertion failure because 0RTT packet is not padded enough
+
+commit c589fca3fa21aecfed68877c185d549f8ebec704
+Merge: 994e0057 a69e2d1c
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-26
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-26
+
+    Merge pull request #903 from ngtcp2/tweak-bbrv2-probebw-up-cwnd-gain
+    
+    bbr2: Change cwnd gain in ProbeBW_UP to 2.25
+
+commit a69e2d1cf47d2400172802fd65aafcdc83738d10
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-26
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-26
+
+    bbr2: Change cwnd gain in ProbeBW_UP to 2.25
+
+commit 994e005778cb8caa0dcecb6acbe85555215824fc
+Merge: cf579277 959e8266
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-26
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-26
+
+    Merge pull request #902 from ngtcp2/log-single-write
+    
+    Write a log line in a single write(2) call
+
+commit 959e8266f7b74be8ed760b032a242fd7820c8d0f
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-26
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-26
+
+    Write a log line in a single write(2) call
+
+commit cf5792776070e15f856d9909efedfc197703ce25
+Merge: ede43595 061bb553
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-25
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-25
+
+    Merge pull request #900 from ngtcp2/too-large-datagram
+    
+    Return NGTCP2_ERR_INVALID_ARGUMENT if a given datagram is too large
+
+commit 061bb55387a46a6bedaa2745a2b40c3bdc58d265
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-25
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-25
+
+    Return NGTCP2_ERR_INVALID_ARGUMENT if a given datagram is too large
+
+commit ede4359504fb8f5b2912aca644a7f8e76c0a03e5
+Merge: 33d90a58 a05f9b9e
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-24
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-24
+
+    Merge pull request #897 from ngtcp2/bbrv2
+    
+    Rename NGTCP2_CC_ALGO_BBR2 to NGTCP2_CC_ALGO_BBR_V2
+
+commit a05f9b9e7abf1aa9809beb3f17e932b7e3650574
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-24
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-24
+
+    Rename NGTCP2_CC_ALGO_BBR2 to NGTCP2_CC_ALGO_BBR_V2
+    
+    Rename NGTCP2_CC_ALGO_BBR2 to NGTCP2_CC_ALGO_BBR_V2.  Also rename --cc
+    option bbr2 to bbrv2 in client/server.
+
+commit 33d90a58b4618501855c7f18c14fc51b6b8a6e40
+Merge: 30103715 8ad71299
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-23
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-23
+
+    Merge pull request #895 from ngtcp2/doc-fix-version-param
+    
+    Fix version parameter text
+
+commit 8ad71299151eb34d550acec18dc14de07b9755ac
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-23
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-23
+
+    Fix version parameter text
+
+commit 30103715ccae57a2c39375ace7a323ed2958be16
+Merge: e7d6c541 ff03e042
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-21
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-21
+
+    Merge pull request #893 from ngtcp2/qlog-stream-data-blocked
+    
+    qlog: Write STREAM_DATA_BLOCKED and DATA_BLOCKED limits
+
+commit ff03e042d4150df68aa8fad315067abb0593acd1
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-21
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-21
+
+    qlog: Write STREAM_DATA_BLOCKED and DATA_BLOCKED limits
+
+commit e7d6c541395afd00edeb22f8cb125296f6d2a472
+Merge: 2aecfd6e 70d7a3c8
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-21
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-21
+
+    Merge pull request #892 from ngtcp2/send-data-blocked
+    
+    Send DATA_BLOCKED
+
+commit 70d7a3c804581242ee655891b64fc6c1eb951f5c
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-21
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-21
+
+    Send DATA_BLOCKED
+
+commit 2aecfd6efab804e3df604c4cadf6ce23895f3592
+Merge: 4412de91 2da36d2f
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-21
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-21
+
+    Merge pull request #891 from ngtcp2/fix-max-stream-data
+    
+    Update strm->rx.max_offset before writing a frame to packet
+
+commit 2da36d2f289b8211fe93b9aa7234940c79e71cba
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-21
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-21
+
+    Update strm->rx.max_offset before writing a frame to packet
+
+commit 4412de91cb2a5a73f381a7c36c9549241f324535
+Merge: c4dbc1e8 ff7abc4d
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-21
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-21
+
+    Merge pull request #890 from ngtcp2/send-stream-data-blocked
+    
+    Send STREAM_DATA_BLOCKED
+
+commit ff7abc4ddb470f805c03b29d3cfe34c803800a54
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-21
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-21
+
+    Send STREAM_DATA_BLOCKED
+
+commit c4dbc1e8503e66bb97d889a934afe93e644dd4e6
+Merge: ee41e45f 915d29eb
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-21
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-21
+
+    Merge pull request #888 from ngtcp2/update-doc
+    
+    Fix doc
+
+commit ee41e45fdb2bd9d21c43ff302b5501e06390eba7
+Merge: ca244fa9 01306ac2
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-21
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-21
+
+    Merge pull request #889 from ngtcp2/fix-server-recv-pkt-ecn
+    
+    server: Fix corrupted ECN output for a received packet
+
+commit ca244fa9320eba96ba4b8818eb122075e8f952d6
+Merge: 051c120b ec63bf5d
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-20
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-20
+
+    Merge pull request #887 from ngtcp2/token-type
+    
+    Define token type
+
+commit 01306ac2cc66a825727e42dc1028bba50edc2866
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-20
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-20
+
+    server: Fix corrupted ECN output for a received packet
+
+commit 915d29ebb1d3df5665e3d5f506e4f0d2780f8841
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-20
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-20
+
+    Fix doc
+
+commit ec63bf5dad9e0d2a44934178864503a6428fed5e
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-20
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-20
+
+    Define token type
+    
+    Define token type in order to verify quic bit a bit more strictly.
+
+commit 051c120b42cde473c7e88abaa464f838f6687f01
+Merge: 7354a00d 83e37696
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-20
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-20
+
+    Merge pull request #886 from ngtcp2/disable-quic-bit-greasing
+    
+    Disable quic bit greasing
+
+commit 83e376969e53c2418737777a7b06069ce350d641
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-20
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-20
+
+    examples: Enable grease_quic_bit
+
+commit 3af8a2e7447c3880bcef98e8404f07f71505f027
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-20
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-20
+
+    Disable grease_quic_bit by default
+    
+    Disable grease_quic_bit by default as it is not compatible with
+    demultiplexing UDP protocols on a single port.
+
+commit 7354a00d20805cae0e1be6b1d39db81d2f6cc961
+Merge: 19be7043 3ccf4c14
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-20
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-20
+
+    Merge pull request #885 from ngtcp2/update-doc
+    
+    Update doc
+
+commit 3ccf4c14eaf447fcee38a85b1dde14923723c7ae
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-20
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-20
+
+    Update doc
+
+commit 19be7043d712a552eb589291e6ebcdb01401d4e3
+Merge: a5352d83 97e0fd56
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-20
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-20
+
+    Merge pull request #884 from ngtcp2/vn-set-quic-bit
+    
+    Set QUIC bit to 1 in Version Negotiation packet
+
+commit 97e0fd56ff58dc4d23cd5fe06e87056cf23833c0
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-20
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-20
+
+    Set QUIC bit to 1 in Version Negotiation packet
+
+commit a5352d83ce164e35255618049f10226523b8b4b2
+Merge: f1020b69 d6d24b2a
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-20
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-20
+
+    Merge pull request #883 from ngtcp2/data-blocked
+    
+    Process DATA_BLOCKED frame
+
+commit d6d24b2acf2e7e12b9138c83019841f4c844a4e2
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-20
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-20
+
+    Process DATA_BLOCKED frame
+
+commit f1020b693f6cef9236c433245cd2a7e7ae97d67b
+Merge: 2bd1c321 2a070c87
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-12
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-12
+
+    Merge pull request #882 from ngtcp2/extend-max-stream-offset-check-stream-type-first
+    
+    ngtcp2_conn_extend_max_stream_offset: Check stream type first
+
+commit 2a070c877f95fdad2858e1481dafa0d9e94675ef
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-12
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-12
+
+    ngtcp2_conn_extend_max_stream_offset: Check stream type first
+
+commit 2bd1c321bdd4a37aeb681ac58e1ac8c9fca5106b
+Merge: fd1d1618 8b1fbcf1
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-12
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-12
+
+    Merge pull request #881 from ngtcp2/stream-data-blocked
+    
+    Process STREAM_DATA_BLOCKED frame
+
+commit 8b1fbcf174193c35b828d9d9bcd566dbffd681ae
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-12
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-12
+
+    Process STREAM_DATA_BLOCKED frame
+
+commit fd1d16189465492c5ea249d190cb509a5e7ae340
+Merge: ac1dd074 8b8aeb25
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-05
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-05
+
+    Merge pull request #879 from ngtcp2/bump-quictls
+    
+    Bump quictls
+
+commit 8b8aeb2565b527116692dc39f50175f2f20016ff
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-05
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-05
+
+    Bump quictls
+
+commit ac1dd0746a354e2275fd1e00183b6b0a67456ab0
+Merge: fa932d8f acf8aeab
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-02
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-02
+
+    Merge pull request #878 from ngtcp2/fix-ecn-display
+    
+    Fix displaying ecn bits
+
+commit acf8aeabfb8c05785c5d22309cf3c330e53eb387
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-02
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-02
+
+    Fix displaying ecn bits
+
+commit fa932d8fc21ce67890c643a6299383bdfe3eb465
+Merge: 9c9f62c7 80447281
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-02
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-02
+
+    Merge pull request #877 from ngtcp2/pktinfo-ecn-type
+    
+    Make ngtcp2_pkt_info.ecn of type uint8_t
+
+commit 9c9f62c7f0fcfb34a05f1434abea6e9a94cfa0ea
+Merge: e3a2d53f b15c56ae
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-02
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-02
+
+    Merge pull request #876 from ngtcp2/remove-endpoint-ecn
+    
+    Remove unused Endpoint ecn field
+
+commit 80447281bbc94af53f8aa7a4cfc19175782894a3
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-01
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-01
+
+    Make ngtcp2_pkt_info.ecn of type uint8_t
+
+commit b15c56ae5633999bdc3d2da183e89f735b68bc70
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-01
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-01
+
+    Remove unused Endpoint ecn field
+
+commit e3a2d53f1c0db2f278eef7292e8e27a70df60131
+Merge: fdf2f43a 14be089c
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-01
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-01
+
+    Merge pull request #875 from ngtcp2/cmsg-data
+    
+    CMSG_DATA does not necessarily return an aligned pointer
+
+commit 14be089c6a8497aafac98cd9bb37f119bd7e9a06
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-01
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-01
+
+    CMSG_DATA does not necessarily return an aligned pointer
+
+commit fdf2f43abd7c0f431452178a1629d59fe0a6121d
+Merge: d8936945 0225c321
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-01
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-01
+
+    Merge pull request #874 from ngtcp2/ecn
+    
+    Rework sending and receiving ECN bits
+
+commit 0225c3213a7f14a9772ca467c55459f1a8c9b5cd
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-01
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-01
+
+    Rework sending and receiving ECN bits
+    
+    Now ECN is sent along with sendmsg ancillary message.  With this
+    commit, ECN should work fine with the recent Mac OS.
+
+commit d8936945a0e4055b9524f388f5a1778f416d0fe6
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-07-31
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-07-31
+
+    Bump package version
