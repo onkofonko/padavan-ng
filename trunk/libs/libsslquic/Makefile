@@ -1,5 +1,5 @@
 SRC_NAME=openssl
-SRC_URL=https://github.com/quictls/openssl/archive/refs/tags/OpenSSL_1_1_1v-quic1.tar.gz
+SRC_URL=clone --depth 1 -b OpenSSL_1_1_1v+quic https://github.com/quictls/
 
 THISDIR = $(shell pwd)
 
