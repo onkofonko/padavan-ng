@@ -1,0 +1,99 @@
+commit 9a034da955a3a1595c8e8e23782bb5c709ef6cfe (HEAD, tag: v0.15.0, origin/main, origin/HEAD, main)
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-09-02
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-09-02
+
+    Bump package and library versions
+
+commit dd5d9d55dcb13a1729b7ad1c8c30f8e5ad82c4df
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-30
+
+    clang-format
+
+commit d765397f968716f406425f0485b6b9a4c84a158d
+Merge: d42b571 675fb8c
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-30
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-30
+
+    Merge pull request #158 from ngtcp2/rearrange-liberr
+    
+    Rearrange liberr
+
+commit d42b5713d9e6ea8bc836e4ac638d5dff31bb37ea
+Merge: b0ec1c0 d6f8a44
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-30
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-30
+
+    Merge pull request #157 from ngtcp2/fix-include-guard-macros
+    
+    Fix include guard macros
+
+commit b0ec1c04e83213e29f265f1f770b2be05f6e76d2
+Merge: 90e6879 84a32bb
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-30
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-30
+
+    Merge pull request #156 from ngtcp2/infer-err
+    
+    Map more errors to NGHTTP3_H3_INTERNAL_ERROR
+
+commit 675fb8c452b7ebe89785623542eae1a67be70acb
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-30
+
+    Rearrange liberr
+
+commit 90e687985adcfe4052c6f96a46d801bb08cab1ba
+Merge: 8dc4793 46bf502
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-30
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-30
+
+    Merge pull request #155 from ngtcp2/remove-err-nobuf
+    
+    Remove unused NGHTTP3_ERR_NOBUF
+
+commit d6f8a449c8bc475334666d9a54842b011df599b6
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-30
+
+    Fix include guard macros
+
+commit 84a32bbec851aed303804c4831171fcf9c276f0d
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-30
+
+    Map more errors to NGHTTP3_H3_INTERNAL_ERROR
+
+commit 46bf5020a1d45127bde00bdaeb9ab8398db85e29
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-30
+
+    Remove unused NGHTTP3_ERR_NOBUF
+
+commit 8dc4793171d1271bf3b685869bdb49faeca45851
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-07-31
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-07-31
+
+    Bump package version
