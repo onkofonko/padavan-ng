@@ -93,7 +93,7 @@ romfs:
 	cp -fP $(DESTDIR)/lib/libssl.so* $(ROMFSDIR)/lib
 	cp -fP $(DESTDIR)/lib/libcrypto.so* $(ROMFSDIR)/lib
 #	cp -fP ${CONFIG_TOOLCHAIN_DIR}/mipsel-linux-uclibc/sysroot/lib/libatomic.so* $(ROMFSDIR)/lib
-    cp -fP libatomic/libatomic.so* $(ROMFSDIR)/lib
+	cp -fP libatomic/libatomic.so* $(ROMFSDIR)/lib
 
 	$(ROMFSINST) /etc_ro/openssl.cnf
 	$(ROMFSINST) /etc_ro/ca-certificates.crt
