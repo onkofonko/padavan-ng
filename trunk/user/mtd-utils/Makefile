@@ -1,4 +1,4 @@
-SRC_NAME=mtd-utils-2.1.5
+SRC_NAME=mtd-utils-2.1.6
 SRC_URL = ftp://ftp.infradead.org/pub/mtd-utils/$(SRC_NAME).tar.bz2
 
 THISDIR = $(shell pwd)
