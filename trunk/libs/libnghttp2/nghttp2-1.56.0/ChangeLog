@@ -1,0 +1,298 @@
+commit 80d05fe917e428923e0ab654d18f958e49b3db0a (HEAD, tag: v1.56.0, origin/master, origin/HEAD, master)
+Merge: 47ecf357 08c47223
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-09-04
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-09-04
+
+    Merge pull request #1943 from nghttp2/update-dockerfile
+    
+    Update Dockerfile
+
+commit 08c472230a9f48d9fc5b0211908818a531b62085
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-09-04
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-09-04
+
+    Update Dockerfile
+
+commit 47ecf35737c64a27b061b139362d040f658ac7a1
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-09-04
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-09-04
+
+    Update manual pages
+
+commit b48355b67e2fba52c91cb67d132e32532dfe6bde
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-09-03
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-09-03
+
+    Bump package and library versions
+
+commit 0f768bdaab53d30d1a03940e7471f5f22fbfd67e
+Merge: d70f0013 05f93ca7
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-09-03
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-09-03
+
+    Merge pull request #1942 from nghttp2/bump-libbpf
+    
+    Bump libbpf to v1.2.2
+
+commit 05f93ca729c5ef1434dd82cd6fc7f52c691793f5
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-09-03
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-09-03
+
+    Bump libbpf to v1.2.2
+
+commit d70f0013d6aad185601c0767f6ef791d3d21df0c
+Merge: 2a382a2c d5cb882e
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-09-03
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-09-03
+
+    Merge pull request #1941 from nghttp2/bump-llhttp
+    
+    Bump llhttp to 926c982942eb53a13f01c1e9e6b19bd3b196e7dd
+
+commit d5cb882e629d6fc5d0d7d9165cf6b2bb89b64c29
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-09-03
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-09-03
+
+    Bump llhttp to 926c982942eb53a13f01c1e9e6b19bd3b196e7dd
+
+commit 2a382a2ce9de469093036a1b58b3b6acc23cfc04
+Merge: 298f71ce c13b08f8
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-09-03
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-09-03
+
+    Merge pull request #1940 from nghttp2/simplify-unique_ptr-release
+    
+    nghttpx: Simplify std::unique_ptr get and release
+
+commit c13b08f861bd11d7c12517ba4a3f5be4b8d118b5
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-09-03
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-09-03
+
+    nghttpx: Simplify std::unique_ptr get and release
+
+commit 298f71ce4ec889642c5737f78f4acfd4607d196b
+Merge: 060d0ac4 41145075
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-09-03
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-09-03
+
+    Merge pull request #1939 from nghttp2/bump-ngtcp2
+    
+    Bump ngtcp2 and its dependencies
+
+commit 41145075872338c4c49559ac5bbb9bcc7af34774
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-09-03
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-09-03
+
+    Bump ngtcp2 and its dependencies
+
+commit 060d0ac4555f4f62ceba58ebecd66b4440ed3f8c
+Merge: 98eb01aa 9a3c345f
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-05
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-05
+
+    Merge pull request #1937 from nghttp2/bump-quictls
+    
+    Bump quictls
+
+commit 9a3c345f6029863d234fd957c64bfd1c46e08413
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-05
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-05
+
+    Bump quictls
+
+commit 98eb01aa3f573b1042ee2fdb1dcc64e862ca7825
+Merge: 871cf8e5 de47400a
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-02
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-02
+
+    Merge pull request #1935 from nghttp2/cmsg-data
+    
+    CMSG_DATA does not necessarily return an aligned pointer
+
+commit de47400a480a7d7c6e23328a322260f7cf6c21bc
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-02
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-02
+
+    CMSG_DATA does not necessarily return an aligned pointer
+
+commit 871cf8e5a2bd2e541629108af6da925ed233b334
+Merge: 7273ec17 6ace578e
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-08-02
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-08-02
+
+    Merge pull request #1934 from nghttp2/ecn
+    
+    nghttpx: Rework sending and receiving ECN bits
+
+commit 6ace578e5b5b58165ae86400e8b68c127c259928
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-08-02
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-08-02
+
+    nghttpx: Rework sending and receiving ECN bits
+    
+    Now ECN is sent along with sendmsg ancillary message.  With this
+    commit, ECN should work fine with the recent Mac OS.
+
+commit 7273ec17d3120f510bc04b1d60fdfed258b7de5b
+Merge: b16d4e95 07b69bb0
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-07-16
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-07-16
+
+    Merge pull request #1931 from nghttp2/return-void
+    
+    Return void
+
+commit 07b69bb06fb8b30510712bf3f2089c6cf49f7ff7
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-07-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-07-15
+
+    Make session_after_frame_sent2 return void
+
+commit 98df5b59e5086fa0d28bbd158bea6180f35f4823
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-07-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-07-15
+
+    frame: Make functions that always succeed return void
+
+commit cdfb517528aafac2bd2a9eadb1c1e42e93f29369
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-07-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-07-15
+
+    Make functions that always succeed return void
+
+commit b16d4e951e0ab1eb3a485ff2b95768ffaa9eddd8
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-07-14
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-07-14
+
+    Bump library version due to the patch release
+
+commit feb5ff560a4dcbd9a9f83faee41a3c8f9d9940ae
+Merge: 82fc1163 ce385d3f
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-07-14
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-07-14
+
+    Merge pull request #1930 from nghttp2/fix-memory-leak
+    
+    Fix memory leak
+
+commit ce385d3f55a4b76da976b3bdf71fe2deddf315ba
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-07-14
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-07-14
+
+    Fix memory leak
+    
+    This commit fixes memory leak that happens when PUSH_PROMISE or
+    HEADERS frame cannot be sent, and nghttp2_on_stream_close_callback
+    fails with a fatal error.  For example, if GOAWAY frame has been
+    received, a HEADERS frame that opens new stream cannot be sent.
+    
+    This issue has already been made public via CVE-2023-35945 [1] issued
+    by envoyproxy/envoy project.  During embargo period, the patch to fix
+    this bug was accidentally submitted to nghttp2/nghttp2 repository [2].
+    And they decided to disclose CVE early.  I was notified just 1.5 hours
+    before disclosure.  I had no time to respond.
+    
+    PoC described in [1] is quite simple, but I think it is not enough to
+    trigger this bug.  While it is true that receiving GOAWAY prevents a
+    client from opening new stream, and nghttp2 enters error handling
+    branch, in order to cause the memory leak,
+    nghttp2_session_close_stream function must return a fatal error.
+    nghttp2 defines 2 fatal error codes:
+    
+    - NGHTTP2_ERR_NOMEM
+    - NGHTTP2_ERR_CALLBACK_FAILURE
+    
+    NGHTTP2_ERR_NOMEM, as its name suggests, indicates out of memory.  It
+    is unlikely that a process gets short of memory with this simple PoC
+    scenario unless application does something memory heavy processing.
+    
+    NGHTTP2_ERR_CALLBACK_FAILURE is returned from application defined
+    callback function (nghttp2_on_stream_close_callback, in this case),
+    which indicates something fatal happened inside a callback, and a
+    connection must be closed immediately without any further action.  As
+    nghttp2_on_stream_close_error_callback documentation says, any error
+    code other than 0 or NGHTTP2_ERR_CALLBACK_FAILURE is treated as fatal
+    error code.  More specifically, it is treated as if
+    NGHTTP2_ERR_CALLBACK_FAILURE is returned.  I guess that envoy returns
+    NGHTTP2_ERR_CALLBACK_FAILURE or other error code which is translated
+    into NGHTTP2_ERR_CALLBACK_FAILURE.
+    
+    [1] https://github.com/envoyproxy/envoy/security/advisories/GHSA-jfxv-29pc-x22r
+    [2] https://github.com/nghttp2/nghttp2/pull/1929
+
+commit 82fc1163c6fd210ae16c51877a639a50a946e5a4
+Merge: 4c1f1b0e 79d2b7f9
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-07-12
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-07-12
+
+    Merge pull request #1928 from nghttp2/doc-bump-boringssl
+    
+    doc: Bump boringssl
+
+commit 79d2b7f931568bb8b73f52032a74620acf58d130
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-07-12
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-07-12
+
+    doc: Bump boringssl
+
+commit 4c1f1b0efcbaca49824cc92613035fd919c3ec22
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-07-12
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-07-12
+
+    Bump package version
