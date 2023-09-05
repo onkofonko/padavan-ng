@@ -91,8 +91,8 @@ endif
 
 dir_y						+= libz
 dir_$(LIBS_INCLUDE_LIBLZO)			+= liblzo
-dir_y						+= libssl3
-# dir_y						+= libsslquic
+# dir_y						+= libssl3
+dir_y						+= libsslquic
 dir_$(LIBS_INCLUDE_LIBUSB_0)			+= libusb
 dir_$(LIBS_INCLUDE_LIBUSB_1)			+= libusb-1.0
 dir_y						+= libnfnetlink
