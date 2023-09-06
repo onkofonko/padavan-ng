@@ -1,0 +1,20 @@
+commit 01194ac0b90b1d2c014881705392cb65c85620f6 (HEAD, tag: v0.19.1, origin/release-0.19, origin/HEAD, release-0.19)
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-09-06
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-09-06
+
+    Bump package and library versions
+
+commit 84ae837355db44e0032e22d0a8c7e8e7399f6315
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-09-04
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-09-06
+
+    Fix assertion failure
+    
+    If an empty packet is created because of blocked stream data,
+    NGTCP2_CONN_FLAG_PPE_PENDING might still be set in conn->flags.  That
+    causes assertion failure where NGTCP2_CONN_FLAG_PPE_PENDING is not
+    expected.

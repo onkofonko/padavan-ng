@@ -28,12 +28,12 @@ cmake_minimum_required(VERSION 3.20)
 cmake_policy(SET CMP0063 NEW)
 
 # XXX using 0.1.90 instead of 0.2.0-DEV
-project(ngtcp2 VERSION 0.19.0)
+project(ngtcp2 VERSION 0.19.1)
 
 # See versioning rule:
 #  https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
 set(LT_CURRENT  15)
-set(LT_REVISION 0)
+set(LT_REVISION 1)
 set(LT_AGE      0)
 
 set(CRYPTO_QUICTLS_LT_CURRENT 1)
@@ -401,7 +401,7 @@ add_subdirectory(lib)
 add_subdirectory(tests)
 add_subdirectory(crypto)
 add_subdirectory(third-party)
-# add_subdirectory(examples)
+add_subdirectory(examples)
 
 
 string(TOUPPER "${CMAKE_BUILD_TYPE}" _build_type)
