@@ -401,7 +401,7 @@ add_subdirectory(lib)
 add_subdirectory(tests)
 add_subdirectory(crypto)
 add_subdirectory(third-party)
-add_subdirectory(examples)
+# add_subdirectory(examples)
 
 
 string(TOUPPER "${CMAKE_BUILD_TYPE}" _build_type)
