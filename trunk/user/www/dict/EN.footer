@@ -1614,6 +1614,7 @@ LANHostConfig_x_DDNSServer_linkname=DDNS link
 SAVE_note=Note: It takes about 30 seconds.
 IPConnection_VServerPNo_itemname=Proto No.
 LANHostConfig_ManualARP_itemname=Enable Static ARP Binds?
+LANHostConfig_ManualARP_itemdesc=Used to bind the IP address of a network device to its MAC address. This helps prevent ARP spoofing and other ARP attacks by denying network access to a device with a matching IP address in the binding list but an unrecognized MAC address.
 LANHostConfig_ManualDHCPEnable_itemname=Enable Manual Assignment?
 LANHostConfig_ManualDHCPEnable_itemdesc=Tick No to allow the DHCP Server to assign IP Addresses to LAN Clients manually.
 LANHostConfig_ManualDHCPList_groupitemdesc=Manually Assigned IP around the DHCP List

@@ -1626,6 +1626,7 @@ LANHostConfig_x_DDNSServer_linkname=Перейти >
 SAVE_note=Примітка: Це триватиме близько 30 секунд.
 IPConnection_VServerPNo_itemname=Номер протоколу
 LANHostConfig_ManualARP_itemname=Здійснити статичну прив'язку ARP?
+LANHostConfig_ManualARP_itemdesc=Використовується для прив'язки IP-адреси мережного пристрою до MAC-адреси. Це дозволяє запобігти заміні ARP та іншим атакам ARP, заборонивши доступ до мережі пристрою з відповідною IP-адресою у списку прив'язки, але з нерозпізнаною MAC-адресою.
 LANHostConfig_ManualDHCPEnable_itemname=Увімкнути призначення вручну?
 LANHostConfig_ManualDHCPEnable_itemdesc=Ручне призначення IP-адрес мережевим клієнтам повз DHCP-сервер.
 LANHostConfig_ManualDHCPList_groupitemdesc=Список призначених вручну IP-адрес повз DHCP

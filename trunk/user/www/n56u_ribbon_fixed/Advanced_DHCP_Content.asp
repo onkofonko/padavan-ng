@@ -488,13 +488,13 @@ function changeBgColor(obj, num){
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,12);"><#LANHostConfig_x_LDNSServer6_itemname#> :</th>
+                                            <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,10);"><#LANHostConfig_x_LDNSServer6_itemname#> :</th>
                                             <td>
                                                 <input type="text" maxlength="40" class="input" size="15" name="dhcp_dnsv6_x" value="<% nvram_get_x("", "dhcp_dnsv6_x"); %>" onKeyPress="return is_string(this,event);" />
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th style="padding-bottom: 0px;"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,10);"><#LANHostConfig_x_WINSServer_itemname#></a></th>
+                                            <th style="padding-bottom: 0px;"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,11);"><#LANHostConfig_x_WINSServer_itemname#></a></th>
                                             <td style="padding-bottom: 0px;">
                                                 <input type="text" maxlength="15" class="input" size="15" name="dhcp_wins_x" value="<% nvram_get_x("", "dhcp_wins_x"); %>" onkeypress="return is_ipaddr(this,event);" />
                                             </td>
@@ -563,7 +563,7 @@ function changeBgColor(obj, num){
                                             <th colspan="4" id="GWStatic" style="background-color: #E3E3E3;"><#LANHostConfig_ManualDHCPList_groupitemdesc#></th>
                                         </tr>
                                         <tr>
-                                            <th colspan="2" width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,11);"><#LANHostConfig_ManualDHCPEnable_itemname#></a></th>
+                                            <th colspan="2" width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,12);"><#LANHostConfig_ManualDHCPEnable_itemname#></a></th>
                                             <td colspan="2">
                                                 <div class="main_itoggle">
                                                     <div id="dhcp_static_x_on_of">
@@ -578,7 +578,7 @@ function changeBgColor(obj, num){
                                             </td>
                                         </tr>
                                         <tr id="row_static_arp" style="display:none">
-                                            <th colspan="2"><#LANHostConfig_ManualARP_itemname#></th>
+                                            <th colspan="2" width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,13);"><#LANHostConfig_ManualARP_itemname#></a></th>
                                             <td colspan="2">
                                                 <div class="main_itoggle">
                                                     <div id="dhcp_static_arp_on_of">
