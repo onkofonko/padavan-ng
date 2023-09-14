@@ -317,6 +317,73 @@ restart_tor(void)
 	start_tor();
 }
 #endif
+#if defined(APP_DOH)
+int
+is_doh_run(void)
+{
+	if (check_if_file_exist("/usr/sbin/doh_proxy"))
+	{
+		if (pids("doh_proxy"))
+			return 1;
+	}
+	return 0;
+}
+
+void
+stop_doh(void)
+{
+	eval("/usr/sbin/doh_start.sh", "stop");
+}
+
+void
+start_doh(void)
+{
+	int doh_mode = nvram_get_int("doh_enable");
+
+	if (doh_mode == 1)
+		eval("/usr/sbin/doh_start.sh", "start");
+}
+void
+restart_doh(void)
+{
+	stop_doh();
+	start_doh();
+}
+#endif
+#if defined(APP_STUBBY)
+int
+is_stubby_run(void)
+{
+	if (check_if_file_exist("/usr/sbin/stubby"))
+	{
+		if (pids("stubby_proxy"))
+			return 1;
+	}
+	return 0;
+}
+
+void
+stop_stubby(void)
+{
+	eval("/usr/sbin/stubby_proxy.sh", "stop");
+}
+
+void
+start_stubby(void)
+{
+	int stubby_mode = nvram_get_int("stubby_enable");
+
+	if (stubby_mode == 1)
+		eval("/usr/sbin/stubby_proxy.sh", "start");
+}
+void
+restart_stubby(void)
+{
+	stop_stubby();
+	start_stubby();
+}
+
+#endif
 #if defined(APP_PRIVOXY)
 int
 is_privoxy_run(void)
@@ -584,6 +651,12 @@ start_services_once(int is_ap_mode)
 #if defined(APP_TOR)
 	start_tor();
 #endif
+#if defined(APP_DOH)
+	start_doh();
+#endif
+#if defined(APP_STUBBY)
+	start_stubby();
+#endif
 #if defined(APP_PRIVOXY)
 	start_privoxy();
 #endif
@@ -642,6 +715,12 @@ stop_services(int stopall)
 #endif
 #if defined(APP_TOR)
 	stop_tor();
+#endif
+#if defined(APP_DOH)
+	stop_doh();
+#endif
+#if defined(APP_STUBBY)
+	stop_stubby();
 #endif
 #if defined(APP_PRIVOXY)
 	stop_privoxy();

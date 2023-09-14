@@ -32,6 +32,8 @@ $j(document).ready(function() {
 	init_itoggle('crond_enable', change_crond_enabled);
 	init_itoggle('watchdog_cpu');
 	init_itoggle('tor_enable', change_tor_enabled);
+	init_itoggle('doh_enable', change_doh_enabled);
+	init_itoggle('stubby_enable', change_stubby_enabled);
 	init_itoggle('privoxy_enable', change_privoxy_enabled);
 	init_itoggle('dnscrypt_enable', change_dnscrypt_enabled);
 });
@@ -86,9 +88,26 @@ function initial(){
 	if(!found_app_tor()){
 		showhide_div('row_tor', 0);
 		showhide_div('row_tor_conf', 0);
-	}else
+	}else{
 		change_tor_enabled();
-
+		}
+	if(!found_app_doh()){
+		showhide_div('row_doh', 0);
+		showhide_div('row_doh_conf1', 0);
+		showhide_div('row_doh_conf2', 0);
+		showhide_div('row_doh_conf3', 0);
+		showhide_div('row_doh_conf4', 0);
+		showhide_div('row_doh_conf5', 0);
+		showhide_div('row_doh_conf6', 0);
+	}else{
+		change_doh_enabled();
+		}
+	if(!found_app_stubby()){
+		showhide_div('row_stubby', 0);
+		showhide_div('row_stubby_conf', 0);
+	}else{
+		change_stubby_enabled();
+		}
 	if(!found_app_privoxy()){
 		showhide_div('row_privoxy', 0);
 		showhide_div('row_privoxy_conf', 0);
@@ -124,6 +143,19 @@ function applyRule(){
 		showhide_div('row_tor', 0);
 		showhide_div('row_tor_conf', 0);
 	}
+	if(!found_app_doh()){
+		showhide_div('row_doh', 0);
+		showhide_div('row_doh_conf1', 0);
+		showhide_div('row_doh_conf2', 0);
+		showhide_div('row_doh_conf3', 0);
+		showhide_div('row_doh_conf4', 0);
+		showhide_div('row_doh_conf5', 0);
+		showhide_div('row_doh_conf6', 0);
+	}
+	if(!found_app_stubby()){
+		showhide_div('row_stubby', 0);
+		showhide_div('row_stubby_conf', 0);
+	}
 
 	if(!found_app_privoxy()){
 		showhide_div('row_privoxy', 0);
@@ -141,7 +173,6 @@ function applyRule(){
 		showhide_div('row_dnscrypt_force_dns', 0);
 		showhide_div('row_dnscrypt_options', 0);
 	}
-
 }
 
 function validForm(){
@@ -191,6 +222,10 @@ function textarea_sshd_enabled(v){
 
 function textarea_tor_enabled(v){
 	inputCtrl(document.form['torconf.torrc'], v);
+}
+
+function textarea_stubby_enabled(v){
+	inputCtrl(document.form['stubbyc.stubby.yml'], v);
 }
 
 function textarea_privoxy_enabled(v){
@@ -297,6 +332,24 @@ function change_tor_enabled(){
 	if (!login_safe())
 		v = 0;
 	textarea_tor_enabled(v);
+}
+
+function change_doh_enabled(){
+	var v = document.form.doh_enable[0].checked;
+	showhide_div('row_doh_conf1', v);
+	showhide_div('row_doh_conf2', v);
+	showhide_div('row_doh_conf3', v);
+	showhide_div('row_doh_conf4', v);
+	showhide_div('row_doh_conf5', v);
+	showhide_div('row_doh_conf6', v);
+}
+
+function change_stubby_enabled(){
+	var v = document.form.stubby_enable[0].checked;
+	showhide_div('row_stubby_conf', v);
+	if (!login_safe())
+		v = 0;
+	textarea_stubby_enabled(v);
 }
 
 function change_privoxy_enabled(){
@@ -588,7 +641,89 @@ function change_crond_enabled(){
                                         <tr>
                                             <th colspan="2" style="background-color: #E3E3E3;"><#Adm_System_anon#></th>
                                         </tr>
-                                        <tr id="row_tor">
+                                        <tr id="row_doh">
+                                            <th width="50%"><#Adm_Svc_doh#></th>
+                                            <td>
+                                                <div class="main_itoggle">
+                                                    <div id="doh_enable_on_of">
+                                                        <input type="checkbox" id="doh_enable_fake" <% nvram_match_x("", "doh_enable", "1", "value=1 checked"); %><% nvram_match_x("", "doh_enable", "0", "value=0"); %>>
+                                                    </div>
+                                                </div>
+                                                <div style="position: absolute; margin-left: -10000px;">
+                                                    <input type="radio" name="doh_enable" id="doh_enable_1" class="input" value="1" <% nvram_match_x("", "doh_enable", "1", "checked"); %>/><#checkbox_Yes#>
+                                                    <input type="radio" name="doh_enable" id="doh_enable_0" class="input" value="0" <% nvram_match_x("", "doh_enable", "0", "checked"); %>/><#checkbox_No#>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr id="row_doh_conf1" style="display:none">
+                                            <td colspan="2" align="left" style="text-align:left;">
+                                                <span>DoH Server 1:  </span>
+                                                <input type="text" maxlength="50" class="input" size="10" style="width: 250px;" name="doh_server1" value="<% nvram_get_x("", "doh_server1"); %>" onkeypress="return is_string(this,event);"/>&nbsp;:
+                                                <input type="text" maxlength="5" class="input" size="10" style="width: 42px;" name="doh_port1" value="<% nvram_get_x("", "doh_port1"); %>" onkeypress="return is_number(this,event);"/>
+                                                &nbsp;<span style="color:#888;">[1025..65535]</span>
+                                        </td>
+                                        </tr>
+                                        <tr id="row_doh_conf2" style="display:none">
+                                            <td colspan="2" align="left" style="text-align:left;">
+                                                <span>Options:       </span>
+                                                <input type="text" maxlength="40" class="input" size="10" style="width: 225px;" name="doh_opt1_1" value="<% nvram_get_x("", "doh_opt1_1"); %>" onkeypress="return is_string(this,event);"/>&nbsp; 
+                                                <input type="text" maxlength="24" class="input" size="10" style="width: 96px;" name="doh_opt2_1" value="<% nvram_get_x("", "doh_opt2_1"); %>" onkeypress="return is_string(this,event);"/>
+                                            </td>
+                                        </tr>
+                                        <tr id="row_doh_conf3" style="display:none">
+                                            <td colspan="2" align="left" style="text-align:left;">
+                                                <span>DoH Server 2:  </span>
+                                                <input type="text" maxlength="50" class="input" size="10" style="width: 250px;" name="doh_server2" value="<% nvram_get_x("", "doh_server2"); %>" onkeypress="return is_string(this,event);"/>&nbsp;:
+                                                <input type="text" maxlength="5" class="input" size="10" style="width: 42px;" name="doh_port2" value="<% nvram_get_x("", "doh_port2"); %>" onkeypress="return is_number(this,event);"/>
+                                                &nbsp;<span style="color:#888;">[1025..65535]</span>
+                                            </td>
+                                        </tr>
+                                        <tr id="row_doh_conf4" style="display:none">
+                                            <td colspan="2" align="left" style="text-align:left;">
+                                                <span">Options:       </span>
+                                                <input type="text" maxlength="40" class="input" size="10" style="width: 225px;" name="doh_opt1_2" value="<% nvram_get_x("", "doh_opt1_2"); %>" onkeypress="return is_string(this,event);"/>&nbsp; 
+                                                <input type="text" maxlength="24" class="input" size="10" style="width: 96px;" name="doh_opt2_2" value="<% nvram_get_x("", "doh_opt2_2"); %>" onkeypress="return is_string(this,event);"/>
+                                            </td>
+                                        </tr>
+                                        <tr id="row_doh_conf5" style="display:none">
+                                            <td colspan="2" align="left" style="text-align:left;">
+                                                <span>DoH Server 3:  </span>
+                                                <input type="text" maxlength="50" class="input" size="10" style="width: 250px;" name="doh_server3" value="<% nvram_get_x("", "doh_server3"); %>" onkeypress="return is_string(this,event);"/>&nbsp;:
+                                                <input type="text" maxlength="5" class="input" size="10" style="width: 42px;" name="doh_port3" value="<% nvram_get_x("", "doh_port3"); %>" onkeypress="return is_number(this,event);"/>
+                                                &nbsp;<span style="color:#888;">[1025..65535]</span>
+                                            </td>
+                                        </tr>
+                                        <tr id="row_doh_conf6" style="display:none">
+                                            <td colspan="2" align="left" style="text-align:left;">
+                                                <span>Options:       </span>
+                                                <input type="text" maxlength="40" class="input" size="10" style="width: 225px;" name="doh_opt1_3" value="<% nvram_get_x("", "doh_opt1_3"); %>" onkeypress="return is_string(this,event);"/>&nbsp; 
+                                                <input type="text" maxlength="24" class="input" size="10" style="width: 96px;" name="doh_opt2_3" value="<% nvram_get_x("", "doh_opt2_3"); %>" onkeypress="return is_string(this,event);"/>
+                                            </td>
+                                        </tr>
+                                        <tr id="row_stubby">
+                                            <th width="50%"><#Adm_Svc_stubby#></th>
+                                            <td>
+                                                <div class="main_itoggle">
+                                                    <div id="stubby_enable_on_of">
+                                                        <input type="checkbox" id="stubby_enable_fake" <% nvram_match_x("", "stubby_enable", "1", "value=1 checked"); %><% nvram_match_x("", "stubby_enable", "0", "value=0"); %>>
+                                                    </div>
+                                                </div>
+                                                <div style="position: absolute; margin-left: -10000px;">
+                                                    <input type="radio" name="stubby_enable" id="stubby_enable_1" class="input" value="1" <% nvram_match_x("", "stubby_enable", "1", "checked"); %>/><#checkbox_Yes#>
+                                                    <input type="radio" name="stubby_enable" id="stubby_enable_0" class="input" value="0" <% nvram_match_x("", "stubby_enable", "0", "checked"); %>/><#checkbox_No#>
+                                                </div>
+                                            </td>
+                                        </tr>
+					<tr id="row_stubby_conf" style="display:none">
+					    <td colspan="2">
+						<a href="javascript:spoiler_toggle('stubby.yml')"><span><#CustomConf#> "stubby.yml"</span></a>
+						    <div id="stubby.yml" style="display:none;">
+							<textarea rows="16" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="stubbyc.stubby.yml" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("stubbyc.stubby.yml",""); %></textarea>
+						    </div>
+					    </td>
+					</tr>
+
+					<tr id="row_tor">
                                             <th width="50%"><#Adm_Svc_tor#></th>
                                             <td>
                                                 <div class="main_itoggle">

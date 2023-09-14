@@ -39,6 +39,8 @@ clean:
 	rm -f config_done
 
 romfs:
+	$(ROMFSINST) /usr/sbin/doh_start.sh
+	$(ROMFSINST) /usr/sbin/doh_proxy.sh
 	$(ROMFSINST) $(SRC_NAME)/build/https_dns_proxy /usr/sbin/doh_proxy
 	$(ROMFSINST) $(SRC_NAME)/build/https_dns_proxy /usr/sbin/doh_proxy2
 	$(ROMFSINST) $(SRC_NAME)/build/https_dns_proxy /usr/sbin/doh_proxy3

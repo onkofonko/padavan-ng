@@ -528,6 +528,16 @@ void stop_tor(void);
 void start_tor(void);
 void restart_tor(void);
 #endif
+#if defined(APP_DOH)
+int is_doh_run(void);
+void stop_doh(void);
+void start_doh(void);
+#endif
+#if defined(APP_STUBBY)
+int is_stubby_run(void);
+void stop_stubby(void);
+void start_stubby(void);
+#endif
 #if defined(APP_PRIVOXY)
 int is_privoxy_run(void);
 void stop_privoxy(void);
