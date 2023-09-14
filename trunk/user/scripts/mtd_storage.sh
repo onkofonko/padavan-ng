@@ -310,69 +310,16 @@ sleep 10
 WAN_IP=`nvram get wan0_ipaddr`
 logger "WAN $WAN_IF ($WAN_IP) is UP. Start Proxy DNS service."
 ### Configure DoH proxy. Запуск службы DNS-over-HTTPS (DoH).
-if [ -f "/var/run/doh_proxy.pid" ]; then
-	logger "DoH proxy is running."
-        else
-DOH_S1=$(nvram get doh_server1)
-DOH_S2=$(nvram get doh_server2)
-DOH_S3=$(nvram get doh_server3)
-DOH_P1=$(nvram get doh_port1)
-DOH_P2=$(nvram get doh_port2)
-DOH_P3=$(nvram get doh_port3)
-DOH_O1=$(nvram get doh_opt2_1)
-DOH_O2=$(nvram get doh_opt2_2)
-DOH_O3=$(nvram get doh_opt2_3)
-
-if [ "$DOH_S1" = "" ] || [ "$DOH_P1" = "" ]; then
-  logger -t doh_proxy "Not Server1"
-else
-   if [ "$DOH_O1" = "" ]; then
-/usr/sbin/doh_proxy -a 127.0.0.1 -p $DOH_P1 -r $DOH_S1 $(nvram get doh_opt1_1)
-   else
-/usr/sbin/doh_proxy -a 127.0.0.1 -p $DOH_P1 -b $DOH_O1 -r $DOH_S1 $(nvram get doh_opt1_1)
-   fi
-logger -t doh_proxy "Start resolving to $DOH_S1 : $DOH_P1 ."
-fi
-if [ "$DOH_S2" = "" ] || [ "$DOH_P2" = "" ]; then
-  logger -t doh_proxy2 "Not Server2"
-else
-   if [ "$DOH_O2" = "" ]; then
-/usr/sbin/doh_proxy2 -a 127.0.0.1 -p $DOH_P2 -r $DOH_S2 $(nvram get doh_opt1_2)
-   else
-/usr/sbin/doh_proxy2 -a 127.0.0.1 -p $DOH_P2 -b $DOH_O2 -r $DOH_S2 $(nvram get doh_opt1_2)
-   fi
-logger -t doh_proxy2 "Start resolving to $DOH_S2 : $DOH_P2 ."
-fi
-if [ "$DOH_S3" = "" ] || [ "$DOH_P3" = "" ]; then
-  logger -t doh_proxy3 "Not Server3"
-else
-   if [ "$DOH_O3" = "" ]; then
-/usr/sbin/doh_proxy3 -a 127.0.0.1 -p $DOH_P3 -r $DOH_S3 $(nvram get doh_opt1_3)
-   else
-/usr/sbin/doh_proxy3 -a 127.0.0.1 -p $DOH_P3 -b $DOH_O3 -r $DOH_S3 $(nvram get doh_opt1_3)
-   fi
-logger -t doh_proxy3 "Start resolving to $DOH_S3 : $DOH_P3 ."
-fi
-touch /var/run/doh_proxy.pid
-       fi
+/etc/storage/doh_proxy.sh start
 ### Configure Stubby. Запуск службы DNS-over-TLS (DoT).
-if [ -f "/var/run/stubby_proxy.pid" ]; then
-	logger "Stubby is running."
-	else 
-/usr/sbin/stubby_start.sh 
-	fi
+/usr/sbin/stubby_proxy.sh start
 }
+
 wan_down() {
-logger "WAN is DOWN. Stop Proxy DNS service."
-killall -SIGHUP stubby
-logger -t stubby "Shutdown"
-rm /var/run/stubby_proxy.pid
-killall -SIGHUP doh_proxy
-killall -SIGHUP doh_proxy2
-killall -SIGHUP doh_proxy3
-rm /var/run/doh_proxy.pid
-logger -t doh_proxy "Shutdown"
+/etc/storage/doh_proxy.sh stop
+/usr/sbin/stubby_proxy.sh stop
 }
+
 case "$WAN_STATE" in
 up)
 wan_up
