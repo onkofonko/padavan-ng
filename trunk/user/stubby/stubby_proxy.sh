@@ -2,7 +2,7 @@
 
 func_start()
 {
-###Configure Stubby. DNS-over-TLS (DoT).
+### Configure Stubby. DNS-over-TLS (DoT).
 
 if [ ! -f "/etc/storage/stubby/stubby.yml" ]; then
 
@@ -33,16 +33,6 @@ upstream_recursive_servers:
 EOF
 
 	chmod -R u=rwX,go=rX /etc/storage/stubby
-
-	echo 'server=127.0.0.1#65053' >> /etc/storage/dnsmasq/dnsmasq.conf
-
-	[ -n "`nvram get ntp_server0`" ] && \
-	echo "server=/`nvram get ntp_server0`/1.1.1.1" >> /etc/storage/dnsmasq/dnsmasq.conf
-
-	[ -n "`nvram get ntp_server1`" ] && \
-	echo "server=/`nvram get ntp_server1`/1.1.1.1" >> /etc/storage/dnsmasq/dnsmasq.conf
-
-	echo -e '\n''no-resolv''\n''proxy-dnssec' >> /etc/storage/dnsmasq/dnsmasq.conf
 
 	nvram set wan_dnsenable_x=0
 	nvram set wan_dns1_x=127.0.0.1

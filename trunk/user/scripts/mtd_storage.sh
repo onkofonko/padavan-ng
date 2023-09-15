@@ -309,9 +309,9 @@ wan_up() {
 sleep 10
 WAN_IP=`nvram get wan0_ipaddr`
 logger "WAN $WAN_IF ($WAN_IP) is UP. Start Proxy DNS service."
-### Configure DoH proxy. Запуск службы DNS-over-HTTPS (DoH).
+### Configure DoH proxy. Run DNS-over-HTTPS (DoH).
 /etc/storage/doh_proxy.sh start
-### Configure Stubby. Запуск службы DNS-over-TLS (DoT).
+### Configure Stubby. Run DNS-over-TLS (DoT).
 /usr/sbin/stubby_proxy.sh start
 }
 
@@ -513,6 +513,24 @@ dhcp-option=252,"\n"
 
 ### Set the boot filename for netboot/PXE
 #dhcp-boot=pxelinux.0
+
+### Use dnsmasq configuration
+#bogus-priv
+#no-negcache
+#no-resolv
+#clear-on-reload
+#domain-needed
+
+### Use DNS-over-TLS (DoT) , DNS-over-HTTPS (DoH) proxy instead of ISP DNS
+#server=127.0.0.1#65053
+#server=127.0.0.1#65054
+#server=127.0.0.1#65055
+#server=127.0.0.1#65056
+#all-servers
+
+### Use time server update bypassing stubby and doh_proxy
+#server=/time.in.ua/1.1.1.1
+#server=/ntp.org/1.1.1.1
 
 EOF
 		chmod 644 "$user_dnsmasq_conf"
