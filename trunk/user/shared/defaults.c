@@ -619,8 +619,11 @@ struct nvram_pair router_defaults[] = {
 #if defined (APP_DOH)
 	{ "doh_enable", "0" },
 	{ "doh_server1", "https://blitz.ahadns.com/1:4" },
+	{ "doh_port1", "65054" },
 	{ "doh_server2", "https://sky.rethinkdns.com/1:AAQCAA==" },
+	{ "doh_port2", "65055" },
 	{ "doh_server3", "" },
+	{ "doh_port3", "65056" },
 	{ "doh_opt1_1", "-4 -d -s 500 -v -l /tmp/doh-proxy.log" },
 	{ "doh_opt2_1", "1.1.1.1,8.8.8.8,9.9.9.9" },
 	{ "doh_opt1_2", "-4 -d -s 500 -v -l /tmp/doh-proxy1.log" },

@@ -520,8 +520,11 @@
 #if defined(APP_DOH)
 			{"doh_enable", "", NULL, EVM_RESTART_DOH},
 			{ "doh_server1", "", NULL, EVM_RESTART_DOH},
+			{ "doh_port1", "", NULL, EVM_RESTART_DOH},
 			{ "doh_server2", "", NULL, EVM_RESTART_DOH},
+			{ "doh_port2", "", NULL, EVM_RESTART_DOH},
 			{ "doh_server3", "", NULL, EVM_RESTART_DOH},
+			{ "doh_port3", "", NULL, EVM_RESTART_DOH},
 			{ "doh_opt1_1", "", NULL, EVM_RESTART_DOH},
 			{ "doh_opt2_1", "", NULL, EVM_RESTART_DOH},
 			{ "doh_opt1_2", "", NULL, EVM_RESTART_DOH},
