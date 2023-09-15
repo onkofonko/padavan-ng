@@ -7,12 +7,6 @@ if [ ! -f "/etc/storage/doh_proxy.sh" ]; then
 	logger -t doh_proxy "Create file doh_proxy.sh."
 	cp /usr/sbin/doh_proxy.sh /etc/storage/doh_proxy.sh
 
-	nvram set wan_dnsenable_x=0
-	nvram set wan_dns1_x=127.0.0.1
-	nvram set wan_dns2_x=
-	nvram set wan_dns3_x=
-	nvram commit
-
 	mtd_storage.sh save
 
 	echo 'Done!'

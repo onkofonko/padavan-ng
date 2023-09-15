@@ -34,11 +34,6 @@ EOF
 
 	chmod -R u=rwX,go=rX /etc/storage/stubby
 
-	nvram set wan_dnsenable_x=0
-	nvram set wan_dns1_x=127.0.0.1
-	nvram set wan_dns2_x=
-	nvram set wan_dns3_x=
-	nvram commit
 	mtd_storage.sh save
 	echo 'Done!'
 fi
