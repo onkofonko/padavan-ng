@@ -642,7 +642,7 @@ function change_crond_enabled(){
                                             <th colspan="2" style="background-color: #E3E3E3;"><#Adm_System_anon#></th>
                                         </tr>
                                         <tr id="row_doh">
-                                            <th width="50%"><#Adm_Svc_doh#></th>
+                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 26, 1);"><#Adm_Svc_doh#></a></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="doh_enable_on_of">
@@ -701,7 +701,7 @@ function change_crond_enabled(){
                                             </td>
                                         </tr>
                                         <tr id="row_stubby">
-                                            <th width="50%"><#Adm_Svc_stubby#></th>
+                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 27, 1);"><#Adm_Svc_stubby#></a></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="stubby_enable_on_of">

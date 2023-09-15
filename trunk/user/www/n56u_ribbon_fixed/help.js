@@ -183,6 +183,13 @@ helpcontent[25] = new Array("",
 				"<#Adm_Svc_dnscrypt_force_dns_desc#>",
 				"<#Adm_Svc_dnscrypt_options_desc#>");
 
+// DoH proxy
+helpcontent[26] = new Array("",
+				"<#Adm_Svc_doh_desc#>");
+
+// stubby
+helpcontent[27] = new Array("",
+				"<#Adm_Svc_stubby_desc#>");
 
 function openTooltip(obj, hint_array_id, hint_show_id)
 {
