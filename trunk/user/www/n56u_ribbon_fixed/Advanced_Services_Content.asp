@@ -667,7 +667,7 @@ function change_crond_enabled(){
                                             <td colspan="2" align="left" style="text-align:left;">
                                                 <span>Options:       </span>
                                                 <input type="text" maxlength="55" class="input" size="10" style="width: 225px;" name="doh_opt1_1" value="<% nvram_get_x("", "doh_opt1_1"); %>" onkeypress="return is_string(this,event);"/>&nbsp; 
-                                                <input type="text" maxlength="47" class="input" size="10" style="width: 192px;" name="doh_opt2_1" value="<% nvram_get_x("", "doh_opt2_1"); %>" onkeypress="return is_string(this,event);"/>
+                                                <input type="text" maxlength="85" class="input" size="10" style="width: 230px;" name="doh_opt2_1" value="<% nvram_get_x("", "doh_opt2_1"); %>" onkeypress="return is_string(this,event);"/>
                                             </td>
                                         </tr>
                                         <tr id="row_doh_conf3" style="display:none">
@@ -682,7 +682,7 @@ function change_crond_enabled(){
                                             <td colspan="2" align="left" style="text-align:left;">
                                                 <span">Options:       </span>
                                                 <input type="text" maxlength="55" class="input" size="10" style="width: 225px;" name="doh_opt1_2" value="<% nvram_get_x("", "doh_opt1_2"); %>" onkeypress="return is_string(this,event);"/>&nbsp; 
-                                                <input type="text" maxlength="47" class="input" size="10" style="width: 192px;" name="doh_opt2_2" value="<% nvram_get_x("", "doh_opt2_2"); %>" onkeypress="return is_string(this,event);"/>
+                                                <input type="text" maxlength="85" class="input" size="10" style="width: 230px;" name="doh_opt2_2" value="<% nvram_get_x("", "doh_opt2_2"); %>" onkeypress="return is_string(this,event);"/>
                                             </td>
                                         </tr>
                                         <tr id="row_doh_conf5" style="display:none">
@@ -697,7 +697,7 @@ function change_crond_enabled(){
                                             <td colspan="2" align="left" style="text-align:left;">
                                                 <span>Options:       </span>
                                                 <input type="text" maxlength="55" class="input" size="10" style="width: 225px;" name="doh_opt1_3" value="<% nvram_get_x("", "doh_opt1_3"); %>" onkeypress="return is_string(this,event);"/>&nbsp; 
-                                                <input type="text" maxlength="47" class="input" size="10" style="width: 192px;" name="doh_opt2_3" value="<% nvram_get_x("", "doh_opt2_3"); %>" onkeypress="return is_string(this,event);"/>
+                                                <input type="text" maxlength="85" class="input" size="10" style="width: 230px;" name="doh_opt2_3" value="<% nvram_get_x("", "doh_opt2_3"); %>" onkeypress="return is_string(this,event);"/>
                                             </td>
                                         </tr>
                                         <tr id="row_stubby">
