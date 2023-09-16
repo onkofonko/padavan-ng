@@ -303,24 +303,25 @@ EOF
 ### \$2 - WAN interface name (e.g. eth3 or ppp0)
 ### \$3 - WAN IPv4 address
 ### Delay script execution
-WAN_STATE=$1
-WAN_IF=$2
+WAN_STATE=\$1
+WAN_IF=\$2
 wan_up() {
 sleep 10
 WAN_IP=`nvram get wan0_ipaddr`
-logger "WAN $WAN_IF ($WAN_IP) is UP. Start Proxy DNS service."
+logger "WAN \$WAN_IF (\$WAN_IP) is UP. Start Proxy DNS service."
+### Please uncomment only the necessary DoH/DoT services!
 ### Configure DoH proxy. Run DNS-over-HTTPS (DoH).
-/etc/storage/doh_proxy.sh start
+#/etc/storage/doh_proxy.sh start
 ### Configure Stubby. Run DNS-over-TLS (DoT).
-/usr/sbin/stubby_proxy.sh start
+#/usr/sbin/stubby_proxy.sh start
 }
 
 wan_down() {
-/etc/storage/doh_proxy.sh stop
-/usr/sbin/stubby_proxy.sh stop
+#/etc/storage/doh_proxy.sh stop
+#/usr/sbin/stubby_proxy.sh stop
 }
 
-case "$WAN_STATE" in
+case "\$WAN_STATE" in
 up)
 wan_up
 ;;
@@ -521,6 +522,7 @@ dhcp-option=252,"\n"
 #clear-on-reload
 #domain-needed
 
+### Please uncomment only the required DoT/DoH services port!
 ### Use stubby DNS-over-TLS (DoT) instead of ISP DNS
 #server=127.0.0.1#65053
 ### Use DNS-over-HTTPS (DoH) proxy instead of ISP DNS
