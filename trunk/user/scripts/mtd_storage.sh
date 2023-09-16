@@ -514,21 +514,22 @@ dhcp-option=252,"\n"
 ### Set the boot filename for netboot/PXE
 #dhcp-boot=pxelinux.0
 
-### Use dnsmasq configuration
+### Use dnsmasq configuration recommendation
 #bogus-priv
 #no-negcache
 #no-resolv
 #clear-on-reload
 #domain-needed
 
-### Use DNS-over-TLS (DoT) , DNS-over-HTTPS (DoH) proxy instead of ISP DNS
+### Use stubby DNS-over-TLS (DoT) instead of ISP DNS
 #server=127.0.0.1#65053
+### Use DNS-over-HTTPS (DoH) proxy instead of ISP DNS
 #server=127.0.0.1#65054
 #server=127.0.0.1#65055
 #server=127.0.0.1#65056
 #all-servers
 
-### Use time server update bypassing stubby and doh_proxy
+### Use time server update bypassing DoT/DoH
 #server=/time.in.ua/1.1.1.1
 #server=/ntp.org/1.1.1.1
 
