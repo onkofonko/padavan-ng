@@ -9,19 +9,25 @@ if [ ! -f "/etc/storage/stubby/stubby.yml" ]; then
 	mkdir /etc/storage/stubby
 
 cat << EOF > /etc/storage/stubby/stubby.yml
+####### STUBBY YAML CONFIG FILE ######
 resolution_type: GETDNS_RESOLUTION_STUB
-round_robin_upstreams: 1
-appdata_dir: "/var/lib/stubby"
-# tls_authentication: GETDNS_AUTHENTICATION_REQUIRED
+dns_transport_list:
+  - GETDNS_TRANSPORT_TLS
+tls_authentication: GETDNS_AUTHENTICATION_REQUIRED
 tls_query_padding_blocksize: 128
-edns_client_subnet_private: 1
-idle_timeout: 9000
+edns_client_subnet_private : 1
+round_robin_upstreams: 1
+idle_timeout: 10000
 listen_addresses:
   - 127.0.0.1@65053
   - 0::1@65053
-dns_transport_list:
-  - GETDNS_TRANSPORT_TLS
+####### DNSSEC SETTINGS ######
+#dnssec: GETDNS_EXTENSION_TRUE
+#trust_anchors_backoff_time: 2500
+#appdata_dir: "/var/lib/stubby"
+#######  UPSTREAMS  ######
 upstream_recursive_servers:
+####### IPv4 addresses ######
   - address_data: 1.1.1.1
     tls_auth_name: "cloudflare-dns.com"
   - address_data: 1.0.0.1
