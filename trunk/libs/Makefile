@@ -91,6 +91,7 @@ endif
 
 dir_y						+= libz
 dir_$(LIBS_INCLUDE_LIBLZO)			+= liblzo
+#dir_y						+= libssl3.1
 dir_y						+= libssl3
 # dir_y						+= libssl1
 dir_$(LIBS_INCLUDE_LIBUSB_0)			+= libusb
