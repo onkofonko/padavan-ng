@@ -1504,7 +1504,7 @@ STACK_OF(SSL_CIPHER) *ssl_create_cipher_list(SSL_CTX *ctx,
                           &tail);
     ssl_cipher_apply_rule(0, SSL_kECDHE, 0, 0, 0, 0, 0, CIPHER_DEL, -1, &head,
                           &tail);
- 
+
     /*
      * If OPENSSL_PREFER_CHACHA_OVER_GCM is defined, ChaCha20_Poly1305
      * will be placed before AES-256.  Otherwise, the default behavior of
@@ -1522,7 +1522,7 @@ STACK_OF(SSL_CIPHER) *ssl_create_cipher_list(SSL_CTX *ctx,
     ssl_cipher_apply_rule(0, 0, 0, SSL_AESGCM, 0, 0, 0, CIPHER_ADD, -1,
                           &head, &tail);
 #else
-     /* Within each strength group, we prefer GCM over CHACHA... */
+    /* Within each strength group, we prefer GCM over CHACHA... */
     ssl_cipher_apply_rule(0, 0, 0, SSL_AESGCM, 0, 0, 0, CIPHER_ADD, -1,
                           &head, &tail);
     ssl_cipher_apply_rule(0, 0, 0, SSL_CHACHA20, 0, 0, 0, CIPHER_ADD, -1,
