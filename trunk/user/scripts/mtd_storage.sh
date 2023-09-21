@@ -312,25 +312,29 @@ EOF
 ### \$1 - WAN action (up/down)
 ### \$2 - WAN interface name (e.g. eth3 or ppp0)
 ### \$3 - WAN IPv4 address
-### Delay script execution
 WAN_STATE=\$1
 WAN_IF=\$2
 wan_up() {
 sleep 10
 WAN_IP=`nvram get wan0_ipaddr`
 logger "WAN \$WAN_IF (\$WAN_IP) is UP. Start Proxy DNS service."
-### Please uncomment only the necessary DoH/DoT services!
-### Configure DoH proxy. Run DNS-over-HTTPS (DoH).
-#/etc/storage/doh_proxy.sh start
-### Configure Stubby. Run DNS-over-TLS (DoT).
-#/usr/sbin/stubby_proxy.sh start
+### Configure DoH proxy. Запуск службы DNS-over-HTTPS (DoH).
+if [ "\$(nvram get doh_enable)" = "1" ]; then
+  /etc/storage/doh_proxy.sh start
+fi
+### Configure Stubby. Запуск службы DNS-over-TLS (DoT).
+if [ "\$(nvram get stubby_enable)" = "1" ]; then
+  /usr/sbin/stubby_proxy.sh start
+fi
 }
-
 wan_down() {
-#/etc/storage/doh_proxy.sh stop
-#/usr/sbin/stubby_proxy.sh stop
+if [ "\$(nvram get doh_enable)" = "1" ]; then
+   /etc/storage/doh_proxy.sh stop
+fi
+if [ "\$(nvram get stubby_enable)" = "1" ]; then
+   /usr/sbin/stubby_proxy.sh stop
+fi
 }
-
 case "\$WAN_STATE" in
 up)
 wan_up
