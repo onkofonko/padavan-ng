@@ -316,7 +316,7 @@ WAN_STATE=\$1
 WAN_IF=\$2
 wan_up() {
 sleep 10
-WAN_IP=`nvram get wan0_ipaddr`
+WAN_IP=\$(nvram get wan0_ipaddr)
 logger "WAN \$WAN_IF (\$WAN_IP) is UP. Start Proxy DNS service."
 ### Configure DoH proxy. Запуск службы DNS-over-HTTPS (DoH).
 if [ "\$(nvram get doh_enable)" = "1" ]; then
