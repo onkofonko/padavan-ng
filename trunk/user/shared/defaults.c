@@ -510,6 +510,7 @@ struct nvram_pair router_defaults[] = {
 	{ "dhcp_dns3_x", "" },
 	{ "dhcp_dnsv6_x", "" },
 	{ "dhcp_wins_x", "" },
+	{ "redirect_alldns", "0" },		/* Redirect all clients DNS requests */
 	{ "dhcp_verbose", "0" },		/* 0 : quiet, 1: verbose DHCP, 2: verbose DHCPv6, 3: verbose all */
 	{ "dhcp_static_x", "0" },
 	{ "dhcp_static_arp", "0" },
