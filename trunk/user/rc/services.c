@@ -462,6 +462,22 @@ restart_dnscrypt(void)
 	restart_dhcpd();
 }
 #endif
+#if defined(APP_VLMCSD)
+void stop_vlmcsd(void){
+	eval("/usr/bin/vlmcsd.sh","stop");
+}
+
+void start_vlmcsd(void){
+	int vlmcsd_mode = nvram_get_int("vlmcsd_enable");
+	if ( vlmcsd_mode == 1)
+		eval("/usr/bin/vlmcsd.sh","start");
+}
+
+void restart_vlmcsd(void){
+	stop_vlmcsd();
+	start_vlmcsd();
+}
+#endif
 
 void
 start_httpd(int restart_fw)
@@ -682,6 +698,9 @@ start_services_once(int is_ap_mode)
 #endif
 	}
 
+#if defined(APP_VLMCSD)
+	start_vlmcsd();
+#endif
 	start_lltd();
 	start_watchdog_cpu();
 	start_crond();
@@ -727,6 +746,9 @@ stop_services(int stopall)
 #endif
 #if defined(APP_DNSCRYPT)
 	stop_dnscrypt();
+#endif
+#if defined(APP_VLMCSD)
+	stop_vlmcsd();
 #endif
 	stop_networkmap();
 	stop_lltd();

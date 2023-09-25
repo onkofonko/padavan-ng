@@ -646,6 +646,9 @@ struct nvram_pair router_defaults[] = {
 	{ "dnscrypt_force_dns", "0" },
 	{ "dnscrypt_options", "-e 4096 -S -m 0" },
 #endif
+#if defined (APP_VLMCSD)
+	{ "vlmcsd_enable", "0" },
+#endif
 	{ "lltd_enable", "0" },
 	{ "adsc_enable", "0" },
 	{ "crond_enable", "0" },

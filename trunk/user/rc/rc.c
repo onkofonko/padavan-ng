@@ -1313,6 +1313,12 @@ handle_notifications(void)
 			restart_zram();
 		}
 #endif
+#if defined(APP_VLMCSD)
+		else if (strcmp(entry->d_name, RCN_RESTART_VLMCSD) == 0)
+		{
+			restart_vlmcsd();
+		}
+#endif
 		else if (strcmp(entry->d_name, RCN_RESTART_LLTD) == 0)
 		{
 			restart_lltd();

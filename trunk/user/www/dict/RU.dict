@@ -246,6 +246,7 @@ Adm_Svc_dnscrypt_options=Дополнительные параметры:
 Adm_Svc_dnscrypt_options_desc=Список всех доступных параметров можно получить, выполнив dnscrypt-proxy с параметром --help, или из руководства пользователя.
 Adm_Svc_dnscrypt_list=Список
 Adm_Svc_dnscrypt_all=Все IP адреса
+Adm_Svc_vlmcsd=Сервис vlmcsd (KMS Activation сервер)?
 Adm_Svc_lltd=Сервис LLTD (Link Layer Topology Discovery)?
 Adm_Svc_adsc=Сервис ASUS Info Discovery?
 Adm_Svc_crond=Сервис Cron (планировщик)?

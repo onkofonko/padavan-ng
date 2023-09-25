@@ -232,6 +232,7 @@ Adm_Svc_dnscrypt_options=Additional options:
 Adm_Svc_dnscrypt_options_desc=To get a list of all available options, execute dnscrypt-proxy with the '--help' param, or refer to the user manual.
 Adm_Svc_dnscrypt_list=List
 Adm_Svc_dnscrypt_all=All IP addresses
+Adm_Svc_vlmcsd=vlmcsd (KMS Activation)?
 Adm_Svc_lltd=LLTD (Link Layer Topology Discovery)?
 Adm_Svc_adsc=ASUS Info Discovery Service?
 Adm_Svc_crond=Cron Daemon (Scheduler)?

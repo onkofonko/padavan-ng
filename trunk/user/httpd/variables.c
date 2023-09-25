@@ -126,6 +126,9 @@
 #if defined (USE_NAND_FLASH)
 			{"mtd_rwfs_mount", "", NULL, FALSE},
 #endif
+#if defined (APP_VLMCSD)
+			{"vlmcsd_enable", "", NULL, EVM_RESTART_VLMCSD},
+#endif
 			{"http_username", "", NULL, EVM_RESTART_CROND|EVM_BLOCK_UNSAFE},
 			{"http_passwd", "", NULL, EVM_BLOCK_UNSAFE},
 			{"modem_rule", "", NULL, EVM_RESTART_MODEM},
@@ -1020,6 +1023,9 @@
 #endif
 #if defined(APP_SMBD) || defined(APP_NMBD)
 		{EVM_RESTART_NMBD,		EVT_RESTART_NMBD,		RCN_RESTART_NMBD,	0},
+#endif
+#if defined(APP_VLMCSD)
+		{EVM_RESTART_VLMCSD,		EVT_RESTART_VLMCSD,		RCN_RESTART_VLMCSD,	0},
 #endif
 		{EVM_RESTART_FIREWALL,		EVT_RESTART_FIREWALL,		RCN_RESTART_FIREWALL,	0},
 		{0,0,0,0}

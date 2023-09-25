@@ -550,6 +550,13 @@ dhcp-option=252,"\n"
 #server=/ntp.org/1.1.1.1
 
 EOF
+	if [ -f /usr/bin/vlmcsd ]; then
+		cat >> "$user_dnsmasq_conf" <<EOF
+### vlmcsd related
+srv-host=_vlmcs._tcp,my.router,1688,0,100
+
+EOF
+	fi
 		chmod 644 "$user_dnsmasq_conf"
 	fi
 

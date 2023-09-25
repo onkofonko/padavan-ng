@@ -36,6 +36,7 @@ $j(document).ready(function() {
 	init_itoggle('stubby_enable', change_stubby_enabled);
 	init_itoggle('privoxy_enable', change_privoxy_enabled);
 	init_itoggle('dnscrypt_enable', change_dnscrypt_enabled);
+	init_itoggle('vlmcsd_enable');
 });
 
 </script>
@@ -80,6 +81,10 @@ function initial(){
 		http_proto_change();
 	}
 	change_crond_enabled();
+
+if(!found_app_vlmcsd()){
+    showhide_div('div_vlmcsd', 0);
+}
 
 	if(found_app_tor() || found_app_privoxy() || found_app_dnscrypt()){
 		showhide_div('tbl_anon', 1);
@@ -855,6 +860,20 @@ function change_crond_enabled(){
                                     <table width="100%" cellpadding="4" cellspacing="0" class="table">
                                         <tr>
                                             <th colspan="2" style="background-color: #E3E3E3;"><#Adm_System_misc#></th>
+                                        </tr>
+                                        <tr id="div_vlmcsd">
+                                            <th><#Adm_Svc_vlmcsd#></th>
+                                            <td>
+                                                <div class="main_itoggle">
+                                                    <div id="vlmcsd_enable_on_of">
+                                                        <input type="checkbox" id="vlmcsd_enable_fake" <% nvram_match_x("", "vlmcsd_enable", "1", "value=1 checked"); %><% nvram_match_x("", "vlmcsd_enable", "0", "value=0"); %>>
+                                                    </div>
+                                                </div>
+                                                <div style="position: absolute; margin-left: -10000px;">
+                                                    <input type="radio" name="vlmcsd_enable" id="vlmcsd_enable_1" class="input" value="1" <% nvram_match_x("", "vlmcsd_enable", "1", "checked"); %>/><#checkbox_Yes#>
+                                                    <input type="radio" name="vlmcsd_enable" id="vlmcsd_enable_0" class="input" value="0" <% nvram_match_x("", "vlmcsd_enable", "0", "checked"); %>/><#checkbox_No#>
+                                                </div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th><#Adm_Svc_lltd#></th>

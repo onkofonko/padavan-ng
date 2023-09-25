@@ -550,6 +550,11 @@ void stop_dnscrypt(void);
 void start_dnscrypt(void);
 void restart_dnscrypt(void);
 #endif
+#if defined(APP_VLMCSD)
+void stop_vlmcsd(void);
+void start_vlmcsd(void);
+void restart_vlmcsd(void);
+#endif
 
 /* services_ex.c */
 int fill_dnsmasq_servers(void);
