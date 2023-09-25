@@ -7,6 +7,7 @@ func_start(){
 
 func_stop(){
 	killall -q vlmcsd
+	logger -st "vlmcsd" "stop"
 }
 
 case "$1" in
