@@ -312,10 +312,12 @@ EOF
 ### \$1 - WAN action (up/down)
 ### \$2 - WAN interface name (e.g. eth3 or ppp0)
 ### \$3 - WAN IPv4 address
+### Delay script execution (sleep)
+sleep 7
 WAN_STATE=\$1
 WAN_IF=\$2
 wan_up() {
-sleep 10
+sleep 3
 WAN_IP=\$(nvram get wan0_ipaddr)
 logger "WAN \$WAN_IF (\$WAN_IP) is UP. Start Proxy DNS service."
 ### Configure DoH proxy. Запуск службы DNS-over-HTTPS (DoH).
