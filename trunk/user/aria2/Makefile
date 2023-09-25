@@ -1,12 +1,27 @@
 SRC_NAME=aria2-1.36.0
+SRC_URL=https://github.com/aria2/aria2/releases/download/release-1.36.0/$(SRC_NAME).tar.xz
 
 COMMON_FLAGS = -ffunction-sections -fdata-sections -fvisibility=hidden
 CFLAGS  += $(COMMON_FLAGS)
 CXXFLAGS += $(COMMON_FLAGS) -fvisibility-inlines-hidden
 LDFLAGS += -Wl,--gc-sections
 
+THISDIR = $(shell pwd)
+
+#all: download_test extract_test config_test
 all: config_test
-	$(MAKE) -j1  -C $(SRC_NAME)
+	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
+
+download_test:
+	( if [ ! -f $(SRC_NAME).tar.xz ]; then \
+		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.xz $(SRC_URL); \
+	fi )
+
+extract_test:
+	( if [ ! -d $(SRC_NAME) ]; then \
+		tar xJf $(SRC_NAME).tar.xz; \
+		patch -d $(SRC_NAME) -p1 -i ../disable-doc-test.patch; \
+	fi )
 
 config_test:
 	( if [ -f ./config_done ]; then \
@@ -17,6 +32,7 @@ config_test:
 
 configure:
 	( cd $(SRC_NAME) ; \
+	autoreconf -fvi ; \
 	./configure \
 		--prefix=/usr \
 		--disable-nls \
@@ -49,8 +65,8 @@ clean:
 
 romfs:
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_ARIA_WEB_CONTROL),y)
-	cp -rf ariaweb $(INSTALLDIR)/www
+	cp -rf $(THISDIR)/ariaweb $(INSTALLDIR)/www
 	cd $(INSTALLDIR)/www/ariaweb && ln -sf /mnt/aria/config/configuration.js configuration.js
 endif
-	$(ROMFSINST) $(SRC_NAME)/src/aria2c /usr/bin/aria2c
+	$(ROMFSINST) $(THISDIR)/$(SRC_NAME)/src/aria2c /usr/bin/aria2c
 	$(ROMFSINST) -p +x /usr/bin/aria.sh
