@@ -192,6 +192,10 @@ helpcontent[26] = new Array("",
 helpcontent[27] = new Array("",
 				"<#Adm_Svc_stubby_desc#>");
 
+// iper3
+helpcontent[28] = new Array("",
+				"<#Adm_Svc_iperf3_desc#>");
+
 function openTooltip(obj, hint_array_id, hint_show_id)
 {
 	if (help_enable == "0" && hint_show_id > 0)

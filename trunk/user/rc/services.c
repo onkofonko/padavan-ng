@@ -478,6 +478,22 @@ void restart_vlmcsd(void){
 	start_vlmcsd();
 }
 #endif
+#if defined(APP_IPERF3)
+void stop_iperf3(void){
+	eval("/usr/bin/iperf3.sh","stop");
+}
+
+void start_iperf3(void){
+	int iperf3_mode = nvram_get_int("iperf3_enable");
+	if ( iperf3_mode == 1)
+		eval("/usr/bin/iperf3.sh","start");
+}
+
+void restart_iperf3(void){
+	stop_iperf3();
+	start_iperf3();
+}
+#endif
 
 void
 start_httpd(int restart_fw)
@@ -701,6 +717,9 @@ start_services_once(int is_ap_mode)
 #if defined(APP_VLMCSD)
 	start_vlmcsd();
 #endif
+#if defined(APP_IPERF3)
+	start_iperf3();
+#endif
 	start_lltd();
 	start_watchdog_cpu();
 	start_crond();
@@ -749,6 +768,9 @@ stop_services(int stopall)
 #endif
 #if defined(APP_VLMCSD)
 	stop_vlmcsd();
+#endif
+#if defined(APP_IPERF3)
+	stop_iperf3();
 #endif
 	stop_networkmap();
 	stop_lltd();

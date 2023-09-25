@@ -67,6 +67,7 @@
 #define RCN_RESTART_TRMD		"restart_trmd"
 #define RCN_RESTART_ARIA		"restart_aria"
 #define RCN_RESTART_VLMCSD		"restart_vlmcsd"
+#define RCN_RESTART_IPERF3		"restart_iperf3"
 #define RCN_RESTART_REBOOT		"restart_reboot"
 
 ////////////////////////////////////////////////////////////

@@ -1319,6 +1319,12 @@ handle_notifications(void)
 			restart_vlmcsd();
 		}
 #endif
+#if defined(APP_IPERF3)
+		else if (strcmp(entry->d_name, RCN_RESTART_IPERF3) == 0)
+		{
+			restart_iperf3();
+		}
+#endif
 		else if (strcmp(entry->d_name, RCN_RESTART_LLTD) == 0)
 		{
 			restart_lltd();

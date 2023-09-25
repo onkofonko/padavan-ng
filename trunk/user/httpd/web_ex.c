@@ -2143,6 +2143,11 @@ ej_firmware_caps_hook(int eid, webs_t wp, int argc, char **argv)
 #else
 	int found_app_vlmcsd = 0;
 #endif
+#if defined(APP_IPERF3)
+	int found_app_iperf3 = 1;
+#else
+	int found_app_iperf3 = 0;
+#endif
 #if defined(USE_IPV6)
 	int has_ipv6 = 1;
 #else
@@ -2299,7 +2304,8 @@ ej_firmware_caps_hook(int eid, webs_t wp, int argc, char **argv)
 		"function found_support_wpad() { return %d;}\n"
 		"function found_support_zram() { return %d;}\n"
 		"function found_app_xupnpd() { return %d;}\n"
-		"function found_app_vlmcsd() { return %d;}\n",
+		"function found_app_vlmcsd() { return %d;}\n"
+		"function found_app_iperf3() { return %d;}\n",
 		found_utl_hdparm,
 		found_app_ovpn,
 		found_app_dlna,
@@ -2322,7 +2328,8 @@ ej_firmware_caps_hook(int eid, webs_t wp, int argc, char **argv)
 		found_support_wpad,
 		found_support_zram,
 		found_app_xupnpd,
-		found_app_vlmcsd
+		found_app_vlmcsd,
+		found_app_iperf3
 	);
 
 	websWrite(wp,

@@ -92,6 +92,7 @@ typedef u_int8_t u8;
 #define EVM_RESTART_DOH			(1ULL << 47)
 #define EVM_RESTART_STUBBY		(1ULL << 48)
 #define EVM_RESTART_VLMCSD		(1ULL << 49)
+#define EVM_RESTART_IPERF3		(1ULL << 50)
 
 #define EVM_RESTART_REBOOT		(1ULL << 62)
 
@@ -151,6 +152,7 @@ typedef u_int8_t u8;
 #define EVT_RESTART_DNSCRYPT		1
 #define EVT_RESTART_ZRAM		1
 #define EVT_RESTART_VLMCSD		1
+#define EVT_RESTART_IPERF3		1
 
 #define EVT_RESTART_REBOOT		40
 

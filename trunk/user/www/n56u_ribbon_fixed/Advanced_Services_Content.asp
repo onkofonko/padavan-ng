@@ -37,6 +37,7 @@ $j(document).ready(function() {
 	init_itoggle('privoxy_enable', change_privoxy_enabled);
 	init_itoggle('dnscrypt_enable', change_dnscrypt_enabled);
 	init_itoggle('vlmcsd_enable');
+	init_itoggle('iperf3_enable');
 });
 
 </script>
@@ -82,9 +83,9 @@ function initial(){
 	}
 	change_crond_enabled();
 
-if(!found_app_vlmcsd()){
-    showhide_div('div_vlmcsd', 0);
-}
+	if(!found_app_vlmcsd()){
+		showhide_div('div_vlmcsd', 0);
+	}
 
 	if(found_app_tor() || found_app_privoxy() || found_app_dnscrypt()){
 		showhide_div('tbl_anon', 1);
@@ -131,6 +132,9 @@ if(!found_app_vlmcsd()){
 		showhide_div('row_dnscrypt_options', 0);
 	}else
 		change_dnscrypt_enabled();
+
+	if(!found_app_iperf3())
+		showhide_div('row_iperf3', 0);
 }
 
 function applyRule(){
@@ -177,6 +181,10 @@ function applyRule(){
 		showhide_div('row_dnscrypt_port', 0);
 		showhide_div('row_dnscrypt_force_dns', 0);
 		showhide_div('row_dnscrypt_options', 0);
+	}
+
+	if(!found_app_iperf3()){
+		showhide_div('row_iperf3', 0);
 	}
 }
 
@@ -872,6 +880,20 @@ function change_crond_enabled(){
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" name="vlmcsd_enable" id="vlmcsd_enable_1" class="input" value="1" <% nvram_match_x("", "vlmcsd_enable", "1", "checked"); %>/><#checkbox_Yes#>
                                                     <input type="radio" name="vlmcsd_enable" id="vlmcsd_enable_0" class="input" value="0" <% nvram_match_x("", "vlmcsd_enable", "0", "checked"); %>/><#checkbox_No#>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr id="row_iperf3">
+                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,28,1);"><#Adm_Svc_iperf3#></a></th>
+                                            <td>
+                                                <div class="main_itoggle">
+                                                    <div id="iperf3_enable_on_of">
+                                                        <input type="checkbox" id="iperf3_enable_fake" <% nvram_match_x("", "iperf3_enable", "1", "value=1 checked"); %><% nvram_match_x("", "iperf3_enable", "0", "value=0"); %>>
+                                                    </div>
+                                                </div>
+                                                <div style="position: absolute; margin-left: -10000px;">
+                                                    <input type="radio" name="iperf3_enable" id="iperf3_enable_1" class="input" value="1" <% nvram_match_x("", "iperf3_enable", "1", "checked"); %>/><#checkbox_Yes#>
+                                                    <input type="radio" name="iperf3_enable" id="iperf3_enable_0" class="input" value="0" <% nvram_match_x("", "iperf3_enable", "0", "checked"); %>/><#checkbox_No#>
                                                 </div>
                                             </td>
                                         </tr>
