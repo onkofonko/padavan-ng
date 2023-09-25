@@ -32,7 +32,6 @@ config_test:
 
 configure:
 	( cd $(SRC_NAME) ; \
-	autoreconf -fvi ; \
 	./configure \
 		--prefix=/usr \
 		--disable-nls \
