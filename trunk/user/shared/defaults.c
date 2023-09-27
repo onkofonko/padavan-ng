@@ -221,18 +221,11 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_greenap", "0" },		/* 5GHz GreenAP */
 	{ "wl_ldpc", "3" },
 	{ "wl_HT_RDG", "0" },
-#if defined (USE_WID_5G) && USE_WID_5G==7615
 	{ "wl_HT_AMSDU", "0" },
-	{ "wl_HT_BAWinSize", "256" },
-	{ "wl_mumimo", "1" },
-	{ "wl_band_steering", "0" },		/* band steering AP 5GHz */
-#else
-	{ "wl_HT_AMSDU", "0" },
-	{ "wl_HT_BAWinSize", "64" },
-#endif
 	{ "wl_HT_80211KV", "0" },
 	{ "wl_HT_80211R", "0" },		/* Fast Roaming AP 5GHz */
 	{ "wl_HT_MpduDensity", "5" },
+	{ "wl_HT_BAWinSize", "64" },
 	{ "wl_HT_AutoBA", "1" },
 	{ "wl_VgaClamp", "0" },
 	{ "wl_KickStaRssiLow", "0" },
@@ -253,6 +246,11 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_guest_wpa_psk", "" },
 	{ "wl_guest_macrule", "0" },
 	{ "wl_guest_mcs_mode", "0" },
+
+#if defined (USE_WID_5G) && USE_WID_5G==7615
+	{ "wl_mumimo", "1" },
+	{ "wl_band_steering", "0" },		/* band steering AP 5GHz */
+#endif
 
 	// ApCli 5GHz
 	{ "wl_sta_ssid", "" },
@@ -322,21 +320,14 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_stream_rx", STR(BOARD_NUM_ANT_2G_RX) },
 	{ "rt_preamble", "1" },
 	{ "rt_greenap", "0" },		/* 2.4GHz GreenAP */
+	{ "rt_ldpc", "0" },
 	{ "rt_HT_RDG", "0" },
 	{ "rt_HT_AMSDU", "0" },
 	{ "rt_HT_80211KV", "0" },
 	{ "rt_HT_80211R", "0" },	/* Fast Roaming AP 2.4GHz */
 	{ "rt_HT_MpduDensity", "5" },
 	{ "rt_band_steering", "0" },	/* band steering AP 2.4GHz */
-#if defined (USE_WID_2G) && USE_WID_2G==7615
-	{ "rt_HT_BAWinSize", "256" },
-	{ "rt_ldpc", "1" },
-	{ "rt_turbo_qam", "1" },
-	{ "rt_airtimefairness", "0" },
-#else
 	{ "rt_HT_BAWinSize", "64" },
-	{ "rt_ldpc", "0" },
-#endif
 	{ "rt_HT_AutoBA", "1" },
 	{ "rt_VgaClamp", "0" },
 	{ "rt_KickStaRssiLow", "0" },
@@ -357,6 +348,11 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_guest_wpa_psk", "" },
 	{ "rt_guest_macrule", "0" },
 	{ "rt_guest_mcs_mode", "0" },
+
+#if defined (USE_WID_2G) && USE_WID_2G==7615
+	{ "rt_turbo_qam", "1" },
+	{ "rt_airtimefairness", "0" },
+#endif
 
 	// ApCli 2.4GHz
 	{ "rt_sta_ssid", "" },
