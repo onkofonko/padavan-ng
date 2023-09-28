@@ -10,6 +10,7 @@ OBJCOPY   = objcopy
 RANLIB    = ranlib
 STRIP     = strip
 STRIPTOOL = $(STRIP)
+SSTRIP_NAME = ELFkickers-3.2
 
 CFLAGS    = -Wall -O2
 LDFLAGS   =
@@ -19,12 +20,16 @@ LDFLAGS   =
 all:
 	make -C mkimage
 	make -C mktplinkfw
-	make -C sstrip
+	mkdir -p sstrip
+	make -C $(SSTRIP_NAME)
 	make -C lzma
 	make -C mksquashfs_xz
 
 clean:
-	make -C sstrip clean
+	if [ -f $(SSTRIP_NAME)/Makefile ] ; then \
+		make -C $(SSTRIP_NAME) clean ; \
+	fi ;
+	rm -rf sstrip
 	make -C mkimage clean
 	make -C mktplinkfw clean
 	make -C lzma clean
