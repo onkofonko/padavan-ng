@@ -720,18 +720,12 @@ LED_CONTROL(int gpio_led, int flag)
 #if defined (BOARD_GPIO_LED_WAN_INVERTED)
 		flag = !flag;
 #endif
-#if defined (CONFIG_RALINK_MT7628) && (BOARD_GPIO_LED_WAN == 40)
-		cpu_gpio_mode_set_bit(40, 1); // change GPIO Mode for EPHY P3
-#endif
 		break;
 #if defined (BOARD_GPIO_LED_WAN_PHY)
 	case BOARD_GPIO_LED_WAN_PHY:
 		front_led_x = nvram_get_int("front_led_wan");
 #if defined (BOARD_GPIO_LED_WAN_PHY_INVERTED)
 		flag = !flag;
-#endif
-#if defined (CONFIG_RALINK_MT7628) && (BOARD_GPIO_LED_WAN_PHY == 39)
-		cpu_gpio_mode_set_bit(42, 1); // change GPIO Mode for EPHY P4
 #endif
 		break;
 #endif
@@ -746,7 +740,7 @@ LED_CONTROL(int gpio_led, int flag)
 		front_led_x = nvram_get_int("front_led_wif");
 		break;
 #endif
-#if defined (BOARD_GPIO_LED_SW2G) && (CONFIG_RALINK_MT7628) && (BOARD_GPIO_LED_SW2G == 44)
+#if defined (BOARD_GPIO_LED_SW2G)
 	case BOARD_GPIO_LED_SW2G:
 		is_soft_blink = 1;
 		front_led_x = nvram_get_int("front_led_wif");
@@ -755,10 +749,6 @@ LED_CONTROL(int gpio_led, int flag)
 			flag = (is_radio_on_rt() || is_radio_on_wl()) ? LED_ON : LED_OFF;
 #else
 			flag = (is_radio_on_rt()) ? LED_ON : LED_OFF;
-			cpu_gpio_mode_set_bit(32, (flag == LED_OFF) ? 1: 0);
-			cpu_gpio_set_pin(BOARD_GPIO_LED_WIFI, LED_OFF);
-		} else {
-		cpu_gpio_mode_set_bit(32, 1);
 #endif
 		}
 		break;
@@ -770,9 +760,6 @@ LED_CONTROL(int gpio_led, int flag)
 		if (front_led_x) {
 			flag = (is_radio_on_wl()) ? LED_ON : LED_OFF;
 		}
-#if defined (CONFIG_RALINK_MT7628) && (BOARD_GPIO_LED_SW5G == 42)
-		cpu_gpio_mode_set_bit(36, 1); // change GPIO Mode for EPHY P1
-#endif
 		break;
 #endif
 #if defined (BOARD_GPIO_LED_USB)
@@ -829,22 +816,10 @@ LED_CONTROL(int gpio_led, int flag)
 #if defined (CONFIG_RALINK_MT7628) && (BOARD_GPIO_LED_WIFI == 44)
 	if (gpio_led == BOARD_GPIO_LED_WIFI) {
 		cpu_gpio_mode_set_bit(32, (flag == LED_OFF) ? 1 : 0); // change GPIO Mode for WLED_AN
+		cpu_gpio_mode_set_bit(48, (flag == LED_OFF) ? 1 : 0); // change GPIO Mode for WLED_KN
 		cpu_gpio_set_pin(gpio_led, LED_OFF); // always set GPIO to high
 	} else
 #endif
-#endif
-#if defined (BOARD_GPIO_LED_SW2G) && (CONFIG_RALINK_MT7628) && (BOARD_GPIO_LED_SW2G == 41)
-	if (gpio_led == BOARD_GPIO_LED_LAN) {
-		cpu_gpio_mode_set_bit(38, (flag == LED_OFF) ? 1 : 0); // change GPIO Mode for EPHY P2
-		cpu_gpio_set_pin(41, LED_OFF); // always set GPIO to high
-		cpu_gpio_set_pin(gpio_led, flag);
-	} else
-#endif
-#if defined (CONFIG_RALINK_MT7628) && (BOARD_GPIO_LED_LAN == 41)
-	if (gpio_led == BOARD_GPIO_LED_LAN) {
-		cpu_gpio_mode_set_bit(38, (flag == LED_OFF) ? 1 : 0); // change GPIO Mode for EPHY P2
-		cpu_gpio_set_pin(gpio_led, LED_OFF); // always set GPIO to high
-	} else
 #endif
 	{
 		if (is_soft_blink)
