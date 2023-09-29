@@ -288,16 +288,6 @@ EOF
 ### Custom user script
 ### Called after internal iptables reconfig (firewall update)
 
-### Force Router DNS use on local devices
-if [ "\$(nvram get redirect_alldns)" = "1" ]; then
-  logger -t iptables "Перенаправить весь трафик на (Redirect All DNS) \$(nvram get lan_ipaddr)"
-  iptables -t nat -I PREROUTING -i br0 -p udp --dport 53 -j DNAT --to \$(nvram get lan_ipaddr)
-  iptables -t nat -I PREROUTING -i br0 -p tcp --dport 53 -j DNAT --to \$(nvram get lan_ipaddr)
-fi
-
-update_dnsmasq
-restart_dhcpd
-
 EOF
 		chmod 755 "$script_postf"
 	fi

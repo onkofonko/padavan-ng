@@ -1799,6 +1799,11 @@ ipt_nat_rules(char *man_if, char *man_ip,
 			fprintf(fp, "-I %s -i %s -p udp --dport 53 -j DNAT --to-destination %s\n", "PREROUTING", lan_if, lan_ip);
 		}
 #endif
+		/* redirect all LAN clients' DNS queries (PREROUTING) */
+		if (wan_ip && nvram_match("redirect_alldns", "1")) {
+			fprintf(fp, "-I %s -i %s -p tcp --dport 53 -j DNAT --to %s\n", "PREROUTING", lan_if, lan_ip);
+			fprintf(fp, "-I %s -i %s -p udp --dport 53 -j DNAT --to %s\n", "PREROUTING", lan_if, lan_ip);
+		}
 		
 		/* BattleNET (PREROUTING + POSTROUTING) */
 		if (wan_ip && nvram_match("sp_battle_ips", "1")) {
