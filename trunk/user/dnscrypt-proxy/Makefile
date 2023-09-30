@@ -3,8 +3,15 @@ SRC_NAME=dnscrypt-proxy-1.9.5
 CFLAGS +=$(COPT) -ffunction-sections -fdata-sections -fvisibility=hidden
 LDFLAGS += -Wl,--gc-sections
 
+#all: download_test extract_test config_test
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
+
+extract_test:
+	( if [ ! -d $(SRC_NAME) ]; then \
+		unzip -qq $(SRC_NAME).zip ; \
+		patch -d $(SRC_NAME) -p1 -i ../010-internal.patch; \
+	fi )
 
 config_test:
 	( if [ -f ./config_done ]; then \
