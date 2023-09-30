@@ -5,6 +5,7 @@
 #include <linux/export.h>
 #include <linux/err.h>
 #include <linux/sched.h>
+#include <linux/vmalloc.h>
 #include <asm/sections.h>
 #include <asm/uaccess.h>
 
@@ -379,6 +380,15 @@ int __weak get_user_pages_fast(unsigned long start,
 	return ret;
 }
 EXPORT_SYMBOL_GPL(get_user_pages_fast);
+
+void kvfree(const void *addr)
+{
+	if (is_vmalloc_addr(addr))
+		vfree(addr);
+	else
+		kfree(addr);
+}
+EXPORT_SYMBOL(kvfree);
 
 /* Tracepoints definitions. */
 EXPORT_TRACEPOINT_SYMBOL(kmalloc);
