@@ -28,8 +28,12 @@ start)
 stop)
 	func_stop
 	;;
+restart)
+	func_stop
+	func_start
+	;;
 *)
-	echo "Usage: $0 {start|stop}"
+	echo "Usage: $0 {start|stop|restart}"
 	exit 1
 	;;
 esac

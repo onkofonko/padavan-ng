@@ -1247,15 +1247,13 @@ handle_notifications(void)
 #if defined(APP_DOH)
 		else if (strcmp(entry->d_name, RCN_RESTART_DOH) == 0)
 		{
-			stop_doh();
-			start_doh();
+			restart_doh();
 		}
 #endif
 #if defined(APP_STUBBY)
 		else if (strcmp(entry->d_name, RCN_RESTART_STUBBY) == 0)
 		{
-			stop_stubby();
-			start_stubby();
+			restart_stubby();
 		}
 #endif
 #if defined(APP_PRIVOXY)
