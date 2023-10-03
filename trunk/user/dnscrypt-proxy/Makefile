@@ -42,5 +42,5 @@ romfs:
 	wget -O dnscrypt-resolvers.csv https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v1/dnscrypt-resolvers.csv || cp $(SRC_NAME)/dnscrypt-resolvers.csv .
 	$(ROMFSINST) $(SRC_NAME)/src/proxy/dnscrypt-proxy /usr/sbin/dnscrypt-proxy
 	$(ROMFSINST) -d dnscrypt-resolvers.csv /usr/share/dnscrypt-proxy/dnscrypt-resolvers.csv
-	$(ROMFSINST) /usr/bin/dnscrypt-proxy.sh
-	$(ROMFSINST) -p +x /usr/bin/dnscrypt-proxy.sh
+	$(ROMFSINST) /usr/bin/dnscrypt-proxy_start.sh
+	$(ROMFSINST) -p +x /usr/bin/dnscrypt-proxy_start.sh
