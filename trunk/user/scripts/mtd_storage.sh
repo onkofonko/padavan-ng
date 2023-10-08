@@ -530,11 +530,11 @@ dhcp-option=252,"\n"
 
 ### Please uncomment only the required DoT/DoH services port!
 ### Use stubby DNS-over-TLS (DoT) instead of ISP DNS
-#server=127.0.0.1#65053
-### Use DNS-over-HTTPS (DoH) proxy instead of ISP DNS
 #server=127.0.0.1#65054
+### Use DNS-over-HTTPS (DoH) proxy instead of ISP DNS
 #server=127.0.0.1#65055
 #server=127.0.0.1#65056
+#server=127.0.0.1#65057
 #all-servers
 
 ### Use time server update bypassing DoT/DoH

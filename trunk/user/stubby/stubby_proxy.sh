@@ -19,8 +19,8 @@ edns_client_subnet_private : 1
 round_robin_upstreams: 1
 idle_timeout: 10000
 listen_addresses:
-  - 127.0.0.1@65053
-  - 0::1@65053
+  - 127.0.0.1@65054
+  - 0::1@65054
 ####### DNSSEC SETTINGS ######
 #dnssec: GETDNS_EXTENSION_TRUE
 #trust_anchors_backoff_time: 2500
