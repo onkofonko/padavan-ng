@@ -66,6 +66,9 @@ static struct authsvc *Auths = NULL;
 
 extern SVCAUTH svc_auth_none;
 
+#ifdef AUTHDES_SUPPORT
+extern enum auth_stat _svcauth_des(struct svc_req *rqst, struct rpc_msg *msg);
+#endif
 /*
  * The call rpc message, msg has been obtained from the wire.  The msg contains
  * the raw form of credentials and verifiers.  authenticate returns AUTH_OK

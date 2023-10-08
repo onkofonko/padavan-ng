@@ -142,7 +142,7 @@ clnt_raw_call(h, proc, xargs, argsp, xresults, resultsp, timeout)
 	struct timeval timeout;
 {
 	struct clntraw_private *clp = clntraw_private;
-	XDR *xdrs = &clp->xdr_stream;
+	XDR *xdrs;
 	struct rpc_msg msg;
 	enum clnt_stat status;
 	struct rpc_err error;
@@ -154,6 +154,7 @@ clnt_raw_call(h, proc, xargs, argsp, xresults, resultsp, timeout)
 		mutex_unlock(&clntraw_lock);
 		return (RPC_FAILED);
 	}
+	xdrs = &clp->xdr_stream;
 	mutex_unlock(&clntraw_lock);
 
 call_again:
@@ -245,7 +246,7 @@ clnt_raw_freeres(cl, xdr_res, res_ptr)
 	void *res_ptr;
 {
 	struct clntraw_private *clp = clntraw_private;
-	XDR *xdrs = &clp->xdr_stream;
+	XDR *xdrs;
 	bool_t rval;
 
 	mutex_lock(&clntraw_lock);
@@ -254,6 +255,7 @@ clnt_raw_freeres(cl, xdr_res, res_ptr)
 		mutex_unlock(&clntraw_lock);
 		return (rval);
 	}
+	xdrs = &clp->xdr_stream;
 	mutex_unlock(&clntraw_lock);
 	xdrs->x_op = XDR_FREE;
 	return ((*xdr_res)(xdrs, res_ptr));

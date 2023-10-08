@@ -130,6 +130,7 @@ load_blacklist (void)
 	  if (list == NULL)
 	    {
 	      free (buf);
+	      fclose (fp);
 	      return;
 	    }
 	}
