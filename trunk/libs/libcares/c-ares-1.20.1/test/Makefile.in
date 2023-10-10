@@ -36,7 +36,7 @@
 #############################################################
 
 # aminclude_static.am generated automatically by Autoconf
-# from AX_AM_MACROS_STATIC on Mon Sep 25 16:29:02 CEST 2023
+# from AX_AM_MACROS_STATIC on Sun Oct  8 18:29:40 CEST 2023
 
 
 VPATH = @srcdir@
@@ -113,7 +113,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-TESTS = arestest$(EXEEXT) fuzzcheck.sho
+TESTS = arestest$(EXEEXT) fuzzcheck.sh
 noinst_PROGRAMS = arestest$(EXEEXT) aresfuzz$(EXEEXT) \
 	aresfuzzname$(EXEEXT) dnsdump$(EXEEXT)
 subdir = .
@@ -1167,9 +1167,9 @@ arestest.log: arestest$(EXEEXT)
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
-fuzzcheck.sho.log: fuzzcheck.sho
-	@p='fuzzcheck.sho'; \
-	b='fuzzcheck.sho'; \
+fuzzcheck.sh.log: fuzzcheck.sh
+	@p='fuzzcheck.sh'; \
+	b='fuzzcheck.sh'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \

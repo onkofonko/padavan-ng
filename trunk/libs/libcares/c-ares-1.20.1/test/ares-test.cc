@@ -384,15 +384,17 @@ void MockServer::ProcessFD(int fd) {
     /* TCP might aggregate the various requests into a single packet, so we
      * need to split */
     while (tcp_data_len_ > 2) {
-      int tcplen = (tcp_data_[0] << 8) + tcp_data_[1];
+      size_t tcplen = (tcp_data_[0] << 8) + tcp_data_[1];
       if (tcp_data_len_ - 2 < tcplen)
         break;
 
       ProcessPacket(fd, &addr, addrlen, tcp_data_ + 2, tcplen);
 
-      /* strip off processed data */
-      memmove(tcp_data_, tcp_data_ + tcplen + 2, tcp_data_len_ - 2 - tcplen);
-      tcp_data_len_ -= 2 + tcplen;
+      /* strip off processed data if connection not terminated */
+      if (tcp_data_ != NULL) {
+        memmove(tcp_data_, tcp_data_ + tcplen + 2, tcp_data_len_ - 2 - tcplen);
+        tcp_data_len_ -= 2 + tcplen;
+      }
     }
   } else {
     /* UDP is always a single packet */
