@@ -31,7 +31,7 @@
 
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = include m4 src oss-fuzz
+SUBDIRS = include m4 src
 
 if EXAMPLES
 SUBDIRS += examples
