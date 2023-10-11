@@ -28,10 +28,12 @@ listen_addresses:
 #######  UPSTREAMS  ######
 upstream_recursive_servers:
 ####### IPv4 addresses ######
+## Cloudflare
   - address_data: 1.1.1.1
     tls_auth_name: "cloudflare-dns.com"
   - address_data: 1.0.0.1
     tls_auth_name: "cloudflare-dns.com"
+## Google
   - address_data: 8.8.8.8
     tls_auth_name: "dns.google"
   - address_data: 8.8.4.4
@@ -47,7 +49,7 @@ fi
 if [ -f "/var/run/stubby_proxy.pid" ]; then
 		logger -t stubby "Stubby is running."
 	else
-		/usr/sbin/stubby_start.sh 
+		/usr/bin/stubby_start.sh 
 ###		/usr/sbin/stubby -g -l /tmp/stubby.log
 		touch /var/run/stubby_proxy.pid
 		logger -t stubby "Running."

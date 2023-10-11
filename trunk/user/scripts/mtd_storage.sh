@@ -316,7 +316,7 @@ if [ "\$(nvram get doh_enable)" = "1" ]; then
 fi
 ### Configure Stubby. Запуск службы DNS-over-TLS (DoT).
 if [ "\$(nvram get stubby_enable)" = "1" ]; then
-  /usr/sbin/stubby_proxy.sh start
+  /usr/bin/stubby_proxy.sh start
 fi
 }
 wan_down() {
@@ -324,7 +324,7 @@ if [ "\$(nvram get doh_enable)" = "1" ]; then
    /usr/bin/doh_proxy.sh stop
 fi
 if [ "\$(nvram get stubby_enable)" = "1" ]; then
-   /usr/sbin/stubby_proxy.sh stop
+   /usr/bin/stubby_proxy.sh stop
 fi
 }
 case "\$WAN_STATE" in

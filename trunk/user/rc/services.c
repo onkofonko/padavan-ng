@@ -365,7 +365,7 @@ is_stubby_run(void)
 void
 stop_stubby(void)
 {
-	eval("/usr/sbin/stubby_proxy.sh", "stop");
+	eval("/usr/bin/stubby_proxy.sh", "stop");
 }
 
 void
@@ -374,7 +374,7 @@ start_stubby(void)
 	int stubby_mode = nvram_get_int("stubby_enable");
 
 	if (stubby_mode == 1)
-		eval("/usr/sbin/stubby_proxy.sh", "start");
+		eval("/usr/bin/stubby_proxy.sh", "start");
 }
 void
 restart_stubby(void)

@@ -32,6 +32,6 @@ clean:
 	rm config_done
 
 romfs:
-	$(ROMFSINST) /usr/sbin/stubby_start.sh
-	$(ROMFSINST) /usr/sbin/stubby_proxy.sh
 	$(ROMFSINST) $(SRC_NAME)/src/stubby /usr/sbin/stubby
+	$(ROMFSINST) /usr/bin/stubby_start.sh
+	$(ROMFSINST) /usr/bin/stubby_proxy.sh
