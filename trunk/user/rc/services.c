@@ -332,7 +332,7 @@ is_doh_run(void)
 void
 stop_doh(void)
 {
-	eval("/usr/sbin/doh_start.sh", "stop");
+	eval("/usr/bin/doh_proxy.sh", "stop");
 }
 
 void
@@ -341,7 +341,7 @@ start_doh(void)
 	int doh_mode = nvram_get_int("doh_enable");
 
 	if (doh_mode == 1)
-		eval("/usr/sbin/doh_start.sh", "start");
+		eval("/usr/bin/doh_proxy.sh", "start");
 }
 void
 restart_doh(void)

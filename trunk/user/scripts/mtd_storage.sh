@@ -312,7 +312,7 @@ WAN_IP=\$(nvram get wan0_ipaddr)
 logger "WAN \$WAN_IF (\$WAN_IP) is UP. Start Proxy DNS service."
 ### Configure DoH proxy. Запуск службы DNS-over-HTTPS (DoH).
 if [ "\$(nvram get doh_enable)" = "1" ]; then
-  /etc/storage/doh_proxy.sh start
+  /usr/bin/doh_proxy.sh start
 fi
 ### Configure Stubby. Запуск службы DNS-over-TLS (DoT).
 if [ "\$(nvram get stubby_enable)" = "1" ]; then
@@ -321,7 +321,7 @@ fi
 }
 wan_down() {
 if [ "\$(nvram get doh_enable)" = "1" ]; then
-   /etc/storage/doh_proxy.sh stop
+   /usr/bin/doh_proxy.sh stop
 fi
 if [ "\$(nvram get stubby_enable)" = "1" ]; then
    /usr/sbin/stubby_proxy.sh stop
