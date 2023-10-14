@@ -10,43 +10,39 @@ else
 DOH_S1=$(nvram get doh_server1)
 DOH_S2=$(nvram get doh_server2)
 DOH_S3=$(nvram get doh_server3)
-DOH_P1=$(nvram get doh_port1)
-DOH_P2=$(nvram get doh_port2)
-DOH_P3=$(nvram get doh_port3)
 DOH_O1=$(nvram get doh_opt2_1)
 DOH_O2=$(nvram get doh_opt2_2)
 DOH_O3=$(nvram get doh_opt2_3)
 
-
-if [ "$DOH_S1" = "" ] || [ "$DOH_P1" = "" ]; then
+if [ "$DOH_S1" = "" ]; then
   logger -t doh_proxy "Not Server1"
 else
    if [ "$DOH_O1" = "" ]; then
-/usr/sbin/doh_proxy -a 127.0.0.1 -p $DOH_P1 -r $DOH_S1 $(nvram get doh_opt1_1)
+/usr/sbin/doh_proxy -a 127.0.0.1 -p 65055 -r $DOH_S1 $(nvram get doh_opt1_1)
    else
-/usr/sbin/doh_proxy -a 127.0.0.1 -p $DOH_P1 -b $DOH_O1 -r $DOH_S1 $(nvram get doh_opt1_1)
+/usr/sbin/doh_proxy -a 127.0.0.1 -p 65055 -b $DOH_O1 -r $DOH_S1 $(nvram get doh_opt1_1)
    fi
-logger -t doh_proxy "Start resolving to $DOH_S1 : $DOH_P1 ."
+logger -t doh_proxy "Start resolving to $DOH_S1 : 65055."
 fi
-if [ "$DOH_S2" = "" ] || [ "$DOH_P2" = "" ]; then
+if [ "$DOH_S2" = "" ]; then
   logger -t doh_proxy2 "Not Server2"
 else
    if [ "$DOH_O2" = "" ]; then
-/usr/sbin/doh_proxy2 -a 127.0.0.1 -p $DOH_P2 -r $DOH_S2 $(nvram get doh_opt1_2)
+/usr/sbin/doh_proxy2 -a 127.0.0.1 -p 65056 -r $DOH_S2 $(nvram get doh_opt1_2)
    else
-/usr/sbin/doh_proxy2 -a 127.0.0.1 -p $DOH_P2 -b $DOH_O2 -r $DOH_S2 $(nvram get doh_opt1_2)
+/usr/sbin/doh_proxy2 -a 127.0.0.1 -p 65056 -b $DOH_O2 -r $DOH_S2 $(nvram get doh_opt1_2)
    fi
-logger -t doh_proxy2 "Start resolving to $DOH_S2 : $DOH_P2 ."
+logger -t doh_proxy2 "Start resolving to $DOH_S2 : 65056 ."
 fi
-if [ "$DOH_S3" = "" ] || [ "$DOH_P3" = "" ]; then
+if [ "$DOH_S3" = "" ]; then
   logger -t doh_proxy3 "Not Server3"
 else
    if [ "$DOH_O3" = "" ]; then
-/usr/sbin/doh_proxy3 -a 127.0.0.1 -p $DOH_P3 -r $DOH_S3 $(nvram get doh_opt1_3)
+/usr/sbin/doh_proxy3 -a 127.0.0.1 -p 65057 -r $DOH_S3 $(nvram get doh_opt1_3)
    else
-/usr/sbin/doh_proxy3 -a 127.0.0.1 -p $DOH_P3 -b $DOH_O3 -r $DOH_S3 $(nvram get doh_opt1_3)
+/usr/sbin/doh_proxy3 -a 127.0.0.1 -p 65057 -b $DOH_O3 -r $DOH_S3 $(nvram get doh_opt1_3)
    fi
-logger -t doh_proxy3 "Start resolving to $DOH_S3 : $DOH_P3 ."
+logger -t doh_proxy3 "Start resolving to $DOH_S3 : 65057."
 fi
 
 touch /var/run/doh_proxy.pid
