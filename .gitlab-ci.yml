@@ -1,0 +1,191 @@
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - if: $CI_PIPELINE_SOURCE == "pipeline"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+
+variables:
+  GIT_DEPTH: 1
+  API_URL: "$CI_API_V4_URL/projects/$CI_PROJECT_ID"
+  TKN: "JOB-TOKEN: $CI_JOB_TOKEN"
+  IMAGE_TAG: latest
+  PACKAGE_NAME: toolchain
+  PACKAGE_VERSION: latest
+  TOOLCHAIN_FILE: toolchain.tzst
+
+stages:
+  - check
+  - build toolchain
+  - publish package
+  - build image
+
+check:
+  stage: check
+  image: bash
+  rules:
+    - if: $BUILD_TOOLCHAIN == null && $BUILD_CONTAINER == null
+  variables:
+    GIT_STRATEGY: none
+    BUILD_TOOLCHAIN_TRIGGER_PATH: "toolchain"
+    BUILD_CONTAINER_TRIGGER_PATH: "Dockerfile"
+    COMMIT_REF: "$CI_DEFAULT_BRANCH"
+  script:
+    - |
+      apk add --no-cache coreutils curl jq
+
+      echo "Getting container repository ID" # -> "" if no repo
+      container_repo="$(curl -L "$API_URL/registry/repositories" | jq -r '.[0].id | values')"
+
+      echo "Getting timestamp of the $IMAGE_TAG image" # -> "" if no image
+      image_response="$(curl -L "$API_URL/registry/repositories/$container_repo/tags/$IMAGE_TAG")"
+      image_time="$(jq -r '.created_at | values' <<< "$image_response")"
+      image_time="$(date +%s -d "${image_time:-0-01-01}")"
+
+      echo "Getting timestamp of the latest commit in $BUILD_CONTAINER_TRIGGER_PATH" # -> "" if no commits
+      commit_response="$(curl -L -G -d "path=$BUILD_CONTAINER_TRIGGER_PATH" \
+                                    -d "ref_name=$COMMIT_REF" "$API_URL/repository/commits")"
+      commit_time="$(jq -r '.[0].committed_date | values' <<< "$commit_response")"
+      commit_time="$(date +%s -d "${commit_time:-0-01-01}")"
+
+      echo "Will rebuild container image if timestamp $commit_time > $image_time"
+      # new commits to $BUILD_CONTAINER_TRIGGER_PATH since last image build? trigger rebuild
+      if (( commit_time > image_time )); then
+        curl -F "token=$CI_JOB_TOKEN" \
+             -F "variables[BUILD_CONTAINER]=1" \
+             -F "ref=$COMMIT_REF" \
+             "$API_URL/trigger/pipeline"
+      fi
+
+      echo "Getting toolchain package ID" # -> "" if no package
+      package_response="$(curl -LH "$TKN" -G -d "package_type=generic" \
+                                             -d "package_name=$PACKAGE_NAME" "$API_URL/packages")"
+      package_id="$(jq -r '.[] | select(.version == env.PACKAGE_VERSION)
+                               | .id | values' <<< "$package_response")"
+
+      echo "Getting timestamp of the latest toolchain package" # -> "" if no image
+      files_response="$(curl -LH "$TKN" "$API_URL/packages/$package_id/package_files")"
+      file_time="$(jq -r 'map(select(.file_name == env.TOOLCHAIN_FILE))
+                          | max_by(.id) | .created_at | values' <<< "$files_response")"
+      file_time="$(date +%s -d "${file_time:-0-01-01}")"
+
+      echo "Getting timestamp of the latest commit in $BUILD_TOOLCHAIN_TRIGGER_PATH" # -> "" if no commits
+      commit_response="$(curl -L -G -d "path=$BUILD_TOOLCHAIN_TRIGGER_PATH" \
+                                    -d "ref_name=$COMMIT_REF" "$API_URL/repository/commits")"
+      commit_time="$(jq -r '.[0].committed_date | values' <<< "$commit_response")"
+      commit_time="$(date +%s -d "${commit_time:-0-01-01}")"
+
+      echo "Will rebuild toolchain if timestamp $commit_time > $file_time"
+      # new commits to $BUILD_TOOLCHAIN_TRIGGER_PATH since last package build? trigger rebuild
+      if (( commit_time > file_time )); then
+        curl -F "token=$CI_JOB_TOKEN" \
+             -F "variables[BUILD_TOOLCHAIN]=1" \
+             -F "ref=$COMMIT_REF" \
+             "$API_URL/trigger/pipeline"
+      fi
+
+
+build toolchain:
+  stage: build toolchain
+  image: ubuntu:22.04
+  rules:
+    - if: $BUILD_TOOLCHAIN
+  artifacts:
+    expire_in: 1 h
+    paths: [ $TOOLCHAIN_FILE ]
+  script:
+    - |
+      apt update
+      apt install --no-install-recommends -y \
+          autoconf \
+          automake \
+          bison \
+          bzip2 \
+          ca-certificates \
+          flex \
+          g++ \
+          gawk \
+          gcc \
+          git \
+          gperf \
+          help2man \
+          libncurses5-dev \
+          libstdc++6 \
+          libtool \
+          libtool-bin \
+          make \
+          patch \
+          texinfo \
+          unzip \
+          wget \
+          xz-utils \
+          zstd
+
+    - pushd toolchain
+    - ./clean_sources.sh
+    - ./build_toolchain.sh
+    - popd
+
+    - tar -I "zstd -9 -T0" -cf "$TOOLCHAIN_FILE" toolchain/out
+
+
+publish package:
+  stage: publish package
+  image: bash
+  rules:
+    - if: $BUILD_TOOLCHAIN
+  script:
+    - |
+      apk add --no-cache curl jq
+
+      echo "Uploading $TOOLCHAIN_FILE"
+      upload_url="$API_URL/packages/generic/$PACKAGE_NAME/$PACKAGE_VERSION/$TOOLCHAIN_FILE?select=package_file"
+      upload_response="$(curl -LH "$TKN" -T "$TOOLCHAIN_FILE" "$upload_url")"
+      file_id="$(jq -r '.id | values' <<< "$upload_response")"
+      (( file_id > 0 )) || { echo "Upload failed"; exit 1; }
+
+      echo    "Package URL:"
+      echo -n "$CI_API_V4_URL/projects/${CI_PROJECT_NAMESPACE}%2F${CI_PROJECT_NAME}"
+      echo    "/packages/generic/$PACKAGE_NAME/$PACKAGE_VERSION/$TOOLCHAIN_FILE"
+
+      echo "Getting old files list"
+      package_response="$(curl -LH "$TKN" -G -d "package_type=generic" \
+                                             -d "package_name=$PACKAGE_NAME" "$API_URL/packages")"
+      package_id="$(jq -r '.[] | select(.version == env.PACKAGE_VERSION)
+                               | .id | values' <<< "$package_response")"
+
+      files_response="$(curl -LH "$TKN" "$API_URL/packages/$package_id/package_files")"
+      package_files="$(jq -r '.[] | select(.file_name == env.TOOLCHAIN_FILE)
+                                  | .id | values' <<< "$files_response")"
+
+      echo "Removing old files"
+      while IFS= read -r old_file_id; do
+        if [[ -n $old_file_id && $old_file_id != $file_id ]]; then
+          delete_url="$API_URL/packages/$package_id/package_files/$old_file_id"
+          curl -LH "$TKN" -o /dev/null -w "%{http_code}" -X DELETE "$delete_url"
+        fi
+      done <<< "$package_files"
+
+
+build image:
+  stage: build image
+  image: docker:stable
+  services:
+    - docker:dind
+  rules:
+    - if: $BUILD_CONTAINER
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - apk add --no-cache git
+
+    - echo "Sparse checkout"
+    - git clone -n --depth 1 --filter tree:0 "$CI_REPOSITORY_URL"
+    - cd "$CI_PROJECT_NAME"
+    - git sparse-checkout set --no-cone Dockerfile
+    - git checkout
+
+    - echo "Building container image"
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t "$CI_REGISTRY_IMAGE:$IMAGE_TAG" -f Dockerfile .
+    - docker push "$CI_REGISTRY_IMAGE:$IMAGE_TAG"
+    - echo "Image is available as $CI_REGISTRY_IMAGE:$IMAGE_TAG"
