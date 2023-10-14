@@ -522,24 +522,15 @@ dhcp-option=252,"\n"
 #dhcp-boot=pxelinux.0
 
 ### Use dnsmasq configuration recommendation
-#bogus-priv
-#no-negcache
-#no-resolv
-#clear-on-reload
-#domain-needed
-
-### Please uncomment only the required DoT/DoH services port!
-### Use stubby DNS-over-TLS (DoT) instead of ISP DNS
-#server=127.0.0.1#65054
-### Use DNS-over-HTTPS (DoH) proxy instead of ISP DNS
-#server=127.0.0.1#65055
-#server=127.0.0.1#65056
-#server=127.0.0.1#65057
-#all-servers
+bogus-priv
+no-negcache
+clear-on-reload
+domain-needed
+all-servers
 
 ### Use time server update bypassing DoT/DoH
-#server=/time.in.ua/1.1.1.1
-#server=/ntp.org/1.1.1.1
+server=/time.in.ua/1.1.1.1
+server=/ntp.org/1.1.1.1
 
 EOF
 	if [ -f /usr/bin/vlmcsd ]; then

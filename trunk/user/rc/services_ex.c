@@ -339,11 +339,27 @@ start_dns_dhcpd(int is_ap_mode)
 		/* listen DNS queries from clients of VPN server */
 		fprintf(fp, "listen-address=%s\n", ipaddr);
 	}
+
+	if (!is_ap_mode && (nvram_match("doh_enable", "1") || nvram_match("stubby_enable", "1") || nvram_match("dnscrypt_enable", "1"))) {
+		/* don't use resolv-file to resovle DNS queries if doh_proxy or stubby or dnscrypt-proxy is enabled */
+		fprintf(fp, "no-resolv\n");
+	}
 #if defined(APP_DNSCRYPT)
 	if (!is_ap_mode && nvram_match("dnscrypt_enable", "1")) {
-		/* don't use resolv-file to resovle DNS queries if dnscrypt-proxy is enabled */
-		fprintf(fp, "no-resolv\n"
-			    "server=%s#%d\n", nvram_safe_get("dnscrypt_ipaddr"), nvram_get_int("dnscrypt_port"));
+		/*  */
+		fprintf(fp, "server=%s#%d\n", nvram_safe_get("dnscrypt_ipaddr"), nvram_get_int("dnscrypt_port"));
+	}
+#endif
+#if defined(APP_DOH)
+	if (!is_ap_mode && nvram_match("doh_enable", "1")) {
+		/*  */
+		fprintf(fp, "server=127.0.0.1#65055\n" "server=127.0.0.1#65056\n" "server=127.0.0.1#65057\n");
+	}
+#endif
+#if defined(APP_STUBBY)
+	if (!is_ap_mode && nvram_match("stubby_enable", "1")) {
+		/*  */
+		fprintf(fp, "server=127.0.0.1#65054\n");
 	}
 #endif
 	if (!is_ap_mode) {
