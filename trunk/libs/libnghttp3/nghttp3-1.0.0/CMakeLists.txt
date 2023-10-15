@@ -25,7 +25,7 @@
 
 cmake_minimum_required(VERSION 3.20)
 # XXX using 0.1.90 instead of 0.2.0-DEV
-project(nghttp3 VERSION 0.15.0)
+project(nghttp3 VERSION 1.0.0)
 
 # See versioning rule:
 #  https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
@@ -73,10 +73,6 @@ endif()
 # Checks for header files.
 include(CheckIncludeFile)
 check_include_file("arpa/inet.h"   HAVE_ARPA_INET_H)
-check_include_file("stddef.h"      HAVE_STDDEF_H)
-check_include_file("stdint.h"      HAVE_STDINT_H)
-check_include_file("stdlib.h"      HAVE_STDLIB_H)
-check_include_file("string.h"      HAVE_STRING_H)
 check_include_file("unistd.h"      HAVE_UNISTD_H)
 check_include_file("sys/endian.h"  HAVE_SYS_ENDIAN_H)
 check_include_file("endian.h"      HAVE_ENDIAN_H)
@@ -107,7 +103,6 @@ if(${CMAKE_C_BYTE_ORDER} STREQUAL "BIG_ENDIAN")
   set(WORDS_BIGENDIAN 1)
 endif()
 
-include(ExtractValidFlags)
 set(WARNCFLAGS)
 set(WARNCXXFLAGS)
 if(CMAKE_C_COMPILER_ID MATCHES "MSVC")
@@ -117,97 +112,12 @@ if(CMAKE_C_COMPILER_ID MATCHES "MSVC")
   endif()
 else()
   if(ENABLE_WERROR)
-    extract_valid_c_flags(WARNCFLAGS    -Werror)
-    extract_valid_c_flags(WARNCXXFLAGS  -Werror)
+    set(WARNCFLAGS   "-Werror")
+    set(WARNCXXFLAGS "-Werror")
   endif()
 
-  # For C compiler
-  extract_valid_c_flags(WARNCFLAGS
-    -Wall
-    -Wextra
-    -Wmissing-prototypes
-    -Wstrict-prototypes
-    -Wmissing-declarations
-    -Wpointer-arith
-    -Wdeclaration-after-statement
-    -Wformat-security
-    -Wwrite-strings
-    -Wshadow
-    -Winline
-    -Wnested-externs
-    -Wfloat-equal
-    -Wundef
-    -Wendif-labels
-    -Wempty-body
-    -Wcast-align
-    -Wclobbered
-    -Wvla
-    -Wpragmas
-    -Wunreachable-code
-    -Waddress
-    -Wattributes
-    -Wdiv-by-zero
-    -Wshorten-64-to-32
-
-    -Wconversion
-    -Wextended-offsetof
-    -Wformat-nonliteral
-    -Wlanguage-extension-token
-    -Wmissing-field-initializers
-    -Wmissing-noreturn
-    -Wmissing-variable-declarations
-    # Not used because we cannot change public structs
-    # -Wpadded
-    -Wsign-conversion
-    # Not used because this basically disallows default case
-    # -Wswitch-enum
-    -Wunreachable-code-break
-    -Wunused-macros
-    -Wunused-parameter
-    -Wredundant-decls
-    # Only work with Clang for the moment
-    -Wheader-guard
-    -Wsometimes-uninitialized
-
-    # Only work with gcc7 for the moment
-    -Wduplicated-branches
-    # This is required because we pass format string as "const char*.
-    -Wno-format-nonliteral
-  )
-
-  extract_valid_cxx_flags(WARNCXXFLAGS
-    # For C++ compiler
-    -Wall
-    -Wformat-security
-    -Wsometimes-uninitialized
-    # Disable noexcept-type warning of g++-7.  This is not harmful as
-    # long as all source files are compiled with the same compiler.
-    -Wno-noexcept-type
-  )
-
-  if(ENABLE_ASAN)
-    include(CMakePushCheckState)
-    cmake_push_check_state()
-    set(CMAKE_REQUIRED_LIBRARIES "-fsanitize=address")
-    check_c_compiler_flag(-fsanitize=address C__fsanitize_address_VALID)
-    check_cxx_compiler_flag(-fsanitize=address CXX__fsanitize_address_VALID)
-    cmake_pop_check_state()
-    if(NOT C__fsanitize_address_VALID OR NOT CXX__fsanitize_address_VALID)
-      message(WARNING "ENABLE_ASAN was requested, but not supported!")
-    else()
-      set(CMAKE_C_FLAGS "-fsanitize=address ${CMAKE_C_FLAGS}")
-      set(CMAKE_CXX_FLAGS "-fsanitize=address ${CMAKE_CXX_FLAGS}")
-    endif()
-  endif()
-endif()
-
-if(ENABLE_STATIC_CRT)
-  foreach(lang C CXX)
-    foreach(suffix "" _DEBUG _MINSIZEREL _RELEASE _RELWITHDEBINFO)
-      set(var "CMAKE_${lang}_FLAGS${suffix}")
-      string(REPLACE "/MD" "/MT" ${var} "${${var}}")
-    endforeach()
-  endforeach()
+  include(cmake/PickyWarningsC.cmake)
+  include(cmake/PickyWarningsCXX.cmake)
 endif()
 
 if(ENABLE_DEBUG)

@@ -31,8 +31,9 @@ EXTRA_DIST = \
 	cmakeconfig.h.in \
 	CMakeLists.txt \
 	CMakeOptions.txt \
-	cmake/ExtractValidFlags.cmake \
 	cmake/FindCUnit.cmake \
+	cmake/PickyWarningsC.cmake \
+	cmake/PickyWarningsCXX.cmake \
 	cmake/Version.cmake
 
 # Format source files using clang-format.  Don't format source files
