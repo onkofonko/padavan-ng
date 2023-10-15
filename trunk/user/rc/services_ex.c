@@ -350,16 +350,16 @@ start_dns_dhcpd(int is_ap_mode)
 		fprintf(fp, "server=%s#%d\n", nvram_safe_get("dnscrypt_ipaddr"), nvram_get_int("dnscrypt_port"));
 	}
 #endif
-#if defined(APP_DOH)
-	if (!is_ap_mode && nvram_match("doh_enable", "1")) {
-		/*  */
-		fprintf(fp, "server=127.0.0.1#65055\n" "server=127.0.0.1#65056\n" "server=127.0.0.1#65057\n");
-	}
-#endif
 #if defined(APP_STUBBY)
 	if (!is_ap_mode && nvram_match("stubby_enable", "1")) {
 		/*  */
 		fprintf(fp, "server=127.0.0.1#65054\n");
+	}
+#endif
+#if defined(APP_DOH)
+	if (!is_ap_mode && nvram_match("doh_enable", "1")) {
+		/*  */
+		fprintf(fp, "server=127.0.0.1#65055\n" "server=127.0.0.1#65056\n" "server=127.0.0.1#65057\n");
 	}
 #endif
 	if (!is_ap_mode) {

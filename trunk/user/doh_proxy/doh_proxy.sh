@@ -32,7 +32,7 @@ else
    else
 /usr/sbin/doh_proxy2 -a 127.0.0.1 -p 65056 -b $DOH_O2 -r $DOH_S2 $(nvram get doh_opt1_2)
    fi
-logger -t doh_proxy2 "Start resolving to $DOH_S2 : 65056 ."
+logger -t doh_proxy2 "Start resolving to $DOH_S2 : 65056."
 fi
 if [ "$DOH_S3" = "" ]; then
   logger -t doh_proxy3 "Not Server3"
