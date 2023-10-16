@@ -28,14 +28,10 @@ config_test:
 configure:
 	( mkdir -p $(SRC_NAME)/build && cd $(SRC_NAME)/build ; \
 	cmake	-DCMAKE_INSTALL_PREFIX:PATH=/ \
-		-DENABLE_APP=OFF \
 		-DENABLE_EXAMPLES=OFF \
-		-DENABLE_HPACK_TOOLS=OFF \
-		-DENABLE_PYTHON_BINDINGS=OFF \
 		-DENABLE_STATIC_LIB=ON \
 		-DENABLE_SHARED_LIB=OFF \
 		-DENABLE_STATIC_CRT=OFF \
-		-DCMAKE_INSTALL_LOCAL_ONLY=ON \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_TOOLCHAIN_FILE=$(ROOTDIR)/include/cross-mipsel-linux.cmake .. \
 	)
