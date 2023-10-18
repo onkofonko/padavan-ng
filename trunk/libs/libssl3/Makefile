@@ -1,4 +1,4 @@
-SRC_NAME=openssl
+SRC_NAME=openssl-3.0.11-quic
 #SRC_NAME=openssl-openssl-3.0.10-quic1
 SRC_URL=https://github.com/quictls/openssl/archive/refs/tags/openssl-3.0.10-quic1.tar.gz
 
