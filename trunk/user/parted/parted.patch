@@ -1,6 +1,6 @@
-diff -urN parted-3.3-ref/Makefile.am parted-3.3/Makefile.am
---- parted-3.3-ref/Makefile.am	2020-08-04 15:56:19.891344600 +0300
-+++ parted-3.3/Makefile.am	2020-01-23 15:57:27.137920300 +0300
+diff -urN parted-3.6-ref/Makefile.am parted-3.6/Makefile.am
+--- parted-3.6-ref/Makefile.am	2020-08-04 15:56:19.891344600 +0300
++++ parted-3.6/Makefile.am	2020-01-23 15:57:27.137920300 +0300
 @@ -1,5 +1,5 @@
  ACLOCAL_AMFLAGS = -I m4
 -SUBDIRS = po lib include libparted parted partprobe doc debug tests
@@ -8,10 +8,10 @@ diff -urN parted-3.3-ref/Makefile.am parted-3.3/Makefile.am
  
  EXTRA_DIST =				\
    .version				\
-diff -urN parted-3.3-ref/libparted/fs/Makefile.am parted-3.3/libparted/fs/Makefile.am
---- parted-3.3-ref/libparted/fs/Makefile.am	2020-08-04 15:56:20.268362800 +0300
-+++ parted-3.3/libparted/fs/Makefile.am	2020-08-04 15:54:11.320865900 +0300
-@@ -14,15 +14,6 @@
+diff -urN parted-3.6-ref/libparted/fs/Makefile.am parted-3.6/libparted/fs/Makefile.am
+--- parted-3.6-ref/libparted/fs/Makefile.am	2020-08-04 15:56:20.268362800 +0300
++++ parted-3.6/libparted/fs/Makefile.am	2020-08-04 15:54:11.320865900 +0300
+@@ -15,15 +15,6 @@
  		    $(OS_LIBS)
  
  libfs_la_SOURCES =		\
@@ -27,9 +27,9 @@ diff -urN parted-3.3-ref/libparted/fs/Makefile.am parted-3.3/libparted/fs/Makefi
    btrfs/btrfs.c			\
    ext2/ext2.h			\
    ext2/ext2_fs.h		\
-diff -urN parted-3.3-ref/libparted/labels/Makefile.am parted-3.3/libparted/labels/Makefile.am
---- parted-3.3-ref/libparted/labels/Makefile.am	2020-08-04 15:56:20.168683900 +0300
-+++ parted-3.3/libparted/labels/Makefile.am	2020-08-04 15:48:29.907281400 +0300
+diff -urN parted-3.6-ref/libparted/labels/Makefile.am parted-3.6/libparted/labels/Makefile.am
+--- parted-3.6-ref/libparted/labels/Makefile.am	2020-08-04 15:56:20.168683900 +0300
++++ parted-3.6/libparted/labels/Makefile.am	2020-08-04 15:48:29.907281400 +0300
 @@ -18,8 +18,6 @@
  
  liblabels_la_SOURCES = \
@@ -49,10 +49,10 @@ diff -urN parted-3.3-ref/libparted/labels/Makefile.am parted-3.3/libparted/label
  
  liblabels_la_LIBADD = $(OS_LIBS) $(INTLLIBS) $(LIBICONV)
  
-diff -urN parted-3.3-ref/libparted/libparted.c parted-3.3/libparted/libparted.c
---- parted-3.3-ref/libparted/libparted.c	2020-08-04 15:56:20.164706700 +0300
-+++ parted-3.3/libparted/libparted.c	2020-08-04 15:50:45.145482100 +0300
-@@ -64,7 +64,6 @@
+diff -urN parted-3.6-ref/libparted/libparted.c parted-3.6/libparted/libparted.c
+--- parted-3.6-ref/libparted/libparted.c	2020-08-04 15:56:20.164706700 +0300
++++ parted-3.6/libparted/libparted.c	2020-08-04 15:50:45.145482100 +0300
+@@ -65,7 +65,6 @@
  static int	dodgy_memory_active[100];
  #endif /* DEBUG */
  
@@ -60,7 +60,7 @@ diff -urN parted-3.3-ref/libparted/libparted.c parted-3.3/libparted/libparted.c
  extern void ped_disk_bsd_init ();
  extern void ped_disk_dvh_init ();
  extern void ped_disk_gpt_init ();
-@@ -72,10 +71,7 @@
+@@ -73,10 +72,7 @@
  extern void ped_disk_mac_init ();
  extern void ped_disk_msdos_init ();
  extern void ped_disk_pc98_init ();
@@ -71,7 +71,7 @@ diff -urN parted-3.3-ref/libparted/libparted.c parted-3.3/libparted/libparted.c
  
  static void
  init_disk_types ()
-@@ -86,8 +82,6 @@
+@@ -87,8 +83,6 @@
  #if defined __s390__ || defined __s390x__
  	ped_disk_dasd_init();
  #endif
@@ -80,7 +80,7 @@ diff -urN parted-3.3-ref/libparted/libparted.c parted-3.3/libparted/libparted.c
  #ifdef ENABLE_PC98
  	ped_disk_pc98_init ();
  #endif
-@@ -96,11 +90,8 @@
+@@ -97,11 +91,8 @@
  	ped_disk_gpt_init ();
  	ped_disk_dvh_init ();
  	ped_disk_bsd_init ();
@@ -92,7 +92,7 @@ diff -urN parted-3.3-ref/libparted/libparted.c parted-3.3/libparted/libparted.c
  extern void ped_file_system_xfs_init (void);
  extern void ped_file_system_ufs_init (void);
  extern void ped_file_system_reiserfs_init (void);
-@@ -117,7 +108,6 @@
+@@ -119,7 +110,6 @@
  static void
  init_file_system_types ()
  {
@@ -100,7 +100,7 @@ diff -urN parted-3.3-ref/libparted/libparted.c parted-3.3/libparted/libparted.c
  	ped_file_system_xfs_init ();
  	ped_file_system_ufs_init ();
  	ped_file_system_reiserfs_init ();
-@@ -132,7 +122,6 @@
+@@ -135,7 +125,6 @@
  	ped_file_system_udf_init ();
  }
  
@@ -108,7 +108,7 @@ diff -urN parted-3.3-ref/libparted/libparted.c parted-3.3/libparted/libparted.c
  extern void ped_disk_bsd_done ();
  extern void ped_disk_dvh_done ();
  extern void ped_disk_gpt_done ();
-@@ -141,9 +130,7 @@
+@@ -144,9 +133,7 @@
  extern void ped_disk_msdos_done ();
  extern void ped_disk_pc98_done ();
  extern void ped_disk_sun_done ();
@@ -118,7 +118,7 @@ diff -urN parted-3.3-ref/libparted/libparted.c parted-3.3/libparted/libparted.c
  
  static void
  done_disk_types ()
-@@ -151,7 +138,6 @@
+@@ -154,7 +141,6 @@
  #if defined __s390__ || __s390x__
  	ped_disk_dasd_done ();
  #endif
@@ -126,7 +126,7 @@ diff -urN parted-3.3-ref/libparted/libparted.c parted-3.3/libparted/libparted.c
  #ifdef ENABLE_PC98
  	ped_disk_pc98_done ();
  #endif
-@@ -161,9 +147,6 @@
+@@ -164,9 +150,6 @@
  	ped_disk_gpt_done ();
  	ped_disk_dvh_done ();
  	ped_disk_bsd_done ();
@@ -136,7 +136,7 @@ diff -urN parted-3.3-ref/libparted/libparted.c parted-3.3/libparted/libparted.c
  }
  
  static void _init() __attribute__ ((constructor));
-@@ -193,7 +176,6 @@
+@@ -197,7 +180,6 @@
  extern void ped_file_system_reiserfs_done (void);
  extern void ped_file_system_ufs_done (void);
  extern void ped_file_system_xfs_done (void);
@@ -144,7 +144,7 @@ diff -urN parted-3.3-ref/libparted/libparted.c parted-3.3/libparted/libparted.c
  extern void ped_file_system_btrfs_done (void);
  extern void ped_file_system_udf_done (void);
  
-@@ -210,7 +192,6 @@
+@@ -215,7 +197,6 @@
  	ped_file_system_reiserfs_done ();
  	ped_file_system_ufs_done ();
  	ped_file_system_xfs_done ();
