@@ -34,7 +34,7 @@ clean:
 
 romfs:
 	$(ROMFSINST) $(SRC_NAME)/privoxy /usr/sbin/privoxy
-	$(ROMFSINST) /usr/bin/privoxy.sh
+	$(ROMFSINST) -p +x /usr/bin/privoxy.sh
 	mkdir -p $(INSTALLDIR)/usr/share/privoxy/templates
 	$(ROMFSINST) $(SRC_NAME)/templates /usr/share/privoxy/templates
 	rm -rf configs
