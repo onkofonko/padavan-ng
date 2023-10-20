@@ -1,5 +1,5 @@
-SRC_NAME=openvpn-2.5.9
-SRC_URL = https://github.com/OpenVPN/openvpn/archive/refs/tags/v2.5.9.tar.gz
+SRC_NAME=openvpn-2.6.6
+SRC_URL = https://github.com/OpenVPN/openvpn/archive/refs/tags/v2.6.6.tar.gz
 
 CFLAGS += -ffunction-sections -fdata-sections -fvisibility=hidden
 LDFLAGS += -Wl,--gc-sections
@@ -44,11 +44,10 @@ configure:
 		--disable-unit-tests \
 		--disable-management \
 		--enable-small \
-		--enable-multihome \
-		--enable-pf \
 		--enable-fragment \
-		--enable-def-auth \
 		--enable-lzo \
+		--disable-lz4 \
+		--disable-dco \
 		--with-crypto-library=openssl \
 		--with-sysroot=$(STAGEDIR) \
 		--host=$(HOST_TARGET) \
