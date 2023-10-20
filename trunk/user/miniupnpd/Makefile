@@ -11,7 +11,6 @@ ENABLE_IPV6:=0
 IPTABLESPATH=$(ROOTDIR)/user/iptables/$(IPT_VERSION)
 
 #all: download_test extract_test
-
 all:
 	cd $(SRC_NAME) && ./configure
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME) IPTABLESPATH=$(IPTABLESPATH) ENABLE_IPV6=$(ENABLE_IPV6)
@@ -26,6 +25,7 @@ extract_test:
 		tar xzf $(SRC_NAME).tar.gz; \
 		patch -d $(SRC_NAME) -p1 -i ../miniupnpd-orig.patch; \
 		patch -d $(SRC_NAME) -p1 -i ../102-do-not-disable-port-forwarding-when-in-double-nat.patch; \
+		patch -d $(SRC_NAME) -p1 -i ../103-disable-libcap-ng-checking.patch; \
 	fi )
 
 clean:

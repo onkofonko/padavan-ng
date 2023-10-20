@@ -1,0 +1,15 @@
+--- miniupnpd/configure
++++ miniupnpd/configure
+@@ -542,7 +542,7 @@ 
+ 	if [ "$PKG_CONFIG" ] ; then
+ 		if ${PKG_CONFIG} --exists libcap-ng ; then
+-			echo "detected libcap-ng `${PKG_CONFIG} --modversion libcap-ng`"
+-			echo "CFLAGS += `${PKG_CONFIG} --cflags libcap-ng`" >> config.mk
+-			echo "LDLIBS += `${PKG_CONFIG} --libs-only-l libcap-ng`" >> config.mk
+-			echo "LDFLAGS += `${PKG_CONFIG} --libs-only-L --libs-only-other libcap-ng`" >> config.mk
+-			echo "#define HAS_LIBCAP_NG" >> ${CONFIGFILE}
++#			echo "detected libcap-ng `${PKG_CONFIG} --modversion libcap-ng`"
++#			echo "CFLAGS += `${PKG_CONFIG} --cflags libcap-ng`" >> config.mk
++#			echo "LDLIBS += `${PKG_CONFIG} --libs-only-l libcap-ng`" >> config.mk
++#			echo "LDFLAGS += `${PKG_CONFIG} --libs-only-L --libs-only-other libcap-ng`" >> config.mk
++#			echo "#define HAS_LIBCAP_NG" >> ${CONFIGFILE}
