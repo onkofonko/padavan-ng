@@ -56,6 +56,7 @@ function initial(){
 	else{
 		document.getElementById('reboot_schedule_enable_tr').style.display = "none";
 		document.getElementById('reboot_schedule_date_tr').style.display = "none";
+		document.getElementById('reboot_schedule_date_tr2').style.display = "none";
 		document.getElementById('reboot_schedule_time_tr').style.display = "none";
 	}
 
@@ -101,8 +102,9 @@ function applyRule(){
 function change_on(){
 var v = document.form.reboot_schedule_enable_x.value;
         showhide_div('reboot_schedule_date_tr', v);
-		showhide_div('reboot_schedule_time_tr', v);
-		if ( v == 1 )
+        showhide_div('reboot_schedule_date_tr2', v);
+	showhide_div('reboot_schedule_time_tr', v);
+	if ( v == 1 )
 		check_Timefield_checkbox();
 
 }
@@ -503,9 +505,8 @@ function updateDateTime()
                                                 </select>
                                             </td>
                                         </tr>
-										<tr id="reboot_schedule_enable_tr">
-				                        <tr>
-                                            <th><#Reboot_Schedule#></th>
+					<tr id="reboot_schedule_enable_tr">
+                                            <th width="50%" style="border-top: 0 none;"><#Reboot_Schedule#></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="reboot_schedule_enable_on_of">
@@ -519,25 +520,34 @@ function updateDateTime()
                                                 </div>
                                             </td>
                                         </tr>
-				<tr id="reboot_schedule_date_tr">
-					<th><#Reboot_Schedule_Date#></th>
-					<td>
-						<input type="checkbox" name="reboot_date_x_Sun" class="input" onclick="check_Timefield_checkbox();"><#WF_Sun#>
-						<input type="checkbox" name="reboot_date_x_Mon" class="input" onclick="check_Timefield_checkbox();"><#WF_Mon#>
-						<input type="checkbox" name="reboot_date_x_Tue" class="input" onclick="check_Timefield_checkbox();"><#WF_Tue#>
-						<input type="checkbox" name="reboot_date_x_Wed" class="input" onclick="check_Timefield_checkbox();"><#WF_Wed#>
-						<input type="checkbox" name="reboot_date_x_Thu" class="input" onclick="check_Timefield_checkbox();"><#WF_Thu#>
-						<input type="checkbox" name="reboot_date_x_Fri" class="input" onclick="check_Timefield_checkbox();"><#WF_Fri#>
-						<input type="checkbox" name="reboot_date_x_Sat" class="input" onclick="check_Timefield_checkbox();"><#WF_Sat#>
-					</td>
-				</tr>
-				<tr id="reboot_schedule_time_tr">
-					<th><#Reboot_Schedule_Time#></th>
-					<td>
-						<input type="text" maxlength="2" class="input_3_table" style="width: 30px" name="reboot_time_x_hour" onKeyPress="return validator.isNumber(this,event);" onblur="validator.timeRange(this, 0);" autocorrect="off" autocapitalize="off"><#Hour#>:
-						<input type="text" maxlength="2" class="input_3_table" style="width: 30px" name="reboot_time_x_min" onKeyPress="return validator.isNumber(this,event);" onblur="validator.timeRange(this, 1);" autocorrect="off" autocapitalize="off"><#Minute#>
-					</td>
-				</tr>
+					<tr id="reboot_schedule_date_tr">
+					    <th><#Reboot_Schedule_Date#></th>
+	                                    <td>
+                                                <div class="controls">
+                                                    <label class="checkbox inline"><input type="checkbox" class="input" name="reboot_date_x_Mon" onChange="check_Timefield_checkbox();"/><#WF_Mon#></label>
+                                                    <label class="checkbox inline"><input type="checkbox" class="input" name="reboot_date_x_Tue" onChange="check_Timefield_checkbox();"/><#WF_Tue#></label>
+                                                    <label class="checkbox inline"><input type="checkbox" class="input" name="reboot_date_x_Wed" onChange="check_Timefield_checkbox();"/><#WF_Wed#></label>
+                                                    <label class="checkbox inline"><input type="checkbox" class="input" name="reboot_date_x_Thu" onChange="check_Timefield_checkbox();"/><#WF_Thu#></label>
+                                                    <label class="checkbox inline"><input type="checkbox" class="input" name="reboot_date_x_Fri" onChange="check_Timefield_checkbox();"/><#WF_Fri#></label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr id="reboot_schedule_date_tr2">
+					    <th><#Reboot_Schedule_Date2#></th>
+                                            <td>
+                                                <div class="controls">
+                                                    <label class="checkbox inline"><input type="checkbox" class="input" name="reboot_date_x_Sat" onChange="check_Timefield_checkbox();"/><#DAY_Sat#></label>
+                                                    <label class="checkbox inline"><input type="checkbox" class="input" name="reboot_date_x_Sun" onChange="check_Timefield_checkbox();"/><#DAY_Sun#></label>
+                                                </div>
+                                            </td>
+                                        </tr>
+					<tr id="reboot_schedule_time_tr">
+                                        <th style="border-top: 0 none;"><#Reboot_Schedule_Time#></th>
+                                            <td style="border-top: 0 none;">
+                                                <input type="text" maxlength="2" style="width: 20px;" size="2" name="reboot_time_x_hour" onKeyPress="return validator.isNumber(this,event);" onblur="validator.timeRange(this, 0);" autocorrect="off" autocapitalize="off"><#Hour#>:
+                                                <input type="text" maxlength="2" style="width: 20px;" size="2" name="reboot_time_x_min" onKeyPress="return validator.isNumber(this,event);" onblur="validator.timeRange(this, 1);" autocorrect="off" autocapitalize="off"><#Minute#>
+                                            </td>
+                                        </tr>
                                         <tr>
                                             <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,11,1)"><#LANHostConfig_x_ServerLogEnable_itemname#></a></th>
                                             <td>
