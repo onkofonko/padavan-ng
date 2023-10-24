@@ -152,7 +152,7 @@ write_vsftpd_conf(void)
 void
 run_ftp(void)
 {
-	if (nvram_match("enable_ftp", "0")) 
+	if (nvram_match("enable_ftp", "0"))
 		return;
 
 	if (is_ftp_run())
