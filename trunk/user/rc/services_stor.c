@@ -152,7 +152,7 @@ write_vsftpd_conf(void)
 void
 run_ftp(void)
 {
-	if (nvram_match("enable_ftp", "0"))
+	if (nvram_match("enable_ftp", "0")) 
 		return;
 
 	if (is_ftp_run())
@@ -231,20 +231,14 @@ write_smb_conf(void)
 	if (i_smb_mode == 1 || i_smb_mode == 3) {
 		char *rootnm = nvram_safe_get("http_username");
 		if (!(*rootnm)) rootnm = "admin";
-#if defined (APP_SMBD36)
+
 		fprintf(fp, "map to guest = %s\n", "Bad Password");
-#else
-		fprintf(fp, "security = %s\n", "SHARE");
-#endif
 		fprintf(fp, "guest ok = %s\n", "yes");
 		fprintf(fp, "guest only = yes\n");
 		fprintf(fp, "guest account = %s\n", rootnm);
 	} else if (i_smb_mode == 4) {
-#if !defined (APP_SMBD36)
-		fprintf(fp, "security = %s\n", "USER");
-#endif
+		fprintf(fp, "map to guest = %s\n", "Bad User");
 		fprintf(fp, "guest ok = %s\n", "no");
-		fprintf(fp, "map to guest = Bad User\n");
 		fprintf(fp, "hide unreadable = yes\n");
 	} else {
 		goto confpage;
@@ -456,11 +450,7 @@ clean_smbd_trash(void)
 	for (i=0; locks[i] && *locks[i]; i++)
 		doSystem("rm -f /var/locks/%s", locks[i]);
 
-#if defined (APP_SMBD36)
 	doSystem("rm -f %s", "/var/log.*");
-#else
-	doSystem("rm -f %s", "/var/*.log");
-#endif
 	doSystem("rm -f %s", "/var/log/*");
 }
 
@@ -483,22 +473,16 @@ config_smb_fastpath(int check_pid)
 void
 stop_samba(int force_stop)
 {
-	char* svcs[] = { "smbd",
-#if defined (APP_SMBD36)
-	"wsdd2",
-#endif
-	"nmbd", NULL };
-
-	const int nmbdidx = sizeof(svcs) / sizeof(svcs[0]) - 2;
+	char* svcs[] = { "smbd", "nmbd", "wsdd2", NULL };
 
 	if (!force_stop && nvram_match("wins_enable", "1"))
-		svcs[nmbdidx] = NULL;
+		svcs[1] = NULL;
 
 	kill_services(svcs, 5, 1);
 
 	fput_int("/proc/net/netfilter/nf_fp_smb", 0);
 
-	if (!svcs[nmbdidx])
+	if (!svcs[1])
 		return;
 
 	clean_smbd_trash();
@@ -509,6 +493,7 @@ void run_samba(void)
 	int sh_num, has_nmbd, has_smbd, i;
 	char tmpuser[40], tmp2[40];
 	char cmd[256];
+	char *p_workgroup;
 
 	if (nvram_match("enable_samba", "0") || nvram_match("st_samba_mode", "0"))
 		return;
@@ -547,18 +532,21 @@ void run_samba(void)
 	else
 		eval("/sbin/smbd", "-D", "-s", "/etc/smb.conf");
 
-#if defined (APP_SMBD36)
+	if (pids("nmbd") && pids("smbd"))
+		logmessage("Samba Server", "daemon is started");
+
 	if (pids("wsdd2"))
 		doSystem("killall %s %s", "-SIGHUP", "wsdd2");
-	else
-		eval("/sbin/wsdd2", "-d", "-w");
+	else {
+		p_workgroup = nvram_safe_get("st_samba_workgroup");
+		if (strlen(p_workgroup) > 0)
+			eval("/sbin/wsdd2", "-d", "-w", "-i", "br0", "-G", p_workgroup);
+		else
+			eval("/sbin/wsdd2", "-d", "-w", "-i", "br0");
+	}
 
 	if (pids("wsdd2"))
 		logmessage("WSDD2", "daemon is started");
-#endif
-
-	if (pids("nmbd") && pids("smbd"))
-		logmessage("Samba Server", "daemon is started");
 }
 
 void restart_smbd(void)

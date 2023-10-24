@@ -1,7 +1,9 @@
+PKG_NAME=samba-3.6.25
+PKG_URL=https://download.samba.org/pub/samba/$(PKG_NAME).tar.gz
 SRC_NAME=source3
 
-SMBCFLAGS = -Wall -D__location__=\\\"\\\" -ffunction-sections -fdata-sections $(CFLAGS)
-SMBLDFLAGS = -Wl,--gc-sections $(LDFLAGS)
+SMBCFLAGS = $(CFLAGS) -D__location__=\\\"\\\" -ffunction-sections -fdata-sections
+SMBLDFLAGS = $(LDFLAGS) -Wl,--gc-sections
 SMBCPPFLAGS = $(CPPFLAGS) -DNDEBUG -DSHMEM_SIZE=524288 -Dfcntl=fcntl64 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE=1 -D_LARGEFILE64_SOURCE=1 -D_LARGE_FILES=1
 MAKE_FLAGS = $(MAKEFLAGS) DYNEXP= PICFLAG= MODULES=
 
@@ -11,8 +13,15 @@ else
 SMBCFLAGS += -DMAX_DEBUG_LEVEL="-1"
 endif
 
-all: config_test
+THISDIR = $(shell pwd)
+
+all: download_test config_test
 	MAKEFLAGS="$(MAKE_FLAGS)" $(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
+
+download_test:
+	( if [ ! -f $(PKG_NAME).tar.gz ]; then \
+		wget -t5 --timeout=20 --no-check-certificate -O $(PKG_NAME).tar.gz $(PKG_URL); \
+	fi )
 
 config_test:
 	( if [ -f ./config_done ]; then \
@@ -22,7 +31,8 @@ config_test:
 	fi )
 
 configure:
-	( cd $(SRC_NAME) && \
+	( test -d $(SRC_NAME) || { tar -xzf $(PKG_NAME).tar.gz --strip 1; cat patches/*.patch | patch -r - -N -p1; }; \
+	cd $(SRC_NAME) && \
 	ac_cv_lib_attr_getxattr=no \
 	ac_cv_search_getxattr=no \
 	ac_cv_file__proc_sys_kernel_core_pattern=no \
@@ -102,8 +112,10 @@ clean:
 	if [ -f $(SRC_NAME)/Makefile ] ; then \
 		$(MAKE) -C $(SRC_NAME) distclean ; \
 	fi ; \
-	rm -rf $(SRC_NAME)/bin
 	rm -f config_done
+	find . -type f -not -name "Makefile" -not -name "*.patch" -not -name "samba-3.6.25.tar.gz" -not -name "make.sh" -delete && \
+	find . -type l -delete && \
+	find . -type d -not -name "patches" -not -name "." -print0 | xargs -0 rm -rf
 
 distclean: clean
 	@find $(SRC_NAME) -name config.h | xargs rm -f
@@ -112,15 +124,15 @@ distclean: clean
 	@find $(SRC_NAME) -name config.cache | xargs rm -f
 
 romfs:
-ifeq ($(CONFIG_FIRMWARE_INCLUDE_SMBD36),y)
-	$(ROMFSINST) $(SRC_NAME)/bin/samba_multicall /sbin/samba_multicall
-	$(ROMFSINST) -s samba_multicall /sbin/smbd
-	$(ROMFSINST) -s samba_multicall /sbin/nmbd
-	$(ROMFSINST) -s /sbin/samba_multicall /bin/smbpasswd
+ifeq ($(CONFIG_FIRMWARE_INCLUDE_SMBD),y)
+	$(ROMFSINST) $(THISDIR)/$(SRC_NAME)/bin/samba_multicall /sbin/smbmulti
+	$(ROMFSINST) -s smbmulti /sbin/smbd
+	$(ROMFSINST) -s smbmulti /sbin/nmbd
+	$(ROMFSINST) -s /sbin/smbmulti /bin/smbpasswd
 	mkdir -p $(ROMFSDIR)/usr/share/samba
-	cp -fP codepages/*.dat $(ROMFSDIR)/usr/share/samba
+	cp -fP $(THISDIR)/codepages/*.dat $(ROMFSDIR)/usr/share/samba
 else
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_WINS),y)
-	$(ROMFSINST) $(SRC_NAME)/bin/nmbd /sbin/nmbd
+	$(ROMFSINST) $(THISDIR)/$(SRC_NAME)/bin/nmbd /sbin/nmbd
 endif
 endif

@@ -68,7 +68,7 @@ endif
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_NTFS_3G),y)
 FS_NTFS_ENABLED=y
 endif
-ifneq (,$(filter y,$(CONFIG_FIRMWARE_INCLUDE_SMBD) $(CONFIG_FIRMWARE_INCLUDE_SMBD36)))
+ifeq ($(CONFIG_FIRMWARE_INCLUDE_SMBD),y)
 SAMBA_ENABLED=y
 endif
 endif
@@ -120,15 +120,8 @@ dir_$(CONFIG_FIRMWARE_INCLUDE_ADB)		+= adb
 dir_$(CONFIG_FIRMWARE_INCLUDE_MINISATIP)	+= minisatip
 dir_$(CONFIG_FIRMWARE_INCLUDE_VLMCSD)		+= vlmcsd
 dir_$(CONFIG_FIRMWARE_INCLUDE_IPERF3)		+= iperf3
-
-ifeq ($(SAMBA_ENABLED),y)
-ifeq ($(CONFIG_FIRMWARE_INCLUDE_SMBD36),y)
-dir_y						+= samba36
-dir_y						+= wsdd2
-else
-dir_y						+= samba3
-endif
-endif
+dir_$(SAMBA_ENABLED)				+= samba36
+dir_$(SAMBA_ENABLED)				+= wsdd2
 
 dir_$(CONFIG_FIRMWARE_INCLUDE_TOR)		+= tor
 dir_$(CONFIG_FIRMWARE_INCLUDE_PRIVOXY)		+= privoxy
