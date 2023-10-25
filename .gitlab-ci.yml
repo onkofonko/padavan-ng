@@ -34,17 +34,17 @@ check:
       apk add --no-cache coreutils curl jq
 
       echo "Getting container repository ID" # -> "" if no repo
-      container_repo="$(curl -L "$API_URL/registry/repositories" | jq -r '.[0].id | values')"
+      container_repo="$(curl -L "$API_URL/registry/repositories" | jq -r '.[0].id | values' ||:)"
 
       echo "Getting timestamp of the $IMAGE_TAG image" # -> "" if no image
       image_response="$(curl -L "$API_URL/registry/repositories/$container_repo/tags/$IMAGE_TAG")"
-      image_time="$(jq -r '.created_at | values' <<< "$image_response")"
+      image_time="$(jq -r '.created_at | values' <<< "$image_response" ||:)"
       image_time="$(date +%s -d "${image_time:-0-01-01}")"
 
       echo "Getting timestamp of the latest commit in $BUILD_CONTAINER_TRIGGER_PATH" # -> "" if no commits
       commit_response="$(curl -L -G -d "path=$BUILD_CONTAINER_TRIGGER_PATH" \
                                     -d "ref_name=$COMMIT_REF" "$API_URL/repository/commits")"
-      commit_time="$(jq -r '.[0].committed_date | values' <<< "$commit_response")"
+      commit_time="$(jq -r '.[0].committed_date | values' <<< "$commit_response" ||:)"
       commit_time="$(date +%s -d "${commit_time:-0-01-01}")"
 
       echo "Will rebuild container image if timestamp $commit_time > $image_time"
@@ -60,18 +60,18 @@ check:
       package_response="$(curl -LH "$TKN" -G -d "package_type=generic" \
                                              -d "package_name=$PACKAGE_NAME" "$API_URL/packages")"
       package_id="$(jq -r '.[] | select(.version == env.PACKAGE_VERSION)
-                               | .id | values' <<< "$package_response")"
+                               | .id | values' <<< "$package_response" ||:)"
 
       echo "Getting timestamp of the latest toolchain package" # -> "" if no image
       files_response="$(curl -LH "$TKN" "$API_URL/packages/$package_id/package_files")"
       file_time="$(jq -r 'map(select(.file_name == env.TOOLCHAIN_FILE))
-                          | max_by(.id) | .created_at | values' <<< "$files_response")"
+                          | max_by(.id) | .created_at | values' <<< "$files_response" ||:)"
       file_time="$(date +%s -d "${file_time:-0-01-01}")"
 
       echo "Getting timestamp of the latest commit in $BUILD_TOOLCHAIN_TRIGGER_PATH" # -> "" if no commits
       commit_response="$(curl -L -G -d "path=$BUILD_TOOLCHAIN_TRIGGER_PATH" \
                                     -d "ref_name=$COMMIT_REF" "$API_URL/repository/commits")"
-      commit_time="$(jq -r '.[0].committed_date | values' <<< "$commit_response")"
+      commit_time="$(jq -r '.[0].committed_date | values' <<< "$commit_response" ||:)"
       commit_time="$(date +%s -d "${commit_time:-0-01-01}")"
 
       echo "Will rebuild toolchain if timestamp $commit_time > $file_time"
