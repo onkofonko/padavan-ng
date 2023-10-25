@@ -1,11 +1,11 @@
-PKG_NAME=samba-3.6.25
-PKG_URL=https://download.samba.org/pub/samba/$(PKG_NAME).tar.gz
-SRC_NAME=source3
+SRC_DIR := samba-3.6.25
+SRC_NAME := $(SRC_DIR)/source3
+THISDIR := $(shell pwd)
 
-SMBCFLAGS = $(CFLAGS) -D__location__=\\\"\\\" -ffunction-sections -fdata-sections
-SMBLDFLAGS = $(LDFLAGS) -Wl,--gc-sections
-SMBCPPFLAGS = $(CPPFLAGS) -DNDEBUG -DSHMEM_SIZE=524288 -Dfcntl=fcntl64 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE=1 -D_LARGEFILE64_SOURCE=1 -D_LARGE_FILES=1
-MAKE_FLAGS = $(MAKEFLAGS) DYNEXP= PICFLAG= MODULES=
+SMBCFLAGS := $(CFLAGS) -ffunction-sections -fdata-sections
+SMBLDFLAGS := $(LDFLAGS) -Wl,--gc-sections
+SMBCPPFLAGS := -DNDEBUG -DSHMEM_SIZE=524288 -Dfcntl=fcntl64 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE=1 -D_LARGEFILE64_SOURCE=1 -D_LARGE_FILES=1
+MAKE_FLAGS := $(MAKEFLAGS) DYNEXP= PICFLAG= MODULES=
 
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_SMBD_SYSLOG),y)
 SMBCFLAGS += -DMAX_DEBUG_LEVEL="0"
@@ -13,15 +13,9 @@ else
 SMBCFLAGS += -DMAX_DEBUG_LEVEL="-1"
 endif
 
-THISDIR = $(shell pwd)
-
-all: download_test config_test
+all: config_test
+	MAKEFLAGS="$(MAKE_FLAGS)" $(MAKE) -C $(SRC_NAME) basics
 	MAKEFLAGS="$(MAKE_FLAGS)" $(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
-
-download_test:
-	( if [ ! -f $(PKG_NAME).tar.gz ]; then \
-		wget -t5 --timeout=20 --no-check-certificate -O $(PKG_NAME).tar.gz $(PKG_URL); \
-	fi )
 
 config_test:
 	( if [ -f ./config_done ]; then \
@@ -31,7 +25,7 @@ config_test:
 	fi )
 
 configure:
-	( test -d $(SRC_NAME) || { tar -xzf $(PKG_NAME).tar.gz --strip 1; cat patches/*.patch | patch -r - -N -p1; }; \
+	( test -d $(SRC_NAME) || { tar -xf $(SRC_DIR).tar.gz ; cat patches/*.patch | patch -d $(SRC_DIR) -r - -N -p1; }; \
 	cd $(SRC_NAME) && \
 	ac_cv_lib_attr_getxattr=no \
 	ac_cv_search_getxattr=no \
@@ -54,6 +48,7 @@ configure:
 	samba_cv_zlib_1_2_3=no \
 	ac_cv_path_PYTHON="" \
 	ac_cv_path_PYTHON_CONFIG="" \
+	PKG_CONFIG_PATH="$(STAGEDIR)/lib/pkgconfig" \
 	CPPFLAGS="$(SMBCPPFLAGS)" \
 	CFLAGS="$(SMBCFLAGS)" LDFLAGS="$(SMBLDFLAGS)" \
 	./configure \
@@ -111,11 +106,9 @@ configure:
 clean:
 	if [ -f $(SRC_NAME)/Makefile ] ; then \
 		$(MAKE) -C $(SRC_NAME) distclean ; \
-	fi ; \
+	fi ;
+	rm -rf $(SRC_NAME)/bin
 	rm -f config_done
-	find . -type f -not -name "Makefile" -not -name "*.patch" -not -name "samba-3.6.25.tar.gz" -not -name "make.sh" -delete && \
-	find . -type l -delete && \
-	find . -type d -not -name "patches" -not -name "." -print0 | xargs -0 rm -rf
 
 distclean: clean
 	@find $(SRC_NAME) -name config.h | xargs rm -f
@@ -130,7 +123,7 @@ ifeq ($(CONFIG_FIRMWARE_INCLUDE_SMBD),y)
 	$(ROMFSINST) -s smbmulti /sbin/nmbd
 	$(ROMFSINST) -s /sbin/smbmulti /bin/smbpasswd
 	mkdir -p $(ROMFSDIR)/usr/share/samba
-	cp -fP $(THISDIR)/codepages/*.dat $(ROMFSDIR)/usr/share/samba
+	cp -fP $(THISDIR)/$(SRC_DIR)/codepages/*.dat $(ROMFSDIR)/usr/share/samba
 else
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_WINS),y)
 	$(ROMFSINST) $(THISDIR)/$(SRC_NAME)/bin/nmbd /sbin/nmbd
