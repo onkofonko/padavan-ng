@@ -2,12 +2,12 @@
 
 func_start(){
 	vlmcsd
-	logger -st "vlmcsd" "start"
+	logger -st "vlmcsd" "KMS Activation server is running."
 }
 
 func_stop(){
 	killall -q vlmcsd
-	logger -st "vlmcsd" "stop"
+	logger -st "vlmcsd" "KMS Activation server is stoping."
 }
 
 case "$1" in
