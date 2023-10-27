@@ -2,12 +2,12 @@
 
 func_start(){
 	iperf3 -s -D
-	logger -st "iperf3" "start"
+	logger -st "iperf3" "iPerf3 server is running."
 }
 
 func_stop(){
 	killall -q iperf3
-	logger -st "iperf3" "stop"
+	logger -st "iperf3" "iPerf3 server is stoping."
 }
 
 case "$1" in

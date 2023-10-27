@@ -496,17 +496,35 @@ restart_vlmcsd(void)
 }
 #endif
 #if defined(APP_IPERF3)
-void stop_iperf3(void){
+int
+is_iperf3_run(void)
+{
+	if (check_if_file_exist("/usr/bin/iperf3"))
+	{
+		if (pids("iperf3"))
+			return 1;
+	}
+	return 0;
+}
+
+void
+stop_iperf3(void)
+{
 	eval("/usr/bin/iperf3.sh","stop");
 }
 
-void start_iperf3(void){
+void 
+start_iperf3(void)
+{
 	int iperf3_mode = nvram_get_int("iperf3_enable");
+
 	if ( iperf3_mode == 1)
 		eval("/usr/bin/iperf3.sh","start");
 }
 
-void restart_iperf3(void){
+void 
+restart_iperf3(void)
+{
 	stop_iperf3();
 	start_iperf3();
 }
