@@ -9,7 +9,8 @@ helpcontent[3] = new Array("");
 helpcontent[4] = new Array("",
 				"<#LANHostConfig_IPRouters_itemdesc#>",
 				"<#LANHostConfig_SubnetMask_itemdesc#>",
-				"<#LANHostConfig_x_Gateway_itemdesc#>");
+				"<#LANHostConfig_x_Gateway_itemdesc#>",
+				"<#LAN_STP_itemdesc#>");
 helpcontent[5] = new Array("",
 				"<#LANHostConfig_DHCPServerConfigurable_itemdesc#>",
 				"<#LANHostConfig_DomainName_itemdesc#> <#LANHostConfig_x_DDNS_alarm_hostname#> <#LANHostConfig_DomainName_itemdesc2#>",
