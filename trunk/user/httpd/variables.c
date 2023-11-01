@@ -525,20 +525,20 @@
 			{"torconf.torrc", "File", NULL, EVM_RESTART_TOR|EVM_BLOCK_UNSAFE},
 #endif
 #if defined(APP_DOH)
-			{"doh_enable", "", NULL, EVM_RESTART_DOH|EVM_RESTART_DHCPD},
-			{ "doh_server1", "", NULL, EVM_RESTART_DOH|EVM_RESTART_DHCPD},
-			{ "doh_server2", "", NULL, EVM_RESTART_DOH|EVM_RESTART_DHCPD},
-			{ "doh_server3", "", NULL, EVM_RESTART_DOH|EVM_RESTART_DHCPD},
-			{ "doh_opt1_1", "", NULL, EVM_RESTART_DOH|EVM_RESTART_DHCPD},
-			{ "doh_opt2_1", "", NULL, EVM_RESTART_DOH|EVM_RESTART_DHCPD},
-			{ "doh_opt1_2", "", NULL, EVM_RESTART_DOH|EVM_RESTART_DHCPD},
-			{ "doh_opt2_2", "", NULL, EVM_RESTART_DOH|EVM_RESTART_DHCPD},
-			{ "doh_opt1_3", "", NULL, EVM_RESTART_DOH|EVM_RESTART_DHCPD},
-			{ "doh_opt2_3", "", NULL, EVM_RESTART_DOH|EVM_RESTART_DHCPD},
+			{"doh_enable", "", NULL, EVM_RESTART_DOH},
+			{"doh_server1", "", NULL, EVM_RESTART_DOH},
+			{"doh_server2", "", NULL, EVM_RESTART_DOH},
+			{"doh_server3", "", NULL, EVM_RESTART_DOH},
+			{"doh_opt1_1", "", NULL, EVM_RESTART_DOH},
+			{"doh_opt2_1", "", NULL, EVM_RESTART_DOH},
+			{"doh_opt1_2", "", NULL, EVM_RESTART_DOH},
+			{"doh_opt2_2", "", NULL, EVM_RESTART_DOH},
+			{"doh_opt1_3", "", NULL, EVM_RESTART_DOH},
+			{"doh_opt2_3", "", NULL, EVM_RESTART_DOH},
 #endif
 #if defined(APP_STUBBY)
-			{"stubby_enable", "", NULL, EVM_RESTART_STUBBY|EVM_RESTART_DHCPD},
-			{"stubbyc.stubby.yml", "File", NULL, EVM_RESTART_STUBBY|EVM_BLOCK_UNSAFE|EVM_RESTART_DHCPD},
+			{"stubby_enable", "", NULL, EVM_RESTART_STUBBY},
+			{"stubbyc.stubby.yml", "File", NULL, EVM_RESTART_STUBBY|EVM_BLOCK_UNSAFE},
 #endif
 #if defined(APP_PRIVOXY)
 			{"privoxy_enable", "", NULL, EVM_RESTART_PRIVOXY},

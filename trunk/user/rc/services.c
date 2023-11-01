@@ -348,6 +348,7 @@ restart_doh(void)
 {
 	stop_doh();
 	start_doh();
+	restart_dhcpd();
 }
 #endif
 #if defined(APP_STUBBY)
@@ -381,6 +382,7 @@ restart_stubby(void)
 {
 	stop_stubby();
 	start_stubby();
+	restart_dhcpd();
 }
 
 #endif
