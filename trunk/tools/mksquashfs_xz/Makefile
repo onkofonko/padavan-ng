@@ -1,7 +1,19 @@
 SRC_NAME1=squashfs-4.6.1
-SRC_NAME2=xz-5.4.4
+SRC_NAME2=xz-5.4.5
+SRC_URL2=https://gigenet.dl.sourceforge.net/project/lzmautils/$(SRC_NAME2).tar.xz
 
+#all: download_test extract_test config_xz build_xz build_squashfs
 all: config_xz build_xz build_squashfs
+
+download_test:
+	( if [ ! -f $(SRC_NAME2).tar.xz ]; then \
+		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME2).tar.xz $(SRC_URL2); \
+	fi )
+
+extract_test:
+	( if [ ! -d $(SRC_NAME2) ]; then \
+		tar xJf $(SRC_NAME2).tar.xz; \
+	fi )
 
 config_xz:
 	( if [ -f ./config_xz_done ]; then \
