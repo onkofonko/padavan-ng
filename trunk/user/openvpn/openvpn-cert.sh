@@ -60,7 +60,7 @@ func_help() {
   echo "           - root CA key and certificate" >&2
   echo "           - server key and certificate" >&2
   echo "           - Diffie-Hellman parameters key" >&2
-  echo "           - TLS-Auth HMAC signature key" >&2
+  echo "           - TLS-Auth/TLS-Crypt HMAC signature key" >&2
   echo "           `$BOLD`Note:`$NORM` $CA_CRT and ${TA_KEY}(if TLS-Auth or TLS-Crypt is used) should be sent to clients." >&2
   echo >&2
   echo "    `$BOLD`client`$NORM` -n `$BOLD`common_name`$NORM` [ -b `$BOLD`rsa_bits/ec_name`$NORM` ] [ -d `$BOLD`days_valid`$NORM` ]" >&2
