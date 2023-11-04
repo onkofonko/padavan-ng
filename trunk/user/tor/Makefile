@@ -1,5 +1,6 @@
-SRC_NAME=tor-0.4.7.13
-SRC_URL=https://github.com/torproject/tor/archive/refs/tags/$(SRC_NAME).tar.gz
+SRC_NAME=tor-0.4.8.8
+#SRC_NAME=tor-tor-0.4.8.8
+SRC_URL=https://gitlab.torproject.org/tpo/core/tor/-/archive/tor-0.4.8.8/$(SRC_NAME).tar.gz
 
 CFLAGS +=$(COPT) -ffunction-sections -fdata-sections -fvisibility=hidden
 LDFLAGS += -Wl,--gc-sections
