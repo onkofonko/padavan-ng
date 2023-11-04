@@ -291,10 +291,10 @@ function done_validating(action){
                                             <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 3, 24);"><#WIFILDPC_itemname#></a></th>
                                             <td>
                                                 <select name="wl_ldpc" class="input">
-                                                    <option value="0" <% nvram_match_x("","wl_ldpc", "0","selected"); %>><#btn_Disable#></option>
+                                                    <option value="0" <% nvram_match_x("","wl_ldpc", "0","selected"); %>><#btn_Disable#> (*)</option>
                                                     <option value="1" <% nvram_match_x("","wl_ldpc", "1","selected"); %>>11n only</option>
                                                     <option value="2" <% nvram_match_x("","wl_ldpc", "2","selected"); %>>11ac only</option>
-                                                    <option value="3" <% nvram_match_x("","wl_ldpc", "3","selected"); %>>11n & 11ac Mixed (*)</option>
+                                                    <option value="3" <% nvram_match_x("","wl_ldpc", "3","selected"); %>>11n & 11ac Mixed</option>
                                                 </select>
                                             </td>
                                         </tr>
