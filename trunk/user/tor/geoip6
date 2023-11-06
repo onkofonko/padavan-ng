@@ -4990,6 +4990,7 @@
 2a06:d1c0:f761::,2a06:d1c0:f761:ffff:ffff:ffff:ffff:ffff,NL
 2a06:d1c1:f::,2a06:d1c1:f:ffff:ffff:ffff:ffff:ffff,NL
 2a06:d1c1:1f::,2a06:d1c1:1f:ffff:ffff:ffff:ffff:ffff,NL
+2a06:d1c7:a::,2a06:d1c7:a:ffff:ffff:ffff:ffff:ffff,NL
 2a06:d280::,2a06:d287:ffff:ffff:ffff:ffff:ffff:ffff,RU
 2a06:d4c0::,2a06:d4c7:ffff:ffff:ffff:ffff:ffff:ffff,RU
 2a06:d640::,2a06:d640:ffff:ffff:ffff:ffff:ffff:ffff,RU
@@ -5418,7 +5419,7 @@
 2a07:e240::,2a07:e247:ffff:ffff:ffff:ffff:ffff:ffff,RU
 2a07:e2c0::,2a07:e2c7:ffff:ffff:ffff:ffff:ffff:ffff,RU
 2a07:e343::,2a07:e343:ffff:ffff:ffff:ffff:ffff:ffff,FR
-2a07:e345::,2a07:e345:ffff:ffff:ffff:ffff:ffff:ffff,NL
+2a07:e344::,2a07:e345:ffff:ffff:ffff:ffff:ffff:ffff,NL
 2a07:e346::,2a07:e347:ffff:ffff:ffff:ffff:ffff:ffff,BE
 2a07:e380::,2a07:e387:ffff:ffff:ffff:ffff:ffff:ffff,RU
 2a07:e4c0::,2a07:e4c7:ffff:ffff:ffff:ffff:ffff:ffff,RU
@@ -6026,7 +6027,6 @@
 2a0a:6040:9500::,2a0a:6040:96ff:ffff:ffff:ffff:ffff:ffff,NL
 2a0a:6040:a321::,2a0a:6040:a321:ffff:ffff:ffff:ffff:ffff,NL
 2a0a:6040:ad00::,2a0a:6040:adff:ffff:ffff:ffff:ffff:ffff,EE
-2a0a:6040:af02::,2a0a:6040:af02:ffff:ffff:ffff:ffff:ffff,NL
 2a0a:6040:b00b::,2a0a:6040:b00b:ffff:ffff:ffff:ffff:ffff,NL
 2a0a:6040:b200::,2a0a:6040:b202:ffff:ffff:ffff:ffff:ffff,NL
 2a0a:6040:b204::,2a0a:6040:b206:ffff:ffff:ffff:ffff:ffff,NL
@@ -7387,7 +7387,7 @@
 2a0d:a300::,2a0d:a307:ffff:ffff:ffff:ffff:ffff:ffff,NL
 2a0d:a540::,2a0d:a547:ffff:ffff:ffff:ffff:ffff:ffff,FR
 2a0d:a640::,2a0d:a647:ffff:ffff:ffff:ffff:ffff:ffff,RU
-2a0d:a740::,2a0d:a740:3:ffff:ffff:ffff:ffff:ffff,NL
+2a0d:a740:1::,2a0d:a740:3:ffff:ffff:ffff:ffff:ffff,NL
 2a0d:a7c0::,2a0d:a7c7:ffff:ffff:ffff:ffff:ffff:ffff,NL
 2a0d:a8c0::,2a0d:a8c7:ffff:ffff:ffff:ffff:ffff:ffff,FR
 2a0d:a940::,2a0d:a947:ffff:ffff:ffff:ffff:ffff:ffff,NL
@@ -8546,10 +8546,10 @@
 2a0f:9380::,2a0f:9387:ffff:ffff:ffff:ffff:ffff:ffff,MD
 2a0f:93c1:1::,2a0f:93c1:3:ffff:ffff:ffff:ffff:ffff,NL
 2a0f:93c1:5::,2a0f:93c1:7:ffff:ffff:ffff:ffff:ffff,NL
-2a0f:93c1:a::,2a0f:93c1:b:ffff:ffff:ffff:ffff:ffff,NL
+2a0f:93c1:a::,2a0f:93c1:a:ffff:ffff:ffff:ffff:ffff,NL
 2a0f:93c1:d::,2a0f:93c1:21:ffff:ffff:ffff:ffff:ffff,NL
 2a0f:93c1:23::,2a0f:93c1:23:ffff:ffff:ffff:ffff:ffff,NL
-2a0f:93c1:26::,2a0f:93c1:28:ffff:ffff:ffff:ffff:ffff,NL
+2a0f:93c1:26::,2a0f:93c1:27:ffff:ffff:ffff:ffff:ffff,NL
 2a0f:93c1:2a::,2a0f:93c1:2e:ffff:ffff:ffff:ffff:ffff,NL
 2a0f:93c1:30::,2a0f:93c1:30:ffff:ffff:ffff:ffff:ffff,NL
 2a0f:93c1:64::,2a0f:93c1:64:ffff:ffff:ffff:ffff:ffff,NL
