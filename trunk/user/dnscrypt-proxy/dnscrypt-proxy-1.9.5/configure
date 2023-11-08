@@ -2615,7 +2615,7 @@ as_fn_append ac_header_c_list " minix/config.h minix_config_h HAVE_MINIX_CONFIG_
 ac_aux_files="ltmain.sh compile missing install-sh config.guess config.sub"
 
 # Locations in which to look for auxiliary files.
-ac_aux_dir_candidates="${srcdir}/libltdl/config"
+ac_aux_dir_candidates="${srcdir}${PATH_SEPARATOR}${srcdir}/..${PATH_SEPARATOR}${srcdir}/../.."
 
 # Search for a directory containing all of the required auxiliary files,
 # $ac_aux_files, from the $PATH-style list $ac_aux_dir_candidates.
@@ -2775,7 +2775,6 @@ ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
-
 
 
 
@@ -5657,11 +5656,11 @@ else $as_nop
   CFLAGS="$CFLAGS  -D_FORTIFY_SOURCE=2"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -5702,11 +5701,11 @@ else $as_nop
   CFLAGS="$CFLAGS  -fPIC"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -5747,11 +5746,11 @@ else $as_nop
   CFLAGS="$CFLAGS  -fPIE"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -5782,11 +5781,11 @@ else $as_nop
   LDFLAGS="$LDFLAGS  -pie"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U];if (fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -5832,11 +5831,11 @@ else $as_nop
   CFLAGS="$CFLAGS  -fno-strict-aliasing"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -5871,11 +5870,11 @@ else $as_nop
   CFLAGS="$CFLAGS  -fno-strict-overflow"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -5908,11 +5907,11 @@ else $as_nop
   CFLAGS="$CFLAGS  -fwrapv"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -5954,11 +5953,11 @@ else $as_nop
   LDFLAGS="$LDFLAGS  -Wl,--dynamicbase"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U];if (fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -5993,11 +5992,11 @@ else $as_nop
   LDFLAGS="$LDFLAGS  -Wl,--high-entropy-va"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U];if (fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6032,11 +6031,11 @@ else $as_nop
   LDFLAGS="$LDFLAGS  -Wl,--nxcompat"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U];if (fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6085,11 +6084,11 @@ else $as_nop
   CFLAGS="$CFLAGS  -fstack-protector-strong"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6121,11 +6120,11 @@ else $as_nop
   CFLAGS="$CFLAGS  -fstack-protector-all"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6170,11 +6169,11 @@ else $as_nop
   CFLAGS="$CFLAGS  -Winit-self"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6209,11 +6208,11 @@ else $as_nop
   CFLAGS="$CFLAGS  -Wwrite-strings"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6248,11 +6247,11 @@ else $as_nop
   CFLAGS="$CFLAGS  -Wdiv-by-zero"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6287,11 +6286,11 @@ else $as_nop
   CFLAGS="$CFLAGS  -Wsometimes-uninitialized"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6330,11 +6329,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wall"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6371,11 +6370,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wextra"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6434,11 +6433,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wno-unknown-warning-option"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6482,11 +6481,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wbad-function-cast"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6523,11 +6522,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wcast-align"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6564,11 +6563,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wcast-qual"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6605,11 +6604,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wchar-subscripts"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6646,11 +6645,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wcomment"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6687,11 +6686,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wfloat-equal"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6728,11 +6727,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wformat=2"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6769,11 +6768,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wimplicit"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6810,11 +6809,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wmissing-declarations"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6851,11 +6850,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wmissing-prototypes"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6892,11 +6891,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wnormalized=id"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6933,11 +6932,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Woverride-init"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -6974,11 +6973,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wparentheses"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -7015,11 +7014,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wpointer-arith"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -7056,11 +7055,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wredundant-decls"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -7097,11 +7096,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wstrict-prototypes"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -7138,11 +7137,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wswitch-enum"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -7179,11 +7178,11 @@ else $as_nop
   CFLAGS="$CFLAGS  $CWFLAGS -Wvariable-decl"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U], fodder = 0;if (fodder > -1000 && fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -7220,11 +7219,11 @@ else $as_nop
   LDFLAGS="$LDFLAGS  -Wl,-z,relro"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U];if (fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -7259,11 +7258,11 @@ else $as_nop
   LDFLAGS="$LDFLAGS  -Wl,-z,now"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U];if (fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -7298,11 +7297,11 @@ else $as_nop
   LDFLAGS="$LDFLAGS  -Wl,-z,noexecstack"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stdio.h>
+#include <time.h>
 int
 main (void)
 {
-char x[42U];if (fgets(x,1000,stdin)) puts(x)
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
   ;
   return 0;
 }
@@ -16630,7 +16629,7 @@ return gethostbyname ();
   return 0;
 }
 _ACEOF
-for ac_lib in '' resolv nsl
+for ac_lib in '' resolv nsl ws2_32
 do
   if test -z "$ac_lib"; then
     ac_res="none required"
@@ -16843,7 +16842,7 @@ then :
   test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
 
 else $as_nop
-  as_fn_error $? "libsodium >= 0.7.0 not found" "$LINENO" 5
+  as_fn_error $? "libsodium >= 1.0.0 not found" "$LINENO" 5
 fi
 
 
@@ -16919,7 +16918,7 @@ fi
 
 
 case $host_os in
-  cygwin* | mingw* | pw32* | cegcc*)
+  cygwin* | pw32* | cegcc*)
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for _head_libws2_32_a in -lws2_32" >&5
 printf %s "checking for _head_libws2_32_a in -lws2_32... " >&6; }
 if test ${ac_cv_lib_ws2_32__head_libws2_32_a+y}
@@ -17050,6 +17049,272 @@ then :
 fi
 
   ;;
+  mingw*)
+    case $host_cpu in
+      amd64|x86_64)
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for _head_lib64_libws2_32_a in -lws2_32" >&5
+printf %s "checking for _head_lib64_libws2_32_a in -lws2_32... " >&6; }
+if test ${ac_cv_lib_ws2_32__head_lib64_libws2_32_a+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lws2_32  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+char _head_lib64_libws2_32_a ();
+int
+main (void)
+{
+return _head_lib64_libws2_32_a ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  ac_cv_lib_ws2_32__head_lib64_libws2_32_a=yes
+else $as_nop
+  ac_cv_lib_ws2_32__head_lib64_libws2_32_a=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_ws2_32__head_lib64_libws2_32_a" >&5
+printf "%s\n" "$ac_cv_lib_ws2_32__head_lib64_libws2_32_a" >&6; }
+if test "x$ac_cv_lib_ws2_32__head_lib64_libws2_32_a" = xyes
+then :
+  printf "%s\n" "#define HAVE_LIBWS2_32 1" >>confdefs.h
+
+  LIBS="-lws2_32 $LIBS"
+
+fi
+
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for _head_lib64_libpsapi_a in -lpsapi" >&5
+printf %s "checking for _head_lib64_libpsapi_a in -lpsapi... " >&6; }
+if test ${ac_cv_lib_psapi__head_lib64_libpsapi_a+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lpsapi  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+char _head_lib64_libpsapi_a ();
+int
+main (void)
+{
+return _head_lib64_libpsapi_a ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  ac_cv_lib_psapi__head_lib64_libpsapi_a=yes
+else $as_nop
+  ac_cv_lib_psapi__head_lib64_libpsapi_a=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_psapi__head_lib64_libpsapi_a" >&5
+printf "%s\n" "$ac_cv_lib_psapi__head_lib64_libpsapi_a" >&6; }
+if test "x$ac_cv_lib_psapi__head_lib64_libpsapi_a" = xyes
+then :
+  printf "%s\n" "#define HAVE_LIBPSAPI 1" >>confdefs.h
+
+  LIBS="-lpsapi $LIBS"
+
+fi
+
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for _head_lib64_libiphlpapi_a in -liphlpapi" >&5
+printf %s "checking for _head_lib64_libiphlpapi_a in -liphlpapi... " >&6; }
+if test ${ac_cv_lib_iphlpapi__head_lib64_libiphlpapi_a+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-liphlpapi  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+char _head_lib64_libiphlpapi_a ();
+int
+main (void)
+{
+return _head_lib64_libiphlpapi_a ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  ac_cv_lib_iphlpapi__head_lib64_libiphlpapi_a=yes
+else $as_nop
+  ac_cv_lib_iphlpapi__head_lib64_libiphlpapi_a=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_iphlpapi__head_lib64_libiphlpapi_a" >&5
+printf "%s\n" "$ac_cv_lib_iphlpapi__head_lib64_libiphlpapi_a" >&6; }
+if test "x$ac_cv_lib_iphlpapi__head_lib64_libiphlpapi_a" = xyes
+then :
+  printf "%s\n" "#define HAVE_LIBIPHLPAPI 1" >>confdefs.h
+
+  LIBS="-liphlpapi $LIBS"
+
+fi
+
+      ;;
+      *)
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for __head_lib32_libws2_32_a in -lws2_32" >&5
+printf %s "checking for __head_lib32_libws2_32_a in -lws2_32... " >&6; }
+if test ${ac_cv_lib_ws2_32___head_lib32_libws2_32_a+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lws2_32  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+char __head_lib32_libws2_32_a ();
+int
+main (void)
+{
+return __head_lib32_libws2_32_a ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  ac_cv_lib_ws2_32___head_lib32_libws2_32_a=yes
+else $as_nop
+  ac_cv_lib_ws2_32___head_lib32_libws2_32_a=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_ws2_32___head_lib32_libws2_32_a" >&5
+printf "%s\n" "$ac_cv_lib_ws2_32___head_lib32_libws2_32_a" >&6; }
+if test "x$ac_cv_lib_ws2_32___head_lib32_libws2_32_a" = xyes
+then :
+  printf "%s\n" "#define HAVE_LIBWS2_32 1" >>confdefs.h
+
+  LIBS="-lws2_32 $LIBS"
+
+fi
+
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for _head_lib32_libpsapi_a in -lpsapi" >&5
+printf %s "checking for _head_lib32_libpsapi_a in -lpsapi... " >&6; }
+if test ${ac_cv_lib_psapi__head_lib32_libpsapi_a+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lpsapi  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+char _head_lib32_libpsapi_a ();
+int
+main (void)
+{
+return _head_lib32_libpsapi_a ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  ac_cv_lib_psapi__head_lib32_libpsapi_a=yes
+else $as_nop
+  ac_cv_lib_psapi__head_lib32_libpsapi_a=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_psapi__head_lib32_libpsapi_a" >&5
+printf "%s\n" "$ac_cv_lib_psapi__head_lib32_libpsapi_a" >&6; }
+if test "x$ac_cv_lib_psapi__head_lib32_libpsapi_a" = xyes
+then :
+  printf "%s\n" "#define HAVE_LIBPSAPI 1" >>confdefs.h
+
+  LIBS="-lpsapi $LIBS"
+
+fi
+
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for _head_lib32_libiphlpapi_a in -liphlpapi" >&5
+printf %s "checking for _head_lib32_libiphlpapi_a in -liphlpapi... " >&6; }
+if test ${ac_cv_lib_iphlpapi__head_lib32_libiphlpapi_a+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-liphlpapi  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+char _head_lib32_libiphlpapi_a ();
+int
+main (void)
+{
+return _head_lib32_libiphlpapi_a ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  ac_cv_lib_iphlpapi__head_lib32_libiphlpapi_a=yes
+else $as_nop
+  ac_cv_lib_iphlpapi__head_lib32_libiphlpapi_a=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_iphlpapi__head_lib32_libiphlpapi_a" >&5
+printf "%s\n" "$ac_cv_lib_iphlpapi__head_lib32_libiphlpapi_a" >&6; }
+if test "x$ac_cv_lib_iphlpapi__head_lib32_libiphlpapi_a" = xyes
+then :
+  printf "%s\n" "#define HAVE_LIBIPHLPAPI 1" >>confdefs.h
+
+  LIBS="-liphlpapi $LIBS"
+
+fi
+
+      ;;
+    esac
+  ;;
 esac
 
 ac_fn_c_check_func "$LINENO" "getpwnam" "ac_cv_func_getpwnam"
@@ -17107,13 +17372,6 @@ then :
   printf "%s\n" "#define HAVE_CRYPTO_BOX_CURVE25519XCHACHA20POLY1305_OPEN_EASY_AFTERNM 1" >>confdefs.h
 
 fi
-
-
-
-
-
-
-
 
 
 
@@ -18064,6 +18322,10 @@ else $as_nop
 fi
 
 fi
+
+
+
+
 
 
 

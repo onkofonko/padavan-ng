@@ -14,7 +14,6 @@ AC_INIT([libevent],[2.0.23-stable])
 AC_CONFIG_SRCDIR([evdns.c])
 AM_INIT_AUTOMAKE
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
-AM_MAINTAINER_MODE([disable])
 AC_CONFIG_HEADERS(config.h)
 AC_DEFINE(NUMERIC_VERSION, 0x02001700, [Numeric representation of the version])
 
@@ -308,6 +307,9 @@ AC_CACHE_CHECK(
 	    [[
 		#ifdef HAVE_NETDB_H
 		#include <netdb.h>
+		#elif (defined(WIN32_WINNT) && (WIN32_WINNT >= 0x0600)) || (defined(_WIN32_WINNT) && (_WIN32_WINNT >= 0x0600))
+		#include <winsock2.h>
+		#include <ws2tcpip.h>
 		#endif
 	    ]],
 	    [[
@@ -583,8 +585,12 @@ AC_CHECK_TYPES([struct in6_addr, struct sockaddr_in6, sa_family_t, struct addrin
 #include <netdb.h>
 #endif
 #ifdef WIN32
+#ifndef WIN32_WINNT
 #define WIN32_WINNT 0x400
+#endif
+#ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x400
+#endif
 #define WIN32_LEAN_AND_MEAN
 #if defined(_MSC_VER) && (_MSC_VER < 1300)
 #include <winsock.h>
@@ -606,8 +612,12 @@ AC_CHECK_MEMBERS([struct in6_addr.s6_addr32, struct in6_addr.s6_addr16, struct s
 #include <sys/socket.h>
 #endif
 #ifdef WIN32
+#ifndef WIN32_WINNT
 #define WIN32_WINNT 0x400
+#endif
+#ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x400
+#endif
 #define WIN32_LEAN_AND_MEAN
 #if defined(_MSC_VER) && (_MSC_VER < 1300)
 #include <winsock.h>

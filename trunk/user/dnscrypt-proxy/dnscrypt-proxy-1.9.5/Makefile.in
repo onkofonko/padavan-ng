@@ -89,12 +89,9 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 @PLUGINS_TRUE@am__append_1 = \
-@PLUGINS_TRUE@	libltdl
-
-@PLUGINS_TRUE@am__append_2 = \
 @PLUGINS_TRUE@	README-PLUGINS.markdown
 
-@HAVE_SYSTEMD_TRUE@am__append_3 = \
+@HAVE_SYSTEMD_TRUE@am__append_2 = \
 @HAVE_SYSTEMD_TRUE@	dnscrypt-proxy.service
 
 subdir = .
@@ -197,20 +194,12 @@ am__define_uniq_tagged_files = \
   unique=`for i in $$list; do \
     if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
   done | $(am__uniquify_input)`
-DIST_SUBDIRS = dist-build man libltdl contrib src test
+DIST_SUBDIRS = $(SUBDIRS)
 am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/config.h.in \
-	$(top_srcdir)/libltdl/config/compile \
-	$(top_srcdir)/libltdl/config/config.guess \
-	$(top_srcdir)/libltdl/config/config.sub \
-	$(top_srcdir)/libltdl/config/install-sh \
-	$(top_srcdir)/libltdl/config/ltmain.sh \
-	$(top_srcdir)/libltdl/config/missing \
 	$(top_srcdir)/src/include/dnscrypt/version.h.in \
 	$(top_srcdir)/test/Makefile.in AUTHORS COPYING ChangeLog \
-	INSTALL NEWS README THANKS libltdl/config/compile \
-	libltdl/config/config.guess libltdl/config/config.sub \
-	libltdl/config/depcomp libltdl/config/install-sh \
-	libltdl/config/ltmain.sh libltdl/config/missing
+	INSTALL NEWS README THANKS compile config.guess config.sub \
+	depcomp install-sh ltmain.sh missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -421,14 +410,14 @@ EXTRA_DIST = \
 	dnscrypt-proxy.socket \
 	org.dnscrypt.osx.DNSCryptProxy.plist.in
 
-SUBDIRS = dist-build man $(am__append_1) contrib src test
+SUBDIRS = dist-build man contrib src test
 dist_pkgdata_DATA = \
 	dnscrypt-resolvers.csv \
 	minisign.pub
 
 doc_DATA = README.markdown COPYING DNSCRYPT-V2-PROTOCOL.txt \
-	dnscrypt-proxy.conf $(am__append_2)
-noinst_DATA = org.dnscrypt.osx.DNSCryptProxy.plist $(am__append_3)
+	dnscrypt-proxy.conf $(am__append_1)
+noinst_DATA = org.dnscrypt.osx.DNSCryptProxy.plist $(am__append_2)
 CLEANFILES = \
 	dnscrypt-proxy.service \
 	dnscrypt-update-resolvers.sh \
@@ -982,13 +971,13 @@ dnscrypt-proxy.service: dnscrypt-proxy.service.in
 	$(SED) \
 	-e 's|[@]sbindir@|$(sbindir)|g' \
 	-e 's|[@]sysconfdir@|$(sysconfdir)|g' \
-	< dnscrypt-proxy.service.in > dnscrypt-proxy.service
+	< $< > $@
 
 org.dnscrypt.osx.DNSCryptProxy.plist: org.dnscrypt.osx.DNSCryptProxy.plist.in
 	$(SED) \
 	-e 's|[@]sbindir@|$(sbindir)|g' \
 	-e 's|[@]sysconfdir@|$(sysconfdir)|g' \
-	< org.dnscrypt.osx.DNSCryptProxy.plist.in > org.dnscrypt.osx.DNSCryptProxy.plist
+	< $< > $@
 
 install-data-local:
 	@$(mkinstalldirs) $(DESTDIR)$(sysconfdir); \
@@ -1007,7 +996,7 @@ uninstall-local:
 	@if cmp -s $(srcdir)/dnscrypt-proxy.conf $(DESTDIR)$(sysconfdir)/dnscrypt-proxy.conf; then \
 		echo "$(DESTDIR)$(sysconfdir)/dnscrypt-proxy.conf has not changed and will be removed."; \
 		rm -f $(DESTDIR)$(sysconfdir)/dnscrypt-proxy.conf; \
-        rmdir $(DESTDIR)$(sysconfdir) 2> /dev/null ||:; \
+		rmdir $(DESTDIR)$(sysconfdir) 2> /dev/null ||:; \
 	fi
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

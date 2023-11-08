@@ -93,6 +93,7 @@ sbin_PROGRAMS = dnscrypt-proxy$(EXEEXT)
 @PLUGINS_TRUE@am__append_2 = \
 @PLUGINS_TRUE@	$(LTDLINCL) \
 @PLUGINS_TRUE@	-I../include \
+@PLUGINS_TRUE@	-I${srcdir}/../include \
 @PLUGINS_TRUE@	-DPLUGINS_ROOT=\"$(pkglibdir)/\"
 
 @PLUGINS_TRUE@am__append_3 = $(LIBLTDL)
@@ -177,7 +178,7 @@ am__v_at_ = $(am__v_at_@AM_DEFAULT_V@)
 am__v_at_0 = @
 am__v_at_1 = 
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
-depcomp = $(SHELL) $(top_srcdir)/libltdl/config/depcomp
+depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/dnscrypt_proxy-app.Po \
 	./$(DEPDIR)/dnscrypt_proxy-cert.Po \
@@ -241,8 +242,7 @@ am__define_uniq_tagged_files = \
   unique=`for i in $$list; do \
     if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
   done | $(am__uniquify_input)`
-am__DIST_COMMON = $(srcdir)/Makefile.in \
-	$(top_srcdir)/libltdl/config/depcomp
+am__DIST_COMMON = $(srcdir)/Makefile.in $(top_srcdir)/depcomp
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
@@ -407,6 +407,7 @@ dnscrypt_proxy_SOURCES = app.c app.h cert.c cert.h cert_p.h dnscrypt.c \
 	windows_service.c windows_service.h $(am__append_5)
 AM_CFLAGS = @CWFLAGS@
 AM_CPPFLAGS = -I../ext -I../libevent-modified/include \
+	-I${srcdir}/../ext -I${srcdir}/../libevent-modified/include \
 	-DPKGDATADIR='"${pkgdatadir}"' $(am__append_2)
 dnscrypt_proxy_LDADD = ../libevent-modified/libevent_extra.la \
 	../libevent-modified/libevent_core.la $(am__append_1) \
@@ -1090,7 +1091,7 @@ uninstall-am: uninstall-sbinPROGRAMS
 
 
 probes.h: @PROBES_SOURCE@
-	cat @PROBES_SOURCE@ > $@
+	cat $< > $@
 
 probes_dnscrypt_proxy.h: probes_dnscrypt_proxy.d
 	@DTRACE@ -o $@ -h -s probes_dnscrypt_proxy.d

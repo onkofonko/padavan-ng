@@ -748,9 +748,6 @@ build_os
 build_vendor
 build_cpu
 build
-MAINT
-MAINTAINER_MODE_FALSE
-MAINTAINER_MODE_TRUE
 AM_BACKSLASH
 AM_DEFAULT_VERBOSITY
 AM_DEFAULT_V
@@ -825,7 +822,6 @@ ac_subst_files=''
 ac_user_opts='
 enable_option_checking
 enable_silent_rules
-enable_maintainer_mode
 enable_dependency_tracking
 enable_gcc_warnings
 enable_thread_support
@@ -1483,9 +1479,6 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --enable-silent-rules   less verbose build output (undo: "make V=1")
   --disable-silent-rules  verbose build output (undo: "make V=0")
-  --enable-maintainer-mode
-                          enable make rules and dependencies not useful (and
-                          sometimes confusing) to the casual installer
   --enable-dependency-tracking
                           do not reject slow dependency extractors
   --disable-dependency-tracking
@@ -3672,30 +3665,6 @@ else
   AM_DEFAULT_V=$AM_DEFAULT_VERBOSITY
 fi
 AM_BACKSLASH='\'
-
-
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether to enable maintainer-specific portions of Makefiles" >&5
-printf %s "checking whether to enable maintainer-specific portions of Makefiles... " >&6; }
-    # Check whether --enable-maintainer-mode was given.
-if test ${enable_maintainer_mode+y}
-then :
-  enableval=$enable_maintainer_mode; USE_MAINTAINER_MODE=$enableval
-else $as_nop
-  USE_MAINTAINER_MODE=no
-fi
-
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $USE_MAINTAINER_MODE" >&5
-printf "%s\n" "$USE_MAINTAINER_MODE" >&6; }
-   if test $USE_MAINTAINER_MODE = yes; then
-  MAINTAINER_MODE_TRUE=
-  MAINTAINER_MODE_FALSE='#'
-else
-  MAINTAINER_MODE_TRUE='#'
-  MAINTAINER_MODE_FALSE=
-fi
-
-  MAINT=$MAINTAINER_MODE_TRUE
-
 
 ac_config_headers="$ac_config_headers config.h"
 
@@ -14880,6 +14849,9 @@ else $as_nop
 
 		#ifdef HAVE_NETDB_H
 		#include <netdb.h>
+		#elif (defined(WIN32_WINNT) && (WIN32_WINNT >= 0x0600)) || (defined(_WIN32_WINNT) && (_WIN32_WINNT >= 0x0600))
+		#include <winsock2.h>
+		#include <ws2tcpip.h>
 		#endif
 
 int
@@ -15798,8 +15770,12 @@ ac_fn_c_check_type "$LINENO" "struct in6_addr" "ac_cv_type_struct_in6_addr" "#de
 #include <netdb.h>
 #endif
 #ifdef WIN32
+#ifndef WIN32_WINNT
 #define WIN32_WINNT 0x400
+#endif
+#ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x400
+#endif
 #define WIN32_LEAN_AND_MEAN
 #if defined(_MSC_VER) && (_MSC_VER < 1300)
 #include <winsock.h>
@@ -15832,8 +15808,12 @@ ac_fn_c_check_type "$LINENO" "struct sockaddr_in6" "ac_cv_type_struct_sockaddr_i
 #include <netdb.h>
 #endif
 #ifdef WIN32
+#ifndef WIN32_WINNT
 #define WIN32_WINNT 0x400
+#endif
+#ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x400
+#endif
 #define WIN32_LEAN_AND_MEAN
 #if defined(_MSC_VER) && (_MSC_VER < 1300)
 #include <winsock.h>
@@ -15866,8 +15846,12 @@ ac_fn_c_check_type "$LINENO" "sa_family_t" "ac_cv_type_sa_family_t" "#define _GN
 #include <netdb.h>
 #endif
 #ifdef WIN32
+#ifndef WIN32_WINNT
 #define WIN32_WINNT 0x400
+#endif
+#ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x400
+#endif
 #define WIN32_LEAN_AND_MEAN
 #if defined(_MSC_VER) && (_MSC_VER < 1300)
 #include <winsock.h>
@@ -15900,8 +15884,12 @@ ac_fn_c_check_type "$LINENO" "struct addrinfo" "ac_cv_type_struct_addrinfo" "#de
 #include <netdb.h>
 #endif
 #ifdef WIN32
+#ifndef WIN32_WINNT
 #define WIN32_WINNT 0x400
+#endif
+#ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x400
+#endif
 #define WIN32_LEAN_AND_MEAN
 #if defined(_MSC_VER) && (_MSC_VER < 1300)
 #include <winsock.h>
@@ -15934,8 +15922,12 @@ ac_fn_c_check_type "$LINENO" "struct sockaddr_storage" "ac_cv_type_struct_sockad
 #include <netdb.h>
 #endif
 #ifdef WIN32
+#ifndef WIN32_WINNT
 #define WIN32_WINNT 0x400
+#endif
+#ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x400
+#endif
 #define WIN32_LEAN_AND_MEAN
 #if defined(_MSC_VER) && (_MSC_VER < 1300)
 #include <winsock.h>
@@ -15965,8 +15957,12 @@ ac_fn_c_check_member "$LINENO" "struct in6_addr" "s6_addr32" "ac_cv_member_struc
 #include <sys/socket.h>
 #endif
 #ifdef WIN32
+#ifndef WIN32_WINNT
 #define WIN32_WINNT 0x400
+#endif
+#ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x400
+#endif
 #define WIN32_LEAN_AND_MEAN
 #if defined(_MSC_VER) && (_MSC_VER < 1300)
 #include <winsock.h>
@@ -15995,8 +15991,12 @@ ac_fn_c_check_member "$LINENO" "struct in6_addr" "s6_addr16" "ac_cv_member_struc
 #include <sys/socket.h>
 #endif
 #ifdef WIN32
+#ifndef WIN32_WINNT
 #define WIN32_WINNT 0x400
+#endif
+#ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x400
+#endif
 #define WIN32_LEAN_AND_MEAN
 #if defined(_MSC_VER) && (_MSC_VER < 1300)
 #include <winsock.h>
@@ -16025,8 +16025,12 @@ ac_fn_c_check_member "$LINENO" "struct sockaddr_in" "sin_len" "ac_cv_member_stru
 #include <sys/socket.h>
 #endif
 #ifdef WIN32
+#ifndef WIN32_WINNT
 #define WIN32_WINNT 0x400
+#endif
+#ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x400
+#endif
 #define WIN32_LEAN_AND_MEAN
 #if defined(_MSC_VER) && (_MSC_VER < 1300)
 #include <winsock.h>
@@ -16055,8 +16059,12 @@ ac_fn_c_check_member "$LINENO" "struct sockaddr_in6" "sin6_len" "ac_cv_member_st
 #include <sys/socket.h>
 #endif
 #ifdef WIN32
+#ifndef WIN32_WINNT
 #define WIN32_WINNT 0x400
+#endif
+#ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x400
+#endif
 #define WIN32_LEAN_AND_MEAN
 #if defined(_MSC_VER) && (_MSC_VER < 1300)
 #include <winsock.h>
@@ -16085,8 +16093,12 @@ ac_fn_c_check_member "$LINENO" "struct sockaddr_storage" "ss_family" "ac_cv_memb
 #include <sys/socket.h>
 #endif
 #ifdef WIN32
+#ifndef WIN32_WINNT
 #define WIN32_WINNT 0x400
+#endif
+#ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x400
+#endif
 #define WIN32_LEAN_AND_MEAN
 #if defined(_MSC_VER) && (_MSC_VER < 1300)
 #include <winsock.h>
@@ -16115,8 +16127,12 @@ ac_fn_c_check_member "$LINENO" "struct sockaddr_storage" "__ss_family" "ac_cv_me
 #include <sys/socket.h>
 #endif
 #ifdef WIN32
+#ifndef WIN32_WINNT
 #define WIN32_WINNT 0x400
+#endif
+#ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x400
+#endif
 #define WIN32_LEAN_AND_MEAN
 #if defined(_MSC_VER) && (_MSC_VER < 1300)
 #include <winsock.h>
@@ -17007,10 +17023,6 @@ else
   am__EXEEXT_FALSE=
 fi
 
-if test -z "${MAINTAINER_MODE_TRUE}" && test -z "${MAINTAINER_MODE_FALSE}"; then
-  as_fn_error $? "conditional \"MAINTAINER_MODE\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
 if test -z "${AMDEP_TRUE}" && test -z "${AMDEP_FALSE}"; then
   as_fn_error $? "conditional \"AMDEP\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
