@@ -379,7 +379,6 @@ struct nvram_pair router_defaults[] = {
 	{ "st_ftp_anmr", "0" },
 	{ "st_max_user", "10" },
 	{ "apps_dms", "0" },
-	{ "apps_itunes", "0"},
 	{ "sh_num", "0" },
 	{ "computer_name", BOARD_NAME },
 	{ "pcache_reclaim", "2" },

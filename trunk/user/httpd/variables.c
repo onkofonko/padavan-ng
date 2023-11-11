@@ -202,7 +202,7 @@
 		};
 
 	struct variable variables_Storage[] = {
-			{"computer_name", "", NULL, EVM_RESTART_DHCPD|EVM_RESTART_FTPD|EVM_RESTART_NMBD|EVM_RESTART_DMS|EVM_RESTART_ITUNES},
+			{"computer_name", "", NULL, EVM_RESTART_DHCPD|EVM_RESTART_FTPD|EVM_RESTART_NMBD|EVM_RESTART_DMS},
 #if defined(APP_SMBD)
 			{"enable_samba", "", NULL, EVM_RESTART_SMBD},
 			{"st_samba_fp", "", NULL, EVM_RESTART_SYSCTL},
@@ -241,9 +241,6 @@
 			{"dlna_src2", "", NULL, EVM_RESTART_DMS},
 			{"dlna_src3", "", NULL, EVM_RESTART_DMS},
 			{"dlna_rescan", "", NULL, EVM_RESTART_DMS},
-#endif
-#if defined(APP_FIREFLY)
-			{"apps_itunes", "", NULL, EVM_RESTART_ITUNES},
 #endif
 #if defined(APP_TRMD)
 			{"trmd_enable", "", NULL,EVM_RESTART_TRMD},
@@ -1011,9 +1008,6 @@
 #endif
 #if defined(APP_MINIDLNA)
 		{EVM_RESTART_DMS,		EVT_RESTART_DMS,		RCN_RESTART_DMS,	0},
-#endif
-#if defined(APP_FIREFLY)
-		{EVM_RESTART_ITUNES,		EVT_RESTART_ITUNES,		RCN_RESTART_ITUNES,	0},
 #endif
 #if defined(APP_TRMD)
 		{EVM_RESTART_TRMD,		EVT_RESTART_TRMD,		RCN_RESTART_TRMD,	EVM_RESTART_FIREWALL},

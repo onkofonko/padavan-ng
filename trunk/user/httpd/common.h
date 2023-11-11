@@ -82,17 +82,16 @@ typedef u_int8_t u8;
 #define EVM_RESTART_SMBD		(1ULL << 37)
 #define EVM_RESTART_NFSD		(1ULL << 38)
 #define EVM_RESTART_DMS			(1ULL << 39)
-#define EVM_RESTART_ITUNES		(1ULL << 40)
-#define EVM_RESTART_TRMD		(1ULL << 41)
-#define EVM_RESTART_ARIA		(1ULL << 42)
-#define EVM_RESTART_TOR			(1ULL << 43)
-#define EVM_RESTART_PRIVOXY		(1ULL << 44)
-#define EVM_RESTART_DNSCRYPT		(1ULL << 45)
-#define EVM_RESTART_ZRAM		(1ULL << 46)
-#define EVM_RESTART_DOH			(1ULL << 47)
-#define EVM_RESTART_STUBBY		(1ULL << 48)
-#define EVM_RESTART_VLMCSD		(1ULL << 49)
-#define EVM_RESTART_IPERF3		(1ULL << 50)
+#define EVM_RESTART_TRMD		(1ULL << 40)
+#define EVM_RESTART_ARIA		(1ULL << 41)
+#define EVM_RESTART_TOR			(1ULL << 42)
+#define EVM_RESTART_PRIVOXY		(1ULL << 43)
+#define EVM_RESTART_DNSCRYPT		(1ULL << 44)
+#define EVM_RESTART_ZRAM		(1ULL << 45)
+#define EVM_RESTART_DOH			(1ULL << 46)
+#define EVM_RESTART_STUBBY		(1ULL << 47)
+#define EVM_RESTART_VLMCSD		(1ULL << 48)
+#define EVM_RESTART_IPERF3		(1ULL << 49)
 
 #define EVM_RESTART_REBOOT		(1ULL << 62)
 
@@ -142,7 +141,6 @@ typedef u_int8_t u8;
 #define EVT_RESTART_SMBD		2
 #define EVT_RESTART_NFSD		2
 #define EVT_RESTART_DMS			2
-#define EVT_RESTART_ITUNES		2
 #define EVT_RESTART_TRMD		3
 #define EVT_RESTART_ARIA		3
 #define EVT_RESTART_TOR			1

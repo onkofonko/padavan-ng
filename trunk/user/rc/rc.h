@@ -624,12 +624,6 @@ void stop_dms(void);
 void run_dms(int force_rescan);
 void restart_dms(int force_rescan);
 #endif
-#if defined (APP_FIREFLY)
-int is_itunes_run(void);
-void stop_itunes(void);
-void run_itunes(void);
-void restart_itunes(void);
-#endif
 #if defined (APP_TRMD)
 int is_torrent_run(void);
 int is_torrent_support(void);

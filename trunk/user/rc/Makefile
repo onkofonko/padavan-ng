@@ -165,10 +165,6 @@ ifeq ($(CONFIG_FIRMWARE_INCLUDE_MINIDLNA),y)
 	cd $(INSTALLDIR)/sbin && ln -sf rc run_minidlna
 	cd $(INSTALLDIR)/sbin && ln -sf rc stop_minidlna
 endif
-ifeq ($(CONFIG_FIRMWARE_INCLUDE_FIREFLY),y)
-	cd $(INSTALLDIR)/sbin && ln -sf rc run_firefly
-	cd $(INSTALLDIR)/sbin && ln -sf rc stop_firefly
-endif
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_TRANSMISSION),y)
 	cd $(INSTALLDIR)/sbin && ln -sf rc run_transmission
 	cd $(INSTALLDIR)/sbin && ln -sf rc stop_transmission

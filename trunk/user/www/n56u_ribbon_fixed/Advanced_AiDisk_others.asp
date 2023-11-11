@@ -28,7 +28,6 @@ $j(document).ready(function() {
 	init_itoggle('enable_ftp', change_ftp_enabled);
 	init_itoggle('nfsd_enable');
 	init_itoggle('apps_dms', change_dms_enabled);
-	init_itoggle('apps_itunes');
 	init_itoggle('trmd_enable', change_trmd_enabled);
 	init_itoggle('aria_enable', change_aria_enabled);
 });
@@ -84,10 +83,6 @@ function initial(){
 		change_dms_enabled();
 	}
 
-	if(found_app_ffly()){
-		$("tbl_itunes").style.display = "";
-	}
-
 	if(found_app_torr()){
 		$("tbl_trmd").style.display = "";
 		change_trmd_enabled();
@@ -100,10 +95,6 @@ function initial(){
 
 	if (!document.form.apps_dms[0].checked){
 		$("web_dms_link").style.display = "none";
-	}
-
-	if (!document.form.apps_itunes[0].checked){
-		$("web_ffly_link").style.display = "none";
 	}
 
 	if (!document.form.trmd_enable[0].checked){
@@ -121,7 +112,6 @@ function initial(){
 
 var window_rpc;
 var window_dms;
-var window_ffly;
 var window_aria;
 var window_params="toolbar=yes,location=yes,directories=no,status=yes,menubar=yes,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600";
 
@@ -150,12 +140,6 @@ function on_dms_link(){
 	var dms_url="http://" + lan_ipaddr + ":8200";
 	window_dms = window.open(dms_url, "Minidlna", window_params);
 	window_dms.focus();
-}
-
-function on_ffly_link(){
-	var ffly_url="http://" + lan_ipaddr + ":3689";
-	window_ffly = window.open(ffly_url, "Firefly", window_params);
-	window_ffly.focus();
 }
 
 function hide_usb_share_list(idx){
@@ -726,33 +710,6 @@ function done_validating(action){
                                                     <option value="0" <% nvram_match_x("", "dlna_sort", "0", "selected"); %>><#checkbox_No#></option>
                                                     <option value="1" <% nvram_match_x("", "dlna_sort", "1", "selected"); %>><#checkbox_Yes#></option>
                                                 </select>
-                                            </td>
-                                        </tr>
-                                    </table>
-
-                                    <table width="100%" id="tbl_itunes" cellpadding="4" cellspacing="0" class="table" style="display:none;">
-                                        <tr>
-                                            <th colspan="3" style="background-color: #E3E3E3;"><#StorageFFly#></th>
-                                        </tr>
-                                        <tr>
-                                            <th width="50%">
-                                                <#StorageEnableFFly#>
-                                            </th>
-                                            <td>
-                                                <div class="main_itoggle">
-                                                    <div id="apps_itunes_on_of">
-                                                        <input type="checkbox" id="apps_itunes_fake" <% nvram_match_x("", "apps_itunes", "1", "value=1 checked"); %><% nvram_match_x("", "apps_itunes", "0", "value=0"); %>>
-
-                                                    </div>
-                                                </div>
-
-                                                <div style="position: absolute; margin-left: -10000px;">
-                                                    <input type="radio" name="apps_itunes" id="apps_itunes_1" value="1" <% nvram_match_x("", "apps_itunes", "1", "checked"); %>/><#checkbox_Yes#>
-                                                    <input type="radio" name="apps_itunes" id="apps_itunes_0" value="0" <% nvram_match_x("", "apps_itunes", "0", "checked"); %>/><#checkbox_No#>
-                                                </div>
-                                            </td>
-                                            <td width="15%">
-                                                <a href="javascript:on_ffly_link();" id="web_ffly_link">Web control</a>
                                             </td>
                                         </tr>
                                     </table>
