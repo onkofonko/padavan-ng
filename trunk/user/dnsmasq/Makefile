@@ -14,7 +14,7 @@ COPTS += -DNO_IPSET
 endif
 
 all: download_test extract_test
-	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME) COPTS="$(COPTS)"
+	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME) CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" COPTS="$(COPTS)"
 
 download_test:
 	( if [ ! -f $(SRC_NAME).tar.xz ]; then \
@@ -31,9 +31,6 @@ extract_test:
 
 clean:
 	$(MAKE) -C $(SRC_NAME) clean
-	rm -f dnsmasq
 
 romfs:
-	cp $(SRC_NAME)/src/dnsmasq .
-	$(STRIP) dnsmasq
-	$(ROMFSINST) /usr/sbin/dnsmasq
+	$(ROMFSINST) $(SRC_NAME)/src/dnsmasq /usr/sbin/dnsmasq
