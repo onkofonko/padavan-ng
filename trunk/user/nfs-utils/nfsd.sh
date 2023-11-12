@@ -97,5 +97,5 @@ reload)
 	exit 1
 esac
 
-exit  $?
+exit $?
 
