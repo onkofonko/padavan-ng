@@ -89,10 +89,6 @@ ifeq ($(CONFIG_FIRMWARE_INCLUDE_TOR),y)
 LIBS_INCLUDE_LIBEVENT=y
 endif
 
-ifneq (,$(filter y,$(CONFIG_FIRMWARE_INCLUDE_PRIVOXY) $(CONFIG_FIRMWARE_ENABLE_DNSMASQ_REGEX)))
-LIBS_INCLUDE_LIBPCRE=y
-endif
-
 dir_$(LIBS_INCLUDE_LIBCAPNG)			+= libcapng
 dir_$(LIBS_INCLUDE_LIBDEFLATE)			+= libdeflate
 dir_y						+= libz
@@ -136,8 +132,8 @@ dir_$(LIBS_INCLUDE_LIBCURL)			+= libcurl
 # aria2 shared libs
 dir_$(CONFIG_FIRMWARE_INCLUDE_ARIA)		+= libxml2
 
-# REGEX shared lib (privoxy and dnsmasq)
-dir_$(LIBS_INCLUDE_LIBPCRE)			+= libpcre
+# privoxy shared libs
+dir_$(CONFIG_FIRMWARE_INCLUDE_PRIVOXY)		+= libpcre
 
 # dnscrypt extra libs
 dir_$(CONFIG_FIRMWARE_INCLUDE_DNSCRYPT)		+= libsodium
