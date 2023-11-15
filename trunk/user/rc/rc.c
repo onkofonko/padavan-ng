@@ -1232,12 +1232,6 @@ handle_notifications(void)
 			restart_sshd();
 		}
 #endif
-#if defined(APP_TOR)
-		else if (strcmp(entry->d_name, RCN_RESTART_TOR) == 0)
-		{
-			restart_tor();
-		}
-#endif
 #if defined(APP_DOH)
 		else if (strcmp(entry->d_name, RCN_RESTART_DOH) == 0)
 		{
@@ -1248,6 +1242,12 @@ handle_notifications(void)
 		else if (strcmp(entry->d_name, RCN_RESTART_STUBBY) == 0)
 		{
 			restart_stubby();
+		}
+#endif
+#if defined(APP_TOR)
+		else if (strcmp(entry->d_name, RCN_RESTART_TOR) == 0)
+		{
+			restart_tor();
 		}
 #endif
 #if defined(APP_PRIVOXY)

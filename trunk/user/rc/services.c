@@ -283,40 +283,6 @@ restart_zram(void)
 }
 #endif
 
-#if defined(APP_TOR)
-int
-is_tor_run(void)
-{
-	if (check_if_file_exist("/usr/sbin/tor"))
-	{
-		if (pids("tor"))
-			return 1;
-	}
-	return 0;
-}
-
-void
-stop_tor(void)
-{
-	eval("/usr/bin/tor.sh", "stop");
-}
-
-void
-start_tor(void)
-{
-	int tor_mode = nvram_get_int("tor_enable");
-
-	if (tor_mode == 1)
-		eval("/usr/bin/tor.sh", "start");
-}
-
-void
-restart_tor(void)
-{
-	stop_tor();
-	start_tor();
-}
-#endif
 #if defined(APP_DOH)
 int
 is_doh_run(void)
@@ -386,6 +352,41 @@ restart_stubby(void)
 }
 
 #endif
+#if defined(APP_TOR)
+int
+is_tor_run(void)
+{
+	if (check_if_file_exist("/usr/sbin/tor"))
+	{
+		if (pids("tor"))
+			return 1;
+	}
+	return 0;
+}
+
+void
+stop_tor(void)
+{
+	eval("/usr/bin/tor.sh", "stop");
+}
+
+void
+start_tor(void)
+{
+	int tor_mode = nvram_get_int("tor_enable");
+
+	if (tor_mode == 1)
+		eval("/usr/bin/tor.sh", "start");
+}
+
+void
+restart_tor(void)
+{
+	stop_tor();
+	start_tor();
+}
+#endif
+
 #if defined(APP_PRIVOXY)
 int
 is_privoxy_run(void)
@@ -717,14 +718,14 @@ start_services_once(int is_ap_mode)
 #if defined(APP_SSHD)
 	start_sshd();
 #endif
-#if defined(APP_TOR)
-	start_tor();
-#endif
 #if defined(APP_DOH)
 	start_doh();
 #endif
 #if defined(APP_STUBBY)
 	start_stubby();
+#endif
+#if defined(APP_TOR)
+	start_tor();
 #endif
 #if defined(APP_PRIVOXY)
 	start_privoxy();
@@ -788,14 +789,14 @@ stop_services(int stopall)
 	stop_u2ec();
 #endif
 #endif
-#if defined(APP_TOR)
-	stop_tor();
-#endif
 #if defined(APP_DOH)
 	stop_doh();
 #endif
 #if defined(APP_STUBBY)
 	stop_stubby();
+#endif
+#if defined(APP_TOR)
+	stop_tor();
 #endif
 #if defined(APP_PRIVOXY)
 	stop_privoxy();

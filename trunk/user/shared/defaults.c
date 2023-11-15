@@ -609,9 +609,6 @@ struct nvram_pair router_defaults[] = {
 	{ "sshd_enable", "0" },
 	{ "sshd_enable_gp", "0" },
 	{ "wins_enable", "0" },
-#if defined (APP_TOR)
-	{ "tor_enable", "0" },
-#endif
 #if defined (APP_DOH)
 	{ "doh_enable", "0" },
 	{ "doh_server1", "https://blitz.ahadns.com/1:4" },
@@ -626,6 +623,9 @@ struct nvram_pair router_defaults[] = {
 #endif
 #if defined (APP_STUBBY)
 	{ "stubby_enable", "0" },
+#endif
+#if defined (APP_TOR)
+	{ "tor_enable", "0" },
 #endif
 #if defined (APP_PRIVOXY)
 	{ "privoxy_enable", "0" },

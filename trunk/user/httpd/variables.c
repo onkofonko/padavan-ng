@@ -517,10 +517,6 @@
 			{"telnetd", "", NULL, EVM_RESTART_TELNETD},
 			{"sshd_enable", "", NULL, EVM_RESTART_SSHD},
 			{"sshd_enable_gp", "", NULL, EVM_RESTART_SSHD},
-#if defined(APP_TOR)
-			{"tor_enable", "", NULL, EVM_RESTART_TOR},
-			{"torconf.torrc", "File", NULL, EVM_RESTART_TOR|EVM_BLOCK_UNSAFE},
-#endif
 #if defined(APP_DOH)
 			{"doh_enable", "", NULL, EVM_RESTART_DOH},
 			{"doh_server1", "", NULL, EVM_RESTART_DOH},
@@ -536,6 +532,10 @@
 #if defined(APP_STUBBY)
 			{"stubby_enable", "", NULL, EVM_RESTART_STUBBY},
 			{"stubbyc.stubby.yml", "File", NULL, EVM_RESTART_STUBBY|EVM_BLOCK_UNSAFE},
+#endif
+#if defined(APP_TOR)
+			{"tor_enable", "", NULL, EVM_RESTART_TOR},
+			{"torconf.torrc", "File", NULL, EVM_RESTART_TOR|EVM_BLOCK_UNSAFE},
 #endif
 #if defined(APP_PRIVOXY)
 			{"privoxy_enable", "", NULL, EVM_RESTART_PRIVOXY},

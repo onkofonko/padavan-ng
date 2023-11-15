@@ -31,9 +31,9 @@ $j(document).ready(function() {
 	init_itoggle('adsc_enable');
 	init_itoggle('crond_enable', change_crond_enabled);
 	init_itoggle('watchdog_cpu');
-	init_itoggle('tor_enable', change_tor_enabled);
 	init_itoggle('doh_enable', change_doh_enabled);
 	init_itoggle('stubby_enable', change_stubby_enabled);
+	init_itoggle('tor_enable', change_tor_enabled);
 	init_itoggle('privoxy_enable', change_privoxy_enabled);
 	init_itoggle('dnscrypt_enable', change_dnscrypt_enabled);
 	init_itoggle('vlmcsd_enable');
@@ -87,16 +87,10 @@ function initial(){
 		showhide_div('div_vlmcsd', 0);
 	}
 
-	if(found_app_tor() || found_app_privoxy() || found_app_dnscrypt()){
+	if(found_app_doh() || found_app_stubby() || found_app_tor() || found_app_privoxy() || found_app_dnscrypt()){
 		showhide_div('tbl_anon', 1);
 	}
 
-	if(!found_app_tor()){
-		showhide_div('row_tor', 0);
-		showhide_div('row_tor_conf', 0);
-	}else{
-		change_tor_enabled();
-		}
 	if(!found_app_doh()){
 		showhide_div('row_doh', 0);
 		showhide_div('row_doh_conf1', 0);
@@ -108,12 +102,21 @@ function initial(){
 	}else{
 		change_doh_enabled();
 		}
+
 	if(!found_app_stubby()){
 		showhide_div('row_stubby', 0);
 		showhide_div('row_stubby_conf', 0);
 	}else{
 		change_stubby_enabled();
 		}
+
+	if(!found_app_tor()){
+		showhide_div('row_tor', 0);
+		showhide_div('row_tor_conf', 0);
+	}else{
+		change_tor_enabled();
+		}
+
 	if(!found_app_privoxy()){
 		showhide_div('row_privoxy', 0);
 		showhide_div('row_privoxy_conf', 0);
@@ -148,10 +151,6 @@ function applyRule(){
 		document.form.submit();
 	}
 
-	if(!found_app_tor()){
-		showhide_div('row_tor', 0);
-		showhide_div('row_tor_conf', 0);
-	}
 	if(!found_app_doh()){
 		showhide_div('row_doh', 0);
 		showhide_div('row_doh_conf1', 0);
@@ -161,9 +160,15 @@ function applyRule(){
 		showhide_div('row_doh_conf5', 0);
 		showhide_div('row_doh_conf6', 0);
 	}
+
 	if(!found_app_stubby()){
 		showhide_div('row_stubby', 0);
 		showhide_div('row_stubby_conf', 0);
+	}
+
+	if(!found_app_tor()){
+		showhide_div('row_tor', 0);
+		showhide_div('row_tor_conf', 0);
 	}
 
 	if(!found_app_privoxy()){
@@ -233,12 +238,12 @@ function textarea_sshd_enabled(v){
 	inputCtrl(document.form['scripts.authorized_keys'], v);
 }
 
-function textarea_tor_enabled(v){
-	inputCtrl(document.form['torconf.torrc'], v);
-}
-
 function textarea_stubby_enabled(v){
 	inputCtrl(document.form['stubbyc.stubby.yml'], v);
+}
+
+function textarea_tor_enabled(v){
+	inputCtrl(document.form['torconf.torrc'], v);
 }
 
 function textarea_privoxy_enabled(v){
@@ -339,14 +344,6 @@ function change_wins_enabled(){
 	showhide_div('row_smb_lmb', v);
 }
 
-function change_tor_enabled(){
-	var v = document.form.tor_enable[0].checked;
-	showhide_div('row_tor_conf', v);
-	if (!login_safe())
-		v = 0;
-	textarea_tor_enabled(v);
-}
-
 function change_doh_enabled(){
 	var v = document.form.doh_enable[0].checked;
 	showhide_div('row_doh_conf1', v);
@@ -363,6 +360,14 @@ function change_stubby_enabled(){
 	if (!login_safe())
 		v = 0;
 	textarea_stubby_enabled(v);
+}
+
+function change_tor_enabled(){
+	var v = document.form.tor_enable[0].checked;
+	showhide_div('row_tor_conf', v);
+	if (!login_safe())
+		v = 0;
+	textarea_tor_enabled(v);
 }
 
 function change_privoxy_enabled(){
@@ -710,6 +715,7 @@ function change_crond_enabled(){
                                                 <input type="text" maxlength="85" class="input" size="10" style="width: 230px;" name="doh_opt2_3" value="<% nvram_get_x("", "doh_opt2_3"); %>" onkeypress="return is_string(this,event);"/>
                                             </td>
                                         </tr>
+
                                         <tr id="row_stubby">
                                             <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 27, 1);"><#Adm_Svc_stubby#></a></th>
                                             <td>
