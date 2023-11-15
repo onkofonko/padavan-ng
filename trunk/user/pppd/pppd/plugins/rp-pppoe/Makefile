@@ -25,12 +25,12 @@ INSTALL	= install
 # Version is set ONLY IN THE MAKEFILE!  Don't delete this!
 RP_VERSION=3.12
 
-COPTS=
-CFLAGS+=$(COPTS) -I../../../include '-DRP_VERSION="$(RP_VERSION)"' -DPLUGIN=1
+COPTS=-O2 -g
+CFLAGS=$(COPTS) -I../../../include '-DRP_VERSION="$(RP_VERSION)"' -DPLUGIN=1
 all: rp-pppoe.so
 
 rp-pppoe.so: libplugin.a plugin.o
-	$(LD) -o rp-pppoe.so -shared plugin.o libplugin.a
+	$(LD) -o rp-pppoe.so -shared --gc-sections plugin.o libplugin.a
 
 install: all
 	$(INSTALL) -d -m 755 $(LIBDIR)

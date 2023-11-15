@@ -237,7 +237,7 @@ struct pptp_set_link_info {   /* for control message type 15 */
 { hton16(PPTP_CTRL_SIZE(type)), \
   hton16(PPTP_MESSAGE_CONTROL), \
   hton32(PPTP_MAGIC),           \
-  hton16(type), 0 }             
+  hton16(type), 0 }
 
 #define PPTP_CTRL_SIZE(type) ( \
 (type==PPTP_START_CTRL_CONN_RQST)?sizeof(struct pptp_start_ctrl_conn):	\
