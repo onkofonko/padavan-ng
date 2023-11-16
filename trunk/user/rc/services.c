@@ -436,14 +436,14 @@ is_dnscrypt_run(void)
 void
 stop_dnscrypt(void)
 {
-	eval("/usr/bin/dnscrypt-proxy_start.sh", "stop");
+	eval("/usr/bin/dnscrypt-proxy.sh", "stop");
 }
 
 void
 start_dnscrypt(void)
 {
 	if (nvram_get_int("dnscrypt_enable") == 1)
-		eval("/usr/bin/dnscrypt-proxy_start.sh", "start");
+		eval("/usr/bin/dnscrypt-proxy.sh", "start");
 }
 
 void
