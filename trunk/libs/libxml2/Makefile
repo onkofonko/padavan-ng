@@ -1,5 +1,5 @@
-SRC_NAME=libxml2-v2.11.5
-SRC_URL=https://gitlab.gnome.org/GNOME/libxml2/-/archive/v2.11.5/$(SRC_NAME).tar.gz
+SRC_NAME=libxml2-v2.12.0
+SRC_URL=https://gitlab.gnome.org/GNOME/libxml2/-/archive/v2.12.0/$(SRC_NAME).tar.gz
 
 #all: download_test extract_test config_test
 all: config_test
@@ -72,5 +72,3 @@ install:
 	$(MAKE) -C $(SRC_NAME) install DESTDIR=$(STAGEDIR)
 	
 romfs:
-
-
