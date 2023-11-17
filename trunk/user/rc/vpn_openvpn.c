@@ -1115,6 +1115,7 @@ ovpn_server_expcli_main(int argc, char **argv)
 	openvpn_add_key(fp, SERVER_CERT_DIR, openvpn_server_keys[0], "ca");
 	openvpn_add_key(fp, tmp_ovpn_path, openvpn_client_keys[1], "cert");
 	openvpn_add_key(fp, tmp_ovpn_path, openvpn_client_keys[2], "key");
+
 	if (i_atls == 1) {
 		openvpn_add_key(fp, SERVER_CERT_DIR, openvpn_server_keys[4], "tls-auth");
 		fprintf(fp, "key-direction %d\n", 1);

@@ -603,8 +603,6 @@ WLANConfig11n_automode_limition_hint=Under [Mixed] mode with WEP or TKIP encrypt
 BM_desc_upload=EZQoS automatically detects your uplink speed to help you adjust your network bandwidth. If you can get the exact uplink speed through another way such as an online speed test, we recommend that you enter the speed value in <a href='Advanced_QOSUserSpec_Content.asp'>advanced settings page</a>
 WLANConfig11n_amsdu_itemname=Enable AMSDU?
 WLANConfig11n_amsdu_itemdesc=Enable A-MSDU aggregation can significantly increase the link throughput, especially with a large number of small packets, but at the same time increase the delay time in case of packet loss due to retransmission of an aggregated packet. Enable AMSDU also increases the load on the processor.
-WLANConfig11n_80211kv=Enable 802.11k/v?
-WLANConfig11n_80211r=Enable Fast Roaming (802.11r)?
 WhiteList=White List
 BlackList=Black List
 MSSID_profile=SSID Profile

@@ -2230,10 +2230,6 @@ config MT7615_AP_SMART_CARRIER_SENSE
     bool
     default y
 
-config DOT11W_PMF_SUPPORT
-    bool
-    default y
-
 config MT7615_AP_TXBF
     bool
     default y
@@ -2278,43 +2274,11 @@ config MU_RA_SUPPORT
     bool
     default y
 
-config DOT11R_FT_SUPPORT
-    bool
-    default y
-
-config DOT11K_RRM_SUPPORT
-    bool
-    default y
-
 config VOW_SUPPORT
     bool
     default y
 
 config BAND_STEERING
-    bool
-    default y
-
-config WNM_SUPPORT
-    bool
-    default y
-
-config RT_BAND_STEERING
-    bool
-    default y
-
-config RT_DOT11R_FT
-    bool
-    default y
-
-config RT_DOT11K_RRM
-    bool
-    default y
-
-config RT_80211N_DRAFT3
-    bool
-    default y
-
-config RT_80211W_PMF
     bool
     default y
 

@@ -731,7 +731,6 @@ restart_wifi_wl(int radio_on, int need_reload_conf)
 		LED_CONTROL(BOARD_GPIO_LED_SW5G, LED_ON);
 #endif
 #endif
-	system("/usr/bin/iappd.sh restart");
 }
 
 void
@@ -763,7 +762,6 @@ restart_wifi_rt(int radio_on, int need_reload_conf)
 	if (radio_on)
 		LED_CONTROL(BOARD_GPIO_LED_SW2G, LED_ON);
 #endif
-	system("/usr/bin/iappd.sh restart");
 }
 
 int is_need_8021x(char *auth_mode)

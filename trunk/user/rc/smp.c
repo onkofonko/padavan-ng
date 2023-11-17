@@ -223,4 +223,3 @@ set_vpn_balancing(const char *vpn_ifname, int is_server)
 	xps_queue_set(vpn_ifname, rps_vpn);
 }
 
-

@@ -436,14 +436,14 @@ is_dnscrypt_run(void)
 void
 stop_dnscrypt(void)
 {
-	eval("/usr/bin/dnscrypt-proxy.sh", "stop");
+	eval("/usr/bin/dnscrypt-proxy_start.sh", "stop");
 }
 
 void
 start_dnscrypt(void)
 {
 	if (nvram_get_int("dnscrypt_enable") == 1)
-		eval("/usr/bin/dnscrypt-proxy.sh", "start");
+		eval("/usr/bin/dnscrypt-proxy_start.sh", "start");
 }
 
 void
@@ -763,10 +763,8 @@ start_services_once(int is_ap_mode)
 	start_crond();
 	start_networkmap(1);
 	start_rstats();
-	system("/usr/bin/iappd.sh restart");
-	system("modprobe xt_TPROXY");
-	system("/usr/bin/iappd.sh test");
 	return 0;
+
 }
 
 void

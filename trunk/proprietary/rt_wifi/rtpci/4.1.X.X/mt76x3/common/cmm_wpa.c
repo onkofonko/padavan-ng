@@ -2030,11 +2030,6 @@ VOID PeerPairMsg4Action(
 #endif /* DOT1X_SUPPORT */
 #endif /* CONFIG_AP_SUPPORT */
 
-		#ifdef IAPP_SUPPORT
-			if (IS_ENTRY_CLIENT(pEntry)) {
-			    IAPP_L2_Update_Frame_Send(pAd, pEntry->Addr,pEntry->wdev->wdev_idx);
-			}
-		#endif /* IAPP_SUPPORT */
 			/* send wireless event - for set key done WPA2*/
 				RTMPSendWirelessEvent(pAd, IW_SET_KEY_DONE_WPA2_EVENT_FLAG, pEntry->Addr, pEntry->wdev->wdev_idx, 0);
 

@@ -77,7 +77,6 @@ dir_y =
 dir_n =
 dir_  =
 
-dir_y						+= ralinkiappd
 dir_y						+= busybox
 dir_y						+= iptables
 dir_$(CONFIG_FIRMWARE_INCLUDE_IPSET)		+= ipset

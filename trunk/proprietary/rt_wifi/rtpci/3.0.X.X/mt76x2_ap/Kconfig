@@ -164,23 +164,3 @@ config  MT76X2_AP_ADJ_PWR_CONSUMPTION
 	depends on RT_FIRST_IF_MT7620
 	default n
 
-config RT_80211W_PMF
-	bool "PMF"
-	depends on MT76X2_AP
-	default y
-	
-config RT_BAND_STEERING
-	bool "Band Steering"
-	depends on MT76X2_AP
-	default y
-
-config RT_DOT11R_FT
-	bool "802.11r Fast BSS Transition"
-	depends on MT76X2_AP
-	default y
-
-config RT_DOT11K_RRM
-	bool "802.11k Radio Resource Management"
-	depends on MT76X2_AP
-	default y
-
