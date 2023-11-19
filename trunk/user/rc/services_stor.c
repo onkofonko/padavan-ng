@@ -900,147 +900,6 @@ void restart_dms(int force_rescan)
 }
 #endif
 
-#if defined (APP_FIREFLY)
-int is_itunes_support(void)
-{
-	return check_if_file_exist("/usr/bin/mt-daapd");
-}
-
-int is_itunes_run(void)
-{
-	if (!is_itunes_support())
-		return 0;
-
-	return (pids("mt-daapd")) ? 1 : 0;
-}
-
-void stop_itunes(void)
-{
-	char* svcs[] = { "mt-daapd", NULL };
-
-	if (!is_itunes_support())
-		return;
-
-	kill_services(svcs, 5, 1);
-}
-
-static void
-update_firefly_conf(const char *link_path, const char *conf_path, const char *conf_file)
-{
-	FILE *fp1, *fp2;
-	char tmp1[64], tmp2[64], line[128];
-
-	snprintf(tmp1, sizeof(tmp1), "%s/%s", conf_path, conf_file);
-
-	if (check_if_file_exist(tmp1)) {
-		snprintf(tmp2, sizeof(tmp2), "%s/%s.tmp", conf_path, conf_file);
-		fp1 = fopen(tmp1, "r");
-		if (fp1) {
-			fp2 = fopen(tmp2, "w");
-			if (fp2) {
-				while (fgets(line, sizeof(line), fp1)){
-					if (strncmp(line, "web_root", 8) == 0)
-						snprintf(line, sizeof(line), "web_root = %s\n", "/usr/share/mt-daapd");
-					if (strncmp(line, "port", 4) == 0)
-						snprintf(line, sizeof(line), "port = %d\n", 3689);
-					else if (strncmp(line, "runas", 5) == 0)
-						snprintf(line, sizeof(line), "runas = %s\n", nvram_safe_get("http_username"));
-					else if (strncmp(line, "db_type", 7) == 0)
-						snprintf(line, sizeof(line), "db_type = %s\n", "sqlite3");
-					else if (strncmp(line, "db_parms", 8) == 0)
-						snprintf(line, sizeof(line), "db_parms = %s\n", link_path);
-					else if (strncmp(line, "plugin_dir", 10) == 0)
-						snprintf(line, sizeof(line), "plugin_dir = %s\n", "/usr/lib/mt-daapd");
-					fprintf(fp2, "%s", line);
-				}
-				fclose(fp2);
-				fclose(fp1);
-				rename(tmp2, tmp1);
-			}
-			else
-				fclose(fp1);
-		}
-	}
-	else {
-		fp1 = fopen(tmp1, "w");
-		if (fp1) {
-			fprintf(fp1, "[general]\n");
-			fprintf(fp1, "web_root = %s\n", "/usr/share/mt-daapd");
-			fprintf(fp1, "port = %d\n", 3689);
-			fprintf(fp1, "runas = %s\n", nvram_safe_get("http_username"));
-			fprintf(fp1, "admin_pw = %s\n", nvram_safe_get("http_passwd"));
-			fprintf(fp1, "db_type = %s\n", "sqlite3");
-			fprintf(fp1, "db_parms = %s\n", link_path);
-			fprintf(fp1, "logfile = %s/mt-daapd.log\n", link_path);
-			fprintf(fp1, "servername = %s\n", "Firefly on %h");
-			fprintf(fp1, "mp3_dir = %s\n", "/media");
-			fprintf(fp1, "extensions = %s\n", ".mp3,.m4a,.m4p,.flac,.alac");
-			fprintf(fp1, "rescan_interval = %d\n", 300);
-			fprintf(fp1, "always_scan = %d\n", 0);
-			fprintf(fp1, "scan_type = %d\n", 0);
-			fprintf(fp1, "debuglevel = %d\n\n", 0);
-			fprintf(fp1, "[scanning]\n");
-			fprintf(fp1, "skip_first = %d\n", 1);
-			fprintf(fp1, "process_playlists = %d\n", 1);
-			fprintf(fp1, "process_itunes = %d\n", 1);
-			fprintf(fp1, "process_m3u = %d\n", 1);
-			fprintf(fp1, "mp3_tag_codepage = %s\n\n", "WINDOWS-1251");
-			fprintf(fp1, "[plugins]\n");
-			fprintf(fp1, "plugin_dir = %s\n\n", "/usr/lib/mt-daapd");
-			fclose(fp1);
-		}
-	}
-}
-
-void run_itunes(void)
-{
-	char *apps_name = "iTunes Server";
-	char *link_path = "/mnt/firefly";
-	char *conf_path = "/etc/storage/firefly";
-	char *conf_file = "mt-daapd.conf";
-	char *dest_dir = ".itunes";
-	char conf_new[64], conf_old[64];
-
-	if (!nvram_match("apps_itunes", "1"))
-		return;
-
-	if (!is_itunes_support())
-		return;
-
-	if (is_itunes_run())
-		return;
-
-	unlink(link_path);
-	if (!create_mp_link(dest_dir, link_path, 0)) {
-		if (!create_mp_link(dest_dir, link_path, 1)) {
-			logmessage(apps_name, "Cannot start: unable to create DB dir (/%s) on any volumes!", dest_dir);
-			return;
-		}
-	}
-
-	mkdir(conf_path, 0755);
-
-	snprintf(conf_old, sizeof(conf_old), "%s/%s", "/etc/storage", conf_file);
-	snprintf(conf_new, sizeof(conf_new), "%s/%s", conf_path, conf_file);
-	if (!check_if_file_exist(conf_new) && check_if_file_exist(conf_old))
-		rename(conf_old, conf_new);
-
-	update_firefly_conf(link_path, conf_path, conf_file);
-
-	eval("/usr/bin/mt-daapd", "-c", conf_new);
-
-	if (is_itunes_run())
-		logmessage(apps_name, "daemon is started");
-}
-
-void restart_itunes(void)
-{
-	stop_itunes();
-	if (count_stor_mountpoint())
-		run_itunes();
-}
-#endif
-
 #if defined (APP_TRMD)
 int is_torrent_support(void)
 {
@@ -1342,9 +1201,6 @@ stop_stor_apps(void)
 #if defined (APP_MINIDLNA)
 	stop_dms();
 #endif
-#if defined (APP_FIREFLY)
-	stop_itunes();
-#endif
 #if defined (APP_TRMD)
 	need_restart_fw |= is_torrent_run();
 	stop_torrent();
@@ -1376,9 +1232,6 @@ start_stor_apps(void)
 #endif
 #if defined (APP_MINIDLNA)
 	run_dms(0);
-#endif
-#if defined (APP_FIREFLY)
-	run_itunes();
 #endif
 #if defined (APP_TRMD)
 	run_torrent();
