@@ -228,6 +228,7 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_VgaClamp", "0" },
 	{ "wl_KickStaRssiLow", "0" },
 	{ "wl_AssocReqRssiThres", "0" },
+	{ "wl_band_steering", "0" },		/* band steering AP 5GHz */
 
 	// guest AP 5GHz
 	{ "wl_guest_enable", "0" },
@@ -247,7 +248,6 @@ struct nvram_pair router_defaults[] = {
 
 #if defined (USE_WID_5G) && USE_WID_5G==7615
 	{ "wl_mumimo", "1" },
-	{ "wl_band_steering", "0" },		/* band steering AP 5GHz */
 #endif
 
 	// ApCli 5GHz
@@ -322,12 +322,12 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_HT_RDG", "0" },
 	{ "rt_HT_AMSDU", "0" },
 	{ "rt_HT_MpduDensity", "5" },
-	{ "rt_band_steering", "0" },	/* band steering AP 2.4GHz */
 	{ "rt_HT_BAWinSize", "64" },
 	{ "rt_HT_AutoBA", "1" },
 	{ "rt_VgaClamp", "0" },
 	{ "rt_KickStaRssiLow", "0" },
 	{ "rt_AssocReqRssiThres", "0" },
+	{ "rt_band_steering", "0" },	/* band steering AP 2.4GHz */
 
 	// guest AP 2.4GHz
 	{ "rt_guest_enable", "0" },

@@ -784,6 +784,9 @@
 			{"wl_HT_MpduDensity", "", NULL, EVM_RESTART_WIFI5},
 			{"wl_HT_BAWinSize", "", NULL, EVM_RESTART_WIFI5},
 			{"wl_HT_AutoBA", "", NULL, EVM_RESTART_WIFI5},
+			{"wl_KickStaRssiLow", "", NULL, EVM_RESTART_WIFI5},
+			{"wl_AssocReqRssiThres", "", NULL, EVM_RESTART_WIFI5},
+			{"wl_band_steering", "", NULL, EVM_RESTART_WIFI5},
 #if defined(USE_MT76X2_AP)
 			{"wl_VgaClamp", "", NULL, EVM_RESTART_WIFI5},
 #endif
@@ -817,9 +820,6 @@
 			{"wl_guest_wpa_psk", "", NULL, EVM_RESTART_WIFI5},
 			{"wl_guest_macrule", "", NULL, EVM_RESTART_WIFI5},
 			{"wl_guest_mcs_mode", "", NULL, EVM_RESTART_WIFI5},
-			{"wl_KickStaRssiLow", "", NULL, EVM_RESTART_WIFI5},
-			{"wl_AssocReqRssiThres", "", NULL, EVM_RESTART_WIFI5},
-			{"wl_band_steering", "", NULL, EVM_RESTART_WIFI5},
 			{"RBRList", "Group", ARGV((char*)variables_WLANConfig11a_RBRList, "16", "32", "wl_wdsnum_x"), EVM_RESTART_WIFI5},
 #endif
 			{0,0,0,0}
@@ -874,6 +874,9 @@
 			{"rt_HT_MpduDensity", "", NULL, EVM_RESTART_WIFI2 },
 			{"rt_HT_BAWinSize", "", NULL, EVM_RESTART_WIFI2 },
 			{"rt_HT_AutoBA", "", NULL, EVM_RESTART_WIFI2},
+			{"rt_KickStaRssiLow", "", NULL, EVM_RESTART_WIFI2},
+			{"rt_AssocReqRssiThres", "", NULL, EVM_RESTART_WIFI2},
+			{"rt_band_steering", "", NULL, EVM_RESTART_WIFI2},
 #if defined(USE_MT76X2_AP)
 			{"rt_VgaClamp", "", NULL, EVM_RESTART_WIFI2},
 #endif
@@ -910,9 +913,6 @@
 			{"rt_guest_wpa_psk", "", NULL, EVM_RESTART_WIFI2},
 			{"rt_guest_macrule", "", NULL, EVM_RESTART_WIFI2},
 			{"rt_guest_mcs_mode", "", NULL, EVM_RESTART_WIFI2},
-			{"rt_KickStaRssiLow", "", NULL, EVM_RESTART_WIFI2},
-			{"rt_AssocReqRssiThres", "", NULL, EVM_RESTART_WIFI2},
-			{"rt_band_steering", "", NULL, EVM_RESTART_WIFI2},
 			{"rt_RBRList", "Group", ARGV((char*)variables_WLANConfig11b_rt_RBRList, "16", "32", "rt_wdsnum_x"), EVM_RESTART_WIFI2},
 			{0,0,0,0}
 		};
