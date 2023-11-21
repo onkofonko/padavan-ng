@@ -1,5 +1,8 @@
-SRC_NAME=aria2-1.36.0
-SRC_URL=https://github.com/aria2/aria2/releases/download/release-1.36.0/$(SRC_NAME).tar.xz
+SRC_NAME=aria2-1.37.0
+SRC_URL=https://github.com/aria2/aria2/releases/download/release-1.37.0/$(SRC_NAME).tar.xz
+
+SRC_ARIA_NG_NAME=AriaNg-1.3.6-AllInOne
+SRC_ARIA_NG_URL=https://github.com/mayswind/AriaNg/releases/download/1.3.6/$(SRC_ARIA_NG_NAME).zip
 
 COMMON_FLAGS = -ffunction-sections -fdata-sections -fvisibility=hidden
 CFLAGS  += $(COMMON_FLAGS)
@@ -17,10 +20,19 @@ download_test:
 		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.xz $(SRC_URL); \
 	fi )
 
+	( if [ ! -f $(THISDIR)/$(SRC_ARIA_NG_NAME).zip ]; then \
+		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_ARIA_NG_NAME).zip $(SRC_ARIA_NG_URL); \
+	fi )
+
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
 		tar xJf $(SRC_NAME).tar.xz; \
 		patch -d $(SRC_NAME) -p1 -i ../disable-doc-test.patch; \
+	fi )
+
+	( if [ ! -d $(THISDIR)/ariaweb ]; then \
+		mkdir -p ariaweb; \
+		unzip -qq $(SRC_ARIA_NG_NAME).zip -d ariaweb; \
 	fi )
 
 config_test:
