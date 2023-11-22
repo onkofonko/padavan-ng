@@ -609,8 +609,8 @@ struct nvram_pair router_defaults[] = {
 	{ "wins_enable", "0" },
 #if defined (APP_DOH)
 	{ "doh_enable", "0" },
-	{ "doh_server1", "https://dns.cloudflare.com/dns-query" },
-	{ "doh_server2", "https://dns.google/dns-query" },
+	{ "doh_server1", "https://blitz.ahadns.com/1:4" },
+	{ "doh_server2", "https://freedns.controld.com/x-1hosts-lite" },
 	{ "doh_server3", "" },
 	{ "doh_opt1_1", "-4 -d -v" },
 	{ "doh_opt2_1", "1.1.1.1,8.8.8.8,9.9.9.9,208.67.222.222" },
