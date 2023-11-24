@@ -1,5 +1,5 @@
-SRC_NAME = inadyn-2.10.0
-SRC_URL = https://github.com/troglobit/inadyn/releases/download/v2.10.0/inadyn-2.10.0.tar.xz
+SRC_NAME = inadyn-2.12.0
+SRC_URL = https://github.com/troglobit/inadyn/releases/download/v2.12.0/$(SRC_NAME).tar.xz
 THISDIR = $(shell pwd)
 
 #all: download_test extract_test config_test
@@ -14,7 +14,7 @@ download_test:
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
 		tar -xf $(SRC_NAME).tar.xz; \
-		patch -d $(SRC_NAME) -p1 -i ../$(SRC_NAME).patch; \
+	#	patch -d $(SRC_NAME) -p1 -i ../$(SRC_NAME).patch; \
 	fi )
 
 config_test:
