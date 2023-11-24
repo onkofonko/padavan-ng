@@ -6660,8 +6660,8 @@ getrandom_missing="no"
 if test "x$need_zlib" = "xyes"; then
 
 pkg_failed=no
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for ZLIB" >&5
-printf %s "checking for ZLIB... " >&6; }
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for zlib" >&5
+printf %s "checking for zlib... " >&6; }
 
 if test -n "$ZLIB_CFLAGS"; then
     pkg_cv_ZLIB_CFLAGS="$ZLIB_CFLAGS"
@@ -6701,7 +6701,7 @@ fi
 
 
 if test $pkg_failed = yes; then
-   	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 
 if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
@@ -6719,7 +6719,7 @@ fi
 
 	zlib_missing="yes"
 elif test $pkg_failed = untried; then
-     	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 	zlib_missing="yes"
 else
@@ -6734,8 +6734,8 @@ fi
 if test "x$need_selinux" = "xyes"; then
 
 pkg_failed=no
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for LIBSELINUX" >&5
-printf %s "checking for LIBSELINUX... " >&6; }
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for libselinux" >&5
+printf %s "checking for libselinux... " >&6; }
 
 if test -n "$LIBSELINUX_CFLAGS"; then
     pkg_cv_LIBSELINUX_CFLAGS="$LIBSELINUX_CFLAGS"
@@ -6775,7 +6775,7 @@ fi
 
 
 if test $pkg_failed = yes; then
-   	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 
 if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
@@ -6793,7 +6793,7 @@ fi
 
 	selinux_missing="yes"
 elif test $pkg_failed = untried; then
-     	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 	selinux_missing="yes"
 else
@@ -6808,8 +6808,8 @@ fi
 if test "x$need_uuid" = "xyes"; then
 
 pkg_failed=no
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for UUID" >&5
-printf %s "checking for UUID... " >&6; }
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for uuid" >&5
+printf %s "checking for uuid... " >&6; }
 
 if test -n "$UUID_CFLAGS"; then
     pkg_cv_UUID_CFLAGS="$UUID_CFLAGS"
@@ -6849,7 +6849,7 @@ fi
 
 
 if test $pkg_failed = yes; then
-   	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 
 if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
@@ -6867,7 +6867,7 @@ fi
 
 	uuid_missing="yes"
 elif test $pkg_failed = untried; then
-     	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 	uuid_missing="yes"
 else
@@ -8105,8 +8105,8 @@ fi
 if test "x$need_zstd" = "xyes"; then
 
 pkg_failed=no
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for ZSTD" >&5
-printf %s "checking for ZSTD... " >&6; }
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for libzstd" >&5
+printf %s "checking for libzstd... " >&6; }
 
 if test -n "$ZSTD_CFLAGS"; then
     pkg_cv_ZSTD_CFLAGS="$ZSTD_CFLAGS"
@@ -8146,7 +8146,7 @@ fi
 
 
 if test $pkg_failed = yes; then
-   	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 
 if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
@@ -8164,7 +8164,7 @@ fi
 
 	zstd_missing="yes"
 elif test $pkg_failed = untried; then
-     	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 	zstd_missing="yes"
 else
@@ -8268,8 +8268,8 @@ fi
 
 
 pkg_failed=no
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for OPENSSL" >&5
-printf %s "checking for OPENSSL... " >&6; }
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for openssl" >&5
+printf %s "checking for openssl... " >&6; }
 
 if test -n "$OPENSSL_CFLAGS"; then
     pkg_cv_OPENSSL_CFLAGS="$OPENSSL_CFLAGS"
@@ -8309,7 +8309,7 @@ fi
 
 
 if test $pkg_failed = yes; then
-   	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 
 if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
@@ -8327,7 +8327,7 @@ fi
 
 	openssl_missing="yes"
 elif test $pkg_failed = untried; then
-     	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 	openssl_missing="yes"
 else
@@ -8357,8 +8357,8 @@ fi
 if test "x$need_cmocka" = "xyes"; then
 
 pkg_failed=no
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for CMOCKA" >&5
-printf %s "checking for CMOCKA... " >&6; }
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for cmocka" >&5
+printf %s "checking for cmocka... " >&6; }
 
 if test -n "$CMOCKA_CFLAGS"; then
     pkg_cv_CMOCKA_CFLAGS="$CMOCKA_CFLAGS"
@@ -8398,7 +8398,7 @@ fi
 
 
 if test $pkg_failed = yes; then
-   	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 
 if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
@@ -8416,7 +8416,7 @@ fi
 
 	cmocka_missing="yes"
 elif test $pkg_failed = untried; then
-     	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 	cmocka_missing="yes"
 else
