@@ -1,3 +1,8 @@
+From 6d79a3e0fadbc0e619b039db2c73353d68036acc Mon Sep 17 00:00:00 2001
+From: Scott Garman <scott.a.garman@intel.com>
+Date: Mon, 8 Aug 2022 20:48:32 +1200
+Subject: [PATCH] poison system directories
+
 Patch adapted to binutils 2.23.2 and extended to use
 BR_COMPILER_PARANOID_UNSAFE_PATH by Thomas Petazzoni.
 
@@ -58,7 +63,6 @@ Code Merged from Sourcery G++ binutils 2.19 - 4.4-277
 
 Signed-off-by: Mark Hatle <mark.hatle@windriver.com>
 Signed-off-by: Scott Garman <scott.a.garman@intel.com>
-
 ---
  ld/config.in    |    3 +++
  ld/configure    |   14 ++++++++++++++
@@ -73,7 +77,7 @@ Signed-off-by: Scott Garman <scott.a.garman@intel.com>
 
 --- a/ld/config.in
 +++ b/ld/config.in
-@@ -31,6 +31,9 @@
+@@ -55,6 +55,9 @@
     language is requested. */
  #undef ENABLE_NLS
  
@@ -85,7 +89,7 @@ Signed-off-by: Scott Garman <scott.a.garman@intel.com>
  
 --- a/ld/configure
 +++ b/ld/configure
-@@ -823,6 +823,7 @@
+@@ -836,6 +836,7 @@
  enable_targets
  enable_64_bit_bfd
  with_sysroot
@@ -93,8 +97,8 @@ Signed-off-by: Scott Garman <scott.a.garman@intel.com>
  enable_gold
  enable_got
  enable_compressed_debug_sections
-@@ -1487,6 +1488,8 @@
-   --disable-largefile     omit support for large files
+@@ -1514,6 +1515,8 @@
+   --enable-checking       enable run-time checks
    --enable-targets        alternative target configurations
    --enable-64-bit-bfd     64-bit support (on hosts with narrower word sizes)
 +  --enable-poison-system-directories
@@ -102,7 +106,7 @@ Signed-off-by: Scott Garman <scott.a.garman@intel.com>
    --enable-gold[=ARG]     build gold [ARG={default,yes,no}]
    --enable-got=<type>     GOT handling scheme (target, single, negative,
                            multigot)
-@@ -15804,7 +15807,18 @@
+@@ -15370,7 +15373,18 @@
  fi
  
  
@@ -123,7 +127,7 @@ Signed-off-by: Scott Garman <scott.a.garman@intel.com>
  if test "${enable_got+set}" = set; then :
 --- a/ld/configure.ac
 +++ b/ld/configure.ac
-@@ -94,6 +94,16 @@
+@@ -102,6 +102,16 @@
  AC_SUBST(TARGET_SYSTEM_ROOT)
  AC_SUBST(TARGET_SYSTEM_ROOT_DEFINE)
  
@@ -142,27 +146,27 @@ Signed-off-by: Scott Garman <scott.a.garman@intel.com>
  dnl "installed_linker" is the installed BFD linker name.
 --- a/ld/ld.h
 +++ b/ld/ld.h
-@@ -175,6 +175,14 @@
+@@ -157,6 +157,14 @@
    /* If set, display the target memory usage (per memory region).  */
-   bfd_boolean print_memory_usage;
+   bool print_memory_usage;
  
 +  /* If TRUE (the default) warn for uses of system directories when
 +     cross linking.  */
-+  bfd_boolean poison_system_directories;
++  bool poison_system_directories;
 +
 +  /* If TRUE (default FALSE) give an error for uses of system
 +     directories when cross linking instead of a warning.  */
-+  bfd_boolean error_poison_system_directories;
++  bool error_poison_system_directories;
 +
    /* Should we force section groups to be resolved?  Controlled with
       --force-group-allocation on the command line or FORCE_GROUP_ALLOCATION
       in the linker script.  */
 --- a/ld/ld.texi
 +++ b/ld/ld.texi
-@@ -2557,6 +2557,18 @@
- 
- Passing @code{none} for @var{style} disables the setting from any
- @code{--build-id} options earlier on the command line.
+@@ -2947,6 +2947,18 @@
+ occurrence of the --package-metdata option.
+ If the linker has been built with libjansson, then the JSON string
+ will be validated.
 +
 +@kindex --no-poison-system-directories
 +@item --no-poison-system-directories
@@ -180,7 +184,7 @@ Signed-off-by: Scott Garman <scott.a.garman@intel.com>
  @c man end
 --- a/ld/ldfile.c
 +++ b/ld/ldfile.c
-@@ -116,6 +116,23 @@
+@@ -117,6 +117,23 @@
      new_dirs->name = concat (ld_sysroot, name + strlen ("$SYSROOT"), (const char *) NULL);
    else
      new_dirs->name = xstrdup (name);
@@ -206,10 +210,10 @@ Signed-off-by: Scott Garman <scott.a.garman@intel.com>
  /* Try to open a BFD for a lang_input_statement.  */
 --- a/ld/ldlex.h
 +++ b/ld/ldlex.h
-@@ -150,6 +150,8 @@
-   OPTION_FORCE_GROUP_ALLOCATION,
-   OPTION_PRINT_MAP_DISCARDED,
-   OPTION_NO_PRINT_MAP_DISCARDED,
+@@ -168,6 +168,8 @@
+   OPTION_NO_WARN_EXECSTACK,
+   OPTION_WARN_RWX_SEGMENTS,
+   OPTION_NO_WARN_RWX_SEGMENTS,
 +  OPTION_NO_POISON_SYSTEM_DIRECTORIES,
 +  OPTION_ERROR_POISON_SYSTEM_DIRECTORIES,
  };
@@ -217,20 +221,20 @@ Signed-off-by: Scott Garman <scott.a.garman@intel.com>
  /* The initial parser states.  */
 --- a/ld/ldmain.c
 +++ b/ld/ldmain.c
-@@ -270,6 +270,8 @@
-   command_line.warn_mismatch = TRUE;
-   command_line.warn_search_mismatch = TRUE;
+@@ -321,6 +321,8 @@
+   command_line.warn_mismatch = true;
+   command_line.warn_search_mismatch = true;
    command_line.check_section_addresses = -1;
-+  command_line.poison_system_directories = TRUE;
-+  command_line.error_poison_system_directories = FALSE;
++  command_line.poison_system_directories = true;
++  command_line.error_poison_system_directories = true;
  
    /* We initialize DEMANGLING based on the environment variable
       COLLECT_NO_DEMANGLE.  The gcc collect2 program will demangle the
 --- a/ld/lexsup.c
 +++ b/ld/lexsup.c
-@@ -549,6 +549,14 @@
-   { {"no-print-map-discarded", no_argument, NULL, OPTION_NO_PRINT_MAP_DISCARDED},
-     '\0', NULL, N_("Do not show discarded sections in map file output"),
+@@ -608,6 +608,14 @@
+ 		   "                                <method> is: share-unconflicted (default),\n"
+ 		   "                                             share-duplicated"),
      TWO_DASHES },
 +  { {"no-poison-system-directories", no_argument, NULL,
 +    OPTION_NO_POISON_SYSTEM_DIRECTORIES},
@@ -243,7 +247,7 @@ Signed-off-by: Scott Garman <scott.a.garman@intel.com>
  };
  
  #define OPTION_COUNT ARRAY_SIZE (ld_options)
-@@ -561,6 +569,7 @@
+@@ -620,6 +628,7 @@
    int ingroup = 0;
    char *default_dirlist = NULL;
    char *shortopts;
@@ -251,28 +255,28 @@ Signed-off-by: Scott Garman <scott.a.garman@intel.com>
    struct option *longopts;
    struct option *really_longopts;
    int last_optind;
-@@ -1549,6 +1558,14 @@
+@@ -1679,6 +1688,14 @@
  	  }
  	  break;
  
 +	case OPTION_NO_POISON_SYSTEM_DIRECTORIES:
-+	  command_line.poison_system_directories = FALSE;
++	  command_line.poison_system_directories = false;
 +	  break;
 +
 +	case OPTION_ERROR_POISON_SYSTEM_DIRECTORIES:
-+	  command_line.error_poison_system_directories = TRUE;
++	  command_line.error_poison_system_directories = true;
 +	  break;
 +
  	case OPTION_PUSH_STATE:
  	  input_flags.pushed = xmemdup (&input_flags,
  					sizeof (input_flags),
-@@ -1600,6 +1617,10 @@
+@@ -1824,6 +1841,10 @@
        command_line.soname = NULL;
      }
  
 +  BR_paranoid_env = getenv("BR_COMPILER_PARANOID_UNSAFE_PATH");
 +  if (BR_paranoid_env && strlen(BR_paranoid_env) > 0)
-+    command_line.error_poison_system_directories = TRUE;
++    command_line.error_poison_system_directories = true;
 +
    while (ingroup)
      {

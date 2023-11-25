@@ -1,10 +1,15 @@
+From 3c0df45053b5988491bbb407f875fee8a0faa25b Mon Sep 17 00:00:00 2001
+From: Chris Packham <judge.packham@gmail.com>
+Date: Mon, 8 Aug 2022 20:36:31 +1200
+Subject: [PATCH] check_ldrunpath_length
+
 ---
  ld/ldelf.c |    4 ++++
  1 file changed, 4 insertions(+)
 
 --- a/ld/ldelf.c
 +++ b/ld/ldelf.c
-@@ -1247,6 +1247,8 @@
+@@ -1127,6 +1127,8 @@
  		  && command_line.rpath == NULL)
  		{
  		  path = (const char *) getenv ("LD_RUN_PATH");
@@ -13,7 +18,7 @@
  		  if (path
  		      && ldelf_search_needed (path, &n, force,
  					      is_linux, elfsize))
-@@ -1605,6 +1607,8 @@
+@@ -1801,6 +1803,8 @@
    rpath = command_line.rpath;
    if (rpath == NULL)
      rpath = (const char *) getenv ("LD_RUN_PATH");

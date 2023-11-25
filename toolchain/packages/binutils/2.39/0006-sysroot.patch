@@ -1,10 +1,14 @@
-Signed-off-by: Sven Rebhan <odinshorse@googlemail.com>
+From 57da8086f8bd7c3184b9e2144083553c46ce4ae4 Mon Sep 17 00:00:00 2001
+From: Sven Rebhan <odinshorse@googlemail.com>
+Date: Mon, 8 Aug 2022 20:46:29 +1200
+Subject: [PATCH] sysroot
 
 Always try to prepend the sysroot prefix to absolute filenames first.
 
 http://bugs.gentoo.org/275666
 http://sourceware.org/bugzilla/show_bug.cgi?id=10340
 
+Signed-off-by: Sven Rebhan <odinshorse@googlemail.com>
 ---
  ld/ldfile.c |   11 +++++++++--
  1 file changed, 9 insertions(+), 2 deletions(-)
@@ -28,14 +32,14 @@ http://sourceware.org/bugzilla/show_bug.cgi?id=10340
  	  if (ldfile_try_open_bfd (name, entry))
  	    {
  	      entry->filename = name;
-+	      entry->flags.sysrooted = TRUE;
- 	      return TRUE;
++	      entry->flags.sysrooted = true;
+ 	      return true;
  	    }
  	  free (name);
  	}
 -      else if (ldfile_try_open_bfd (entry->filename, entry))
 +
 +      if (ldfile_try_open_bfd (entry->filename, entry))
- 	return TRUE;
+ 	return true;
  
        if (IS_ABSOLUTE_PATH (entry->filename))
