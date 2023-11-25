@@ -851,8 +851,8 @@ print_apcli_wds_header(webs_t wp, const char *caption)
 
 	ret += websWrite(wp, caption);
 	ret += websWrite(wp, "----------------------------------------\n");
-	ret += websWrite(wp, "%-19s%-8s%-5s%-4s%-4s%-5s%-5s%-6s%-5s\n",
-				   "BSSID", "PhyMode", " BW", "MCS", "SGI", "LDPC", "STBC", "TRate", "RSSI");
+	ret += websWrite(wp, "%-18s%-8s%-5s%-4s%-4s%-5s%-5s%-6s%-5s\n",
+				   "BSSID", "PhyMode", "  BW", "MCS", "SGI", "LDPC", "STBC", "TRate", "RSSI");
 
 	return ret;
 }
@@ -920,8 +920,8 @@ print_sta_list(webs_t wp, RT_802_11_MAC_TABLE *mp, int num_ss_rx, int ap_idx)
 
 	ret += websWrite(wp, "\nAP %s Stations List\n", (ap_idx == 0) ? "Main" : "Guest");
 	ret += websWrite(wp, "----------------------------------------\n");
-	ret += websWrite(wp, "%-19s%-8s%-5s%-4s%-4s%-5s%-5s%-7s%-7s%-5s%-4s%-12s\n",
-			   "MAC", "PhyMode", " BW", "MCS", "SGI", "LDPC", "STBC", "TxRate", "RxRate", "RSSI", "PSM", "Connect Time");
+	ret += websWrite(wp, "%-18s%-8s%-5s%-4s%-4s%-5s%-5s%-7s%-7s%-5s%-4s%-12s\n",
+			   "MAC", "PhyMode", "  BW", "MCS", "SGI", "LDPC", "STBC", "TxRate", "RxRate", "RSSI", "PSM", "Connect Time");
 
 	for (i = 0; i < mp->Num; i++) {
 		if ((int)mp->Entry[i].ApIdx != ap_idx)
@@ -997,8 +997,8 @@ print_sta_list_inic(webs_t wp, RT_802_11_MAC_TABLE_INIC* mp, int num_ss_rx, int 
 
 	ret += websWrite(wp, "\nAP %s Stations List\n", (ap_idx == 0) ? "Main" : "Guest");
 	ret += websWrite(wp, "----------------------------------------\n");
-	ret += websWrite(wp, "%-19s%-8s%-5s%-4s%-4s%-5s%-5s%-6s%-5s%-4s%-12s\n",
-			   "MAC", "PhyMode", " BW", "MCS", "SGI", "LDPC", "STBC", "TRate", "RSSI", "PSM", "Connect Time");
+	ret += websWrite(wp, "%-18s%-8s%-5s%-4s%-4s%-5s%-5s%-6s%-5s%-4s%-12s\n",
+			   "MAC", "PhyMode", "  BW", "MCS", "SGI", "LDPC", "STBC", "TRate", "RSSI", "PSM", "Connect Time");
 
 	for (i = 0; i < mp->Num; i++) {
 		if ((int)mp->Entry[i].ApIdx != ap_idx)
