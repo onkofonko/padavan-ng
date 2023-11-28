@@ -27,8 +27,8 @@ func_create_config()
 
 # HostKeys for protocol version 2
 HostKey ${rsa_key}
-HostKey ${dsa_key}
-#HostKey ${dir_storage}/ssh_host_ecdsa_key
+#HostKey ${dsa_key}
+HostKey ${dir_storage}/ssh_host_ecdsa_key
 HostKey ${ed25519_key}
 
 # Lifetime and size of ephemeral version 1 server key
