@@ -612,11 +612,11 @@ struct nvram_pair router_defaults[] = {
 	{ "doh_server1", "https://blitz.ahadns.com/1:4" },
 	{ "doh_server2", "https://freedns.controld.com/x-1hosts-lite" },
 	{ "doh_server3", "https://max.rethinkdns.com/1:AAQCAA==" },
-	{ "doh_opt1_1", "-4 -d -v" },
+	{ "doh_opt1_1", "-d -4 -v" },
 	{ "doh_opt2_1", "1.1.1.1,8.8.8.8,9.9.9.9,208.67.222.222" },
-	{ "doh_opt1_2", "-4 -d -v" },
+	{ "doh_opt1_2", "-d -4 -v" },
 	{ "doh_opt2_2", "1.1.1.1,8.8.8.8,9.9.9.9,208.67.222.222" },
-	{ "doh_opt1_3", "-4 -d -v" },
+	{ "doh_opt1_3", "-d -4 -v" },
 	{ "doh_opt2_3", "1.1.1.1,8.8.8.8,9.9.9.9,208.67.222.222" },
 #endif
 #if defined (APP_STUBBY)
