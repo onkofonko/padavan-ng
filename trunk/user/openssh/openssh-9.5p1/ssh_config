@@ -44,3 +44,7 @@
 #   ProxyCommand ssh -q -W %h:%p gateway.example.com
 #   RekeyLimit 1G 1h
 #   UserKnownHostsFile ~/.ssh/known_hosts.d/%k
+   KexAlgorithms diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
+   Ciphers aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc
+   HostKeyAlgorithms ssh-rsa,ssh-dss
+   PubkeyAcceptedKeyTypes ssh-rsa,ssh-dss
