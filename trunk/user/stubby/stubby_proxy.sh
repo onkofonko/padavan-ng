@@ -22,7 +22,8 @@ listen_addresses:
   - 127.0.0.1@65054
   - 0::1@65054
 ####### DNSSEC SETTINGS ######
-#dnssec: GETDNS_EXTENSION_TRUE
+#dnssec_return_status: GETDNS_EXTENSION_TRUE
+#dnssec_return_only_secure: GETDNS_EXTENSION_TRUE
 #trust_anchors_backoff_time: 2500
 #appdata_dir: "/var/lib/stubby"
 #######  UPSTREAMS  ######
