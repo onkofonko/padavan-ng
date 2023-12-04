@@ -2,7 +2,8 @@ THISDIR = $(shell pwd)
 SRC_NAME = vlmcsd-svn1113
 SRC_URL = https://github.com/Wind4/vlmcsd/archive/svn1113.tar.gz
 
-all: download_test extract_test
+#all: download_test extract_test
+all:
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME) vlmcsd SAFE_MODE=1 CC=$(CONFIG_CROSS_COMPILER_ROOT)/bin/mipsel-linux-uclibc-gcc
 	
 download_test: 

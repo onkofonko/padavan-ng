@@ -1,6 +1,5 @@
 SRC_NAME=mtd-utils-2.1.6
 SRC_URL = https://github.com/sigma-star/mtd-utils/archive/refs/tags/v2.1.6.tar.gz
-
 THISDIR = $(shell pwd)
 
 #all: download_test extract_test config_test

@@ -1,6 +1,5 @@
 SRC_NAME=e2fsprogs-1.47.0
 SRC_URL=https://mirrors.edge.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.47.0/$(SRC_NAME).tar.xz
-
 THISDIR = $(shell pwd)
 
 CFLAGS += -ffunction-sections -fdata-sections

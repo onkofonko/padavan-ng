@@ -2,6 +2,7 @@ SRC_NAME=busybox-1.36.1
 SRC_URL=https://busybox.net/downloads/$(SRC_NAME).tar.bz2
 THISDIR = $(shell pwd)
 
+#all: download_test extract_test
 all:
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
 

@@ -6,7 +6,8 @@ LDFLAGS += -Wl,--gc-sections,-L$(STAGEDIR)/lib,-rpath-link=$(THISDIR)/$(SRC_NAME
 
 THISDIR = $(shell pwd)
 
-all: download_test extract_test config_test
+#all: download_test extract_test config_test
+all: extract_test config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
 	$(MAKE) -C $(SRC_NAME) install-strip DESTDIR=$(THISDIR)/install
 

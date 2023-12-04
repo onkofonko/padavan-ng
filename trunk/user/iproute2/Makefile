@@ -1,5 +1,4 @@
 SRC_NAME=iproute2-5.12.0
-
 THISDIR = $(shell pwd)
 
 all:

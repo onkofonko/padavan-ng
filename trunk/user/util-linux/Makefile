@@ -1,6 +1,5 @@
 SRC_NAME=util-linux-2.39.2
 SRC_URL=https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.39/$(SRC_NAME).tar.xz
-
 THISDIR = $(shell pwd)
 
 CFLAGS += -ffunction-sections -fdata-sections

@@ -1,6 +1,5 @@
 SRC_NAME=ipset-7.11
 SRC_URL=https://ipset.netfilter.org/$(SRC_NAME).tar.bz2
-
 THISDIR = $(shell pwd)
 
 #all: download_test extract_test config_test
