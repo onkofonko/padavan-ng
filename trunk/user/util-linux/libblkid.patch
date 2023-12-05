@@ -1,6 +1,6 @@
-diff -urN util-linux-2.39.2-ref/libblkid/src/Makemodule.am util-linux-2.39.2/libblkid/src/Makemodule.am
---- util-linux-2.39.2-ref/libblkid/src/Makemodule.am	2023-06-14 12:11:15.547889000 +0300
-+++ util-linux-2.39.2/libblkid/src/Makemodule.am	2023-10-18 22:28:00.330587883 +0300
+diff -urN util-linux-2.39.3-ref/libblkid/src/Makemodule.am util-linux-2.39.3/libblkid/src/Makemodule.am
+--- util-linux-2.39.3-ref/libblkid/src/Makemodule.am	2023-06-14 12:11:15.547889000 +0300
++++ util-linux-2.39.3/libblkid/src/Makemodule.am	2023-10-18 22:28:00.330587883 +0300
 @@ -26,95 +26,35 @@
  	libblkid/src/verify.c \
  	libblkid/src/version.c \
@@ -98,9 +98,9 @@ diff -urN util-linux-2.39.2-ref/libblkid/src/Makemodule.am util-linux-2.39.2/lib
  endif
  
  libblkid_la_LIBADD = libcommon.la
-diff -urN util-linux-2.39.2-ref/libblkid/src/partitions/dos.c util-linux-2.39.2/libblkid/src/partitions/dos.c
---- util-linux-2.39.2-ref/libblkid/src/partitions/dos.c	2023-08-17 10:55:57.017839000 +0300
-+++ util-linux-2.39.2/libblkid/src/partitions/dos.c	2023-10-18 22:28:00.334587667 +0300
+diff -urN util-linux-2.39.3-ref/libblkid/src/partitions/dos.c util-linux-2.39.3/libblkid/src/partitions/dos.c
+--- util-linux-2.39.3-ref/libblkid/src/partitions/dos.c	2023-08-17 10:55:57.017839000 +0300
++++ util-linux-2.39.3/libblkid/src/partitions/dos.c	2023-10-18 22:28:00.334587667 +0300
 @@ -28,10 +28,7 @@
  } dos_nested[] = {
  	{ MBR_FREEBSD_PARTITION, &bsd_pt_idinfo },
@@ -113,9 +113,9 @@ diff -urN util-linux-2.39.2-ref/libblkid/src/partitions/dos.c util-linux-2.39.2/
  };
  
  static inline int is_extended(struct dos_partition *p)
-diff -urN util-linux-2.39.2-ref/libblkid/src/partitions/partitions.c util-linux-2.39.2/libblkid/src/partitions/partitions.c
---- util-linux-2.39.2-ref/libblkid/src/partitions/partitions.c	2023-06-14 12:11:15.552889000 +0300
-+++ util-linux-2.39.2/libblkid/src/partitions/partitions.c	2023-10-18 22:28:00.334587667 +0300
+diff -urN util-linux-2.39.3-ref/libblkid/src/partitions/partitions.c util-linux-2.39.3/libblkid/src/partitions/partitions.c
+--- util-linux-2.39.3-ref/libblkid/src/partitions/partitions.c	2023-06-14 12:11:15.552889000 +0300
++++ util-linux-2.39.3/libblkid/src/partitions/partitions.c	2023-10-18 22:28:00.334587667 +0300
 @@ -123,19 +123,11 @@
   */
  static const struct blkid_idinfo *idinfos[] =
@@ -137,9 +137,9 @@ diff -urN util-linux-2.39.2-ref/libblkid/src/partitions/partitions.c util-linux-
  };
  
  /*
-diff -urN util-linux-2.39.2-ref/libblkid/src/superblocks/superblocks.c util-linux-2.39.2/libblkid/src/superblocks/superblocks.c
---- util-linux-2.39.2-ref/libblkid/src/superblocks/superblocks.c	2023-08-17 10:55:57.020839000 +0300
-+++ util-linux-2.39.2/libblkid/src/superblocks/superblocks.c	2023-10-18 22:28:00.334587667 +0300
+diff -urN util-linux-2.39.3-ref/libblkid/src/superblocks/superblocks.c util-linux-2.39.3/libblkid/src/superblocks/superblocks.c
+--- util-linux-2.39.3-ref/libblkid/src/superblocks/superblocks.c	2023-08-17 10:55:57.020839000 +0300
++++ util-linux-2.39.3/libblkid/src/superblocks/superblocks.c	2023-10-18 22:28:00.334587667 +0300
 @@ -94,93 +94,20 @@
   */
  static const struct blkid_idinfo *idinfos[] =
@@ -235,9 +235,9 @@ diff -urN util-linux-2.39.2-ref/libblkid/src/superblocks/superblocks.c util-linu
  };
  
  /*
-diff -urN util-linux-2.39.2-ref/libblkid/src/topology/topology.c util-linux-2.39.2/libblkid/src/topology/topology.c
---- util-linux-2.39.2-ref/libblkid/src/topology/topology.c	2023-08-17 10:56:12.499759000 +0300
-+++ util-linux-2.39.2/libblkid/src/topology/topology.c	2023-10-18 22:28:00.334587667 +0300
+diff -urN util-linux-2.39.3-ref/libblkid/src/topology/topology.c util-linux-2.39.3/libblkid/src/topology/topology.c
+--- util-linux-2.39.3-ref/libblkid/src/topology/topology.c	2023-08-17 10:56:12.499759000 +0300
++++ util-linux-2.39.3/libblkid/src/topology/topology.c	2023-10-18 22:28:00.334587667 +0300
 @@ -79,11 +79,7 @@
  {
  #ifdef __linux__
