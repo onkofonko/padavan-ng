@@ -1,7 +1,7 @@
-diff -urN curl-8.4.0-orig/Makefile.am curl-8.4.0/Makefile.am
---- curl-8.4.0-orig/Makefile.am	2023-05-15 13:55:59.000000000 +0300
-+++ curl-8.4.0/Makefile.am	2023-05-31 00:55:34.031471855 +0300
-@@ -159,7 +159,7 @@
+diff -urN curl-8.5.0-orig/Makefile.am curl-8.5.0/Makefile.am
+--- curl-8.5.0-orig/Makefile.am	2023-05-15 13:55:59.000000000 +0300
++++ curl-8.5.0/Makefile.am	2023-05-31 00:55:34.031471855 +0300
+@@ -134,7 +134,7 @@
  bin_SCRIPTS = curl-config
  
  SUBDIRS = lib src
@@ -10,7 +10,7 @@ diff -urN curl-8.4.0-orig/Makefile.am curl-8.4.0/Makefile.am
  
  pkgconfigdir = $(libdir)/pkgconfig
  pkgconfig_DATA = libcurl.pc
-@@ -273,8 +273,6 @@
+@@ -248,8 +248,6 @@
  # We extend the standard install with a custom hook:
  install-data-hook:
  	(cd include && $(MAKE) install)
@@ -19,10 +19,10 @@ diff -urN curl-8.4.0-orig/Makefile.am curl-8.4.0/Makefile.am
  
  # We extend the standard uninstall with a custom hook:
  uninstall-hook:
-diff -urN curl-8.4.0-orig/configure.ac curl-8.4.0/configure.ac
---- curl-8.4.0-orig/configure.ac	2023-05-28 11:23:55.000000000 +0300
-+++ curl-8.4.0/configure.ac	2023-05-31 00:55:34.031471855 +0300
-@@ -4752,30 +4752,14 @@
+diff -urN curl-8.5.0-orig/configure.ac curl-8.5.0/configure.ac
+--- curl-8.5.0-orig/configure.ac	2023-05-28 11:23:55.000000000 +0300
++++ curl-8.5.0/configure.ac	2023-05-31 00:55:34.031471855 +0300
+@@ -4770,30 +4770,14 @@
  fi
  
  AC_CONFIG_FILES([Makefile \
@@ -53,9 +53,9 @@ diff -urN curl-8.4.0-orig/configure.ac curl-8.4.0/configure.ac
             packages/vms/Makefile \
             curl-config \
             libcurl.pc
-diff -urN curl-8.4.0-orig/src/Makefile.am curl-8.4.0/src/Makefile.am
---- curl-8.4.0-orig/src/Makefile.am	2023-05-15 13:55:59.000000000 +0300
-+++ curl-8.4.0/src/Makefile.am	2023-05-31 00:55:34.035471661 +0300
+diff -urN curl-8.5.0-orig/src/Makefile.am curl-8.5.0/src/Makefile.am
+--- curl-8.5.0-orig/src/Makefile.am	2023-05-15 13:55:59.000000000 +0300
++++ curl-8.5.0/src/Makefile.am	2023-05-31 00:55:34.035471661 +0300
 @@ -45,7 +45,7 @@
  
  bin_PROGRAMS = curl
