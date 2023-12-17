@@ -565,7 +565,7 @@ function show_footer(){
 	footer_code +='<div align="center">\n';
 	footer_code +='  <span>© Linaro &amp; Alxdm &amp; Mahtab &amp; Hadzhioglu</span></br>\n';
 	footer_code +='  <span>Develops by <a href="https://gitlab.com/hadzhioglu/padavan-ng">Hadzhioglu</a></span></br>\n';
-	footer_code +='  <span>Firmware distribution is prohibited and Non-Commercial Use Only</span></br>\n';
+	footer_code +='  <span>Firmware distribution is prohibited &amp; Non-Commercial Use Only</span></br>\n';
 	footer_code +='</div>\n';
 
 	$("footer").innerHTML = footer_code;
