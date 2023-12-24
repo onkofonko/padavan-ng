@@ -477,16 +477,7 @@ function insertChannelOption() {
     var orig = document.form.wl_channel.value;
     free_options(document.form.wl_channel);
 
-    if (country == "BY")
-        channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64, 132, 136, 140, 144); //Region 34
-
-    if (country == "UA")
-        channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140, 149, 153, 157, 161, 165); //Region 35
-
-    if (country == "RU")
-        channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64, 132, 136, 140, 144, 149, 153, 157, 161, 165); //Region 36
-
-    else if (country == "AL" ||
+    if (country == "AL" ||
         country == "DZ" ||
         country == "AU" ||
         country == "BH" ||
@@ -526,7 +517,7 @@ function insertChannelOption() {
         country == "VN" ||
         country == "YE" ||
         country == "ZW")
-        channels = new Array(0, 36, 40, 44, 48, 149, 153, 157, 161, 165); //Region 0
+        channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64, 149, 153, 157, 161, 165); //Region 0
 
     else if (country == "AT" ||
         country == "BE" ||
@@ -557,7 +548,7 @@ function insertChannelOption() {
         country == "CH" ||
         country == "GB" ||
         country == "UZ")
-        channels = new Array(0, 36, 40, 44, 48); //Region 1
+        channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140); //Region 1
 
     else if (country == "AM" ||
         country == "AZ" ||
@@ -570,10 +561,10 @@ function insertChannelOption() {
         country == "TT" ||
         country == "TN" ||
         country == "TR")
-        channels = new Array(0, 36, 40, 44, 48); //Region 2
+        channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64); //Region 2
 
     else if (country == "AR" || country == "TW")
-        channels = new Array(0, 149, 153, 157, 161); //Region 3
+        channels = new Array(0, 52, 56, 60, 64, 149, 153, 157); //Region 3
 
     else if (country == "BZ" ||
         country == "BO" ||
@@ -591,7 +582,16 @@ function insertChannelOption() {
         channels = new Array(0, 149, 153, 157, 161); //Region 5
 
     else if (country == "JP")
-        channels = new Array(0, 36, 40, 44, 48); //Region 9
+        channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64, 100, 104, 108, 112, 116, 132, 136, 140, 149, 153, 157, 161, 165); //Region 9
+
+    else if(country == "BY")
+        channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64, 132, 136, 140, 144); //Region 34
+
+    else if(country == "UA")
+        channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140, 149, 153, 157, 161, 165); //Region 35
+
+    else if(country == "RU")
+        channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64, 132, 136, 140, 144, 149, 153, 157, 161, 165); //Region 36
 
     else
         channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140, 149, 153, 157, 161, 165); //Region 7
