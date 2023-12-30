@@ -7,7 +7,7 @@ ROMFS_DIR = $(ROOTDIR)/romfs
 include $(ROOTDIR)/user/shared/boards.mk
 
 PROJECT_HOME_URL="https:\/\/gitlab.com\/hadzhioglu\/padavan-ng"
-LABEL_COPYRIGHT_TEXT="© 2011-2023 Padavan \& N56U project community \& Building a firmware: `date +'%d.%m.%Y %H:%M:%S'`"
+LABEL_COPYRIGHT_TEXT="© 2011-`date +'%Y'` Padavan \& N56U project community \& Building a firmware: `date +'%d.%m.%Y %H:%M:%S'`"
 
 BOARD_PATTERN=s/ZVMODELVZ/$(CONFIG_FIRMWARE_PRODUCT_ID)/g
 COPYR_PATTERN=s/ZVCOPYRVZ/$(LABEL_COPYRIGHT_TEXT)/g
