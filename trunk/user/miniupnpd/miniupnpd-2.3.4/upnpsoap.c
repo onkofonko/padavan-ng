@@ -1,4 +1,4 @@
-/* $Id: upnpsoap.c,v 1.165 2023/06/26 23:15:56 nanard Exp $ */
+/* $Id: upnpsoap.c,v 1.166 2024/01/04 01:03:14 nanard Exp $ */
 /* vim: tabstop=4 shiftwidth=4 noexpandtab
  * MiniUPnP project
  * http://miniupnp.free.fr/ or https://miniupnp.tuxfamily.org/

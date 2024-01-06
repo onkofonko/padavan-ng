@@ -1,4 +1,4 @@
-/* $Id: upnppermissions.c,v 1.20 2020/10/30 21:37:35 nanard Exp $ */
+/* $Id: upnppermissions.c,v 1.23 2023/06/11 23:08:09 nanard Exp $ */
 /* MiniUPnP project
  * http://miniupnp.free.fr/ or https://miniupnp.tuxfamily.org/
  * (c) 2006-2023 Thomas Bernard

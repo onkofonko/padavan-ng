@@ -8,7 +8,7 @@
 -			echo "LDLIBS += `${PKG_CONFIG} --libs-only-l libcap-ng`" >> config.mk
 -			echo "LDFLAGS += `${PKG_CONFIG} --libs-only-L --libs-only-other libcap-ng`" >> config.mk
 -			echo "#define HAS_LIBCAP_NG" >> ${CONFIGFILE}
-+#			echo "detected libcap-ng `${PKG_CONFIG} --modversion libcap-ng`"
++			echo "detected libcap-ng `${PKG_CONFIG} --modversion libcap-ng`"
 +#			echo "CFLAGS += `${PKG_CONFIG} --cflags libcap-ng`" >> config.mk
 +#			echo "LDLIBS += `${PKG_CONFIG} --libs-only-l libcap-ng`" >> config.mk
 +#			echo "LDFLAGS += `${PKG_CONFIG} --libs-only-L --libs-only-other libcap-ng`" >> config.mk

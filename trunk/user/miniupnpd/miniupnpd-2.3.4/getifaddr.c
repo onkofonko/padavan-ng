@@ -1,4 +1,4 @@
-/* $Id: getifaddr.c,v 1.28 2022/02/19 18:58:25 nanard Exp $ */
+/* $Id: getifaddr.c,v 1.29 2024/01/04 00:55:28 nanard Exp $ */
 /* vim: tabstop=4 shiftwidth=4 noexpandtab
  * MiniUPnP project
  * http://miniupnp.free.fr/ or https://miniupnp.tuxfamily.org/
