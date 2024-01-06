@@ -1,5 +1,5 @@
 SRC_NAME=miniupnpd-2.3.4
-SRC_URL=http://miniupnp.free.fr/files/download.php?file=$(SRC_NAME).tar.gz
+SRC_URL=https://miniupnp.tuxfamily.org/files/download.php?file=$(SRC_NAME).tar.gz
 
 # reference to iptables package
 IPT_VERSION:=iptables-1.8.10
