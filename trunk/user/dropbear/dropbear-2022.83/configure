@@ -4264,7 +4264,7 @@ printf "%s\n" "$as_me: Setting $TESTFLAGS" >&6;}
 else $as_nop
 
 			CFLAGS="$OLDCFLAGS"
-			TESTFLAGS="-fstack-protector --param=ssp-buffer-size=4"
+			TESTFLAGS=""
 			CFLAGS="$TESTFLAGS $CFLAGS"
 			cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
