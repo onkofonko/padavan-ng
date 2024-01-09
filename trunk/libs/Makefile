@@ -22,8 +22,6 @@ dir_y =
 dir_n =
 dir_  =
 
-dir_y += libmnl
-
 LIBS_INCLUDE_LIBCAPNG=n
 LIBS_INCLUDE_LIBDEFLATE=n
 LIBS_INCLUDE_LIBLZO=n
@@ -98,9 +96,7 @@ dir_$(LIBS_INCLUDE_LIBUSB_0)			+= libusb
 dir_$(LIBS_INCLUDE_LIBUSB_1)			+= libusb-1.0
 dir_y						+= libnfnetlink
 dir_y						+= libconfuse
-
-# ipset shared libs
-#dir_$(CONFIG_FIRMWARE_INCLUDE_IPSET)		+= libmnl
+dir_y						+= libmnl
 
 # tcpdump shared libs
 dir_$(CONFIG_FIRMWARE_INCLUDE_TCPDUMP)		+= libpcap
