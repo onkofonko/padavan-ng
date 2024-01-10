@@ -1,5 +1,5 @@
-SRC_NAME=libcap-ng-0.8.3
-SRC_URL=https://github.com/stevegrubb/libcap-ng/archive/refs/tags/v0.8.3.tar.gz
+SRC_NAME=libcap-ng-0.8.5
+#SRC_URL=https://github.com/stevegrubb/libcap-ng/archive/refs/tags/v0.8.3.tar.gz
 
 CFLAGS += -Os
 
@@ -7,10 +7,10 @@ CFLAGS += -Os
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
 
-download_test:
-	( if [ ! -f $(SRC_NAME).tar.gz ]; then \
-		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.gz $(SRC_URL); \
-	fi )
+#download_test:
+#	( if [ ! -f $(SRC_NAME).tar.gz ]; then \
+#		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.gz $(SRC_URL); \
+#	fi )
 
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
