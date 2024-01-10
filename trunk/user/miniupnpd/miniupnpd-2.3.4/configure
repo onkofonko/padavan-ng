@@ -548,10 +548,10 @@ if [ "$FW" = "iptables" ] || [ "$FW" = "nftables" ] ; then
 #			echo "#define HAS_LIBCAP_NG" >> ${CONFIGFILE}
 		elif ${PKG_CONFIG} --exists libcap ; then
 			echo "detected libcap `${PKG_CONFIG} --modversion libcap`"
-			echo "CFLAGS += `${PKG_CONFIG} --cflags libcap`" >> config.mk
-			echo "LDLIBS += `${PKG_CONFIG} --libs-only-l libcap`" >> config.mk
-			echo "LDFLAGS += `${PKG_CONFIG} --libs-only-L --libs-only-other libcap`" >> config.mk
-			echo "#define HAS_LIBCAP" >> ${CONFIGFILE}
+#			echo "CFLAGS += `${PKG_CONFIG} --cflags libcap`" >> config.mk
+#			echo "LDLIBS += `${PKG_CONFIG} --libs-only-l libcap`" >> config.mk
+#			echo "LDFLAGS += `${PKG_CONFIG} --libs-only-L --libs-only-other libcap`" >> config.mk
+#			echo "#define HAS_LIBCAP" >> ${CONFIGFILE}
 		fi
 	fi
 fi
