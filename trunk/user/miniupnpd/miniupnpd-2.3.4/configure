@@ -520,7 +520,7 @@ case $FW in
 		echo "CPPFLAGS += -I." >> config.mk
 		echo "/* when IPTABLES_143 is defined, miniupnpd uses the new API" >> ${CONFIGFILE}
 		echo " * from libiptc 1.4.3+ */ " >> ${CONFIGFILE}
-			echo "#define IPTABLES_143" >> ${CONFIGFILE}
+		echo "#define IPTABLES_143" >> ${CONFIGFILE}
 		;;
 	nftables)
 		MAKEFILE=Makefile.linux_nft
