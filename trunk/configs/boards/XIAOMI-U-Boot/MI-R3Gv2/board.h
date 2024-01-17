@@ -1,8 +1,8 @@
-/* Xiaomi Mi R3GV2_SPI */
+/* Xiaomi Mi R3Gv2 */
 
-#define BOARD_PID		"MI-R3GV2_SPI"
-#define BOARD_NAME		"MI-R3GV2_SPI"
-#define BOARD_DESC		"Xiaomi Mi R3G Wireless Router"
+#define BOARD_PID		"MI-R3Gv2"
+#define BOARD_NAME		"MI-R3Gv2"
+#define BOARD_DESC		"Xiaomi Mi R3G v2 Wireless Router"
 #define BOARD_VENDOR_NAME	"Beijing Xiaomi Technology Co., Ltd."
 #define BOARD_VENDOR_URL	"http://www.mi.com/"
 #define BOARD_MODEL_URL		"http://www.mi.com/miwifir3g"

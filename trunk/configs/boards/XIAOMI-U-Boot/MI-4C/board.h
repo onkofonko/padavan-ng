@@ -1,8 +1,8 @@
-/* Xiaomi MI 4C_BREED (R4CL)*/
+/* Xiaomi MI 4C (R4CL)*/
 
-#define BOARD_PID		"MI-4C_BREED"
-#define BOARD_NAME		"MI-4C_BREED"
-#define BOARD_DESC		"Xiaomi MI 4C_BREED Wireless Router"
+#define BOARD_PID		"MI-4C"
+#define BOARD_NAME		"MI-4C"
+#define BOARD_DESC		"Xiaomi MI 4C Wireless Router"
 #define BOARD_VENDOR_NAME	"Beijing Xiaomi Technology Co., Ltd."
 #define BOARD_VENDOR_URL	"http://www.mi.com/"
 #define BOARD_MODEL_URL		"http://www.mi.com/miwifilite"

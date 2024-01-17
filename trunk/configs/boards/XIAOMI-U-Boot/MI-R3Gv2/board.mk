@@ -1,8 +1,8 @@
 ##################################################################
 # Board PID # Board Name       # PRODUCT # Note
 ##################################################################
-# MI-4A_100M_STOCK   # Xiaomi MI-4A_100M_STOCK   # MT7628  #
+# MI-R3Gv2 # Xiaomi MI-R3Gv2  # MT7621  #
 ##################################################################
 
-CFLAGS += -DBOARD_MI4A_100M_STOCK
+CFLAGS += -DBOARD_MIR3Gv2
 BOARD_NUM_USB_PORTS=0

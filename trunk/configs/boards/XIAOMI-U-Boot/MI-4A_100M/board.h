@@ -1,8 +1,8 @@
-/* Xiaomi MI 4C_STOCK (R4CL)*/
+/* Xiaomi Mi 4A_100M (R4A-100M)*/
 
-#define BOARD_PID		"MI-4C_STOCK"
-#define BOARD_NAME		"MI-4C_STOCK"
-#define BOARD_DESC		"Xiaomi MI 4C_STOCK Wireless Router"
+#define BOARD_PID		"MI-4A_100M"
+#define BOARD_NAME		"MI-4A_100M"
+#define BOARD_DESC		"Xiaomi Mi 4A_100M Wireless Router"
 #define BOARD_VENDOR_NAME	"Beijing Xiaomi Technology Co., Ltd."
 #define BOARD_VENDOR_URL	"http://www.mi.com/"
 #define BOARD_MODEL_URL		"http://www.mi.com/miwifilite"
@@ -15,12 +15,12 @@
 #define BOARD_GPIO_LED_POWER	44	/* 11: blue, 37: red, 44: yellow */
 #undef  BOARD_GPIO_LED_LAN
 #undef  BOARD_GPIO_LED_WAN
-#define BOARD_HAS_5G_11AC	0
-#define BOARD_NUM_ANT_5G_TX	0
-#define BOARD_NUM_ANT_5G_RX	0
+#define BOARD_HAS_5G_11AC	1
+#define BOARD_NUM_ANT_5G_TX	2
+#define BOARD_NUM_ANT_5G_RX	2
 #define BOARD_NUM_ANT_2G_TX	2
 #define BOARD_NUM_ANT_2G_RX	2
 #define BOARD_NUM_ETH_LEDS	1
-#define BOARD_NUM_ETH_EPHY	5
+#define BOARD_NUM_ETH_EPHY	3
 #define BOARD_HAS_EPHY_L1000	0
 #define BOARD_HAS_EPHY_W1000	0

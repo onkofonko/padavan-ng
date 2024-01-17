@@ -1,8 +1,8 @@
-/* Xiaomi Mi 4A_100M_BREED (R4A-100M)*/
+/* Xiaomi Mi 4A_100M (R4A-100M)*/
 
-#define BOARD_PID		"MI-4A_100M_BREED"
-#define BOARD_NAME		"MI-4A_100M_BREED"
-#define BOARD_DESC		"Xiaomi Mi 4A_100M_BREED Wireless Router"
+#define BOARD_PID		"MI-4A_100M"
+#define BOARD_NAME		"MI-4A_100M"
+#define BOARD_DESC		"Xiaomi Mi 4A_100M Wireless Router"
 #define BOARD_VENDOR_NAME	"Beijing Xiaomi Technology Co., Ltd."
 #define BOARD_VENDOR_URL	"http://www.mi.com/"
 #define BOARD_MODEL_URL		"http://www.mi.com/miwifilite"
