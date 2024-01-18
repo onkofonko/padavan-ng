@@ -749,7 +749,7 @@ start_upnp(void)
 	secured = (nvram_get_int("upnp_secure")) ? "yes" : "no";
 
 	/* Write configuration file */
-	if (!(fp = fopen("/etc/miniupnpd.conf", "w"))) {
+	if (!(fp = fopen("/etc/miniupnpd/miniupnpd.conf", "w"))) {
 		return errno;
 	}
 
