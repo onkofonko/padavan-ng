@@ -347,7 +347,7 @@ struct nvram_pair router_defaults[] = {
 
 #if defined (USE_WID_2G) && USE_WID_2G==7615
 	{ "rt_turbo_qam", "1" },
-	{ "rt_airtimefairness", "0" },
+	{ "rt_airtimefairness", "1" },
 #endif
 
 	// ApCli 2.4GHz

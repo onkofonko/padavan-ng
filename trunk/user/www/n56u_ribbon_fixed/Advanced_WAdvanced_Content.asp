@@ -377,7 +377,7 @@ function done_validating(action){
                                               </select>
                                             </td>
                                         </tr>
-                                        <tr id="row_band_steering" style="display:none">
+<!--                                        <tr id="row_band_steering" style="display:none">
                                             <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 3, 20);"><#WLANConfig11n_band_steering_itemname#></a></th>
                                             <td>
                                                 <select name="wl_band_steering" class="input">
@@ -385,7 +385,7 @@ function done_validating(action){
                                                     <option value="1" <% nvram_match_x("","wl_band_steering", "1","selected"); %>><#btn_Enable#></option>
                                                 </select>
                                             </td>
-                                        </tr>
+                                        </tr> -->
                                         <tr id="row_mumimo" style="display:none">
                                             <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 3, 21);"><#WLANConfig11n_mumimo_itemname#></a></th>
                                             <td>
