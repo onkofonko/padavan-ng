@@ -1,6 +1,6 @@
 SRC_NAME1=squashfs-4.6.1
-SRC_NAME2=xz-5.4.5
-SRC_URL2=https://gigenet.dl.sourceforge.net/project/lzmautils/$(SRC_NAME2).tar.xz
+SRC_NAME2=xz-5.4.6
+SRC_URL2=https://netactuate.dl.sourceforge.net/project/lzmautils/$(SRC_NAME2).tar.xz
 
 #all: download_test extract_test config_xz build_xz build_squashfs
 all: config_xz build_xz build_squashfs
@@ -52,4 +52,3 @@ clean:
 	rm -f config_xz_done
 	rm -f mksquashfs
 	rm -f mksquashfs unsquashfs
-
