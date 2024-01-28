@@ -62,10 +62,6 @@ endif
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_MINIDLNA),y)
 LIBS_INCLUDE_MEDIA=y
 endif
-ifeq ($(CONFIG_FIRMWARE_INCLUDE_FIREFLY),y)
-LIBS_BUILD_SHARED=y
-LIBS_INCLUDE_MEDIA=y
-endif
 endif
 
 ifdef CONFIG_USB_SUPPORT
@@ -101,7 +97,7 @@ dir_y						+= libmnl
 # tcpdump shared libs
 dir_$(CONFIG_FIRMWARE_INCLUDE_TCPDUMP)		+= libpcap
 
-# minidlna and firefly shared libs
+# minidlna shared libs
 dir_$(LIBS_INCLUDE_MEDIA)			+= libid3tag
 dir_$(LIBS_INCLUDE_MEDIA)			+= libav
 dir_$(CONFIG_FIRMWARE_INCLUDE_MINIDLNA)		+= libexif
