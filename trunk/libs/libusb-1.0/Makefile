@@ -1,5 +1,5 @@
-SRC_NAME=libusb-1.0.26
-SRC_URL=https://github.com/libusb/libusb/releases/download/v1.0.26/$(SRC_NAME).tar.bz2
+SRC_NAME=libusb-1.0.27
+SRC_URL=https://github.com/libusb/libusb/releases/download/v1.0.27/$(SRC_NAME).tar.bz2
 
 #all: download_test extract_test config_test
 all: config_test
@@ -26,6 +26,7 @@ config_test:
 configure:
 	( cd $(SRC_NAME) ; \
 	ac_cv_lib_rt_clock_gettime=no \
+	autoreconf -fi ; \
 	./configure \
 		--prefix= \
 		--disable-static \
@@ -46,4 +47,3 @@ install:
 
 romfs:
 	cp -fP $(DESTDIR)/lib/libusb-1.0.so* $(ROMFSDIR)/lib
-
