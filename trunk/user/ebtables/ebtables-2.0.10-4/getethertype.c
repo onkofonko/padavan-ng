@@ -43,7 +43,7 @@
 #include <netinet/ether.h>
 #include <net/ethernet.h>
 
-#include "ethernetdb.h"
+#include "include/ethernetdb.h"
 
 #define	MAXALIASES	35
 
