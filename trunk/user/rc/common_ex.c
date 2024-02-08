@@ -153,7 +153,7 @@ get_eeprom_params(void)
 		ether_etoa(buffer, macaddr_rt);
 		i_ret = flash_mtd_read(MTD_PART_NAME_FACTORY, OFFSET_MAC_ADDR_WSOC, buffer_compare, ETHER_ADDR_LEN);
 		if (i_ret >= 0 && memcmp(buffer, buffer_compare, ETHER_ADDR_LEN) != 0) {
-			// write mac to ralink eeprom 2,4 Ghz
+			// write mac to ralink eeprom 2.4GHz
 			flash_mtd_write(MTD_PART_NAME_FACTORY, OFFSET_MAC_ADDR_WSOC, buffer, ETHER_ADDR_LEN);
 		}
 		buffer[5] += 1;
@@ -163,7 +163,7 @@ get_eeprom_params(void)
 #if defined (BOARD_HAS_5G_RADIO)
 		i_ret = flash_mtd_read(MTD_PART_NAME_FACTORY, OFFSET_MAC_ADDR_INIC, buffer_compare, ETHER_ADDR_LEN);
 		if (i_ret >= 0 && memcmp(buffer, buffer_compare, ETHER_ADDR_LEN) != 0) {
-			// write mac to ralink eeprom 5 Ghz
+			// write mac to ralink eeprom 5GHz
 			flash_mtd_write(MTD_PART_NAME_FACTORY, OFFSET_MAC_ADDR_INIC, buffer, ETHER_ADDR_LEN);
 		}
 #endif
@@ -236,8 +236,8 @@ get_eeprom_params(void)
 
 	nvram_set_temp("il0macaddr", macaddr_lan); // LAN
 	nvram_set_temp("il1macaddr", macaddr_wan); // WAN
-	nvram_set_temp("wl_macaddr", macaddr_wl);  // 5 GHz
-	nvram_set_temp("rt_macaddr", macaddr_rt);  // 2.4 GHZ
+	nvram_set_temp("wl_macaddr", macaddr_wl);  // 5GHz
+	nvram_set_temp("rt_macaddr", macaddr_rt);  // 2.4GHz
 
 #if defined (VENDOR_ASUS)
 	/* reserved for Ralink. used as ASUS country code. */
@@ -385,7 +385,7 @@ get_eeprom_params(void)
 
 		nvram_wlan_set_int(1, "txbf_en", (count_0xff == 33) ? 0 : 1);
 
-		if(count_0xff !=33)	
+		if(count_0xff !=33)
 		{
 		 count_0xff = 0;
 		i_ret = flash_mtd_read(MTD_PART_NAME_FACTORY, 0x81A0, txbf_para, 33);
@@ -397,7 +397,7 @@ get_eeprom_params(void)
 					count_0xff++;
 			}
 		}
-		
+
 		nvram_wlan_set_int(1, "txbf_en", (count_0xff == 33) ? 0 : 1);
 		}
 	}
