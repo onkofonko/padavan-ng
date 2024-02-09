@@ -25,7 +25,7 @@
 var $j = jQuery.noConflict();
 
 $j(document).ready(function() {
-    init_itoggle('reboot_schedule_enable',change_on);
+	init_itoggle('reboot_schedule_enable',change_on);
 	init_itoggle('help_enable');
 });
 
@@ -101,8 +101,8 @@ function applyRule(){
 }
 function change_on(){
 var v = document.form.reboot_schedule_enable_x.value;
-        showhide_div('reboot_schedule_date_tr', v);
-        showhide_div('reboot_schedule_date_tr2', v);
+	showhide_div('reboot_schedule_date_tr', v);
+	showhide_div('reboot_schedule_date_tr2', v);
 	showhide_div('reboot_schedule_time_tr', v);
 	if ( v == 1 )
 		check_Timefield_checkbox();
@@ -288,7 +288,7 @@ function updateDateTime()
     <input type="hidden" name="preferred_lang" id="preferred_lang" value="<% nvram_get_x("", "preferred_lang"); %>">
     <input type="hidden" name="http_passwd" value="">
     <input type="hidden" name="computer_name2" value="<% nvram_get_x("", "computer_name"); %>">
-	    <input type="hidden" name="reboot_schedule" value="<% nvram_get_x("", "reboot_schedule"); %>" disabled>
+    <input type="hidden" name="reboot_schedule" value="<% nvram_get_x("", "reboot_schedule"); %>" disabled>
     <input type="hidden" name="reboot_schedule_enable" value="<% nvram_get_x("", "reboot_schedule_enable"); %>">
 
     <div class="container-fluid">
