@@ -83,7 +83,7 @@ function switch_modem_type(){
 		$("row_modem_dial").style.display = "none";
 		$("row_modem_apn").style.display = "";
 		$("row_modem_nets").style.display = "";
-		
+
 		$("hint_user").innerHTML = "* QMI only";
 		$("hint_pass").innerHTML = "* QMI only";
 		$("hint_node").innerHTML = "* NCM only";
@@ -94,12 +94,12 @@ function switch_modem_type(){
 	else {
 		$("row_modem_dial").style.display = "";
 		$("row_modem_nets").style.display = "none";
-		
+
 		if (mtype == "1")
 			$("row_modem_apn").style.display = "none";
 		else
 			$("row_modem_apn").style.display = "";
-		
+
 		$("hint_user").innerHTML = "";
 		$("hint_pass").innerHTML = "";
 		$("hint_node").innerHTML = "";
@@ -148,7 +148,7 @@ function gen_list(){
 				break;
 			}
 		}
-		
+
 		if (sp_len > 0){
 			var x, n;
 			if ((sp_idx+sp_len) < ar_len){
@@ -161,7 +161,7 @@ function gen_list(){
 				userlist.splice(x, n);
 				passlist.splice(x, n);
 			}
-			
+
 			if (sp_idx > 0) {
 				protolist.splice(0, sp_idx);
 				isplist.splice(0, sp_idx);
@@ -223,7 +223,7 @@ function show_APN_list(){
 function applyRule(){
 	if(validForm()){
 		showLoading();
-		
+
 		document.form.action_mode.value = " Apply ";
 		document.form.current_page.value = "/Advanced_Modem_others.asp";
 		document.form.next_page.value = "";

@@ -80,11 +80,11 @@ function update_vpnc_status(vpnc_state){
 function applyRule(){
 	if(validForm()){
 		showLoading();
-		
+
 		document.form.action_mode.value = " Apply ";
 		document.form.current_page.value = "/vpncli.asp";
 		document.form.next_page.value = "";
-		
+
 		document.form.submit();
 	}
 }
@@ -144,7 +144,7 @@ function validForm(){
 			return false;
 		if(!validate_range(document.form.vpnc_mru, 1000, 1460))
 			return false;
-		
+
 		if (document.form.vpnc_rnet.value.length > 0)
 			return valid_rlan_subnet(document.form.vpnc_rnet, document.form.vpnc_rmsk);
 	}
@@ -211,7 +211,7 @@ function change_vpnc_type() {
 	}
 	else {
 		showhide_div('row_vpnc_ov_cnat', 0);
-		
+
 		showhide_div('row_vpnc_user', 1);
 		showhide_div('row_vpnc_pass', 1);
 	}

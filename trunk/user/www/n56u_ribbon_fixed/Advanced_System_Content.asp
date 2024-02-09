@@ -38,7 +38,7 @@ function initial(){
 	show_banner(1);
 	show_menu(5,7,1);
 	show_footer();
-	
+
 	if(reboot_schedule_support){
 		document.form.reboot_date_x_Sun.checked = getDateCheck(document.form.reboot_schedule.value, 0);
 		document.form.reboot_date_x_Mon.checked = getDateCheck(document.form.reboot_schedule.value, 1);
@@ -51,7 +51,7 @@ function initial(){
 		document.form.reboot_time_x_min.value = getrebootTimeRange(document.form.reboot_schedule.value, 1);
 		document.getElementById('reboot_schedule_enable_tr').style.display = "";
 		change_on();
-		
+
 	}
 	else{
 		document.getElementById('reboot_schedule_enable_tr').style.display = "none";
@@ -149,7 +149,7 @@ function validForm(){
 
 	if(document.form.http_passwd2.value.length > 0)
 		alert("<#File_Pop_content_alert_desc1#>");
-	
+
 	if(reboot_schedule_support){
 		if(!document.form.reboot_date_x_Sun.checked && !document.form.reboot_date_x_Mon.checked &&
 		!document.form.reboot_date_x_Tue.checked && !document.form.reboot_date_x_Wed.checked &&
@@ -505,7 +505,7 @@ function updateDateTime()
                                                 </select>
                                             </td>
                                         </tr>
-					<tr id="reboot_schedule_enable_tr">
+                                        <tr id="reboot_schedule_enable_tr">
                                             <th width="50%" style="border-top: 0 none;"><#Reboot_Schedule#></th>
                                             <td>
                                                 <div class="main_itoggle">
@@ -520,8 +520,8 @@ function updateDateTime()
                                                 </div>
                                             </td>
                                         </tr>
-					<tr id="reboot_schedule_date_tr">
-					    <th><#Reboot_Schedule_Date#></th>
+                                        <tr id="reboot_schedule_date_tr">
+                                            <th><#Reboot_Schedule_Date#></th>
 	                                    <td>
                                                 <div class="controls">
                                                     <label class="checkbox inline"><input type="checkbox" class="input" name="reboot_date_x_Mon" onChange="check_Timefield_checkbox();"/><#WF_Mon#></label>
@@ -533,7 +533,7 @@ function updateDateTime()
                                             </td>
                                         </tr>
                                         <tr id="reboot_schedule_date_tr2">
-					    <th><#Reboot_Schedule_Date2#></th>
+                                            <th><#Reboot_Schedule_Date2#></th>
                                             <td>
                                                 <div class="controls">
                                                     <label class="checkbox inline"><input type="checkbox" class="input" name="reboot_date_x_Sat" onChange="check_Timefield_checkbox();"/><#DAY_Sat#></label>
@@ -541,7 +541,7 @@ function updateDateTime()
                                                 </div>
                                             </td>
                                         </tr>
-					<tr id="reboot_schedule_time_tr">
+                                        <tr id="reboot_schedule_time_tr">
                                         <th style="border-top: 0 none;"><#Reboot_Schedule_Time#></th>
                                             <td style="border-top: 0 none;">
                                                 <input type="text" maxlength="2" style="width: 20px;" size="2" name="reboot_time_x_hour" onKeyPress="return validator.isNumber(this,event);" onblur="validator.timeRange(this, 0);" autocorrect="off" autocapitalize="off"><#Hour#>:

@@ -167,7 +167,7 @@ function remove_modem(port_idx){
 
 	if(confirm(str)){
 		parent.showLoading();
-		
+
 		document.diskForm.action = "safely_remove_disk.asp";
 		document.diskForm.port.value = modem_ports_array[port_idx];
 		document.diskForm.devn.value = modem_devnum_array[port_idx];
