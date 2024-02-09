@@ -1,4 +1,4 @@
-SRC_NAME=transmission-4.0.4
+SRC_NAME=transmission-4.0.5
 SRC_URL=https://github.com/transmission/transmission/archive/refs/tags/4.0.4.tar.xz
 # FMT max ver9.1.0
 SRC_URL_FMT=https://github.com/transmission/fmt/archive/refs/tags/9.1.0.tar.gz
@@ -66,6 +66,7 @@ clean:
 romfs:
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_TRANSMISSION_WEB_CONTROL),y)
 	mkdir -p $(INSTALLDIR)/usr/share/transmission
+#	cp -rf $(THISDIR)/transmission-control/web $(INSTALLDIR)/usr/share/transmission
 	cp -rf $(THISDIR)/transmission-control/public_html $(INSTALLDIR)/usr/share/transmission
 else
 	cp -rf $(THISDIR)/install/usr/share/transmission $(INSTALLDIR)/usr/share
