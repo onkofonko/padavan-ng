@@ -54,7 +54,7 @@ control_xl2tpd(const char *cmd, const char *lac)
 static int
 get_xl2tpd_vpnc_active(void)
 {
-	return ((nvram_match("vpnc_enable", "1") && nvram_match("vpnc_type", "1")) || 
+	return ((nvram_match("vpnc_enable", "1") && nvram_match("vpnc_type", "1")) ||
 		 nvram_match("l2tp_cli_t", "1"));
 }
 

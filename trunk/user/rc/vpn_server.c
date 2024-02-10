@@ -35,7 +35,7 @@ static int xl2tpd_killed_vpns = 0;
 static int
 get_xl2tpd_vpns_active(void)
 {
-	return ((nvram_match("vpns_enable", "1") && nvram_match("vpns_type", "1")) || 
+	return ((nvram_match("vpns_enable", "1") && nvram_match("vpns_type", "1")) ||
 		 nvram_match("l2tp_srv_t", "1"));
 }
 
