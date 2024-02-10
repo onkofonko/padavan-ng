@@ -188,18 +188,18 @@ start_vpn_server(void)
 	if (i_type != 1) {
 		if (!(fp = fopen(vpns_cfg, "w")))
 			return -1;
-		
+
 		fprintf(fp, "option %s\n", VPN_SERVER_PPPD_OPTIONS);
 		fprintf(fp, "connections %d\n", MAX_CLIENTS_NUM);
-		
+
 		pool_in.s_addr = htonl(vaddr);
 		fprintf(fp, "localip %s\n", inet_ntoa(pool_in));
-		
+
 		pool_in.s_addr = htonl((vaddr & vmask) | vp_b);
 		fprintf(fp, "remoteip %s-%u\n", inet_ntoa(pool_in), vp_e);
-		
+
 		fclose(fp);
-		
+
 		chmod(vpns_cfg, 0644);
 	}
 
@@ -212,7 +212,7 @@ start_vpn_server(void)
 		char acl_user_var[32], acl_pass_var[32], acl_addr_var[32];
 		unsigned int vp_a;
 		int i_max = nvram_get_int("vpns_num_x");
-		
+
 		if (i_max > MAX_CLIENTS_NUM) i_max = MAX_CLIENTS_NUM;
 		for (i = 0; i < i_max; i++) {
 			snprintf(acl_user_var, sizeof(acl_user_var), "vpns_user_x%d", i);
@@ -227,22 +227,22 @@ start_vpn_server(void)
 					strcpy(acl_addr_var, inet_ntoa(pool_in));
 				} else
 					strcpy(acl_addr_var, "*");
-				
+
 				fprintf(fp, "\"%s\"	*	\"%s\"	%s\n", acl_user, acl_pass, acl_addr_var);
 			}
 		}
 		fclose(fp);
-		
+
 		chmod(vpns_sec, 0600);
 	}
 
 	if (i_type == 1) {
 		nvram_set_int_temp("l2tp_srv_t", 1);
-		
+
 		safe_start_xl2tpd();
 	} else {
 		nvram_set_int_temp("l2tp_srv_t", 0);
-		
+
 		/* execute pptpd daemon */
 		return eval("/usr/sbin/pptpd", "-c", vpns_cfg);
 	}
@@ -336,7 +336,7 @@ get_vpns_pool(int i_vuse, unsigned int *ip_v, unsigned int *ip_m, unsigned int *
 		*ip_v = ntohl(inet_addr(nvram_safe_get("lan_ipaddr")));
 		*ip_m = ntohl(inet_addr(nvram_safe_get("lan_netmask")));
 		lsnet = ~(*ip_m) - 1;
-		
+
 		lpool[0] = (unsigned int)nvram_safe_get_int("vpns_cli0", 245, 1, 254);
 		lpool[1] = (unsigned int)nvram_safe_get_int("vpns_cli1", 254, 2, 254);
 		if (lpool[0] >= lsnet)
@@ -351,7 +351,7 @@ get_vpns_pool(int i_vuse, unsigned int *ip_v, unsigned int *ip_m, unsigned int *
 		*ip_v = ntohl(inet_addr(nvram_safe_get("vpns_vnet")));
 		*ip_m = ntohl(inet_addr(VPN_SERVER_SUBNET_MASK));
 		*ip_v = (*ip_v & *ip_m) | 1;
-		
+
 		lpool[0] = 2;
 		lpool[1] = lpool[0] + MAX_CLIENTS_NUM - 1;
 	}
@@ -386,7 +386,7 @@ vpns_route_to_remote_lan(const char *cname, char *ifname, char *gw, int add)
 				else
 					route_del(ifname, 0, acl_rnet, gw, acl_rmsk);
 			}
-			
+
 			break;
 		}
 	}
@@ -483,7 +483,7 @@ ipdown_vpns_main(int argc, char **argv)
 					fprintf(fp2, "%s %s %s %s\n", ifname, addr_l, addr_r, name_p);
 			}
 		}
-		
+
 		fclose(fp1);
 	}
 

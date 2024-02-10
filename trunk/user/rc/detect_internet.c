@@ -119,7 +119,7 @@ di_connect_to_host(const struct sockaddr_in *p_sa_dst, int timeout)
 			ret = -1;
 			goto done_exit;
 		}
-		
+
 		/* oops - something wrong with connect */
 		if (ret != 0) {
 			errno = ret;
@@ -164,11 +164,11 @@ di_load_settings(void)
 	for (i = 0; i < DI_MAX_HOSTS; i++) {
 		snprintf(nvram_addr, sizeof(nvram_addr), "di_addr%d", i);
 		snprintf(nvram_port, sizeof(nvram_port), "di_port%d", i);
-		
+
 		di_host_sa[i_items].sin_family = AF_INET;
 		di_host_sa[i_items].sin_addr.s_addr = inet_addr_safe(nvram_safe_get(nvram_addr));
 		di_host_sa[i_items].sin_port = htons(nvram_safe_get_int(nvram_port, 53, 1, 65535));
-		
+
 		if (di_host_sa[i_items].sin_addr.s_addr != INADDR_ANY &&
 		    di_host_sa[i_items].sin_addr.s_addr != INADDR_NONE)
 			i_items++;
@@ -263,7 +263,7 @@ di_on_timer(void)
 
 	if ((di_time_fail_event > 0) && (now >= di_time_fail_event)) {
 		di_time_fail_event = 0;
-		
+
 		if (link_internet == 0 && di_poll_mode != 0 && !di_pause_received)
 			notify_on_internet_state_changed(0, di_time_diff_state);
 	}
@@ -271,16 +271,16 @@ di_on_timer(void)
 	if (link_internet != DI_STATUS_INIT && di_status != link_internet) {
 		di_status = link_internet;
 		di_time_diff_state = now - di_time_last_state;
-		
+
 		nvram_set_int_temp("link_internet", link_internet);
-		
+
 #if defined (BOARD_GPIO_LED_WAN)
 		if (nvram_get_int("front_led_wan") == 3)
 			LED_CONTROL(BOARD_GPIO_LED_WAN, (link_internet) ? LED_ON : LED_OFF);
 #endif
 		if (di_poll_mode != 0 && !di_pause_received) {
 			long fail_delay = (long)nvram_safe_get_int("di_lost_delay", 10, 0, 600);
-			
+
 			if (link_internet || fail_delay == 0) {
 				notify_on_internet_state_changed(link_internet, di_time_diff_state);
 			} else {
@@ -288,7 +288,7 @@ di_on_timer(void)
 				di_time_diff_state += fail_delay;
 			}
 		}
-		
+
 		di_time_last_state = now;
 	}
 

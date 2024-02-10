@@ -274,18 +274,18 @@ start_inic_mii(void)
 	if (nvram_get_int("inic_disable") != 1) {
 		/* release iNIC reset pin */
 		cpu_gpio_set_pin(1, 1);
-		
+
 		usleep(50000);
-		
+
 		/* enable iNIC RGMII port */
 		phy_disable_inic(0);
-		
+
 		/* start iNIC boot */
 		wif_control(ifname_inic, 1);
-		
+
 		/* update some iNIC params */
 		update_inic_mii();
-		
+
 		if (get_mlme_radio_rt()) {
 			/* clear isolation iNIC port from all LAN ports */
 			phy_isolate_inic(0);
@@ -293,24 +293,24 @@ start_inic_mii(void)
 			/* disable mlme radio */
 			doSystem("iwpriv %s set %s=%d", ifname_inic, "RadioOn", 0);
 		}
-		
+
 		/* add rai0 to bridge (needed for RADIUS) */
 		br_add_del_if(IFNAME_BR, ifname_inic, is_need_8021x(nvram_wlan_get(0, "auth_mode")));
 	} else {
 		/* force disable iNIC (e.g. broken module) */
-		
+
 		/* down iNIC interface */
 		wif_control(ifname_inic, 0);
-		
+
 		// set isolate iNIC port from all LAN ports
 		phy_isolate_inic(1);
-		
+
 		/* disable iNIC RGMII port */
 		phy_disable_inic(1);
-		
+
 		/* raise iNIC reset pin */
 		cpu_gpio_set_pin(1, 0);
-		
+
 		logmessage(LOGNAME, "iNIC module disabled! (NVRAM %s=1)", "inic_disable");
 	}
 }
@@ -402,7 +402,7 @@ stop_wifi_all_rt(void)
 {
 #if defined(USE_RT3352_MII)
 	stop_inicd();
-	
+
 	// set isolate iNIC port from all LAN ports
 	phy_isolate_inic(1);
 #endif
@@ -545,25 +545,25 @@ start_wifi_wds_wl(int radio_on)
 	if (radio_on && (i_mode_x == 1 || i_mode_x == 2))
 	{
 		int i_wds_num = 4;
-		
+
 		if (nvram_wlan_get_int(1, "wdsapply_x") == 1)
 			i_wds_num = nvram_wlan_get_int(1, "wdsnum_x");
-		
+
 		if (i_wds_num > 3) {
 			wif_control(IFNAME_5G_WDS3, 1);
 			br_add_del_if(IFNAME_BR, IFNAME_5G_WDS3, 1);
 		}
-		
+
 		if (i_wds_num > 2) {
 			wif_control(IFNAME_5G_WDS2, 1);
 			br_add_del_if(IFNAME_BR, IFNAME_5G_WDS2, 1);
 		}
-		
+
 		if (i_wds_num > 1) {
 			wif_control(IFNAME_5G_WDS1, 1);
 			br_add_del_if(IFNAME_BR, IFNAME_5G_WDS1, 1);
 		}
-		
+
 		wif_control(IFNAME_5G_WDS0, 1);
 		br_add_del_if(IFNAME_BR, IFNAME_5G_WDS0, 1);
 	}
@@ -585,31 +585,31 @@ start_wifi_wds_rt(int radio_on)
 	if (radio_on && (i_mode_x == 1 || i_mode_x == 2))
 	{
 		int i_wds_num = 4;
-		
+
 		if (nvram_wlan_get_int(0, "wdsapply_x") == 1)
 			i_wds_num = nvram_wlan_get_int(0, "wdsnum_x");
-		
+
 		if (i_wds_num > 3) {
 			wif_control(IFNAME_2G_WDS3, 1);
 #if !defined(USE_RT3352_MII)
 			br_add_del_if(IFNAME_BR, IFNAME_2G_WDS3, 1);
 #endif
 		}
-		
+
 		if (i_wds_num > 2) {
 			wif_control(IFNAME_2G_WDS2, 1);
 #if !defined(USE_RT3352_MII)
 			br_add_del_if(IFNAME_BR, IFNAME_2G_WDS2, 1);
 #endif
 		}
-		
+
 		if (i_wds_num > 1) {
 			wif_control(IFNAME_2G_WDS1, 1);
 #if !defined(USE_RT3352_MII)
 			br_add_del_if(IFNAME_BR, IFNAME_2G_WDS1, 1);
 #endif
 		}
-		
+
 		wif_control(IFNAME_2G_WDS0, 1);
 #if !defined(USE_RT3352_MII)
 		br_add_del_if(IFNAME_BR, IFNAME_2G_WDS0, 1);
@@ -1127,7 +1127,7 @@ restart_guest_lan_isolation(void)
 
 	if (is_need_ebtables) {
 		int i_need_dhcp = is_dhcpd_enabled(1);
-		
+
 		module_smart_load("ebtable_filter", NULL);
 		doSystem("ebtables %s", "-F");
 		doSystem("ebtables %s", "-X");
@@ -1141,7 +1141,7 @@ restart_guest_lan_isolation(void)
 	else if (is_module_loaded("ebtables")) {
 		doSystem("ebtables %s", "-F");
 		doSystem("ebtables %s", "-X");
-		
+
 		module_smart_unload("ebt_ip", 0);
 		module_smart_unload("ebtable_filter", 0);
 		module_smart_unload("ebtables", 0);
@@ -1333,13 +1333,13 @@ timecheck_wifi(int is_aband, const char *nv_date, const char *nv_time1, const ch
 			{
 				if (current_min >= iTime2B)
 					return 1;
-				
+
 				/* Check Friday -> Saturday after midnight (special check after workweek) */
 				if ((schedul_dow & DOW_MASK_FRI) && (iTime1B < iTime1E) && (current_min <= iTime2E))
 					return 1;
 			}
 		}
-		
+
 		/* Check cross-night from Friday */
 		if ((schedul_dow & DOW_MASK_FRI) && (iTime1B >= iTime1E) && (current_min <= iTime1E))
 			return 1;
@@ -1360,7 +1360,7 @@ timecheck_wifi(int is_aband, const char *nv_date, const char *nv_time1, const ch
 					return 1;
 			}
 		}
-		
+
 		/* Check cross-night from Saturday */
 		if ((schedul_dow & DOW_MASK_SAT) && (iTime2B >= iTime2E) && (current_min <= iTime2E))
 			return 1;
@@ -1379,7 +1379,7 @@ timecheck_wifi(int is_aband, const char *nv_date, const char *nv_time1, const ch
 			{
 				if (current_min >= iTime1B)
 					return 1;
-				
+
 				/* Check Sunday -> Monday after midnight (special check after weekend) */
 				if ((schedul_dow & DOW_MASK_SUN) && (iTime2B < iTime2E) && (current_min <= iTime1E))
 					return 1;
@@ -1405,7 +1405,7 @@ timecheck_wifi(int is_aband, const char *nv_date, const char *nv_time1, const ch
 					return 1;
 			}
 		}
-		
+
 		/* Check cross-night from previous day */
 		if ((schedul_dow & (current_dow >> 1)) && (iTime1B >= iTime1E) && (current_min <= iTime1E))
 			return 1;

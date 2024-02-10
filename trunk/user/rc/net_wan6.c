@@ -253,12 +253,12 @@ void start_sit_tunnel(int ipv6_type, char *wan_ifname, char *wan_addr4, char *wa
 		struct in_addr net4;
 		struct in6_addr net6;
 		char sit_6rd_prefix[INET6_ADDRSTRLEN], sit_6rd_relay_prefix[32];
-		
+
 		memcpy(&net6, &addr6, sizeof(addr6));
 		ipv6_to_net(&net6, size6);
 		inet_ntop(AF_INET6, &net6, sit_6rd_prefix, INET6_ADDRSTRLEN);
 		sprintf(sit_6rd_prefix, "%s/%d", sit_6rd_prefix, size6);
-		
+
 		strcpy(sit_6rd_relay_prefix, "0.0.0.0/0");
 		size4 = get_wan_unit_value_int(0, "6rd_size");
 		if (size4 > 0 && size4 <= 32)
@@ -266,9 +266,9 @@ void start_sit_tunnel(int ipv6_type, char *wan_ifname, char *wan_addr4, char *wa
 			net4.s_addr = addr4.s_addr & htonl(0xffffffffUL << (32 - size4));
 			sprintf(sit_6rd_relay_prefix, "%s/%d", inet_ntoa(net4), size4);
 		}
-		
+
 		doSystem("ip tunnel 6rd dev %s 6rd-prefix %s 6rd-relay_prefix %s", IFNAME_SIT, sit_6rd_prefix, sit_6rd_relay_prefix);
-		
+
 		ipv6_to_ipv4_map(&addr6, size6, &addr4, size4);
 		addr6.s6_addr16[7] = htons(0x0001);
 		sit_relay = get_wan_unit_value(0, "6rd_relay");
@@ -314,13 +314,13 @@ void start_sit_tunnel(int ipv6_type, char *wan_ifname, char *wan_addr4, char *wa
 			ipv6_to_ipv4_map(&addr6, size6, &addr4, size4);
 			addr6.s6_addr16[7] = htons(0x0001);
 		}
-		
+
 		inet_ntop(AF_INET6, &addr6, addr6s, INET6_ADDRSTRLEN);
 		sprintf(addr6s, "%s/%d", addr6s, 64);
-		
+
 		clear_if_addr6(IFNAME_BR);
 		doSystem("ip -6 addr add %s dev %s", addr6s, IFNAME_BR);
-		
+
 		store_lan_addr6(addr6s);
 	}
 
@@ -350,7 +350,7 @@ void wan6_up(char *wan_ifname, int unit)
 
 	if (ipv6_type == IPV6_6IN4 || ipv6_type == IPV6_6TO4 || ipv6_type == IPV6_6RD) {
 		set_wan_unit_value(unit, "ifname6", IFNAME_SIT);
-		
+
 		wan_addr4 = get_wan_unit_value(unit, "ipaddr");
 		wan_gate4 = get_wan_unit_value(unit, "gateway");
 		wan_addr6 = get_wan_unit_value(unit, "addr6");
@@ -359,9 +359,9 @@ void wan6_up(char *wan_ifname, int unit)
 		start_sit_tunnel(ipv6_type, wan_ifname, wan_addr4, wan_gate4, wan_addr6);
 	} else {
 		set_wan_unit_value(unit, "ifname6", wan_ifname);
-		
+
 		control_if_ipv6_dad(wan_ifname, 1);
-		
+
 		if (ipv6_type == IPV6_NATIVE_STATIC) {
 			wan_addr6 = get_wan_unit_value(unit, "addr6");
 			wan_gate6 = get_wan_unit_value(unit, "gate6");

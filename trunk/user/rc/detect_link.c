@@ -125,19 +125,19 @@ dl_handle_link_wan(void)
 				/* link missing some time (> 10s) */
 				if ((dl_counter_total - dl_counter_wan_down) > 5)
 					dl_counter_dhcpc_renew = (dl_counter_total + 2); // 4s after link up
-				
+
 				dl_counter_modem_check = (dl_counter_total + 10); // 20s after link up
 			}
 		} else {
 			dl_counter_wan_down = dl_counter_total;
 			dl_counter_dhcpc_renew = 0;
 			dl_counter_modem_check = 0;
-			
+
 			if (dl_counter_total > 5) {
 				dl_counter_modem_check = (dl_counter_total + 10); // 20s after link down
 			}
 		}
-		
+
 		if (dl_counter_total > 1) {
 			logmessage("detect_link", "WAN port link %s!", (dl_status_wan) ? "restored" : "down detected");
 			if (check_if_file_exist(script_postw))
@@ -246,25 +246,25 @@ dl_on_timer(void)
 	phy_status_port_link_changed(&is_link_changed);
 	if (is_link_changed || !dl_initialized) {
 		int phy_link;
-		
+
 		phy_link = get_wan_ether_link_direct(is_ap_mode);
 		if (phy_link >= 0)
 			dl_status_wan = phy_link;
-		
+
 		phy_link = 0;
 		if (phy_status_port_link_lan_all(&phy_link) == 0)
 			dl_status_lan = phy_link;
-		
+
 		if (is_ap_mode)
 			dl_status_lan |= dl_status_wan;
-		
+
 		if (!dl_initialized)
 			dl_initialized = 1;
 	}
 
 	if (!is_ap_mode) {
 		dl_handle_link_wan();
-		
+
 		if (get_wan_wisp_active(&dl_status_wisp))
 			dl_handle_link_wisp();
 	}

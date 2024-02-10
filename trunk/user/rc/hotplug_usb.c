@@ -70,7 +70,7 @@ usb_port_module_used(const char *mod_usb)
 		}
 		closedir(dir);
 	}
-	
+
 	return ret;
 }
 
@@ -292,7 +292,7 @@ int mdev_net_main(int argc, char **argv)
 		
 		if (get_usb_modem_wan(0))
 			notify_rc("on_unplug_usb_modem");
-		
+
 		goto out_unlock;
 	}
 
@@ -351,12 +351,12 @@ int mdev_tty_main(int argc, char **argv)
 	// If remove the device?
 	if(!get_hotplug_action(action)){
 		unlink(node_fname);
-		
+
 		if (get_usb_modem_wan(0))
 			notify_rc("on_unplug_usb_modem");
-		
+
 		usb_dbg("(%s): Remove the modem node\n", device_name);
-		
+
 		goto out_unlock;
 	}
 
