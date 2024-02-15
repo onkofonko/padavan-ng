@@ -785,7 +785,7 @@ struct nvram_pair router_defaults[] = {
 	{ "vpns_ov_mdig", "1" },
 	{ "vpns_ov_ciph", "15" },
 	{ "vpns_ov_ncp_clist", DEF_OVPNS_CIPH_LIST },
-	{ "vpns_ov_compress", "2" },
+	{ "vpns_ov_compress", "1" },
 	{ "vpns_ov_atls", "0" },
 	{ "vpns_ov_tcv2", "0" },
 	{ "vpns_ov_rdgw", "0" },
@@ -797,7 +797,7 @@ struct nvram_pair router_defaults[] = {
 	{ "vpnc_ov_mdig", "1" },
 	{ "vpnc_ov_ciph", "15" },
 	{ "vpnc_ov_ncp_clist", DEF_OVPNC_CIPH_LIST },
-	{ "vpnc_ov_compress", "2" },
+	{ "vpnc_ov_compress", "1" },
 	{ "vpnc_ov_atls", "0" },
 
 	{ 0, 0 }

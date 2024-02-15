@@ -525,8 +525,8 @@ function getHash(){
                                     <td>
                                         <select name="vpnc_ov_compress" class="input">
                                             <option value="0" <% nvram_match_x("", "vpnc_ov_compress", "0","selected"); %>><#btn_Disable#></option>
-                                            <option value="1" <% nvram_match_x("", "vpnc_ov_compress", "1","selected"); %>><#OVPN_COMPRESS_Item1#></option>
-                                            <option value="2" <% nvram_match_x("", "vpnc_ov_compress", "2","selected"); %>><#OVPN_COMPRESS_Item2#> (*)</option>
+                                            <option value="1" <% nvram_match_x("", "vpnc_ov_compress", "1","selected"); %>><#OVPN_COMPRESS_Item1#> (*)</option>
+                                            <option value="2" <% nvram_match_x("", "vpnc_ov_compress", "2","selected"); %>><#OVPN_COMPRESS_Item2#></option>
                                             <option value="3" <% nvram_match_x("", "vpnc_ov_compress", "3","selected"); %>><#OVPN_COMPRESS_Item3#></option>
                                             <option value="4" <% nvram_match_x("", "vpnc_ov_compress", "4","selected"); %>><#OVPN_COMPRESS_Item4#></option>
                                         </select>
