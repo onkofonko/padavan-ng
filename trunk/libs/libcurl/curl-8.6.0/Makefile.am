@@ -135,7 +135,7 @@ CLEANFILES = $(VC14_LIBVCXPROJ) $(VC14_SRCVCXPROJ) \
 bin_SCRIPTS = curl-config
 
 SUBDIRS = lib src
-DIST_SUBDIRS = $(SUBDIRS) packages scripts include
+DIST_SUBDIRS = $(SUBDIRS) packages include
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libcurl.pc

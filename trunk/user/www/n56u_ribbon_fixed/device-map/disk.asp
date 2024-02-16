@@ -132,7 +132,7 @@ function remove_disk(){
 	
 	if(confirm(str)){
 		parent.showLoading();
-		
+
 		document.diskForm.action = "safely_remove_disk.asp";
 		document.diskForm.port.value = parent.getDiskPort(diskOrder);
 		document.diskForm.devn.value = parent.getDiskDevice(diskOrder);

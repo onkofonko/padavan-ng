@@ -145,11 +145,11 @@ find_modem_node(const char* pattern, int fetch_pref, int fetch_devnum, int fetch
 	FILE *fp;
 	int i, node_pref, node_devnum, node_valid_last;
 	char node_fname[64];
-	
+
 	node_valid_last = -1;
 	if (devnum_out)
 		*devnum_out = 0;
-	
+
 	for (i=0; i<MAX_USB_NODE; i++) {
 		node_pref = 0;
 		node_devnum = 0;
@@ -175,22 +175,22 @@ find_modem_node(const char* pattern, int fetch_pref, int fetch_devnum, int fetch
 				}
 			}
 			fclose(fp);
-			
+
 			node_valid_last = i;
-			
+
 			if (fetch_index >= 0) {
 				if (i == fetch_index)
 					return i;
 			} else {
 				if (fetch_devnum && fetch_devnum != node_devnum)
 					continue;
-				
+
 				if (!fetch_pref || node_pref > 0)
 					return i;
 			}
 		}
 	}
-	
+
 	if (fetch_index >= 0 && node_valid_last >= 0)
 		return node_valid_last;
 	
@@ -339,14 +339,14 @@ qmi_control_network(const char* control_node, const char *ndis_ifname, int is_st
 		int i;
 		char *qmi_nets, *pin_code, *usr_name, *usr_pass;
 		char clid_cmd[32], auth_cmd[128];
-		
+
 		/* enter PIN-code */
 		pin_code = nvram_safe_get("modem_pin");
 		if (strlen(pin_code) > 0) {
 			doSystem("%s -d /dev/%s %s %s",
 				"/bin/uqmi", control_node, "--verify-pin1", pin_code);
 		}
-		
+
 		/* set interface format as 802.3 */
 		doSystem("%s -d /dev/%s %s %s",
 			"/bin/uqmi", control_node, "--set-data-format", "802.3");
@@ -399,50 +399,50 @@ qmi_control_network(const char* control_node, const char *ndis_ifname, int is_st
 		}
 		doSystem("%s -d /dev/%s %s %s",
 			"/bin/uqmi", control_node, "--set-network-modes", qmi_nets);
-		
+
 		/* obtain new client id */
 		doSystem("%s -d /dev/%s %s %s",
 			"/bin/uqmi", control_node, "--get-client-id", "wds");
 		qmi_client_id = get_qmi_handle(QMI_CLIENT_ID);
-		
+
 		clid_cmd[0] = 0;
 		if (qmi_client_id >= 0)
 			snprintf(clid_cmd, sizeof(clid_cmd), " --set-client-id wds,%d", qmi_client_id);
-		
+
 		usr_name = nvram_safe_get("modem_user");
 		usr_pass = nvram_safe_get("modem_pass");
 		
 		auth_cmd[0] = 0;
 		if (strlen(usr_name) > 0 && strlen(usr_pass) > 0)
 			snprintf(auth_cmd, sizeof(auth_cmd), " --auth-type both --username \"%s\" --password \"%s\"", usr_name, usr_pass);
-		
+
 		unlink(QMI_HANDLE_PDH);
 		for (i = 0; i < MAX_QMI_TRIES; i++) {
 			doSystem("%s -d /dev/%s%s --keep-client-id wds --start-network \"%s\"%s --autoconnect",
 					"/bin/uqmi", control_node, clid_cmd, nvram_safe_get("modem_apn"), auth_cmd);
-			
+
 			if (check_if_file_exist(QMI_HANDLE_PDH))
 				return 0;
-			
+
 			sleep(1);
 		}
 	} else {
 //		int qmi_pdh = get_qmi_handle(QMI_HANDLE_PDH);
-		
+
 		/* stop network and disable autoconnect (use global pdh with autoconnect) */
 		doSystem("%s -d /dev/%s --stop-network 0x%x --autoconnect",
 			"/bin/uqmi", control_node, 0xffffffff);
-		
+
 		/* release client id */
 		qmi_client_id = get_qmi_handle(QMI_CLIENT_ID);
 		if (qmi_client_id >= 0) {
 			doSystem("%s -d /dev/%s --set-client-id wds,%d --release-client-id wds",
 				"/bin/uqmi", control_node, qmi_client_id);
 		}
-		
+
 		unlink(QMI_CLIENT_ID);
 		unlink(QMI_HANDLE_PDH);
-		
+
 		return 0;
 	}
 
@@ -491,7 +491,7 @@ ncm_control_network(const char* control_node, int is_start)
 	if (fp) {
 		if (fwrite(node_msg, 1, strlen(node_msg), fp) > 0)
 			result = 0;
-		
+
 		fclose(fp);
 	}
 
@@ -527,10 +527,10 @@ ndis_control_network(char *ndis_ifname, int devnum, int is_start)
 	if (strlen(control_node_wdm) > 0) {
 		if (is_usbnet_has_module(ndis_ifname, "qmi_wwan"))
 			return qmi_control_network(control_node_wdm, ndis_ifname, is_start);
-		
+
 		if (is_usbnet_has_module(ndis_ifname, "cdc_mbim"))
 			return mbim_control_network(control_node_wdm, is_start);
-		
+
 		if (is_usbnet_has_module(ndis_ifname, "huawei_cdc_ncm"))
 			return ncm_control_network(control_node_wdm, is_start);
 	}
@@ -538,7 +538,7 @@ ndis_control_network(char *ndis_ifname, int devnum, int is_start)
 	if (strlen(control_node_tty) > 0) {
 		if (is_usbnet_has_module(ndis_ifname, "cdc_ncm"))
 			return ncm_control_network(control_node_tty, is_start);
-		
+
 		if (is_usbnet_has_module(ndis_ifname, "sierra_net"))
 			return sierra_control_network(control_node_tty, is_start);
 	}
@@ -557,7 +557,7 @@ unlink_modem_ras(void)
 	{
 		snprintf(node_fname, sizeof(node_fname), "%s/ttyUSB%d", MODEM_NODE_DIR, i);
 		unlink(node_fname);
-		
+
 		snprintf(node_fname, sizeof(node_fname), "%s/ttyACM%d", MODEM_NODE_DIR, i);
 		unlink(node_fname);
 	}
@@ -573,13 +573,13 @@ unlink_modem_ndis(void)
 	{
 		snprintf(node_fname, sizeof(node_fname), "%s/ttyUSB%d", MODEM_NODE_DIR, i);
 		unlink(node_fname);
-		
+
 		snprintf(node_fname, sizeof(node_fname), "%s/cdc-wdm%d", MODEM_NODE_DIR, i);
 		unlink(node_fname);
-		
+
 		snprintf(node_fname, sizeof(node_fname), "%s/weth%d", MODEM_NODE_DIR, i);
 		unlink(node_fname);
-		
+
 		snprintf(node_fname, sizeof(node_fname), "%s/wwan%d", MODEM_NODE_DIR, i);
 		unlink(node_fname);
 	}
@@ -699,17 +699,17 @@ safe_remove_usb_modem(void)
 		{
 			doSystem("killall %s %s", "-SIGUSR2", svcs[0]);
 			usleep(300000);
-			
+
 			kill_services(svcs, 3, 1);
 		}
-		
+
 		stop_wan_usbnet();
 //		unlink_modem_ndis();
 	}
 	else
 	{
 		char* svcs_ppp[] = { "pppd", NULL };
-		
+
 		kill_services(svcs_ppp, 10, 1);
 //		unlink_modem_ras();
 	}
@@ -732,9 +732,9 @@ launch_wan_modem_ras(int unit)
 
 	if (get_modem_node_ras(node_name, NULL)) {
 		if (write_pppd_ras_conf(call_path, node_name, unit)) {
-			
+
 			logmessage(LOGNAME, "select RAS modem interface %s to pppd", node_name);
-			
+
 			return eval("/usr/sbin/pppd", "call", call_file);
 		}
 	}
@@ -752,22 +752,22 @@ launch_wan_usbnet(int unit)
 
 	if (get_modem_ndis_ifname(ndis_ifname, &modem_devnum) && is_interface_exist(ndis_ifname)) {
 		int ndis_mtu = nvram_safe_get_int("modem_mtu", 1500, 1000, 1500);
-		
+
 		check_upnp_wanif_changed(ndis_ifname);
 		set_wan_unit_value(unit, "proto_t", "NDIS Modem");
 		set_wan_unit_value(unit, "ifname_t", ndis_ifname);
-		
+
 		/* bring up NDIS interface */
 		doSystem("ifconfig %s mtu %d up %s", ndis_ifname, ndis_mtu, "0.0.0.0");
-		
+
 		/* re-build iptables rules (first stage w/o WAN IP) */
 		start_firewall_ex();
-		
+
 		if (ndis_control_network(ndis_ifname, modem_devnum, 1) == 0)
 			sleep(1);
-		
+
 		start_udhcpc_wan(ndis_ifname, unit, 0);
-		
+
 		return 0;
 	}
 
@@ -812,7 +812,7 @@ launch_usb_modeswitch(int vid, int pid, int inquire)
 	for (ua = &ums_ma_addon[0]; ua->vid; ua++) {
 		if (ua->vid == vid && ua->pid == pid) {
 			usb_info_t *usb_info, *follow_usb;
-			
+
 			usb_info = get_usb_info();
 			for (follow_usb = usb_info; follow_usb != NULL; follow_usb = follow_usb->next) {
 				if (follow_usb->dev_vid == vid && follow_usb->dev_pid == pid && follow_usb->manuf) {
@@ -826,7 +826,7 @@ launch_usb_modeswitch(int vid, int pid, int inquire)
 				}
 			}
 			free_usb_info(usb_info);
-			
+
 			break;
 		}
 	}

@@ -50,7 +50,10 @@ fi
 if [ -f "/var/run/stubby_proxy.pid" ]; then
 		logger -t stubby "Stubby is running."
 	else
-		/usr/bin/stubby_start.sh 
+		while [ `date +%s` -lt 1593374000 ] ; do
+		sleep 10
+		done
+		/usr/sbin/stubby -g $1 $2 $3 $4 $5 $6 $7 $8 $9
 ###		/usr/sbin/stubby -g -l /tmp/stubby.log
 		touch /var/run/stubby_proxy.pid
 		logger -t stubby "Running."

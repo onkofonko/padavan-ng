@@ -45,7 +45,7 @@ var validator = {
 			if(this.ssidChar(string_obj.value.charCodeAt(i))){
 				invalid_char = invalid_char+string_obj.value.charAt(i);
 			}	
-			
+
 			if(string_obj.value.charAt(i) == '"'
 					||  string_obj.value.charAt(i) == '/'
 					||  string_obj.value.charAt(i) == '\\'
@@ -90,10 +90,10 @@ var validator = {
 	bandwidth_code: function(o,event) {
 		var keyPressed = event.keyCode ? event.keyCode : event.which;
 		var target = o.value.split(".");
-		
+
 		if (validator.isFunctionButton(event))
 			return true;
-			
+
 		if((keyPressed == 46) && (target.length > 1))
 			return false;
 
@@ -128,18 +128,18 @@ var validator = {
 
 	checkIPAddrInput: function(obj, emp){	
 		if(document.getElementById("check_ip_input"))
-			obj.parentNode.removeChild(obj.parentNode.childNodes[2]);	
+			obj.parentNode.removeChild(obj.parentNode.childNodes[2]);
 		if(!this.ipAddr4(obj) || (emp == 1 && obj.value == "")){
 			var childsel=document.createElement("div");
 			childsel.setAttribute("id","check_ip_input");
 			childsel.style.color="#FFCC00";
 			obj.parentNode.appendChild(childsel);
-			document.getElementById("check_ip_input").innerHTML="<#JS_validip#>";		
+			document.getElementById("check_ip_input").innerHTML="<#JS_validip#>";
 			document.getElementById("check_ip_input").style.display = "";
 			obj.value = obj.parentNode.childNodes[0].innerHTML;
 			obj.focus();
 			obj.select();
-			return false;	
+			return false;
 		}else
 			return true;
 	},
@@ -153,16 +153,16 @@ var validator = {
 		 		return obj.selectionStart; //Gecko
 		 	}
 		 	else{                        //For IE
-		 		var currentRange=document.selection.createRange();   
+		 		var currentRange=document.selection.createRange();
 		 		var workRange=currentRange.duplicate();
 		 		obj.select();
-		 		var allRange=document.selection.createRange();   
-		 		var len=0;   
-		 		while(workRange.compareEndPoints("StartToStart",allRange)>0){   
-		 			workRange.moveStart("character",-1);   
-		 			len++;   
+		 		var allRange=document.selection.createRange();
+		 		var len=0;
+		 		while(workRange.compareEndPoints("StartToStart",allRange)>0){
+		 			workRange.moveStart("character",-1);
+		 			len++;
 		 		}
-		 		currentRange.select();   
+		 		currentRange.select();
 		 		return	len;
 		 	}
 		}
@@ -177,14 +177,14 @@ var validator = {
 				return true;
 			}
 		};
-		
+
 		var nextInputBlock = o.nextSibling.nextSibling; //find the next input (sibling include ".")
 		var prevInputBlock = o.previousSibling;
 		prevInputBlock = (prevInputBlock != null)?prevInputBlock.previousSibling:o;
-		
+
 		var sk = window.event ? e.keyCode : e.which;
 		var s = o.value;
-		
+
 		if((sk>=48 && sk<=57) || (sk>=97 && sk<=105) || sk==0) // 0->other key
 		{
 			if(s.length == 3){
@@ -268,17 +268,17 @@ var validator = {
 			if(isNaN(s) && s.length >= 1 && sk != 13){
 				alert("<#LANHostConfig_x_DDNS_alarm_9#>");
 				o.focus();
-				o.select();	
+				o.select();
 				return false;
 			}
 			else{
 				nc=0;
 				return false;
 			}
-		}	
+		}
 	},
 
-	eachPort: function(o, num, min, max) {	
+	eachPort: function(o, num, min, max) {
 		if(num<min || num>max) {
 			alert("<#JS_validport#>");
 			return false;
@@ -413,7 +413,7 @@ var validator = {
 
 		if((keyPressed>47 && keyPressed<58)||(keyPressed>64 && keyPressed<71)||(keyPressed>96 && keyPressed<103)){	//Hex
 			j = 0;
-			
+
 			for(i = 0; i < o.value.length; i++){
 				if(o.value.charAt(i) == ':'){
 					j++;
@@ -427,7 +427,7 @@ var validator = {
 			}
 			
 			return true;
-		}	
+		}
 		else if(keyPressed == 58 || keyPressed == 13){	//symbol ':' & 'ENTER'
 			return true;
 		}
@@ -474,23 +474,23 @@ var validator = {
 			return false;
 	},
 
-	isNumber: function(o,event){	
+	isNumber: function(o,event){
 		var keyPressed = event.keyCode ? event.keyCode : event.which;
-		
+
 		if (this.isFunctionButton(event)){
 			return true;
 		}
 
 		if (keyPressed>47 && keyPressed<58){
 			/*if (keyPressed==48 && o.value.length==0){	//single 0
-				return false;	
+				return false;
 			}*/
 			return true;
 		}
 		else if(event.metaKey && (keyPressed == 65 || keyPressed == 67 || keyPressed == 86 || keyPressed == 88 
 			                   || keyPressed == 97 || keyPressed == 99 || keyPressed == 118 || keyPressed == 120)){		//for Mac + Safari, let 'Command + A'(C, V, X) can work
 			return true
-		}		
+		}
 		else{
 			return false;
 		}
@@ -518,7 +518,7 @@ var validator = {
 
 		if((keyPressed > 47 && keyPressed < 58)){
 			j = 0;
-			
+
 			for(i = 0; i < o.value.length; i++){
 				if(o.value.charAt(i) == '.'){
 					j++;
@@ -535,13 +535,13 @@ var validator = {
 		}
 		else if(keyPressed == 46){
 			j = 0;
-			
+
 			for(i = 0; i < o.value.length; i++){
 				if(o.value.charAt(i) == '.'){
 					j++;
 				}
 			}
-			
+
 			if(o.value.charAt(i-1) == '.' || j == 3){
 				return false;
 			}
@@ -567,30 +567,30 @@ var validator = {
 
 		if((keyPressed > 47 && keyPressed < 58)){
 			j = 0;
-			
+
 			for(i = 0; i < o.value.length; i++){
 				if(o.value.charAt(i) == '.'){
 					j++;
 				}
 			}
-			
+
 			if(j < 3 && i >= 3){
 				if(o.value.charAt(i-3) != '.' && o.value.charAt(i-2) != '.' && o.value.charAt(i-1) != '.'){
 					o.value = o.value+'.';
 				}
 			}
-			
+
 			return true;
 		}
 		else if(keyPressed == 46){
 			j = 0;
-			
+
 			for(i = 0; i < o.value.length; i++){
 				if(o.value.charAt(i) == '.'){
 					j++;
 				}
 			}
-			
+
 			if(o.value.charAt(i-1) == '.' || j == 3){
 				return false;
 			}
@@ -599,17 +599,17 @@ var validator = {
 		}
 		else if(keyPressed == 47){
 			j = 0;
-			
+
 			for(i = 0; i < o.value.length; i++){
 				if(o.value.charAt(i) == '.'){
 					j++;
 				}
 			}
-			
+
 			if( j < 3){
 				return false;
 			}
-			
+
 			return true;
 		}
 		return false;
@@ -664,14 +664,14 @@ var validator = {
 		var B_class_start = inet_network("127.0.0.0");
 		var B_class_end = inet_network("127.255.255.255");
 		var C_class_start = inet_network("128.0.0.0");
-		var C_class_end = inet_network("255.255.255.255");		
+		var C_class_end = inet_network("255.255.255.255");
 		var ip_obj = obj_name;
 		var ip_num = inet_network(ip_obj.value);
 
 		if(obj_flag == "DNS" && ip_num == -1){ //DNS allows to input nothing
 			return true;
 		}
-		
+
 		if(obj_flag == "GW" && ip_num == -1){ //GW allows to input nothing
 			return true;
 		}
@@ -712,7 +712,7 @@ var validator = {
 			else {
 				netmask_reverse_num = ~netmask_num;
 			}
-			
+
 			if(netmask_num < 0) {
 				wrong_netmask = 1;
 			}
@@ -754,7 +754,7 @@ var validator = {
 		var B_class_start = inet_network("127.0.0.0");
 		var B_class_end = inet_network("127.255.255.255");
 		var C_class_start = inet_network("128.0.0.0");
-		var C_class_end = inet_network("255.255.255.255");		
+		var C_class_end = inet_network("255.255.255.255");
 		var ip_obj = obj_name;
 		var ip_mask_array = ip_obj.value.split("/");
 
@@ -809,7 +809,7 @@ var validator = {
 			ip_obj.focus();
 			ip_obj.select();
 			return false;
-		}	
+		}
 	},
 
 	isLegal_ipv6: function(obj) {
@@ -906,20 +906,20 @@ var validator = {
 		}
 		else if (keyPressed==44){  //"�? can be type in first charAt  ::: 0220 Lock add"
 			if (o.value.length==0)
-				return false;		
+				return false;
 			else
 				return true;
 		}
 		else if (keyPressed==60 || keyPressed==62){  //">" and "<" only can be type in first charAt ::: 0220 Lock add
 			if (o.value.length==0)
-				return true;		
+				return true;
 			else
 				return false;
 		}
 		else if(event.metaKey && (keyPressed == 65 || keyPressed == 67 || keyPressed == 86 || keyPressed == 88 
 			                   || keyPressed == 97 || keyPressed == 99 || keyPressed == 118 || keyPressed == 120)){		//for Mac + Safari, let 'Command + A'(C, V, X) can work
 			return true
-		}		
+		}
 
 		return false;
 	},
@@ -931,7 +931,7 @@ var validator = {
 		if (this.isFunctionButton(event)){
 			return true;
 		}
-			
+
 		if ((keyPressed>47 && keyPressed<58) || keyPressed == 32){
 			return true;
 		}
@@ -971,7 +971,7 @@ var validator = {
 		else{
 			alert('<#JS_validchar#>');
 			return false;
-		}	
+		}
 	},
 
 	isValidURL: function(value) {
@@ -987,31 +987,31 @@ var validator = {
 	inet_network: function(ip_str){
 		if(!ip_str)
 			return -1; //null
-		
+
 		var re = /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;
 		if(re.test(ip_str)){
 			var v1 = parseInt(RegExp.$1);
 			var v2 = parseInt(RegExp.$2);
 			var v3 = parseInt(RegExp.$3);
 			var v4 = parseInt(RegExp.$4);
-			
+
 			if(v1 < 256 && v2 < 256 && v3 < 256 && v4 < 256)
 				return v1*256*256*256+v2*256*256+v3*256+v4; //valid
 		}
-		
+
 		return -2; //not valid
 	},
 
 	ipAddr4: function(obj){
-		var num = -1;	
+		var num = -1;
 		var pos = 0;
 		var v1, v2, v3, v4;
 		if(obj.value == "")
 				return true;
-		else{			
+		else{
 			for(var i = 0; i < obj.value.length; ++i){
 				var c = obj.value.charAt(i);
-			
+
 				if(c >= '0' && c <= '9'){
 					if(num == -1 ){
 						num = (c-'0');
@@ -1023,20 +1023,20 @@ var validator = {
 				else{
 					if(num < 0 || num > 255 || c != '.'){
 						return false;
-					}			
+					}
 					if(pos == 0)
 						v1 = num;
 					else if(pos == 1)
 						v2 = num;
 					else if(pos == 2)
 						v3 = num;
-				
+
 					num = -1;
 					++pos;
 				}
 			}
-		
-			if(pos!=3 || num<0 || num>255){		
+
+			if(pos!=3 || num<0 || num>255){
 				return false;
 			}
 			else
@@ -1058,7 +1058,7 @@ var validator = {
 					v=='lan1_ipaddr' || v=='lan1_netmask' ||
 					v == 'wl_radius_ipaddr' || v == 'hs_radius_ipaddr') {
 				alert("<#JS_fieldblank#>");
-				
+
 				if(v == 'wan_ipaddr_x'){
 					document.form.wan_ipaddr_x.value = "10.1.1.1";
 					document.form.wan_netmask_x.value = "255.0.0.0";
@@ -1075,10 +1075,10 @@ var validator = {
 					document.form.lan_netmask.value = "255.255.255.0";
 				else if(v == 'lan1_netmask')
 					document.form.lan1_netmask.value = "255.255.255.0";
-				
+
 				o.focus();
 				o.select();
-				
+
 				return false;
 			}
 			else
@@ -1087,10 +1087,10 @@ var validator = {
 		
 		if(v == 'wan_ipaddr_x' && document.form.wan_netmask_x.value == "")
 			document.form.wan_netmask_x.value="255.255.255.0";
-		
+
 		for(var i = 0; i < o.value.length; ++i){
 			var c = o.value.charAt(i);
-			
+
 			if(c >= '0' && c <= '9'){
 				if(num == -1 ){
 					num = (c-'0');
@@ -1106,26 +1106,26 @@ var validator = {
 					}
 					else{
 						alert(o.value+" <#JS_validip#>");
-						
+
 						o.value = "";
 						o.focus();
 						o.select();
 						return false;
 					}
 				}
-				
+
 				if(pos == 0)
 					v1 = num;
 				else if(pos == 1)
 					v2 = num;
 				else if(pos == 2)
 					v3 = num;
-				
+
 				num = -1;
 				++pos;
 			}
 		}
-		
+
 		if(pos!=3 || num<0 || num>255){
 			if(v == 'wl_radius_ipaddr' && typeof(noAlert) != undefined && noAlert == 1){
 				return false;
@@ -1140,7 +1140,7 @@ var validator = {
 		}
 		else
 			v4 = num;
-		
+
 		if(v == 'dhcp_start' || v == 'dhcp_end' ||
 				v == 'wan_ipaddr_x' ||
 				v == 'dhcp1_start' || v == 'dhcp1_end' ||
@@ -1161,7 +1161,7 @@ var validator = {
 					return false;
 				}
 			}
-			
+
 			if(sw_mode == "2" || sw_mode == "3")	// variables are defined in state.js
 				;	// there is no WAN in AP mode, so it wouldn't be compared with the wan ip..., etc.
 			else if(this.requireWANIP(v) && (
@@ -1181,10 +1181,10 @@ var validator = {
 					document.form.lan1_ipaddr.value = "192.168.2.1";
 					document.form.lan1_netmask.value = "255.255.255.0";
 				}
-				
+
 				o.focus();
 				o.select();
-				
+
 				return false;
 			}
 		}
@@ -1197,7 +1197,7 @@ var validator = {
 				return false;
 			}
 		}
-		
+
 		if(sw_mode=="2" || sw_mode=="3")	// variables are defined in state.js
 				;	// there is no WAN in AP mode, so it wouldn't be compared with the wan ip..., etc.
 		else if(this.requireWANIP(v) && (
@@ -1205,7 +1205,7 @@ var validator = {
 				(v=='lan_netmask' &&  this.matchSubnet2(document.form.lan_ipaddr.value, o, document.form.wan_ipaddr_x.value, document.form.wan_netmask_x))
 				)){
 			alert(o.value + " <#JS_validip#>");
-			
+
 			if (v=='wan_netmask_x'){
 				document.form.wan_ipaddr_x.value = "10.1.1.1";
 				document.form.wan_netmask_x.value = "255.0.0.0";
@@ -1218,20 +1218,20 @@ var validator = {
 				document.form.lan1_ipaddr.value = "192.168.2.1";
 				document.form.lan1_netmask.value = "255.255.255.0";
 			}
-			
+
 			o.focus();
 			o.select();
 			return false;
 		}
-			
-			
+
+
 		o.value = v1 + "." + v2 + "." + v3 + "." + v4;
 		
 		if((v1 > 0) && (v1 < 127)) mask = "255.0.0.0";
 		else if ((v1 > 127) && (v1 < 192)) mask = "255.255.0.0";
 		else if ((v1 > 191) && (v1 < 224)) mask = "255.255.255.0";
 		else mask = "0.0.0.0";
-		
+
 		if(v=='wan_ipaddr_x' && document.form.wan_netmask_x.value==""){
 			document.form.wan_netmask_x.value = mask;
 		}
@@ -1272,14 +1272,14 @@ var validator = {
 				return false;
 			}
 		}
-		
+
 		return true;
 	},
 
 	ipAddrFinalQIS: function(o,v){
 		var IP_Validate = function(o){
 			var ip_reg=/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
-			
+
 			if(ip_reg.test(o.value)){ //Distinguish whether it is IP
 				return true;
 			}
@@ -1291,7 +1291,7 @@ var validator = {
 		var fulfillIP = function(obj){
 			var src_ip = obj.value.split(".");
 			var IP_List = document.getElementById(obj.name+"_div").childNodes;
-			
+
 			for(var i=0,j=0; i < IP_List.length, j<src_ip.length; i++){
 				if(IP_List[i].type == "text"){
 					IP_List[i].value = src_ip[j];
@@ -1299,7 +1299,7 @@ var validator = {
 				}
 			}
 		};
-		
+
 		if(v == 'wan_ipaddr_x'){
 			if(o.value.length == 0){    /*Blank.*/
 				if(document.getElementById(o.name+"_div")){
@@ -1350,7 +1350,7 @@ var validator = {
 				if(document.getElementById(o.name+"_div")){
 					document.getElementById(o.name+"_div").style.border = "2px solid #CE1E1E";
 				}
-				
+
 				if(confirm(o.title+"<#JS_fieldblank#>\n<#JS_field_fulfillSubmask#>")){
 					if((wan_ipaddr_x1 > 0) && (wan_ipaddr_x1 < 127)) o.value = "255.0.0.0";
 					else if ((wan_ipaddr_x1 > 127) && (wan_ipaddr_x1 < 192)) o.value = "255.255.0.0";
@@ -1397,16 +1397,16 @@ var validator = {
 						document.getElementById(o.name+"_div").style.border = "2px solid #CE1E1E";
 					}
 					alert("<#IPConnection_warning_WANIPEQUALGatewayIP#>");
-					return false;			
+					return false;
 				}
 			}
 			
-			return true;	
+			return true;
 		}
 		else if(v == 'wan_dns1_x' || v == 'wan_dns2_x'){
-			
+
 			var split_IP = o.value.split(".");
-			
+
 			if(!(IP_Validate(o))){
 				if(document.getElementById(o.name+"_div")){
 					document.getElementById(o.name+"_div").style.border = "2px solid #CE1E1E";
@@ -1421,7 +1421,7 @@ var validator = {
 					alert(o.value +" <#JS_validip#>");
 					document.getElementById(o.name+"_div").style.border = "2px solid #CE1E1E";
 					return false;
-				}			
+				}
 				else{
 					return true;
 				}
@@ -1535,7 +1535,7 @@ var validator = {
 			if (ip1.charAt(i) == '.'){
 				if (ip2.charAt(i) != '.')
 					return false;
-					
+
 				c++;
 				if (v1!=v2) 
 					return false;
@@ -1546,7 +1546,7 @@ var validator = {
 			else{
 				if (ip2.charAt(i)=='.') 
 					return false;
-					
+
 				v1 = v1*10 + (ip1.charAt(i) - '0');
 				v2 = v2*10 + (ip2.charAt(i) - '0');
 			}
@@ -1569,7 +1569,7 @@ var validator = {
 			nsb = nsb1;
 		else
 			nsb = nsb2;
-		
+
 		if((this.inet_network(wan_ip1)&nsb) == (this.inet_network(lan_ip2)&nsb))
 			return 1;
 		else
@@ -1584,25 +1584,25 @@ var validator = {
 			if(parseInt(RegExp.$1) >= parseInt(RegExp.$2)){
 				alert("<#JS_validport#>");	
 				obj.focus();
-				obj.select();		
-				return false;												
+				obj.select();
+				return false;
 			}
 			else{
 				if(!this.eachPort(obj, RegExp.$1, mini, maxi) || !this.eachPort(obj, RegExp.$2, mini, maxi)){
 					obj.focus();
 					obj.select();
-					return false;											
+					return false;
 				}
-				return true;								
+				return true;
 			}
 		}
 		else{
-			if(!this.range(obj, mini, maxi)){		
+			if(!this.range(obj, mini, maxi)){
 				obj.focus();
 				obj.select();
 				return false;
 			}
-			return true;	
+			return true;
 		}	
 	},
 
@@ -1618,7 +1618,7 @@ var validator = {
 			else{
 				if (num>255){
 					alert(num + " <#JS_validport#>");
-					
+
 				o.focus();
 				o.select();
 				return false;
@@ -1626,29 +1626,29 @@ var validator = {
 				num = 0;
 			}
 		}
-			
+
 		if (num>255){
 			alert(num + " <#JS_validport#>");
 			o.focus();
 			o.select();
 			return false;
 		}
-		
+
 		return true;
 	},
 
 	psk: function(psk_obj, wl_unit){
 		var psk_length = psk_obj.value.length;
-		
+
 		if(psk_length < 8){
 			alert("<#JS_passzero#>");
 			psk_obj.value = "00000000";
 			psk_obj.focus();
 			psk_obj.select();
-			
+
 			return false;
 		}
-				
+
 		if(psk_length > 64){
 			alert("<#JS_PSK64Hex#>");
 			psk_obj.focus();
@@ -1662,19 +1662,19 @@ var validator = {
 			psk_obj.select();
 			return false;
 		}
-				
+
 		if(psk_length == 64 && !this.hex(psk_obj)){
 			alert("<#JS_PSK64Hex#>");
 			psk_obj.focus();
-			psk_obj.select();				
+			psk_obj.select();
 			return false;
 		}
-		
+
 		return true;
 	},
 
 	psk_KR: function(psk_obj, flag){
-		
+
 		var psk_length = psk_obj.value.length;
 		if(!/[A-Za-z]/.test(psk_obj.value) || !/[0-9]/.test(psk_obj.value) || psk_length < 8 || psk_length > 63 
 				|| !/[\!\"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\_\`\{\|\}\~]/.test(psk_obj.value)){
@@ -1695,7 +1695,7 @@ var validator = {
 			if(flag != "noalert")
 				alert("<#JS_validstr2#> '"+invalid_char+"' !");
 			psk_obj.value = "";
-			psk_obj.focus();	
+			psk_obj.focus();
 			return false;
 		}
 
@@ -1830,7 +1830,7 @@ var validator = {
 
 		return true;
 	},
-	
+
 	string_KR: function(string_obj, flag){		//Alphabets, numbers, specialcharacters mixed
 		var string_length = string_obj.value.length;
 		if(!/[A-Za-z]/.test(string_obj.value) || !/[0-9]/.test(string_obj.value) || string_length < 8
@@ -1839,9 +1839,9 @@ var validator = {
 				alert("<#JS_validPWD#>");
 				string_obj.value = "";
 				string_obj.focus();
-				return false;	
+				return false;
 		}	
-		
+
 		var invalid_char = "";
 		for(var i = 0; i < string_obj.value.length; ++i){
 			if(string_obj.value.charAt(i) <= ' ' || string_obj.value.charAt(i) > '~'){
@@ -1871,7 +1871,7 @@ var validator = {
 		return true;
 		};
 
-		var c;	// character code	
+		var c;	// character code
 		for(var i = 0; i < o.value.length; ++i){
 			c = o.value.charCodeAt(i);
 			if(!groupChar(c)){
@@ -1890,12 +1890,12 @@ var validator = {
 		var utf8_ssid_support = (rc_support.split(" ").indexOf("utf8_ssid") == -1) ? false : true;
 		var c;	// character code
 		var flag=0; // notify valid characters of SSID except space
-		
+
 		if(o.value==""){	// to limit null SSID
 			alert('<#JS_fieldblank#>');
 			o.focus();
 			return false;
-		}	
+		}
 
 		len = this.lengthInUtf8(o.value);
 
@@ -1967,7 +1967,7 @@ var validator = {
 				o.value = "00";
 				o.focus();
 				o.select();
-				return false;			
+				return false;
 			}	
 			return true;
 		}
@@ -1978,7 +1978,7 @@ var validator = {
 				o.value = "00";
 				o.focus();
 				o.select();
-				return false;			
+				return false;
 			}	
 			return true;
 		}
@@ -1986,7 +1986,7 @@ var validator = {
 	},
 
 	validateIP: function(o){
-		var s = o.value;	
+		var s = o.value;
 
 		if(s.indexOf(".") == 0 || s.indexOf(" ") == 0){
 			o.value = s.substring(1,2);
@@ -2005,8 +2005,8 @@ var validator = {
 		}else if(flag==0){	//without netMask
 			if(!this.ipAddrFinal(obj, obj.name)){
 				obj.focus();
-				obj.select();		
-				return false;	
+				obj.select();
+				return false;
 			}else
 				return true;
 		}else if(flag==1){	//with netMask and generate netmask
@@ -2015,35 +2015,35 @@ var validator = {
 				
 			if(!this.ipAddrFinal(obj, obj.name)){
 				obj.focus();
-				obj.select();		
-				return false;	
-			}			
-				
+				obj.select();
+				return false;
+			}
+
 			if(obj.name=="sr_ipaddr_x_0" && re.test(strIP)){
 				if((RegExp.$1 > 0) && (RegExp.$1 < 127)) document.form.sr_netmask_x_0.value = "255.0.0.0";
 				else if ((RegExp.$1 > 127) && (RegExp.$1 < 192)) document.form.sr_netmask_x_0.value = "255.255.0.0";
 				else if ((RegExp.$1 > 191) && (RegExp.$1 < 224)) document.form.sr_netmask_x_0.value = "255.255.255.0";
-				else document.form.sr_netmask_x_0.value = "0.0.0.0";												
+				else document.form.sr_netmask_x_0.value = "0.0.0.0";
 			}else if(obj.name=="wan_ipaddr_x" && re.test(strIP)){
 				if((RegExp.$1 > 0) && (RegExp.$1 < 127)) document.form.wan_netmask_x.value = "255.0.0.0";
 				else if ((RegExp.$1 > 127) && (RegExp.$1 < 192)) document.form.wan_netmask_x.value = "255.255.0.0";
 				else if ((RegExp.$1 > 191) && (RegExp.$1 < 224)) document.form.wan_netmask_x.value = "255.255.255.0";
-				else document.form.wan_netmask_x.value = "0.0.0.0";												
+				else document.form.wan_netmask_x.value = "0.0.0.0";
 			}else if(obj.name=="lan_ipaddr" && re.test(strIP)){
 				if((RegExp.$1 > 0) && (RegExp.$1 < 127)) document.form.lan_netmask.value = "255.0.0.0";
 				else if ((RegExp.$1 > 127) && (RegExp.$1 < 192)) document.form.lan_netmask.value = "255.255.0.0";
 				else if ((RegExp.$1 > 191) && (RegExp.$1 < 224)) document.form.lan_netmask.value = "255.255.255.0";
-				else document.form.lan_netmask.value = "0.0.0.0";				
+				else document.form.lan_netmask.value = "0.0.0.0";
 			}
-				
+
 			return true;
 		}else if(flag==2){ 	//ip plus netmask
-					
+
 			if(obj.value.search("/") == -1){		// only IP
 				if(!this.ipAddrFinal(obj, obj.name)){
 					obj.focus();
-					obj.select();		
-					return false;	
+					obj.select();
+					return false;
 				}else
 					return true;
 			}else{															// IP plus netmask
@@ -2059,21 +2059,21 @@ var validator = {
 						obj.value = "";
 						obj.focus();
 						obj.select();
-						return false;								
+						return false;
 					}else{
 						var IP_tmp = obj.value;
 						obj.value = obj.value.split("/")[0];
 						if(!this.ipAddrFinal(obj, obj.name)){
 							obj.focus();
-							obj.select();		
-							return false;	
+							obj.select();
+							return false;
 						}else{
 							obj.value = IP_tmp;
 							return true;
-						}		
+						}
 					}
 				}
-			}		
+			}
 		}else
 			return false;
 	},
@@ -2135,7 +2135,7 @@ var validator = {
 			alert("<#JS_wpapass#>");
 			return false;
 		}
-		
+
 		return true;
 	},
 

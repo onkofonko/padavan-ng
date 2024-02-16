@@ -73,12 +73,12 @@ chk_udhcpc(int ap_mode)
 			ip = get_lan_ip4();
 			gateway_str = nvram_safe_get("lan_gateway_t");
 		}
-		
+
 		if (!is_valid_ipv4(gateway_str) || ip == INADDR_ANY || !pids("udhcpc"))
 		{
 			return;
 		}
-		
+
 		logmessage("detect_wan", "No response from gateway (%s)! Perform DHCP renew...", gateway_str);
 		doSystem("killall %s %s", "-SIGUSR1", "udhcpc");
 	}
@@ -171,9 +171,9 @@ arpping_gateway(int ap_mode)
 	if (sendto(s, &arp, sizeof(arp), 0, &addr, sizeof(addr)) < 0)
 	{
 		close(s);
-		
+
 		perror("sendto:");
-		
+
 		sleep(1);
 		return 0;
 	}
@@ -190,7 +190,7 @@ arpping_gateway(int ap_mode)
 		rcv_bytes = recvfrom(s, &arp, sizeof(arp), 0, NULL, NULL);
 		if (rcv_bytes < 0 && errno != EINTR && errno != EAGAIN)
 			break;
-		
+
 		if (rcv_bytes >= 42 &&
 		    arp.h_proto == htons(ETH_P_ARP) &&
 		    arp.operation == htons(ARPOP_REPLY) &&
@@ -209,11 +209,11 @@ arpping_gateway(int ap_mode)
 			rv = 1;
 			break;
 		}
-		
+
 		if (uptime() - timeStart > MAX_ARP_WAIT)
 			break;
 	}
-	
+
 	close(s);
 
 	return rv;
@@ -228,7 +228,7 @@ poll_gateway(void)
 	for(;;)
 	{
 		count = 0;
-		
+
 		while (count < MAX_ARP_RETRY)
 		{
 			if (!ap_mode && !get_wan_ether_link_cached())
@@ -248,12 +248,12 @@ poll_gateway(void)
 				count++;
 			}
 		}
-		
+
 		if ((count >= MAX_ARP_RETRY) && (ap_mode || get_wan_ether_link_cached()))
 		{
 			chk_udhcpc(ap_mode);
 		}
-		
+
 		sleep(20);
 	}
 

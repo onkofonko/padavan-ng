@@ -57,19 +57,19 @@ void control_if_ipv6_all(int enable)
 	if (!enable) {
 		for (i=0; if6_off[i] != NULL; i++)
 			set_interface_conf_int("ipv6", if6_off[i], "disable_ipv6", 1);
-		
+
 		for (i=0; rad_off[i] != NULL; i++) {
 			set_interface_conf_int("ipv6", rad_off[i], "accept_ra", 0);
 			set_interface_conf_int("ipv6", rad_off[i], "accept_ra_pinfo", 0);
 		}
-		
+
 		set_interface_conf_int("ipv6", "all", "forwarding", 0);
 	} else {
 		set_interface_conf_int("ipv6", "all", "forwarding", 1);
-		
+
 		for (i=0; if6_on[i] != NULL; i++)
 			set_interface_conf_int("ipv6", if6_on[i], "disable_ipv6", 0);
-		
+
 		sprintf(tmp, "/proc/sys/net/ipv6/neigh/%s/%s", IFNAME_BR, "gc_stale_time");
 		fput_int(tmp, 900); // ARP cache 15m
 	}

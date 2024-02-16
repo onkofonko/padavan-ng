@@ -521,27 +521,27 @@ symlink_sku_file(const char *sku_file, const char *prefix, const char *cc, int r
 	snprintf(sku_link, sizeof(sku_link), "%s/SingleSKU%s.dat", "/etc/storage/wlan", prefix);
 	if (!check_if_file_exist(sku_link)) {
 		const char *cc_regspec = get_country_regspec(cc);
-		
+
 		/* use table regspec code */
 		sku_exist = check_sku_file_exist(prefix, cc_regspec, sku_link, sizeof(sku_link));
-		
+
 		if (!sku_exist) {
 			char *regspec = nvram_safe_get("regspec_code");
-			
+
 			/* use own regspec code */
 			sku_exist = check_sku_file_exist(prefix, regspec, sku_link, sizeof(sku_link));
 		}
-		
+
 		if (!sku_exist) {
 			int region_regspec;
-			
+
 			/* use any matched regspec code */
 			for (i = 0; i < ARRAY_SIZE(asus_regspec_table); i++) {
 				if (is_aband)
 					region_regspec = (int)asus_regspec_table[i].cc_5g;
 				else
 					region_regspec = (int)asus_regspec_table[i].cc_2g;
-				
+
 				if (region_regspec == region) {
 					sku_exist = check_sku_file_exist(prefix, asus_regspec_table[i].regspec, sku_link, sizeof(sku_link));
 					if (sku_exist)
@@ -549,7 +549,7 @@ symlink_sku_file(const char *sku_file, const char *prefix, const char *cc, int r
 				}
 			}
 		}
-		
+
 		if (!sku_exist)
 			check_sku_file_exist(prefix, asus_regspec_table[0].regspec, sku_link, sizeof(sku_link));
 	}
@@ -592,13 +592,13 @@ gen_ralink_config(int is_soc_ap, int is_aband, int disable_autoscan)
 	if (!is_aband) {
 		if (i_stream_tx > BOARD_NUM_ANT_2G_TX)
 			i_stream_tx = BOARD_NUM_ANT_2G_TX;
-		
+
 		if (i_stream_rx > BOARD_NUM_ANT_2G_RX)
 			i_stream_rx = BOARD_NUM_ANT_2G_RX;
 	} else {
 		if (i_stream_tx > BOARD_NUM_ANT_5G_TX)
 			i_stream_tx = BOARD_NUM_ANT_5G_TX;
-		
+
 		if (i_stream_rx > BOARD_NUM_ANT_5G_RX)
 			i_stream_rx = BOARD_NUM_ANT_5G_RX;
 	}
@@ -1014,7 +1014,7 @@ gen_ralink_config(int is_soc_ap, int is_aband, int disable_autoscan)
 
 	//Wapi
 	for (i = 1; i <= 8; i++)
-		fprintf(fp, "WapiPsk%d=\n", i);
+	fprintf(fp, "WapiPsk%d=\n", i);
 	fprintf(fp, "WapiPskType=\n");
 	fprintf(fp, "Wapiifname=\n");
 	fprintf(fp, "WapiAsCertPath=\n");
@@ -1398,7 +1398,7 @@ gen_ralink_config(int is_soc_ap, int is_aband, int disable_autoscan)
 	list[0] = 0;
 	if (i_wds == 2 || i_wds == 3) {
 		char wlan_param[32], macbuf[24];
-		
+
 		sprintf(wlan_param, "%s_%s", prefix, "wdslist_x");
 		i_num = nvram_wlan_get_int(is_aband, "wdsnum_x");
 		for (i = 0; i < i_num; i++)
@@ -1488,14 +1488,14 @@ gen_ralink_config(int is_soc_ap, int is_aband, int disable_autoscan)
 			fprintf(fp, "ApCliAuthMode=%s\n", "WPAPSK");
 		else
 			fprintf(fp, "ApCliAuthMode=%s\n", "WPA2PSK");
-		
+
 		//EncrypType
 		p_str = nvram_wlan_get(is_aband, "sta_crypto");
 		if (!strcmp(p_str, "tkip"))
 			fprintf(fp, "ApCliEncrypType=%s\n", "TKIP");
 		else
 			fprintf(fp, "ApCliEncrypType=%s\n", "AES");
-		
+
 		fprintf(fp, "ApCliWPAPSK=%s\n", nvram_wlan_get(is_aband, "sta_wpa_psk"));
 	}
 	else

@@ -32,7 +32,7 @@ var page = parseInt('<% get_parameter("page"); %>'-'0');
 
 function initial(){
 	$("statusframe").style.display = "block";
-	
+
 	if(page == 2)
 		show_iframe("aidisk/Aidisk-2.asp");
 	else if(page == 3)
@@ -41,10 +41,10 @@ function initial(){
 		show_iframe("aidisk/Aidisk-4.asp");
 	else
 		show_iframe("aidisk/Aidisk-1.asp");
-	
+
 	if($("dummyShareway").value == "")
 		$("dummyShareway").value = 0;
-	
+
 	show_banner(0);
 	show_menu(2, -1, 0);
 	show_footer();
@@ -60,7 +60,7 @@ function show_iframe_page(iframe_id){
 	if(iframe_id)
 		if($(iframe_id))
 			return $(iframe_id).src;
-	
+
 	return "";
 }
 
@@ -87,7 +87,7 @@ function show_help_iframe(page_num){
 		page_src = "/aidisk/Aidisk-1_help.asp";
 		page_title = "<#menu3#>";
 	}
-	
+
 	showtext($("helpname"), page_title);
 	setTimeout('$("statusframe").src = \"'+page_src+'\";', 1);
 }
@@ -96,10 +96,10 @@ function get_account_parameter(){
 	account_num = $("accountNum").value;
 	
 	accounts = new Array(account_num);
-	
+
 	for(var i = 0; i < account_num; ++i){
 		accounts[i] = new Array(3);
-		
+
 		accounts[i][0] = $("account"+i).value;
 		accounts[i][1] = $("passwd"+i).value;
 		accounts[i][2] = $("permission"+i).value;
@@ -121,11 +121,11 @@ function createAccount(){
 		document.applyForm.pool.value = "";
 		document.applyForm.folder.value = "";
 		document.applyForm.permission.value = "";
-		
+
 		document.applyForm.action = "/aidisk/create_account.asp";
 		document.applyForm.account.value = accounts[0][0];
 		document.applyForm.password.value = accounts[0][1];
-		
+
 		document.applyForm.submit();
 	}
 	else
@@ -136,7 +136,7 @@ function resultOfCreateAccount(){
 	pools = pool_names();
 	if(pools && pools.length > 0)
 		folderlist = get_sharedfolder_in_pool(pools[0]);
-	
+
 	submitChangePermission("ftp");
 }
 
@@ -144,7 +144,7 @@ function submitChangePermission(protocol){
 	if(pools && pools.length > 0){
 		if(folderlist && folderlist.length > 0){
 			document.applyForm.password.value = "";
-			
+
 			document.applyForm.action = "/aidisk/set_account_permission.asp";
 			document.applyForm.account.value = accounts[0][0];
 			document.applyForm.pool.value = pools[0];
@@ -152,7 +152,7 @@ function submitChangePermission(protocol){
 			document.applyForm.protocol.value = protocol;
 			document.applyForm.permission.value = accounts[0][2];
 			document.applyForm.flag.value = "aidisk_wizard";
-			
+
 			folderlist.shift();
 			document.applyForm.submit();
 			return;
@@ -162,7 +162,7 @@ function submitChangePermission(protocol){
 			
 			if(pools && pools.length > 0){
 				folderlist = get_sharedfolder_in_pool(pools[0]);
-			
+
 				submitChangePermission(protocol);
 				return;
 			}
@@ -170,7 +170,7 @@ function submitChangePermission(protocol){
 	}
 	
 	accounts.shift();
-	
+
 	if(accounts.length > 0)
 		createAccount();
 	else
@@ -183,7 +183,7 @@ function switchShareMode(protocol, mode){
 	document.applyForm.pool.value = "";
 	document.applyForm.folder.value = "";
 	document.applyForm.permission.value = "";
-	
+
 	document.applyForm.action = "/aidisk/switch_share_mode.asp";
 	document.applyForm.protocol.value = protocol;
 	document.applyForm.mode.value = mode;
@@ -197,7 +197,7 @@ function resultOfSwitchShareMode(){
 
 function switchAppStatus(protocol, flag){
 	document.applyForm.mode.value = "";
-	
+
 	document.applyForm.action = "/aidisk/switch_AiDisk_app.asp";
 	document.applyForm.protocol.value = protocol;
 	document.applyForm.flag.value = flag;
@@ -216,7 +216,7 @@ function finish_dummyway_setting(){
 function switchDDNS(){
 	document.ddnsForm.ddns_enable_x.value = getASUSDDNS_enable();
 	document.ddnsForm.current_page.value = document.parameterForm.next_page.value;
-	
+
 	document.ddnsForm.submit();
 }
 

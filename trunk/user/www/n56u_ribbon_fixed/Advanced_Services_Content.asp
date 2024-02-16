@@ -730,16 +730,16 @@ function change_crond_enabled(){
                                                 </div>
                                             </td>
                                         </tr>
-					<tr id="row_stubby_conf" style="display:none">
-					    <td colspan="2">
-						<a href="javascript:spoiler_toggle('stubby.yml')"><span><#CustomConf#> "stubby.yml"</span></a>
-						    <div id="stubby.yml" style="display:none;">
-							<textarea rows="16" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="stubbyc.stubby.yml" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("stubbyc.stubby.yml",""); %></textarea>
-						    </div>
-					    </td>
-					</tr>
+                                        <tr id="row_stubby_conf" style="display:none">
+                                            <td colspan="2">
+                                                <a href="javascript:spoiler_toggle('stubby.yml')"><span><#CustomConf#> "stubby.yml"</span></a>
+                                                <div id="stubby.yml" style="display:none;">
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="stubbyc.stubby.yml" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("stubbyc.stubby.yml",""); %></textarea>
+                                                </div>
+                                            </td>
+                                        </tr>
 
-					<tr id="row_tor">
+                                        <tr id="row_tor">
                                             <th width="50%"><#Adm_Svc_tor#></th>
                                             <td>
                                                 <div class="main_itoggle">
@@ -753,14 +753,14 @@ function change_crond_enabled(){
                                                 </div>
                                             </td>
                                         </tr>
-					<tr id="row_tor_conf" style="display:none">
-					    <td colspan="2">
-						<a href="javascript:spoiler_toggle('spoiler_tor_conf')"><span><#CustomConf#> "torrc"</span></a>
-						    <div id="spoiler_tor_conf" style="display:none;">
-							<textarea rows="16" wrap="off" spellcheck="false" maxlength="4096" class="span12" name="torconf.torrc" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("torconf.torrc",""); %></textarea>
-						    </div>
-					    </td>
-					</tr>
+                                        <tr id="row_tor_conf" style="display:none">
+                                            <td colspan="2">
+                                                <a href="javascript:spoiler_toggle('spoiler_tor_conf')"><span><#CustomConf#> "torrc"</span></a>
+                                                <div id="spoiler_tor_conf" style="display:none;">
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="4096" class="span12" name="torconf.torrc" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("torconf.torrc",""); %></textarea>
+                                                </div>
+                                            </td>
+                                        </tr>
 
                                         <tr id="row_privoxy">
                                             <th width="50%"><#Adm_Svc_privoxy#></th>
@@ -776,38 +776,38 @@ function change_crond_enabled(){
                                                 </div>
                                             </td>
                                         </tr>
-					<tr id="row_privoxy_conf" style="display:none">
-					    <td colspan="2">
-						<a href="javascript:spoiler_toggle('spoiler_privoxy_conf')"><span><#CustomConf#> "config"</span></a>
-						    <div id="spoiler_privoxy_conf" style="display:none;">
-							<textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.config" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.config",""); %></textarea>
-						    </div>
-					    </td>
-					</tr>
-					<tr id="row_privoxy_action" style="display:none">
-					    <td colspan="2">
-						<a href="javascript:spoiler_toggle('spoiler_privoxy_action')"><span><#CustomConf#> "user.action"</span></a>
-						    <div id="spoiler_privoxy_action" style="display:none;">
-							<textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.user.action" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.user.action",""); %></textarea>
-						    </div>
-					    </td>
-					</tr>
-					<tr id="row_privoxy_filter" style="display:none">
-					    <td colspan="2">
-						<a href="javascript:spoiler_toggle('spoiler_privoxy_filter')"><span><#CustomConf#> "user.filter"</span></a>
-						    <div id="spoiler_privoxy_filter" style="display:none;">
-							<textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.user.filter" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.user.filter",""); %></textarea>
-						    </div>
-					    </td>
-					</tr>
-					<tr id="row_privoxy_trust" style="display:none">
-					    <td colspan="2">
-						<a href="javascript:spoiler_toggle('spoiler_privoxy_trust')"><span><#CustomConf#> "user.trust"</span></a>
-						    <div id="spoiler_privoxy_trust" style="display:none;">
-							<textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.user.trust" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.user.trust",""); %></textarea>
-						    </div>
-					    </td>
-					</tr>
+                                        <tr id="row_privoxy_conf" style="display:none">
+                                            <td colspan="2">
+                                                <a href="javascript:spoiler_toggle('spoiler_privoxy_conf')"><span><#CustomConf#> "config"</span></a>
+                                                <div id="spoiler_privoxy_conf" style="display:none;">
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.config" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.config",""); %></textarea>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr id="row_privoxy_action" style="display:none">
+                                            <td colspan="2">
+                                                <a href="javascript:spoiler_toggle('spoiler_privoxy_action')"><span><#CustomConf#> "user.action"</span></a>
+                                                <div id="spoiler_privoxy_action" style="display:none;">
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.user.action" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.user.action",""); %></textarea>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr id="row_privoxy_filter" style="display:none">
+                                            <td colspan="2">
+                                                <a href="javascript:spoiler_toggle('spoiler_privoxy_filter')"><span><#CustomConf#> "user.filter"</span></a>
+                                                <div id="spoiler_privoxy_filter" style="display:none;">
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.user.filter" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.user.filter",""); %></textarea>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr id="row_privoxy_trust" style="display:none">
+                                            <td colspan="2">
+                                                <a href="javascript:spoiler_toggle('spoiler_privoxy_trust')"><span><#CustomConf#> "user.trust"</span></a>
+                                                <div id="spoiler_privoxy_trust" style="display:none;">
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.user.trust" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.user.trust",""); %></textarea>
+                                                </div>
+                                            </td>
+                                        </tr>
 
                                         <tr id="row_dnscrypt">
                                             <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 25, 1);"><#Adm_Svc_dnscrypt#></a></th>
@@ -823,34 +823,34 @@ function change_crond_enabled(){
                                                 </div>
                                             </td>
                                         </tr>
-					<tr id="row_dnscrypt_resolver" style="display:none">
+                                        <tr id="row_dnscrypt_resolver" style="display:none">
                                             <th><#Adm_Svc_dnscrypt_resolver#></th>
                                             <td>
                                                 <input type="text" maxlength="64" size="15" name="dnscrypt_resolver" class="input" value="<% nvram_get_x("", "dnscrypt_resolver"); %>" onkeypress="return is_string(this,event);"/>
                                                 &nbsp;<a href="dnscrypt-resolvers.csv" target="_blank"><span><#Adm_Svc_dnscrypt_list#></span></a>
                                             </td>
-					</tr>
-					<tr id="row_dnscrypt_ipaddr" style="display:none">
+                                        </tr>
+                                        <tr id="row_dnscrypt_ipaddr" style="display:none">
                                             <th><#Adm_Svc_dnscrypt_ipaddr#></th>
                                             <td>
-						<select name="dnscrypt_ipaddr" class="input">
-						    <option value="127.0.0.1" <% nvram_match_x("", "dnscrypt_ipaddr", "127.0.0.1","selected"); %>>127.0.0.1 (*)</option>
-						    <option id="localip" value="<% nvram_get_x("", "lan_ipaddr"); %>"><% nvram_get_x("", "lan_ipaddr"); %></option>
-						    <option value="0.0.0.0" <% nvram_match_x("", "dnscrypt_ipaddr", "0.0.0.0","selected"); %>><#Adm_Svc_dnscrypt_all#></option>
-							<script type="text/javascript">
-							    if("<% nvram_get_x("", "lan_ipaddr"); %>"=="<% nvram_get_x("", "dnscrypt_ipaddr"); %>")
-							    lip=document.getElementById("localip").selected="selected";
-							</script>
-						</select>
+                                                <select name="dnscrypt_ipaddr" class="input">
+                                                    <option value="127.0.0.1" <% nvram_match_x("", "dnscrypt_ipaddr", "127.0.0.1","selected"); %>>127.0.0.1 (*)</option>
+                                                    <option id="localip" value="<% nvram_get_x("", "lan_ipaddr"); %>"><% nvram_get_x("", "lan_ipaddr"); %></option>
+                                                    <option value="0.0.0.0" <% nvram_match_x("", "dnscrypt_ipaddr", "0.0.0.0","selected"); %>><#Adm_Svc_dnscrypt_all#></option>
+                                                        <script type="text/javascript">
+                                                            if("<% nvram_get_x("", "lan_ipaddr"); %>"=="<% nvram_get_x("", "dnscrypt_ipaddr"); %>")
+                                                            lip=document.getElementById("localip").selected="selected";
+                                                        </script>
+                                                </select>
                                             </td>
-					</tr>
-					<tr id="row_dnscrypt_port" style="display:none">
-					    <th><#Adm_Svc_dnscrypt_port#></th>
+                                        </tr>
+                                        <tr id="row_dnscrypt_port" style="display:none">
+                                            <th><#Adm_Svc_dnscrypt_port#></th>
                                             <td>
                                                 <input type="text" maxlength="5" size="15" name="dnscrypt_port" class="input" value="<% nvram_get_x("", "dnscrypt_port"); %>" onkeypress="return is_ipaddrport(this,event);"/>
                                                 &nbsp;<span style="color:#888;">[53..65535]</span>
                                             </td>
-					</tr>
+                                        </tr>
                                         <tr id="row_dnscrypt_force_dns" style="display:none;">
                                             <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 25, 2);"><#Adm_Svc_dnscrypt_force_dns#></a></th>
                                             <td>
@@ -860,12 +860,12 @@ function change_crond_enabled(){
                                                 </select>
                                             </td>
                                         </tr>
-					<tr id="row_dnscrypt_options" style="display:none">
+                                        <tr id="row_dnscrypt_options" style="display:none">
                                             <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 25, 3);"><#Adm_Svc_dnscrypt_options#></a></th>
                                             <td>
                                                 <input type="text" maxlength="128" size="15" name="dnscrypt_options" class="input" value="<% nvram_get_x("", "dnscrypt_options"); %>" onkeypress="return is_string(this,event);"/>
                                             </td>
-					</tr>
+                                        </tr>
                                     </table>
 
                                     <table width="100%" cellpadding="4" cellspacing="0" class="table">

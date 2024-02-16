@@ -369,7 +369,7 @@ start_xupnpd(char *wan_ifname)
 		}
 		fclose(fp1);
 		doSystem("mv -f %s %s", tmp1, tmp2);
-		
+
 		if (has_daemon)
 			eval("/usr/bin/xupnpd");
 		else
@@ -444,7 +444,7 @@ restart_iptv(int is_ap_mode)
 
 	if (!is_ap_mode) {
 		char *wan_ifname, *viptv_iflast;
-		
+
 		/* check used IPTV via VLAN interface */
 		viptv_iflast = nvram_safe_get("viptv_ifname");
 		if (*viptv_iflast && is_interface_exist(viptv_iflast))
@@ -498,7 +498,7 @@ is_ftp_conntrack_loaded(int ftp_port0, int ftp_port1)
 			sprintf(ports_val, "%d", ftp_port0);
 		else
 			sprintf(ports_val, "%d", ftp_port1);
-		
+
 		if (strcmp(ports_val, ports_use) == 0)
 			return 2;
 	}
@@ -684,16 +684,16 @@ reload_nat_modules(void)
 		needed_ftp1 = nvram_get_int("nf_alg_ftp1");
 		if (needed_ftp0 <   21 || needed_ftp0 > 65535) needed_ftp0 = 0;
 		if (needed_ftp1 < 1024 || needed_ftp1 > 65535) needed_ftp1 = 0;
-		
+
 		if (nvram_match("nf_alg_pptp", "1"))
 			needed_pptp = 1;
-		
+
 		if (nvram_match("nf_alg_h323", "1"))
 			needed_h323 = 1;
-		
+
 		if (nvram_match("nf_alg_rtsp", "1"))
 			needed_rtsp = 1;
-		
+
 		if (nvram_match("nf_alg_sip", "1"))
 			needed_sip = 1;
 	}
@@ -754,14 +754,14 @@ reload_nat_modules(void)
 	if ((loaded_ftp != 2) && (needed_ftp0 || needed_ftp1))
 	{
 		char ports_val[32];
-		
+
 		if (needed_ftp0 && needed_ftp1)
 			sprintf(ports_val, "ports=%d,%d", needed_ftp0, needed_ftp1);
 		else if (needed_ftp0)
 			sprintf(ports_val, "ports=%d", needed_ftp0);
 		else
 			sprintf(ports_val, "ports=%d", needed_ftp1);
-		
+
 		module_smart_load("nf_conntrack_ftp", ports_val);
 		if (wan_nat_x != 0)
 			module_smart_load("nf_nat_ftp", NULL);

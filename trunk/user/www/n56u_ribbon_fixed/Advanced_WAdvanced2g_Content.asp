@@ -74,7 +74,7 @@ function initial(){
 	if (!support_2g_inic_mii())
 		showhide_div('row_mrate', 0);
 
-    if (support_2g_band_steering())
+	if (support_2g_band_steering())
 		showhide_div("row_band_steering", 1);
 
 	if (support_2g_turbo_qam())

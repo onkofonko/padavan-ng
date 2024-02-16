@@ -43,18 +43,18 @@ control_xl2tpd(const char *cmd, const char *lac)
 	int control_fd = open("/var/run/xl2tpd-control", O_WRONLY, 0600);
 	if (control_fd < 0)
 		return -1;
-	
+
 	snprintf(buf, sizeof(buf), "%s %s", cmd, lac);
 	write(control_fd, buf, strlen(buf));
 	close(control_fd);
-	
+
 	return 0;
 }
 
 static int
 get_xl2tpd_vpnc_active(void)
 {
-	return ((nvram_match("vpnc_enable", "1") && nvram_match("vpnc_type", "1")) || 
+	return ((nvram_match("vpnc_enable", "1") && nvram_match("vpnc_type", "1")) ||
 		 nvram_match("l2tp_cli_t", "1"));
 }
 
@@ -326,7 +326,7 @@ ipup_vpnc_main(int argc, char **argv)
 	buf[0] = 0;
 	if (nvram_get_int("vpnc_pdns") > 0) {
 		char *value;
-		
+
 		value = getenv("DNS1");
 		if (value)
 			snprintf(buf, sizeof(buf), "%s", value);

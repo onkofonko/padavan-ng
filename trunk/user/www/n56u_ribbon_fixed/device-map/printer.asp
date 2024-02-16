@@ -27,7 +27,7 @@ function initial(){
 
 function u2ec_monopolize(){
 	parent.showLoading(2);
-	
+
 	document.form.action_mode.value = "Update";
 	document.form.action_script.value = "mfp_monopolize";
 	document.form.current_page.value = "";

@@ -63,7 +63,7 @@ void nvram_del_list_map_x(const char *name, int group_count, int *delMap)
 				strncpy(tmp, oval, i_len);
 				tmp[i_len] = 0;
 			}
-			
+
 			di++;
 			if (di > MAX_GROUP_COUNT)
 				break;

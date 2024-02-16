@@ -142,7 +142,7 @@ int fill_eth_port_status(int port_id_uapi, char linkstate[40])
 		const char *text_fc = "";
 		const char *text_dup = "Half Duplex";
 		const char *text_eee = "";
-		
+
 		switch (link_value & 0x03)
 		{
 		case 3:
@@ -156,7 +156,7 @@ int fill_eth_port_status(int port_id_uapi, char linkstate[40])
 			lspeed = 10;
 			break;
 		}
-		
+
 		if ((link_value >> 8) & 0x01) {
 			unsigned int link_fc = (link_value >> 9) & 0x03;
 			if (link_fc == 0x03)
@@ -169,10 +169,10 @@ int fill_eth_port_status(int port_id_uapi, char linkstate[40])
 				text_fc = "OFF";
 			text_dup = "Full Duplex, FC ";
 		}
-		
+
 		if ((link_value >> 11) & 0x03)
 			text_eee = ", EEE";
-		
+
 		/* 1000 Mbps, Full Duplex, FC TX/RX, EEE */
 		sprintf(linkstate, "%d Mbps, %s%s%s", lspeed, text_dup, text_fc, text_eee);
 	} else

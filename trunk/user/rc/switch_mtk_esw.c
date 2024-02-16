@@ -452,7 +452,7 @@ static int show_status_speed(unsigned int port_id)
 		const char *text_fc = "";
 		const char *text_dup = "HD";
 		const char *text_eee = "";
-		
+
 		switch (link_value & 0x03)
 		{
 		case 3:
@@ -466,17 +466,17 @@ static int show_status_speed(unsigned int port_id)
 			lspeed = 10;
 			break;
 		}
-		
+
 		if ((link_value >> 8) & 0x01) {
 			unsigned int link_fc = (link_value >> 9) & 0x03;
 			if (link_fc)
 				text_fc = ", FC";
 			text_dup = "FD";
 		}
-		
+
 		if ((link_value >> 11) & 0x03)
 			text_eee = ", EEE";
-		
+
 		/* 1000FD, FC, EEE */
 		snprintf(linkstate, sizeof(linkstate), "%d%s%s%s", lspeed, text_dup, text_fc, text_eee);
 	} else
@@ -630,12 +630,12 @@ int mtk_esw_main(int argc, char **argv)
 	{
 	case MTK_ESW_IOCTL_STATUS_BYTES_PORT:
 		return 1;
-	
+
 	case MTK_ESW_IOCTL_STATUS_LINK_PORT:
 	case MTK_ESW_IOCTL_STATUS_LINK_PORTS_WAN:
 	case MTK_ESW_IOCTL_STATUS_LINK_PORTS_LAN:
 		return show_status_link(cmd, arg);
-	
+
 	case MTK_ESW_IOCTL_STATUS_SPEED_PORT:
 		return show_status_speed(arg);
 	

@@ -519,7 +519,7 @@ init_main_loop(void)
 	for (;;) {
 		sigset_t ss;
 		sigemptyset(&ss);
-		
+
 		/* Wait for user input or state change */
 		while ( !sig_usr1_received &&
 			!sig_alrm_received ) {
@@ -528,7 +528,7 @@ init_main_loop(void)
 			else
 				sigsuspend(&ss);
 		}
-		
+
 		/* Handle SIGUSR1 signal */
 		if (sig_usr1_received) {
 			sig_usr1_received = 0;

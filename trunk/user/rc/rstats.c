@@ -581,26 +581,26 @@ static void process_rstats(void)
 		while (fgets(buf, sizeof(buf), fp)) {
 			if ((p = strchr(buf, ':')) == NULL)
 				continue;
-			
+
 			*p = 0;
 			if ((ifname = strrchr(buf, ' ')) == NULL)
 				ifname = buf;
 			else
 				++ifname;
-			
+
 			if (strcmp(ifname, "lo") == 0)
 				continue;
-			
+
 			wan_no = 0;
 			ifindex = 0;
 			ifdesc = get_ifname_descriptor(ifname, g_ap_mode, &ifindex, &wan_no);
 			if (!ifdesc)
 				continue;
-			
+
 			// <rx bytes, packets, errors, dropped, fifo errors, frame errors, compressed, multicast><tx ...>
 			if (sscanf(p + 1, "%llu%*u%*u%*u%*u%*u%*u%*u%llu", &counter[0], &counter[1]) != 2)
 				continue;
-			
+
 			if (!iterate_netdev(ifdesc, ifindex, wan_no, ticks, counter))
 				continue;
 		}
@@ -632,7 +632,7 @@ static void process_rstats(void)
 		}
 		g_speed_list.tail = tail_new;
 		g_uptime_old += (ticks * RSTATS_INTERVAL);
-		
+
 		save_history_raw(ticks);
 	}
 }

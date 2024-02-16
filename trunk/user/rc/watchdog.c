@@ -153,13 +153,13 @@ httpd_check_v2()
 					httpd_live = 1;
 				}
 			}
-			
+
 			fclose(fp);
 		}
-		
+
 		if (httpd_live)
 			break;
-		
+
 		/* check port changed */
 		if (nvram_get_int("http_lanport") != http_port)
 		{
@@ -167,7 +167,7 @@ httpd_check_v2()
 				system("killall wget");
 			return 1;
 		}
-		
+
 		sleep(1);
 	}
 
@@ -233,7 +233,7 @@ btn_check_reset(void)
 	if (i_button_value == BTN_PRESSED) {
 		/* "RESET" pressed */
 		btn_count_reset++;
-		
+
 #if defined (BOARD_GPIO_LED_POWER)
 		/* flash power LED */
 		i_led = get_state_led_pwr();
@@ -300,7 +300,7 @@ btn_check_ez(int btn_pin, int btn_id, int *p_btn_state)
 		/* BTN released */
 		int press_count = *p_btn_state;
 		*p_btn_state = 0;
-		
+
 		if (press_count > BTN_EZ_WAIT_COUNT) {
 			/* pressed >= 3sec */
 			wd_alarmtimer(0, 0);
@@ -395,7 +395,7 @@ inet_handler(int is_ap_mode)
 			
 			return;
 		}
-		
+
 		if (has_wan_ip4(0) && has_wan_gw4())
 		{
 			/* sync time to ntp server if necessary */
@@ -456,25 +456,25 @@ svc_timecheck(void)
 			svcStatus[RADIO5_ACTIVE] = -1;
 			svcStatus[GUEST5_ACTIVE] = -1;
 		}
-		
+
 		activeNow = is_radio_allowed_wl();
 		if (activeNow != svcStatus[RADIO5_ACTIVE])
 		{
 			svcStatus[RADIO5_ACTIVE] = activeNow;
-			
+
 			if (activeNow)
 				notify_rc("control_wifi_radio_wl_on");
 			else
 				notify_rc("control_wifi_radio_wl_off");
 		}
-		
+
 		if (svcStatus[RADIO5_ACTIVE] > 0)
 		{
 			activeNow = is_guest_allowed_wl();
 			if (activeNow != svcStatus[GUEST5_ACTIVE])
 			{
 				svcStatus[GUEST5_ACTIVE] = activeNow;
-				
+
 				if (activeNow)
 					notify_rc("control_wifi_guest_wl_on");
 				else
@@ -498,25 +498,25 @@ svc_timecheck(void)
 			svcStatus[RADIO2_ACTIVE] = -1;
 			svcStatus[GUEST2_ACTIVE] = -1;
 		}
-		
+
 		activeNow = is_radio_allowed_rt();
 		if (activeNow != svcStatus[RADIO2_ACTIVE])
 		{
 			svcStatus[RADIO2_ACTIVE] = activeNow;
-			
+
 			if (activeNow)
 				notify_rc("control_wifi_radio_rt_on");
 			else
 				notify_rc("control_wifi_radio_rt_off");
 		}
-		
+
 		if (svcStatus[RADIO2_ACTIVE] > 0)
 		{
 			activeNow = is_guest_allowed_rt();
 			if (activeNow != svcStatus[GUEST2_ACTIVE])
 			{
 				svcStatus[GUEST2_ACTIVE] = activeNow;
-				
+
 				if (activeNow)
 					notify_rc("control_wifi_guest_rt_on");
 				else
@@ -603,11 +603,11 @@ ez_action_toggle_wifi2(void)
 	{
 		int i_radio_state = is_radio_on_rt();
 		i_radio_state = !i_radio_state;
-		
+
 		update_svc_status_wifi2();
-		
+
 		logmessage("watchdog", "Perform ez-button toggle %s radio: %s", "2.4GHz", (i_radio_state) ? "ON" : "OFF");
-		
+
 		control_radio_rt(i_radio_state, 1);
 	}
 }
@@ -620,11 +620,11 @@ ez_action_toggle_wifi5(void)
 	{
 		int i_radio_state = is_radio_on_wl();
 		i_radio_state = !i_radio_state;
-		
+
 		update_svc_status_wifi5();
-		
+
 		logmessage("watchdog", "Perform ez-button toggle %s radio: %s", "5GHz", (i_radio_state) ? "ON" : "OFF");
-		
+
 		control_radio_wl(i_radio_state, 1);
 	}
 #endif
@@ -778,13 +778,13 @@ ez_action_wan_toggle(void)
 	if (is_interface_up(get_man_ifname(0)))
 	{
 		logmessage("watchdog", "Perform ez-button %s...", "WAN disconnect");
-		
+
 		stop_wan();
 	}
 	else
 	{
 		logmessage("watchdog", "Perform ez-button %s...", "WAN reconnect");
-		
+
 		full_restart_wan();
 	}
 }
@@ -1039,7 +1039,7 @@ dnsmasq_process_check(void)
 		dnsmasq_missing++;
 	else
 		dnsmasq_missing = 0;
-	
+
 	if (dnsmasq_missing > 1) {
 		dnsmasq_missing = 0;
 		logmessage("watchdog", "dnsmasq is missing, start again!");
@@ -1114,7 +1114,7 @@ watchdog_on_timer(void)
 	/* if timer is set to less than 1 sec, then check buttons only */
 	if (wd_itv.it_value.tv_sec == 0) {
 		int i_ret = 0;
-		
+
 		/* handle buttons */
 #if defined (BOARD_GPIO_BTN_RESET)
 		i_ret |= btn_check_reset();
@@ -1134,7 +1134,7 @@ watchdog_on_timer(void)
 		} else {
 			wd_alarmtimer(WD_NORMAL_PERIOD, 0);
 		}
-		
+
 		return;
 	}
 

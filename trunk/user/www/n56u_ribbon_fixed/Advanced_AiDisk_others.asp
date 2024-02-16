@@ -282,7 +282,7 @@ function change_aria_enabled(){
 function applyRule(){
 	if(validForm()){
 		showLoading();
-		
+
 		document.form.action_mode.value = " Apply ";
 		document.form.current_page.value = "/Advanced_AiDisk_others.asp";
 		document.form.next_page.value = "";

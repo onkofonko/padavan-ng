@@ -44,7 +44,7 @@ check_root_partition(const char *devname, int is_mmc)
 		while (fgets(line, sizeof(line), procpt)) {
 			if (sscanf(line, " %d %d %llu %31[^\n ]", &ma, &mi, &dev_sz, ptname) != 4)
 				continue;
-			
+
 #if defined (USE_MMC_SUPPORT)
 			if (is_mmc) {
 				for (i=1; i<9; i++) {
@@ -66,7 +66,7 @@ check_root_partition(const char *devname, int is_mmc)
 				}
 			}
 		}
-		
+
 		fclose(procpt);
 	}
 
@@ -101,17 +101,17 @@ mdev_sd_main(int argc, char **argv)
 		try_device_swapoff(device_name);
 		if (strlen(device_name) < 4)
 			notify_rc("on_unplug_mass_storage");
-		
+
 		goto out_unlock;
 	}
 
 	if (device_name[3] == '\0') {
 		// sda, sdb, sdc...
 		system("/sbin/hddtune.sh $MDEV");
-		
+
 		if (check_root_partition(device_name, 0))
 			goto out_unlock;
-		
+
 		partno = "1";
 	} else {
 		partno = device_name + 3;
@@ -169,7 +169,7 @@ mdev_mmc_main(int argc, char **argv)
 		// mmcblk0, mmcblk1
 		if (check_root_partition(device_name, 1))
 			goto out_unlock;
-		
+
 		partno = '1';
 	} else {
 		// mmcblk0p1

@@ -538,7 +538,7 @@ http_login_check(const uaddr *ip_now)
 		return 2;
 	}
 
-	return 0;
+	return 3;
 }
 
 static int

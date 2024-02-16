@@ -60,7 +60,7 @@ safe_remove_usb_device(int port, const char *dev_name)
 		if (modem_devnum) {
 			usb_info_t *usb_info, *follow_usb;
 			int has_modem_port = 0;
-			
+
 			usb_info = get_usb_info();
 			for (follow_usb = usb_info; follow_usb != NULL; follow_usb = follow_usb->next) {
 				if ((follow_usb->port_root == port) &&
@@ -70,7 +70,7 @@ safe_remove_usb_device(int port, const char *dev_name)
 					has_modem_port |= 1;
 			}
 			free_usb_info(usb_info);
-			
+
 			if (has_modem_port) {
 				if ( get_usb_modem_dev_wan(0, modem_devnum) ) {
 					safe_remove_usb_modem();
@@ -80,7 +80,7 @@ safe_remove_usb_device(int port, const char *dev_name)
 		} else {
 			safe_remove_stor_device(port, port, dev_name, 1);
 		}
-		
+
 	} else if (port == 0) {
 		safe_remove_stor_device(1, BOARD_NUM_USB_PORTS, NULL, 1);
 	}
@@ -183,7 +183,7 @@ exec_printer_daemons(int call_fw)
 			start_p910nd(dev_lp);
 		}
 	}
-	
+
 	if (has_printer) {
 #if defined(SRV_U2EC)
 		start_u2ec();
@@ -244,11 +244,11 @@ try_start_usb_modem_to_wan(void)
 	if (modem_prio == 2) {
 		if (get_apcli_wisp_ifname())
 			return;
-		
+
 		has_link = get_wan_ether_link_direct(0);
 		if (has_link < 0)
 			has_link = 0;
-		
+
 		if (has_link)
 			return;
 	}

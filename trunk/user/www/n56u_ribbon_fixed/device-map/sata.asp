@@ -85,7 +85,7 @@ function remove_disk(disk_idx){
 
 	if(confirm(str)){
 		parent.showLoading();
-		
+
 		document.diskForm.action = "safely_remove_disk.asp";
 		document.diskForm.port.value = virt_port_id;
 		document.diskForm.devn.value = "";

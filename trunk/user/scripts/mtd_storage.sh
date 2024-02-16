@@ -248,13 +248,6 @@ func_fill()
 ### drop caches
 sync && echo 3 > /proc/sys/vm/drop_caches
 
-### UPnP solution when router without external IP
-#echo "ext_ip=1.1.1.1" >> /etc/miniupnpd.conf && killall miniupnpd && miniupnpd -f /etc/miniupnpd.conf
-
-### OpenVPN solution when the WAN connection does not have time to obtain an IP address
-#sleep 10
-#restart_vpn_client
-
 ### Mount SATA disk
 #mdev -s
 
@@ -297,6 +290,11 @@ EOF
 ### \$1 - WAN action (up/down)
 ### \$2 - WAN interface name (e.g. eth3 or ppp0)
 ### \$3 - WAN IPv4 address
+### Defer script execution to successfully launch VPN
+#sleep 10
+
+### UPnP solution when router without external IP
+#echo "ext_ip=1.1.1.1" >> /etc/miniupnpd.conf && killall miniupnpd && miniupnpd -f /etc/miniupnpd.conf
 
 EOF
 		chmod 755 "$script_postw"

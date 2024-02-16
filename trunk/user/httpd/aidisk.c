@@ -236,18 +236,18 @@ ej_disk_pool_mapping_info(int eid, webs_t wp, int argc, char **argv)
 				first = 0;
 			else
 				websWrite(wp, ", ");
-			
+
 			if (follow_partition->mount_point == NULL) {
 				websWrite(wp, "\"unknown\"");
 				continue;
 			}
-			
+
 			Ptr = rindex(follow_partition->mount_point, '/');
 			if (Ptr == NULL) {
 				websWrite(wp, "\"unknown\"");
 				continue;
 			}
-			
+
 			if (strncmp(follow_partition->mount_point, "/media/", 7) != 0) {
 				websWrite(wp, "\"unknown\"");
 				continue;
@@ -471,7 +471,7 @@ ej_get_storage_share_list(int eid, webs_t wp, int argc, char **argv)
 					first_pool = 0;
 				else
 					ret += websWrite(wp, ", ");
-				
+
 				ret += websWrite(wp, "[\"%s\",\"%s\",\"%s\"]", 
 					follow_partition->device, follow_partition->mount_point, follow_partition->file_system);
 			}
@@ -752,7 +752,7 @@ ej_get_permissions_of_account(int eid, webs_t wp, int argc, char **argv)
 			first_account = 0;
 		else
 			websWrite(wp, "else ");
-		
+
 		if (i < acc_num)
 			acc_value = account_list[i];
 		else
@@ -815,7 +815,7 @@ ej_get_permissions_of_account(int eid, webs_t wp, int argc, char **argv)
 					}
 					websWrite(wp, "];\n");
 					websWrite(wp, "	}\n");
-					
+
 					free_2_dimension_list(&sh_num, &folder_list);
 				}
 			}

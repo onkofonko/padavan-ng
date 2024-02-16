@@ -119,11 +119,11 @@ process_asp(char *s, char *e, FILE *stream)
 	if (end && end < e && (end-func) > 2) {
 		int asp_flen = end-func + 1;
 		char asp_func[asp_flen];
-		
+
 		/* copy func */
 		memcpy(asp_func, func, asp_flen-1);
 		asp_func[asp_flen-1] = '\0';
-		
+
 		/* Call function (1: success, 0: pattern not found) */
 		asp_res = call_asp(asp_func, stream);
 	}
@@ -179,11 +179,11 @@ translate_lang(char *s, char *e, FILE *stream, kw_t *pkw)
 	if (end && end <= e && (end-name) > 0) {
 		*end++ = '=';	// '#' --> '=', search_desc() need '='
 		*end = '\0';	// '>' --> '\0'
-		
+
 		desc = search_desc(pkw, name);
 		if (!desc && pkw != &kw_EN)
 			desc = search_desc(&kw_EN, name);
-		
+
 		if (desc) {
 			/* write translation from dictionary */
 			fputs(desc, stream);
@@ -273,14 +273,14 @@ load_dictionary(char *lang, pkw_t pkw)
 
 	while ((res = fscanf(dfp, "%[^\n]", q)) != EOF) {
 		fgetc(dfp);
-		
+
 		if (res < 1)
 			continue;
-		
+
 		p = strchr(q, '=');
 		if (!p)
 			continue;
-		
+
 		REALLOC_VECTOR (pkw->idx, pkw->len, pkw->tlen, sizeof (unsigned char*));
 		pkw->idx[pkw->len] = q;
 		pkw->len++;
