@@ -1375,7 +1375,7 @@ wan_up(char *wan_ifname, int unit, int is_static)
 		doSystem("%s %s %s %s", script_postw, "up", wan_ifname, wan_addr);
 
 	/* deferred start static VPN client and add delay 10s */
-	sleep(10);
+	sleep(5);
 	notify_rc("start_vpn_client");
 }
 
