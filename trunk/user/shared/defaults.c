@@ -780,7 +780,7 @@ struct nvram_pair router_defaults[] = {
 	{ "vpnc_dgw", "0" },
 
 	{ "vpns_ov_mode", "1" },
-	{ "vpns_ov_prot", "0" },
+	{ "vpns_ov_prot", "1" },
 	{ "vpns_ov_port", "1194" },
 	{ "vpns_ov_mdig", "1" },
 	{ "vpns_ov_ciph", "15" },

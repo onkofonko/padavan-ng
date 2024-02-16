@@ -408,7 +408,7 @@ function getHash(){
                                     <td>
                                         <select name="vpnc_ov_mode" class="input" onchange="change_vpnc_ov_mode();">
                                             <option value="0" <% nvram_match_x("", "vpnc_ov_mode", "0","selected"); %>>L2 - TAP (Ethernet)</option>
-                                            <option value="1" <% nvram_match_x("", "vpnc_ov_mode", "1","selected"); %>>L3 - TUN (IP)</option>
+                                            <option value="1" <% nvram_match_x("", "vpnc_ov_mode", "1","selected"); %>>L3 - TUN (IP) (*)</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -498,8 +498,8 @@ function getHash(){
                                             <option value="0" <% nvram_match_x("", "vpnc_ov_ciph", "0","selected"); %>>[none]</option>
                                             <option value="1" <% nvram_match_x("", "vpnc_ov_ciph", "1","selected"); %>>[DES-CBC] DES, 64 bit</option>
                                             <option value="2" <% nvram_match_x("", "vpnc_ov_ciph", "2","selected"); %>>[DES-EDE-CBC] 3DES, 128 bit</option>
-                                            <option value="3" <% nvram_match_x("", "vpnc_ov_ciph", "3","selected"); %>>[BF-CBC] Blowfish, 128 bit (*)</option>
-                                            <option value="4" <% nvram_match_x("", "vpnc_ov_ciph", "4","selected"); %>>[AES-128-CBC] AES, 128 bit</option>
+                                            <option value="3" <% nvram_match_x("", "vpnc_ov_ciph", "3","selected"); %>>[BF-CBC] Blowfish, 128 bit</option>
+                                            <option value="4" <% nvram_match_x("", "vpnc_ov_ciph", "4","selected"); %>>[AES-128-CBC] AES, 128 bit (*)</option>
                                             <option value="5" <% nvram_match_x("", "vpnc_ov_ciph", "5","selected"); %>>[AES-192-CBC] AES, 192 bit</option>
                                             <option value="6" <% nvram_match_x("", "vpnc_ov_ciph", "6","selected"); %>>[DES-EDE3-CBC] 3DES, 192 bit</option>
                                             <option value="7" <% nvram_match_x("", "vpnc_ov_ciph", "7","selected"); %>>[DESX-CBC] DES-X, 192 bit</option>
