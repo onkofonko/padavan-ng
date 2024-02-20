@@ -248,6 +248,9 @@ func_fill()
 ### drop caches
 sync && echo 3 > /proc/sys/vm/drop_caches
 
+### UPnP solution when router without external IP
+#echo "ext_ip=1.1.1.1" >> /etc/miniupnpd.conf && killall miniupnpd && miniupnpd -f /etc/miniupnpd.conf
+
 ### Mount SATA disk
 #mdev -s
 
