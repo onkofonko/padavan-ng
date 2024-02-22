@@ -1,5 +1,5 @@
-SRC_NAME=nghttp3-1.1.0
-SRC_URL=https://github.com/ngtcp2/nghttp3/releases/download/v1.1.0/$(SRC_NAME).tar.xz
+SRC_NAME=nghttp3-1.2.0
+SRC_URL=https://github.com/ngtcp2/nghttp3/releases/download/v1.2.0/$(SRC_NAME).tar.xz
 
 CFLAGS += -fPIC
 CXXFLAGS += -fPIC

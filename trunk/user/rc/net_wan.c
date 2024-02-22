@@ -1358,9 +1358,6 @@ wan_up(char *wan_ifname, int unit, int is_static)
 	/* notify watchdog for NTP update */
 	notify_watchdog_time();
 
-	/* deferred start static VPN client */
-	notify_rc("start_vpn_client");
-
 	/* start gateway ARP checker (for IPoE Auto) */
 	if (!modem_unit_id && wan_proto == IPV4_WAN_PROTO_IPOE_DHCP) {
 		if (nvram_match("gw_arp_ping", "1") && !pids("detect_wan"))
@@ -1376,6 +1373,10 @@ wan_up(char *wan_ifname, int unit, int is_static)
 	/* call custom user script */
 	if (check_if_file_exist(script_postw))
 		doSystem("%s %s %s %s", script_postw, "up", wan_ifname, wan_addr);
+
+	/* deferred start static VPN client and add delay 5s */
+	sleep(5);
+	notify_rc("start_vpn_client");
 }
 
 void

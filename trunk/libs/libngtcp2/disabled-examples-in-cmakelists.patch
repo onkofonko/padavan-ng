@@ -1,7 +1,7 @@
-diff -urN ngtcp2-1.2.0-orig/CMakeLists.txt ngtcp2-1.2.0/CMakeLists.txt
---- ngtcp2-1.2.0-orig/CMakeLists.txt	2023-10-15 16:25:52.000000000 +0300
-+++ ngtcp2-1.2.0/CMakeLists.txt	2023-10-21 01:19:54.152306881 +0300
-@@ -338,7 +338,7 @@ 
+diff -urN ngtcp2-1.3.0-orig/CMakeLists.txt ngtcp2-1.3.0/CMakeLists.txt
+--- ngtcp2-1.3.0-orig/CMakeLists.txt	2023-10-15 16:25:52.000000000 +0300
++++ ngtcp2-1.3.0/CMakeLists.txt	2023-10-21 01:19:54.152306881 +0300
+@@ -343,7 +343,7 @@ 
  add_subdirectory(tests)
  add_subdirectory(crypto)
  add_subdirectory(third-party)
