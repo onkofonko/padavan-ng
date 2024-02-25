@@ -483,9 +483,6 @@ dhcp-option=252,"\n"
 #dhcp-boot=pxelinux.0
 
 ### Use dnsmasq configuration recommendation
-bogus-priv
-no-negcache
-clear-on-reload
 domain-needed
 all-servers
 
