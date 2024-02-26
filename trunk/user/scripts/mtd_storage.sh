@@ -472,18 +472,21 @@ dhcp-option=252,"\n"
 
 ### Enable built-in TFTP server
 #enable-tftp
-
 ### Set the root directory for files available via TFTP.
 #tftp-root=/opt/srv/tftp
-
 ### Make the TFTP server more secure
 #tftp-secure
 
 ### Set the boot filename for netboot/PXE
 #dhcp-boot=pxelinux.0
 
+### Use nameservers strictly in the order listed
+#strict-order
+
 ### Use dnsmasq configuration recommendation
+### Do NOT forward queries with no domain part
 domain-needed
+### Always perform DNS queries to all servers
 all-servers
 
 ### Use time server update bypassing DoT/DoH
