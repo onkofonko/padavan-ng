@@ -25,6 +25,7 @@ helpcontent[5] = new Array("",
 				"<#LANHostConfig_x_WINSServer_itemdesc#>",
 				"<#LANHostConfig_ForceDNS_itemdesc#>",
 				"<#LANHostConfig_DHCPFilterAAAA_itemdesc#>",
+				"<#LANHostConfig_DHCPAllservers_itemdesc#>",
 				"<#LANHostConfig_ManualDHCPEnable_itemdesc#>",
 				"<#LANHostConfig_ManualARP_itemdesc#>");
 helpcontent[6] = new Array("",

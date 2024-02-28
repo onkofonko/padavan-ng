@@ -483,11 +483,8 @@ dhcp-option=252,"\n"
 ### Use nameservers strictly in the order listed
 #strict-order
 
-### Use dnsmasq configuration recommendation
 ### Do NOT forward queries with no domain part
 domain-needed
-### Always perform DNS queries to all servers
-all-servers
 
 ### Use time server update bypassing DoT/DoH
 server=/time.in.ua/1.1.1.1
