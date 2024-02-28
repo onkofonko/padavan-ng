@@ -346,6 +346,11 @@ start_dns_dhcpd(int is_ap_mode)
 		fprintf(fp, "all-servers\n");
 	}
 
+	if (!is_ap_mode && nvram_match("dhcp_strictorder", "1")) {
+		/* Name servers strictly in the order listed */
+		fprintf(fp, "strict-order\n");
+	}
+
 	if (!is_ap_mode && (nvram_match("doh_enable", "1") || nvram_match("stubby_enable", "1") || nvram_match("dnscrypt_enable", "1"))) {
 		/* don't use resolv-file to resovle DNS queries if doh_proxy or stubby or dnscrypt-proxy is enabled */
 		fprintf(fp, "no-resolv\n");

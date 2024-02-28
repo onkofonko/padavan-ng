@@ -480,9 +480,6 @@ dhcp-option=252,"\n"
 ### Set the boot filename for netboot/PXE
 #dhcp-boot=pxelinux.0
 
-### Use nameservers strictly in the order listed
-#strict-order
-
 ### Do NOT forward queries with no domain part
 domain-needed
 

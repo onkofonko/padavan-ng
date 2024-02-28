@@ -497,6 +497,7 @@
 			{"redirect_alldns", "", NULL, EVM_RESTART_FIREWALL|EVM_RESTART_DHCPD},
 			{"dhcp_filter_aaa", "", NULL, EVM_RESTART_DHCPD},
 			{"dhcp_allservers", "", NULL, EVM_RESTART_DHCPD},
+			{"dhcp_strictorder", "", NULL, EVM_RESTART_DHCPD},
 			{"dhcp_verbose", "", NULL, EVM_RESTART_DHCPD},
 			{"dhcp_static_x", "", NULL, EVM_RESTART_DHCPD},
 			{"dhcp_static_arp", "", NULL, EVM_RESTART_DHCPD},
