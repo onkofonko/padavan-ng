@@ -1,5 +1,5 @@
-SRC_NAME=nghttp2-1.59.0
-SRC_URL=https://github.com/nghttp2/nghttp2/releases/download/v1.59.0/$(SRC_NAME).tar.xz
+SRC_NAME=nghttp2-1.60.0
+SRC_URL=https://github.com/nghttp2/nghttp2/releases/download/v1.60.0/$(SRC_NAME).tar.xz
 
 CFLAGS += -fPIC
 CXXFLAGS += -fPIC
@@ -31,8 +31,8 @@ configure:
 		-DENABLE_APP=OFF \
 		-DENABLE_EXAMPLES=OFF \
 		-DENABLE_HPACK_TOOLS=OFF \
-		-DENABLE_STATIC_LIB=ON \
-		-DENABLE_SHARED_LIB=OFF \
+		-DBUILD_STATIC_LIBS=ON \
+		-DBUILD_SHARED_LIBS=OFF \
 		-DENABLE_STATIC_CRT=OFF \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_TOOLCHAIN_FILE=$(ROOTDIR)/include/cross-mipsel-linux.cmake .. \

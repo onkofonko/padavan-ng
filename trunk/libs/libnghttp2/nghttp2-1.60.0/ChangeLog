@@ -1,0 +1,1006 @@
+commit c5e087b1038b9b0a972ca07748a525b8f58139d9 (HEAD, tag: v1.60.0, origin/master, origin/HEAD, master)
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-03-01
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-03-01
+
+    Update bash_completion
+
+commit fb6583965318bed575d2d178893d370984c01331
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-03-01
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-03-01
+
+    Update manual pages
+
+commit 1da27af8327b2263a001dd22183e4b217cf10dd6
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-03-01
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-03-01
+
+    Bump package and library versions
+
+commit c29ac852810fe4039c2bc04501f13e5f83c58af9
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-03-01
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-03-01
+
+    Update AUTHORS
+
+commit 1b5fe4a47763d965e1e92c4b65b54e80120d21c0
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-29
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-29
+
+    clang-format
+
+commit cdf01d1af86010adf4aa5f81555f3d99aeb58ae7
+Merge: c817b2a3 2e542849
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-29
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-29
+
+    Merge pull request #2086 from barracuda156/darwin
+    
+    Fix build when `AI_NUMERICSERV` is undefined
+
+commit 2e542849069763de622de2dd340f110ace7632cc
+Author:     Sergey Fedorov <vital.had@gmail.com>
+AuthorDate: 2024-02-29
+Commit:     Sergey Fedorov <vital.had@gmail.com>
+CommitDate: 2024-02-29
+
+    shrpx_tls_test.cc: use AI_NUMERICSERV when defined
+
+commit b13c97f04f9a187a31bc7ea0b688d745ba63e69c
+Author:     Sergey Fedorov <vital.had@gmail.com>
+AuthorDate: 2024-02-29
+Commit:     Sergey Fedorov <vital.had@gmail.com>
+CommitDate: 2024-02-29
+
+    shrpx_config.cc: if undefined, define AI_NUMERICSERV to 0
+
+commit c817b2a3e0abbb84d77fc48fee0359f344fa39f0
+Merge: 09a95983 a354577e
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-26
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-26
+
+    Merge pull request #2085 from nghttp2/nghttpx-remove-default-udp-payload-size
+    
+    nghttpx: Remove SHRPX_QUIC_MAX_UDP_PAYLOAD_SIZE
+
+commit a354577effec48980a8f35f94150bab6fc0bf951
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-26
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-26
+
+    nghttpx: Remove SHRPX_QUIC_MAX_UDP_PAYLOAD_SIZE
+    
+    Remove SHRPX_QUIC_MAX_UDP_PAYLOAD_SIZE and just rely on the ngtcp2
+    default.
+
+commit 09a95983b9544601bfc033b49399275365125035
+Merge: bd9edc8e 25d6df29
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-26
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-26
+
+    Merge pull request #2084 from nghttp2/max-pktcnt-fix
+    
+    src: Deal with the case that send_quantum < max_udp_payload_size
+
+commit 25d6df290e2a72f28661f57ec8766c75379559b6
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-25
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-26
+
+    src: Deal with the case that send_quantum < max_udp_payload_size
+
+commit bd9edc8e768893c89bb7a2a6c8bce3c84a0992c4
+Merge: 0b5008ee b2899869
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-26
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-26
+
+    Merge pull request #2083 from nghttp2/apt-get-update
+    
+    Run apt-get update before install
+
+commit b28998694b586b8791ef01ce5ac8fa23349b97a2
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-26
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-26
+
+    Run apt-get update before install
+
+commit 0b5008eee3d5b8a11fec223f3c33dae26917c88d
+Merge: ea4e5cec a6d12883
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-23
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-23
+
+    Merge pull request #2082 from nghttp2/reuse-evp-cipher-ctx
+    
+    nghttpx: Reuse EVP_CIPHER_CTX for QUIC connection ID encryption
+
+commit a6d128836db3fe251d95205cbd060bc68ce8d1d7
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-23
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-23
+
+    nghttpx: Reuse EVP_CIPHER_CTX for QUIC connection ID encryption
+
+commit ea4e5cec192e0d564dc03aa433178e99bda7f82c
+Merge: 2b28011c bfeb1ee1
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-22
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-22
+
+    Merge pull request #2081 from nghttp2/fix-mruby-crash
+    
+    mruby: Exclude mrdb gem which causes nghttpx to crash
+
+commit bfeb1ee182a2369469154b093779399c015975c6
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-22
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-22
+
+    mruby: Exclude mrdb gem which causes nghttpx to crash
+
+commit 2b28011c8606002f2b85b855e0cd0d8040dd9e4a
+Merge: 66abd8cb 66c5ea22
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-22
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-22
+
+    Merge pull request #2080 from nghttp2/bpf-pre-expand-aes-key
+    
+    bpf: Pre-expand aes key
+
+commit 66c5ea221639efb414f2358af68a9c7ecd72aae4
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-22
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-22
+
+    bpf: Pre-expand aes key
+
+commit 66abd8cbd3647b896729e981efd4358dabcfedf1
+Merge: 97b7012c a142e819
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-18
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-18
+
+    Merge pull request #2079 from nghttp2/neverbleed-gnu-source
+    
+    neverbleed: Define _GNU_SOURCE for pthread_setaffinity_np
+
+commit a142e81994f82adeb1f7044cfbef1cf7fc2b3c6c
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-18
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-18
+
+    neverbleed: Define _GNU_SOURCE for pthread_setaffinity_np
+
+commit 97b7012ccd772b31dd60ef924c4938ecb75709e3
+Merge: fe56b875 39d29355
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-18
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-18
+
+    Merge pull request #2078 from nghttp2/mruby-mrbc-rename
+    
+    mruby: Adopt deprecation of mrbc_ prefix
+
+commit 39d293551ac1de19bc1efb7ea56ceb80aff5e466
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-18
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-18
+
+    mruby: Adopt deprecation of mrbc_ prefix
+
+commit fe56b875b442a8c4aea9471c7973666fe8fbeb26
+Merge: 53279120 d1035d43
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-18
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-18
+
+    Merge pull request #2077 from nghttp2/bump-ngtcp2
+    
+    Bump ngtcp2 dependencies
+
+commit d1035d439aab6ff4811e5e51c9aa433a80b0744c
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-18
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-18
+
+    Bump ngtcp2 dependencies
+
+commit 532791209e9033c7e0758eae550c053607f95379
+Merge: d2ca281c ed0b7864
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-18
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-18
+
+    Merge pull request #2076 from nghttp2/h2load-add-sni
+    
+    h2load: Add --sni option
+
+commit ed0b7864d70d1accebeca701d4e4cea641248775
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-18
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-18
+
+    h2load: Add --sni option
+
+commit d2ca281ca1e8dd0270055d8f1d44850e95011ade
+Merge: ab8ee3fb 3792c573
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-16
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-16
+
+    Merge pull request #2075 from nghttp2/bump-llhttp
+    
+    Bump llhttp to 48588093ca4219b5f689acfc9ebea9e4c8c37663
+
+commit 3792c573cd2e59a8a819ba25f8ab94e388d14f13
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-16
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-16
+
+    Bump llhttp to 48588093ca4219b5f689acfc9ebea9e4c8c37663
+
+commit ab8ee3fbce177fb93e5bb0a2b0168fdcb7467e1e
+Merge: a9966735 c2cfab6d
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-16
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-16
+
+    Merge pull request #2074 from nghttp2/bump-mruby
+    
+    Bump mruby to 3.3.0
+
+commit c2cfab6d9cfbaa16890ce8ca0b2543fdd8e9b7f8
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-16
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-16
+
+    Bump mruby to 3.3.0
+
+commit a99667350e48667a887aa049d4d615af35d5ba23
+Merge: 3a4e2624 053703ee
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-15
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-15
+
+    Merge pull request #2073 from nghttp2/security-policy
+    
+    Move security policy to GitHub standard location
+
+commit 053703eeabe9fcc92af202452e04a2efcfbf0c2c
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-15
+
+    Move security policy to GitHub standard location
+
+commit 3a4e26247b3685059aaa296bff231e9d208cc5a7
+Merge: 2af27bb9 a25f1956
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-15
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-15
+
+    Merge pull request #2072 from nghttp2/security
+    
+    Use GitHub private vulnerability reporting
+
+commit a25f19560c2e0963cd37f1dfd1b17894270a15e7
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-15
+
+    Use GitHub private vulnerability reporting
+
+commit 2af27bb921bbd25399463f59f4df56454dfa53ba
+Merge: 075254e5 731c7c0f
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-15
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-15
+
+    Merge pull request #2071 from nghttp2/reconsider-ssize_t-usage-in-src
+    
+    Reconsider ssize t usage in src
+
+commit 731c7c0f921b9f5300cd792e88b23f663a3af3f6
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-15
+
+    nghttpx: Reconsider ssize_t usage
+
+commit b487cf1d19b76ed1cc9eac16bb409e1a3e9f9fa6
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-15
+
+    nghttp: Use size_t where a negative value is not expected
+
+commit 41a2f6de0036bf49d98f155cf0e589574414cf69
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-15
+
+    h2load: Use size_t where a negative value is not expected
+
+commit 075254e5a07a2706040e5251afa4c2803faec828
+Merge: 972e3724 3daa0de1
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-15
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-15
+
+    Merge pull request #2070 from nghttp2/src-remove-unused
+    
+    src: Remove unused functions
+
+commit 3daa0de1e6bd1bb8ace0f9cda5bbd29a800b9825
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-15
+
+    src: Remove unused functions
+
+commit 972e372402aa4f74022896390f430035abc258c0
+Merge: d4b19d7a 65c91ba7
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-15
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-15
+
+    Merge pull request #2069 from nghttp2/apps-migrate-nghttp2_ssize
+    
+    Apps migrate nghttp2 ssize
+
+commit 65c91ba729ae6d5bfbfa7c097994b43974b330d6
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-15
+
+    h2load: Migrate to nghttp2_ssize API
+
+commit 3ffade5f8a4a11d5aa5a05ad8e99e825f9225605
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-15
+
+    nghttpx: Migrate to nghttp2_ssize API
+
+commit 33ad4cc2b896c6646c06470d6cd315e04226a6f0
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-15
+
+    deflatehd, inflatehd: Migrate to nghttp2_ssize API
+
+commit f029a09cefac367ee76cd388bad022f4eb3e5e61
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-15
+
+    nghttpd: Migrate to nghttp2_ssize API
+
+commit 9468b16f1e607020de1601afb2cbc591326a44ff
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-15
+
+    nghttp: Migrate to nghttp2_ssize API
+
+commit d4b19d7a5ac3a35545837b7dd45cf0d2f6490a14
+Merge: 89500e2a 63229273
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-15
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-15
+
+    Merge pull request #2068 from nghttp2/rfc7540-priorities-api-deprecation-plan
+    
+    Describe RFC 7540 priorities deprecation plan
+
+commit 632292731f4d3232ce9b36703da692bfac397483
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-15
+
+    Describe RFC 7540 priorities deprecation plan
+
+commit 89500e2ab3e1ea7efd673d48eb5e6d2ca3dcd35f
+Merge: 2fdb959e bc1c6c07
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-15
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-15
+
+    Merge pull request #2067 from nghttp2/deprecated-warning-upfront
+    
+    Move deprecated warning upfront
+
+commit bc1c6c07b31bb427b278fcb625a22232b982ad55
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-15
+
+    Move deprecated warning upfront
+
+commit 2fdb959ea15c328530ae39285dba19ce6a242997
+Merge: 504633ea 93c4d8bc
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-15
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-15
+
+    Merge pull request #2066 from nghttp2/nghttp2_ssize
+    
+    Introduce nghttp2_ssize API
+
+commit 93c4d8bc340438460bce20c939a357fbfae05350
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-13
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-15
+
+    Introduce nghttp2_ssize API
+    
+    This commit deprecates all APIs, including structs and callback
+    functions, that use ssize_t.  New APIs that use nghttp2_ssize are
+    added as a replacement.  The usage of ssize_t is problematic for
+    several reasons.  Some platforms do not define ssize_t.  The minimum
+    value of ssize_t that POSIX requires is -1 which makes nghttp2 error
+    code out of range.  nghttp2_ssize is an alias of ptrdiff_t that is in
+    C standard and covers our error code range.
+    
+    New code should use new nghttp2_ssize APIs.  The existing applications
+    should consider migrating to new APIs.
+    
+    The deprecated ssize_t APIs continue to work for backward
+    compatibility.
+    
+    Here is the summary of the deprecated APIs and their replacements:
+    
+    Callback functions:
+    
+    - nghttp2_data_source_read_callback => nghttp2_data_source_read_callback2
+    - nghttp2_data_source_read_length_callback => nghttp2_data_source_read_length_callback2
+    - nghttp2_pack_extension_callback => nghttp2_pack_extension_callback2
+    - nghttp2_recv_callback => nghttp2_recv_callback2
+    - nghttp2_select_padding_callback => nghttp2_select_padding_callback2
+    - nghttp2_send_callback => nghttp2_send_callback2
+    
+    Structs:
+    
+    - nghttp2_data_provider => nghttp2_data_provider2
+    
+    Functions:
+    
+    - nghttp2_hd_deflate_hd => nghttp2_hd_deflate_hd2
+    - nghttp2_hd_deflate_hd_vec => nghttp2_hd_deflate_hd_vec2
+    - nghttp2_hd_inflate_hd2 => nghttp2_hd_inflate_hd3
+    - nghttp2_pack_settings_payload => nghttp2_pack_settings_payload2
+    - nghttp2_session_callbacks_set_data_source_read_length_callback =>
+      nghttp2_session_callbacks_set_data_source_read_length_callback2
+    - nghttp2_session_callbacks_set_pack_extension_callback =>
+      nghttp2_session_callbacks_set_pack_extension_callback2
+    - nghttp2_session_callbacks_set_recv_callback =>
+      nghttp2_session_callbacks_set_recv_callback2
+    - nghttp2_session_callbacks_set_select_padding_callback =>
+      nghttp2_session_callbacks_set_select_padding_callback2
+    - nghttp2_session_callbacks_set_send_callback =>
+      nghttp2_session_callbacks_set_send_callback2
+    - nghttp2_session_mem_recv => nghttp2_session_mem_recv2
+    - nghttp2_session_mem_send => nghttp2_session_mem_send2
+    - nghttp2_submit_data => nghttp2_submit_data2
+    - nghttp2_submit_request => nghttp2_submit_request2
+    - nghttp2_submit_response => nghttp2_submit_response2
+    
+    For those applications that do not want to see ssize_t in nghttp2.h
+    header file, define NGHTTP2_NO_SSIZE_T macro before including
+    nghttp2.h.  It hides all ssize_t APIs.
+
+commit 504633eadd7c80b578d1e3154cb1a59106f7f2cc
+Merge: ec7abfea 3884aa16
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-14
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-14
+
+    Merge pull request #2064 from nghttp2/munit
+    
+    Munit
+
+commit 3884aa166e24505e44bc176a86778c5a291d37d7
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-14
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-14
+
+    Remove munit dependency from nghttp2_test_helper.h
+
+commit ec7abfeabbb5831bc3c07d7f50697306d647cdee
+Merge: 58c1e2bb de79d05a
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-12
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-12
+
+    Merge pull request #2065 from nghttp2/integration-go-omit-unused-params
+    
+    integration-tests: Omit unused parameters
+
+commit de79d05ad97340acff16796e23f88e96e2f18c05
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-12
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-12
+
+    integration-tests: Omit unused parameters
+
+commit 8b4fd9bd13f30aae02f4b9243a5c7b910ad6b613
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-12
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-12
+
+    cmake: Disable -Wunused-macros
+    
+    Disable -Wunused-macros which makes compiling external code quite
+    hard.
+
+commit be8a32725873d83107c769df1811caf9f9cc0d27
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-10
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-12
+
+    Migrate to munit from cunit
+
+commit 58c1e2bb55b969f869eb501e0f5b6c2235c73d84
+Merge: 4f5a769d 5d0a2f5f
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-09
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-09
+
+    Merge pull request #2062 from nghttp2/dependabot/go_modules/golang.org/x/net-0.21.0
+    
+    build(deps): bump golang.org/x/net from 0.20.0 to 0.21.0
+
+commit 5d0a2f5fdb42d182a005fb2e341058475f59b41b
+Author:     dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+AuthorDate: 2024-02-09
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-09
+
+    build(deps): bump golang.org/x/net from 0.20.0 to 0.21.0
+    
+    Bumps [golang.org/x/net](https://github.com/golang/net) from 0.20.0 to 0.21.0.
+    - [Commits](https://github.com/golang/net/compare/v0.20.0...v0.21.0)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: golang.org/x/net
+      dependency-type: direct:production
+      update-type: version-update:semver-minor
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+
+commit 4f5a769d01625504507eb57719824c88970aacad
+Merge: 8df2c009 c92aabb6
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-09
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-09
+
+    Merge pull request #2061 from nghttp2/dependabot-gomod
+    
+    Let dependabot manage go modules
+
+commit 8df2c0090dc06be849a782cdf1052179dd0c4c3a
+Merge: 92582ce5 c00c44ab
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-09
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-09
+
+    Merge pull request #2060 from nghttp2/deprecate-rfc7540-priorities
+    
+    Deprecate RFC 7540 priorities (aka stream dependencies)
+
+commit c92aabb6e65468e2219c501cfe7e2e3563a00597
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-01-21
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-09
+
+    Let dependabot manage go modules
+
+commit c00c44abbe044d8162855a49133478d44d593bb0
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-09
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-09
+
+    Deprecate RFC 7540 priorities (aka stream dependencies)
+    
+    This commit just adds a warning to the related API documents.  The
+    actual functionality works just like before.
+
+commit 92582ce51950f8de96cf2f2181269c19a44ac70f
+Merge: d55323e5 1291b769
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-08
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-08
+
+    Merge pull request #2059 from nghttp2/libbrotli-fixup
+    
+    Libbrotli fixup
+
+commit 1291b76986aa2798b36974e99780a14b6b4ccf2c
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-08
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-08
+
+    Use auto
+
+commit 6d291e98e0ce7551de6e0b6dc81d3b8018e5951c
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-08
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-08
+
+    Fix bug that libbrotlienc is not enabled
+
+commit 68498a307c219388b6d48a53b6c6bba9c40eb672
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-08
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-08
+
+    Fix missing '`'
+
+commit a7d73d90db106a98fe071ed3b5a89437fbf0fc1d
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-08
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-08
+
+    cmake: Add missing definitions
+
+commit 69fd5b557d26de99d4cf5b0834a8832eb068aad9
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-08
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-08
+
+    Add missing `:`
+
+commit 3792abd4477a9c1d6b51bf00052c905f990def38
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-08
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-08
+
+    Disable libbrotli by default
+
+commit d55323e57540ac4f954ef6d6d737c931fab7902c
+Merge: 8c0fe8f9 96104d08
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-08
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-08
+
+    Merge pull request #2058 from nghttp2/switch-to-aws-lc
+    
+    Switch to aws lc
+
+commit 96104d0895f70c10bec01465fcb3be57b826d786
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-07
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-08
+
+    README.rst: Switch to aws-lc
+
+commit 2f7dd5ec657811036bb119ece06ca05af5117868
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-07
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-08
+
+    docker: Switch to aws-lc
+
+commit 8c0fe8f93fe270470ef64e4a8ca5c81b6118e96a
+Merge: f3b14229 85ccbd4f
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-07
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-07
+
+    Merge pull request #2057 from nghttp2/fix-missing-newline
+    
+    Fix missing newline
+
+commit 85ccbd4f95b3961d1fb7b0b79e98662922d9a053
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-07
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-07
+
+    Fix missing newline
+
+commit f3b142293c81b8a848f8265268ac384ce292c344
+Merge: 4ae7fe91 4b34dd19
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-07
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-07
+
+    Merge pull request #2056 from nghttp2/bssl-cert-compression
+    
+    src: Certificate Compression with boringssl
+
+commit 4b34dd196517cea1b1d14e66363870d3e3cec3c1
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-06
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-07
+
+    src: Certificate Compression with boringssl
+
+commit 4ae7fe91d69f10e0d9830efd51063d4480359dcc
+Merge: 41ac5f7e 50038865
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-06
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-06
+
+    Merge pull request #2054 from nghttp2/fetch-ocsp-response-python3
+    
+    Run with python3
+
+commit 41ac5f7e4eb807263cdd946e9647f55ac186eadc
+Merge: f7de2609 343dbafe
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-06
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-06
+
+    Merge pull request #2055 from nghttp2/bssl-ocsp
+    
+    nghttpx: Set ocsp response to SSL in case of boringssl
+
+commit 343dbafe7d320e0e36f3c869ad6a6619b406b6bf
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-06
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-06
+
+    nghttpx: Set ocsp response to SSL in case of boringssl
+
+commit 500388659184d668b7924bcb1962f10b6f26a07a
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-02-06
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-02-06
+
+    Run with python3
+
+commit f7de260969a251dcd025095367c1a15d7a6d7cbd
+Merge: fdc53b1a 69daeb04
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-06
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-06
+
+    Merge pull request #2052 from nghttp2/dependabot/github_actions/microsoft/setup-msbuild-2
+    
+    build(deps): bump microsoft/setup-msbuild from 1 to 2
+
+commit 69daeb040cdf03c5d4fd06e635facd85f644411d
+Author:     dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+AuthorDate: 2024-02-05
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-05
+
+    build(deps): bump microsoft/setup-msbuild from 1 to 2
+    
+    Bumps [microsoft/setup-msbuild](https://github.com/microsoft/setup-msbuild) from 1 to 2.
+    - [Release notes](https://github.com/microsoft/setup-msbuild/releases)
+    - [Changelog](https://github.com/microsoft/setup-msbuild/blob/main/building-release.md)
+    - [Commits](https://github.com/microsoft/setup-msbuild/compare/v1...v2)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: microsoft/setup-msbuild
+      dependency-type: direct:production
+      update-type: version-update:semver-major
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+
+commit fdc53b1a7621a5f7decc422f15c96b6330a31ba1
+Merge: a65b0acd b6247f53
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-02-05
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-02-05
+
+    Merge pull request #2051 from anthonyalayo/feat/fixingBuildInstallTrees
+    
+    Fixing the build and install trees
+
+commit b6247f5391b293c6e1b14cf6124be2875bfe62d0
+Author:     Anthony Alayo <anthony.alayo@applovin.com>
+AuthorDate: 2024-02-02
+Commit:     Anthony Alayo <anthony.alayo@applovin.com>
+CommitDate: 2024-02-02
+
+    Setting variables for static and shared libs
+
+commit 40983f461e352911e4ced1121c0e35f95ab85ce2
+Author:     Anthony Alayo <anthony.alayo@applovin.com>
+AuthorDate: 2024-02-02
+Commit:     Anthony Alayo <anthony.alayo@applovin.com>
+CommitDate: 2024-02-02
+
+    Update CMakeLists.txt
+
+commit 80ba5ad341f28348f7320e21213d8abf5a7a6950
+Author:     Anthony Alayo <anthony.alayo@applovin.com>
+AuthorDate: 2024-02-02
+Commit:     Anthony Alayo <anthony.alayo@applovin.com>
+CommitDate: 2024-02-02
+
+    Tweaking export
+
+commit 0f3a369e1242ee356d07f2bdb885c4cdf456447d
+Author:     Anthony Alayo <anthony.alayo@applovin.com>
+AuthorDate: 2024-02-02
+Commit:     Anthony Alayo <anthony.alayo@applovin.com>
+CommitDate: 2024-02-02
+
+    Adding export set
+
+commit d9edee47aa476bea8ea5c918c79d648345da2867
+Author:     Anthony Alayo <anthony.alayo@applovin.com>
+AuthorDate: 2024-02-02
+Commit:     Anthony Alayo <anthony.alayo@applovin.com>
+CommitDate: 2024-02-02
+
+    Fixing the build and install trees
+
+commit a65b0acd9e75697ffa22253bec887f6f58c77cab
+Merge: 57c1db3d 67c2c481
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-01-23
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-01-23
+
+    Merge pull request #2046 from nghttp2/dependabot/github_actions/actions/cache-4
+    
+    build(deps): bump actions/cache from 3 to 4
+
+commit 67c2c481ea30444114644fef58f0711349e39a41
+Author:     dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+AuthorDate: 2024-01-22
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-01-22
+
+    build(deps): bump actions/cache from 3 to 4
+    
+    Bumps [actions/cache](https://github.com/actions/cache) from 3 to 4.
+    - [Release notes](https://github.com/actions/cache/releases)
+    - [Changelog](https://github.com/actions/cache/blob/main/RELEASES.md)
+    - [Commits](https://github.com/actions/cache/compare/v3...v4)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: actions/cache
+      dependency-type: direct:production
+      update-type: version-update:semver-major
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+
+commit 57c1db3db4fb8f2f86a0d4135e01222d170b63a5
+Merge: 2bccc5cf cc963b48
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-01-22
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-01-22
+
+    Merge pull request #2044 from nghttp2/speed-up-git-clone
+    
+    Speed up git clone
+
+commit cc963b486208b283a0d53dd99a371fafa8190e90
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-01-22
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-01-22
+
+    Speed up git clone
+
+commit 2bccc5cf702e131d2c74cb69faa37644657cf557
+Merge: a0fc33ec 93404696
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-01-21
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-01-21
+
+    Merge pull request #2043 from nghttp2/release-speed-up-git-submodule
+    
+    makerelease.sh: Speed up git submodule
+
+commit 93404696acfc746893a3da426a4c9368f990d87c
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-01-21
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-01-21
+
+    makerelease.sh: Speed up git submodule
+
+commit a0fc33ecd524bcbd37ba2937732f47854e26348d
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-01-21
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-01-21
+
+    Bump package version
