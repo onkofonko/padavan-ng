@@ -1,5 +1,5 @@
 #! /bin/sh
-# $Id: configure,v 1.124 2024/01/04 01:12:04 nanard Exp $
+# $Id: configure,v 1.126 2024/03/02 10:47:03 nanard Exp $
 # vim: tabstop=4 shiftwidth=4 noexpandtab
 #
 # miniupnp daemon

@@ -1,4 +1,4 @@
-$Id: Changelog.txt,v 1.509 2024/01/15 00:20:19 nanard Exp $
+$Id: Changelog.txt,v 1.511 2024/03/02 10:45:25 nanard Exp $
 
 2024/02/25:
   fix IGDv2 WANIPConnection XML service description for AddAnyPortMapping

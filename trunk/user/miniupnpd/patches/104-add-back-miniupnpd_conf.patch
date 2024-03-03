@@ -1,0 +1,76 @@
+--- miniupnpd/Changelog.txt
++++ miniupnpd/Changelog.txt
+@@ -3,10 +3,6 @@
+ 2024/02/25:
+   fix IGDv2 WANIPConnection XML service description for AddAnyPortMapping
+   out argument is NewReservedPort, not NewExternalPort
+ 
+-2024/01/17:
+-  default path for miniupnpd.conf is /etc/miniupnpd/miniupnpd.conf
+-  under linux
+-
+ 2024/01/15:
+   fix SUBSCRIBE timeout compliance (should be >= 1800 seconds)
+--- miniupnpd/INSTALL
++++ miniupnpd/INSTALL
+@@ -126,9 +126,8 @@ https://miniupnp.tuxfamily.org/forum/viewtopic.php?p=4370
+ https://github.com/miniupnp/miniupnp/pull/114
+ 
+ =========================== Configuration =============================
+-The configuration file is either installed to /etc/miniupnpd.conf (BSD)
+-or /etc/miniupnpd/miniupnpd.conf (Linux)
+-Almost all options are also available through command line switches.
++Edit the /etc/miniupnpd.conf file to set options. Almost all options are
++also available through command line switches.
+ 
+ A basic configuration would set :
+ ext_ifname :   WAN network interface (interface connected to the internet)
+--- miniupnpd/configure
++++ miniupnpd/configure
+@@ -556,12 +556,6 @@ if [ "$FW" = "iptables" ] || [ "$FW" = "nftables" ] ; then
+ 	fi
+ fi
+ 
+-if [ "$MAKEFILE" = "Makefile.linux" ] || [ "$MAKEFILE" = "Makefile.linux_nft" ] || [ "$MAKEFILE" = "Makefile.macosx" ] ; then
+-	DEFAULT_CONFIG=/etc/miniupnpd/miniupnpd.conf
+-else
+-	DEFAULT_CONFIG=/etc/miniupnpd.conf
+-fi
+-
+ if [ "$MAKEFILE" = "Makefile.bsd" ] || [ "$OS_NAME" = "Darwin" ] || [ "$OS_NAME" = "SunOS" ] ; then
+ 	echo "FWNAME = $FW" > bsdmake.inc
+ 	echo "SRCDIR = ${BASEDIR}" >> bsdmake.inc
+@@ -816,9 +810,6 @@ echo "/* disable reading and parsing of config file (miniupnpd.conf) */" >> ${CO
+ echo "/*#define DISABLE_CONFIG_FILE*/" >> ${CONFIGFILE}
+ echo "" >> ${CONFIGFILE}
+ 
+-echo "#define DEFAULT_CONFIG \"${DEFAULT_CONFIG}\"" >> ${CONFIGFILE}
+-echo "" >> ${CONFIGFILE}
+-
+ echo "/* Uncomment the following line to configure all manufacturer infos through miniupnpd.conf */" >> ${CONFIGFILE}
+ if [ -n "$VENDORCFG" ] ; then
+ 	echo "#define ENABLE_MANUFACTURER_INFO_CONFIGURATION" >> ${CONFIGFILE}
+--- miniupnpd/miniupnpd.8
++++ miniupnpd/miniupnpd.8
+@@ -18,7 +18,7 @@ clients on the LAN to ask for port redirections.
+ .SH OPTIONS
+ .TP
+ .BI \-f " config_file"
+-load the config from file.
++load the config from file. default is /etc/miniupnpd.conf.
+ .TP
+ .BI \-i " ext_ifname"
+ interface used to connect to the internet.
+--- miniupnpd/miniupnpd.c
++++ miniupnpd/miniupnpd.c
+@@ -101,6 +101,10 @@ void init_iptpinhole(void);
+ #endif
+ #endif
+ 
++#ifndef DEFAULT_CONFIG
++#define DEFAULT_CONFIG "/etc/miniupnpd.conf"
++#endif
++
+ #ifdef USE_MINIUPNPDCTL
+ struct ctlelem {
+ 	int socket;
