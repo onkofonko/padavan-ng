@@ -63,11 +63,17 @@ void tftp_request(struct listener *listen, time_t now)
   struct tftp_prefix *pref;
   union all_addr addra;
   int family = listen->addr.sa.sa_family;
+#ifdef HAVE_IPV6
   /* Can always get recvd interface for IPv6 */
   int check_dest = !option_bool(OPT_NOWILD) || family == AF_INET6;
+#else
+  int check_dest = !option_bool(OPT_NOWILD);
+#endif /* HAVE_IPV6 */
   union {
     struct cmsghdr align; /* this ensures alignment */
+#ifdef HAVE_IPV6
     char control6[CMSG_SPACE(sizeof(struct in6_pktinfo))];
+#endif /* HAVE_IPV6 */
 #if defined(HAVE_LINUX_NETWORK)
     char control[CMSG_SPACE(sizeof(struct in_pktinfo))];
 #elif defined(HAVE_SOLARIS_NETWORK)
@@ -177,6 +183,7 @@ void tftp_request(struct listener *listen, time_t now)
 	  
 #endif
 
+#ifdef HAVE_IPV6
       if (family == AF_INET6)
         {
           for (cmptr = CMSG_FIRSTHDR(&msg); cmptr; cmptr = CMSG_NXTHDR(&msg, cmptr))
@@ -192,6 +199,7 @@ void tftp_request(struct listener *listen, time_t now)
                 if_index = p.p->ipi6_ifindex;
               }
         }
+#endif /* HAVE_IPV6 */
       
       if (!indextoname(listen->tftpfd, if_index, namebuff))
 	return;
@@ -200,8 +208,10 @@ void tftp_request(struct listener *listen, time_t now)
       
       addra.addr4 = addr.in.sin_addr;
 
+#ifdef HAVE_IPV6
       if (family == AF_INET6)
 	addra.addr6 = addr.in6.sin6_addr;
+#endif /* HAVE_IPV6 */
 
       if (daemon->tftp_interfaces)
 	{
@@ -295,6 +305,7 @@ void tftp_request(struct listener *listen, time_t now)
       addr.in.sin_len = sizeof(addr.in);
 #endif
     }
+#ifdef HAVE_IPV6
   else
     {
       addr.in6.sin6_port = htons(port);
@@ -304,6 +315,7 @@ void tftp_request(struct listener *listen, time_t now)
       addr.in6.sin6_len = sizeof(addr.in6);
 #endif
     }
+#endif /* HAVE_IPV6 */
 
   /* May reuse struct transfer from abandoned transfer in single port mode. */
   if (!transfer && !(transfer = whine_malloc(sizeof(struct tftp_transfer))))
@@ -346,8 +358,10 @@ void tftp_request(struct listener *listen, time_t now)
 		{ 
 		  if (family == AF_INET)
 		    addr.in.sin_port = htons(port);
+#ifdef HAVE_IPV6
 		  else
 		    addr.in6.sin6_port = htons(port);
+#endif /* HAVE_IPV6 */
 		  
 		  continue;
 		}

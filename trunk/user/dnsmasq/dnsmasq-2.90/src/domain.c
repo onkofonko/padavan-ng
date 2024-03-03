@@ -19,14 +19,21 @@
 
 static struct cond_domain *search_domain(struct in_addr addr, struct cond_domain *c);
 static int match_domain(struct in_addr addr, struct cond_domain *c);
+#ifdef HAVE_IPV6
 static struct cond_domain *search_domain6(struct in6_addr *addr, struct cond_domain *c);
 static int match_domain6(struct in6_addr *addr, struct cond_domain *c);
+#endif /* HAVE_IPV6 */
 
 int is_name_synthetic(int flags, char *name, union all_addr *addrp)
 {
   char *p;
   struct cond_domain *c = NULL;
-  int prot = (flags & F_IPV6) ? AF_INET6 : AF_INET;
+  int prot = AF_INET;
+
+#ifdef HAVE_IPV6
+  if (flags & F_IPV6)
+    prot = AF_INET6;
+#endif /* HAVE_IPV6 */
   union all_addr addr;
   
   for (c = daemon->synth_domains; c; c = c->next)
@@ -79,6 +86,7 @@ int is_name_synthetic(int flags, char *name, union all_addr *addrp)
 		      found = 1;
 		    }
 		} 
+#ifdef HAVE_IPV6 
 	      else
 		{
 		  u64 index = atoll(tail);
@@ -92,6 +100,7 @@ int is_name_synthetic(int flags, char *name, union all_addr *addrp)
 		      found = 1;
 		    }
 		}
+#endif /* HAVE_IPV6 */
 	    }
 	}
       else
@@ -104,8 +113,10 @@ int is_name_synthetic(int flags, char *name, union all_addr *addrp)
 	      if ((c >='0' && c <= '9') || c == '-')
 		continue;
 	      
+#ifdef HAVE_IPV6
 	      if (prot == AF_INET6 && ((c >='A' && c <= 'F') || (c >='a' && c <= 'f'))) 
 		continue;
+#endif /* HAVE_IPV6 */
 	      
 	      break;
 	    }
@@ -115,6 +126,7 @@ int is_name_synthetic(int flags, char *name, union all_addr *addrp)
 	  
 	  *p = 0;	
 	  
+#ifdef HAVE_IPV6
 	  if (prot == AF_INET6 && strstr(tail, "--ffff-") == tail)
 	    {
 	      /* special hack for v4-mapped. */
@@ -124,6 +136,7 @@ int is_name_synthetic(int flags, char *name, union all_addr *addrp)
 		  *p = '.';
 	    }
 	  else
+#endif /* HAVE_IPV6 */
 	    {
 	      /* swap . or : for - */
 	      for (p = tail; *p; p++)
@@ -131,13 +144,21 @@ int is_name_synthetic(int flags, char *name, union all_addr *addrp)
 		  {
 		    if (prot == AF_INET)
 		      *p = '.';
+#ifdef HAVE_IPV6
 		    else
 		      *p = ':';
+#endif /* HAVE_IPV6 */
 		  }
 	    }
 	  
-	  if (hostname_isequal(c->domain, p+1) && inet_pton(prot, tail, &addr))
-	    found = (prot == AF_INET) ? match_domain(addr.addr4, c) : match_domain6(&addr.addr6, c);
+	  if (hostname_isequal(c->domain, p+1) && inet_pton(prot, tail, &addr)) {
+	    if (prot == AF_INET)
+		  found = match_domain(addr.addr4, c);
+#ifdef HAVE_IPV6
+	    else
+		  found = match_domain6(&addr.addr6, c);
+#endif /* HAVE_IPV6 */
+	  }
 	}
       
       /* restore name */
@@ -192,6 +213,7 @@ int is_rev_synth(int flag, union all_addr *addr, char *name)
        return 1;
      }
 
+#ifdef HAVE_IPV6
    if ((flag & F_IPV6) && (c = search_domain6(&addr->addr6, daemon->synth_domains))) 
      {
        char *p;
@@ -229,6 +251,7 @@ int is_rev_synth(int flag, union all_addr *addr, char *name)
        
        return 1;
      }
+#endif /* HAVE_IPV6 */
    
    return 0;
 }
@@ -271,6 +294,7 @@ char *get_domain(struct in_addr addr)
   return daemon->domain_suffix;
 } 
 
+#ifdef HAVE_IPV6
 static int match_domain6(struct in6_addr *addr, struct cond_domain *c)
 {
     
@@ -318,3 +342,4 @@ char *get_domain6(struct in6_addr *addr)
 
   return daemon->domain_suffix;
 } 
+#endif /* HAVE_IPV6 */
