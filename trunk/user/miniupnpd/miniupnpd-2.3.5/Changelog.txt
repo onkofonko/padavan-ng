@@ -1,4 +1,10 @@
-$Id: Changelog.txt,v 1.511 2024/03/02 10:45:25 nanard Exp $
+$Id: Changelog.txt,v 1.512 2024/03/02 11:05:45 nanard Exp $
+
+2024/03/04:
+  NFTables: add upnp_nftables_family_split option to use NFPROTO_IPV4/IPV6
+  instead of the generic NFPROTO_INET
+
+VERSION 2.3.5 : released on 2024/03/02
 
 2024/02/25:
   fix IGDv2 WANIPConnection XML service description for AddAnyPortMapping
