@@ -1181,7 +1181,7 @@ OP_desc1=Router supports three operation modes to meet different requirements. P
 PASS_new=New Password:
 PASS_retype=Retype New Password:
 FW_desc1=Follow instructions listed below:
-FW_desc2=Check if any new version of firmware is available on <a href="ZVDWURLVZ" target="blank">ASUS RT-N56U custom firmware website</a>.
+FW_desc2=Check if any new version of firmware is available on <a href="ZVDWURLVZ" target="blank">Firmware source code website</a>.
 FW_desc3=Download a proper version to your local machine.
 FW_desc4=Specify the path of and name of the downloaded file in the [New Firmware File].
 FW_desc5=Click [Upload] to upload the file to router. Uploading process takes about 2-3 minutes.
@@ -1441,14 +1441,15 @@ TZ50=Abu Dhabi, Muscat
 TZ51=Baku, Tbilisi, Yerevan
 TZ52=Kabul
 TZ53=Ekaterinburg
+TZ53_2=Almaty
 TZ54=Islamabad, Karachi, Tashkent
+TZ54_2=Astana
 TZ55=Calcutta, Chennai
 TZ56=Mumbai, New Delhi
 TZ57=Kathmandu
-TZ58=Astana, Dhaka
+TZ58=Dhaka
 TZ59=Sri Jayawardenepura
 TZ60=Novosibirsk
-TZ60_2=Almaty
 TZ61=Rangoon
 TZ62=Bangkok, Hanoi, Jakarta
 TZ63=Krasnoyarsk
