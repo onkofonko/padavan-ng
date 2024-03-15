@@ -253,7 +253,7 @@ function done_validating(action){
                                             </td>
                                         </tr>
                                         <tr id="row_ether_green">
-                                            <th width="50%"><#btn_Enable#> Green Ethernet?</th>
+                                            <th width="50%"><#btn_Enable#> <#SwitchGreenEth#></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="ether_green_on_of">
@@ -268,7 +268,7 @@ function done_validating(action){
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th width="50%"><#btn_Enable#> Energy Efficient Ethernet (802.3az)?</th>
+                                            <th width="50%"><#btn_Enable#> <#SwitchEEE#></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="ether_eee_on_of">

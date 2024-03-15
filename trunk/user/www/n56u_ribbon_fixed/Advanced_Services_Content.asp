@@ -660,7 +660,7 @@ function change_crond_enabled(){
                                             <th colspan="2" style="background-color: #E3E3E3;"><#Adm_System_anon#></th>
                                         </tr>
                                         <tr id="row_doh">
-                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 26, 1);"><#Adm_Svc_doh#></a></th>
+                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 25, 1);"><#Adm_Svc_doh#></a></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="doh_enable_on_of">
@@ -717,7 +717,7 @@ function change_crond_enabled(){
                                         </tr>
 
                                         <tr id="row_stubby">
-                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 27, 1);"><#Adm_Svc_stubby#></a></th>
+                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 25, 2);"><#Adm_Svc_stubby#></a></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="stubby_enable_on_of">
@@ -810,7 +810,7 @@ function change_crond_enabled(){
                                         </tr>
 
                                         <tr id="row_dnscrypt">
-                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 25, 1);"><#Adm_Svc_dnscrypt#></a></th>
+                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 25, 3);"><#Adm_Svc_dnscrypt#></a></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="dnscrypt_enable_on_of">
@@ -852,7 +852,7 @@ function change_crond_enabled(){
                                             </td>
                                         </tr>
                                         <tr id="row_dnscrypt_force_dns" style="display:none;">
-                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 25, 2);"><#Adm_Svc_dnscrypt_force_dns#></a></th>
+                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 25, 4);"><#Adm_Svc_dnscrypt_force_dns#></a></th>
                                             <td>
                                                 <select name="dnscrypt_force_dns" class="input">
                                                     <option value="0" <% nvram_match_x("", "dnscrypt_force_dns", "0", "selected"); %>><#checkbox_No#> (*)</option>
@@ -861,7 +861,7 @@ function change_crond_enabled(){
                                             </td>
                                         </tr>
                                         <tr id="row_dnscrypt_options" style="display:none">
-                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 25, 3);"><#Adm_Svc_dnscrypt_options#></a></th>
+                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 25, 5);"><#Adm_Svc_dnscrypt_options#></a></th>
                                             <td>
                                                 <input type="text" maxlength="128" size="15" name="dnscrypt_options" class="input" value="<% nvram_get_x("", "dnscrypt_options"); %>" onkeypress="return is_string(this,event);"/>
                                             </td>
@@ -887,7 +887,7 @@ function change_crond_enabled(){
                                             </td>
                                         </tr>
                                         <tr id="row_iperf3">
-                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,28,1);"><#Adm_Svc_iperf3#></a></th>
+                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,23,1);"><#Adm_Svc_iperf3#></a></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="iperf3_enable_on_of">
@@ -951,7 +951,7 @@ function change_crond_enabled(){
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,23,1);"><#TweaksWdg#></a></th>
+                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,23,2);"><#TweaksWdg#></a></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="watchdog_cpu_on_of">

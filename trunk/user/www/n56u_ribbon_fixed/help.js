@@ -170,8 +170,9 @@ helpcontent[22] = new Array("",
 				"<#OP_GW_desc1#>",
 				"<#OP_GW_desc1#>",
 				"<#OP_AP_desc1#>");
-// Tweaks
+// Other services
 helpcontent[23] = new Array("",
+				"<#Adm_Svc_iperf3_desc#>",
 				"<#TweaksWdg_desc#>");
 
 // DDNS
@@ -182,23 +183,13 @@ helpcontent[24] = new Array("",
 				"<#LANHostConfig_x_DDNSWildcard_itemdesc#>",
 				"<#LANHostConfig_x_DDNSStatus_itemdesc#>");
 
-// DNSCrypt
+// Anonymity services 
 helpcontent[25] = new Array("",
+				"<#Adm_Svc_doh_desc#>",
+				"<#Adm_Svc_stubby_desc#>",
 				"<#Adm_Svc_dnscrypt_desc#>",
 				"<#Adm_Svc_dnscrypt_force_dns_desc#>",
 				"<#Adm_Svc_dnscrypt_options_desc#>");
-
-// DoH proxy
-helpcontent[26] = new Array("",
-				"<#Adm_Svc_doh_desc#>");
-
-// stubby
-helpcontent[27] = new Array("",
-				"<#Adm_Svc_stubby_desc#>");
-
-// iper3
-helpcontent[28] = new Array("",
-				"<#Adm_Svc_iperf3_desc#>");
 
 function openTooltip(obj, hint_array_id, hint_show_id)
 {
@@ -244,4 +235,3 @@ function openHint(hint_array_id, hint_show_id){
 function closeHint(){
 	$('hintofPM').style.display = "none";
 }
-
