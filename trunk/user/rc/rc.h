@@ -34,7 +34,7 @@
 #include <bin_sem_asus.h>
 
 /* do not set current year, it used for ntp done check! */
-#define SYS_START_YEAR			2015
+#define SYS_START_YEAR			2023
 
 #define DNS_RESOLV_CONF			"/etc/resolv.conf"
 #define DNS_SERVERS_FILE		"/tmp/dnsmasq.servers"
