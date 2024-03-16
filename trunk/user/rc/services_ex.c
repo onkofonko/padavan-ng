@@ -293,13 +293,12 @@ int
 start_dns_dhcpd(int is_ap_mode)
 {
 	FILE *fp;
-	int i_verbose, i_dhcp_enable, is_dhcp_used, is_dns_used, i_filter_aaa;
+	int i_verbose, i_dhcp_enable, is_dhcp_used, is_dns_used;
 	char dhcp_start[32], dhcp_end[32], dns_all[64], dnsv6[40];
 	char *ipaddr, *netmask, *gw, *dns1, *dns2, *dns3, *wins, *domain, *dns6;
 	const char *storage_dir = "/etc/storage/dnsmasq";
 
 	i_dhcp_enable = is_dhcpd_enabled(is_ap_mode);
-	i_filter_aaa = nvram_get_int("dhcp_filter_aaa");
 	i_verbose = nvram_get_int("dhcp_verbose");
 
 	ipaddr  = nvram_safe_get("lan_ipaddr");
@@ -339,6 +338,11 @@ start_dns_dhcpd(int is_ap_mode)
 	if (!is_ap_mode) {
 		/* listen DNS queries from clients of VPN server */
 		fprintf(fp, "listen-address=%s\n", ipaddr);
+	}
+
+	if (!is_ap_mode && nvram_match("dhcp_filter_aaaa", "1")) {
+		/* Don't include IPv6 addresses in DNS answers */
+		fprintf(fp, "filter-AAAA\n");
 	}
 
 	if (!is_ap_mode && nvram_match("dhcp_allservers", "1")) {
@@ -537,12 +541,8 @@ start_dns_dhcpd(int is_ap_mode)
 	if (is_dns_used)
 		fill_dnsmasq_servers();
 
-	if (is_dns_used || is_dhcp_used) {
-		if (i_filter_aaa == 1)
-			return eval("/usr/sbin/dnsmasq", "--filter-AAAA");
-		else
-			return eval("/usr/sbin/dnsmasq");
-	}
+	if (is_dns_used || is_dhcp_used)
+		return eval("/usr/sbin/dnsmasq");
 
 	return 0;
 }
