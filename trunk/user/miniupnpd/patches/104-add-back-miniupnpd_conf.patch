@@ -1,6 +1,6 @@
 --- miniupnpd/Changelog.txt
 +++ miniupnpd/Changelog.txt
-@@ -3,10 +3,6 @@
+@@ -12,10 +12,6 @@
  2024/02/25:
    fix IGDv2 WANIPConnection XML service description for AddAnyPortMapping
    out argument is NewReservedPort, not NewExternalPort
