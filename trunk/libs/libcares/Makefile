@@ -1,5 +1,5 @@
-SRC_NAME=c-ares-1.27.0
-SRC_URL=https://github.com/c-ares/c-ares/releases/download/cares-1_27_0/$(SRC_NAME).tar.gz
+SRC_NAME=c-ares-1.28.1
+SRC_URL=https://github.com/c-ares/c-ares/releases/download/cares-1_28_1/$(SRC_NAME).tar.gz
 
 #all: download_test extract_test config_test
 all: config_test
