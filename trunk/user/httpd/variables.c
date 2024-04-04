@@ -218,6 +218,9 @@
 #endif
 #if defined(APP_FTPD)
 			{"enable_ftp", "", NULL, EVM_RESTART_FTPD},
+#if defined(APP_FTPD_SSL)
+			{"st_ftp_ssl_mode", "", NULL, EVM_RESTART_FTPD},
+#endif
 			{"st_ftp_mode", "", NULL, EVM_RESTART_FTPD},
 			{"st_ftp_log", "", NULL, EVM_RESTART_FTPD},
 			{"st_ftp_pmin", "", NULL, EVM_RESTART_FTPD},

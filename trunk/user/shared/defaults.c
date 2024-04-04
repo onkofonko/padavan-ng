@@ -368,6 +368,7 @@ struct nvram_pair router_defaults[] = {
 	{ "st_samba_mode", "1" },
 	{ "st_samba_lmb", "1" },
 	{ "st_samba_workgroup", DEF_SMB_WORKGROUP },
+	{ "st_ftp_ssl_mode", "0" },
 	{ "st_ftp_mode", "1" },
 	{ "st_ftp_log", "0" },
 	{ "st_ftp_pmin", "50000" },

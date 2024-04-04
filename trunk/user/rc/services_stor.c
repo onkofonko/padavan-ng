@@ -103,7 +103,22 @@ write_vsftpd_conf(void)
 	fprintf(fp, "pasv_max_port=%d\n", nvram_safe_get_int("st_ftp_pmax", 50100, 1, 65535));
 	fprintf(fp, "use_sendfile=%s\n", "YES");
 #if defined (SUPPORT_FTPD_SSL)
-	fprintf(fp, "ssl_enable=%s\n", "NO");
+	int i_ftp_ssl_mode = nvram_get_int("st_ftp_ssl_mode");
+	if (i_ftp_ssl_mode != 0) {
+		fprintf(fp, "ssl_enable=%s\n", "YES");
+		fprintf(fp, "rsa_cert_file=%s\n", "/etc/storage/https/server.crt");
+		fprintf(fp, "rsa_private_key_file=%s\n", "/etc/storage/https/server.key");
+		fprintf(fp, "ssl_ciphers=%s\n", "AES128-SHA:DES-CBC3-SHA:DHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA");
+		if (i_ftp_ssl_mode == 1) {
+			fprintf(fp, "force_local_data_ssl=%s\n", "NO");
+			fprintf(fp, "force_local_logins_ssl=%s\n", "NO");
+		}
+		else if (i_ftp_ssl_mode == 3) {
+			fprintf(fp, "allow_anon_ssl=%s\n", "YES");
+			fprintf(fp, "force_anon_data_ssl=%s\n", "YES");
+			fprintf(fp, "force_anon_logins_ssl=%s\n", "YES");
+		}
+	}
 #endif
 
 	i_ftp_mode = nvram_get_int("st_ftp_mode");
@@ -161,6 +176,10 @@ run_ftp(void)
 	write_vsftpd_conf();
 
 	eval("/sbin/vsftpd");
+#if defined (SUPPORT_FTPD_SSL)
+	if (nvram_get_int("st_ftp_ssl_mode") != 0)
+		eval("/sbin/vsftpd", "-olisten_port=990", "-oimplicit_ssl=YES");
+#endif
 
 	if (is_ftp_run())
 		logmessage("FTP server", "daemon is started");
@@ -237,7 +256,7 @@ write_smb_conf(void)
 		fprintf(fp, "guest only = yes\n");
 		fprintf(fp, "guest account = %s\n", rootnm);
 	} else if (i_smb_mode == 4) {
-		fprintf(fp, "map to guest = %s\n", "Bad User");
+		fprintf(fp, "map to guest = %s\n", "Never");
 		fprintf(fp, "guest ok = %s\n", "no");
 		fprintf(fp, "hide unreadable = yes\n");
 	} else {

@@ -2073,6 +2073,11 @@ ej_firmware_caps_hook(int eid, webs_t wp, int argc, char **argv)
 #else
 	int found_app_ftpd = 0;
 #endif
+#if defined(APP_FTPD_SSL)
+	int found_app_ftpd_ssl = 1;
+#else
+	int found_app_ftpd_ssl = 0;
+#endif
 #if defined(APP_RPL2TP)
 	int found_app_l2tp = 1;
 #else
@@ -2288,6 +2293,7 @@ ej_firmware_caps_hook(int eid, webs_t wp, int argc, char **argv)
 		"function found_app_smbd() { return %d;}\n"
 		"function found_app_nmbd() { return %d;}\n"
 		"function found_app_ftpd() { return %d;}\n"
+		"function found_app_ftpd_ssl() { return %d;}\n"
 		"function found_app_l2tp() { return %d;}\n"
 		"function found_srv_u2ec() { return %d;}\n"
 		"function found_srv_lprd() { return %d;}\n"
@@ -2311,6 +2317,7 @@ ej_firmware_caps_hook(int eid, webs_t wp, int argc, char **argv)
 		found_app_smbd,
 		found_app_nmbd,
 		found_app_ftpd,
+		found_app_ftpd_ssl,
 		found_app_l2tp,
 		found_srv_u2ec,
 		found_srv_lprd,
@@ -3165,6 +3172,17 @@ apply_cgi(const char *url, webs_t wp)
 			common_name = nvram_safe_get("lan_ipaddr_t");
 		if (get_login_safe())
 			sys_result = doSystem("/usr/bin/https-cert.sh -n '%s' -b %s -d %d", common_name, rsa_bits, days_valid);
+#endif
+		websWrite(wp, "{\"sys_result\": %d}", sys_result);
+		return 0;
+	}
+	else if (!strcmp(value, " CheckCertHTTPS "))
+	{
+		int sys_result = 1;
+#if defined(SUPPORT_FTPD_SSL)
+		struct stat stat_buf;
+		if (get_login_safe())
+			sys_result = !stat(STORAGE_HTTPSSL_DIR "/server.crt", &stat_buf) && !stat(STORAGE_HTTPSSL_DIR "/server.key", &stat_buf) ? 1 : 0;
 #endif
 		websWrite(wp, "{\"sys_result\": %d}", sys_result);
 		return 0;
