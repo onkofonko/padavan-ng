@@ -1,7 +1,7 @@
 #!/bin/sh
 
 func_start(){
-	vlmcsd
+	vlmcsd -A 30d -R 30d
 	logger -st "vlmcsd" "KMS Activation server is running."
 }
 
