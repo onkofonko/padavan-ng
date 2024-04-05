@@ -13,7 +13,7 @@ download_test:
 
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
-		tar jxf $(SRC_NAME).tar.bz2; \
+		tar xjf $(SRC_NAME).tar.bz2; \
 		find $(THISDIR)/patches -type f -name '*.patch' -print0 \
 		  | sort -z \
 		  | xargs -t -0 -n 1 patch -d $(SRC_NAME)  -p1 -i; \
@@ -24,4 +24,3 @@ clean:
 
 romfs:
 	$(MAKE) -C $(SRC_NAME) CONFIG_PREFIX=$(ROMFSDIR) install
-
