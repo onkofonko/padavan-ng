@@ -97,6 +97,7 @@
 #include "tivo_beacon.h"
 #include "tivo_utils.h"
 #include "avahi.h"
+#include "icons.h"
 
 #if SQLITE_VERSION_NUMBER < 3005001
 # warning "Your SQLite3 library appears to be too old!  Please use 3.5.1 or newer."
@@ -819,6 +820,68 @@ init(int argc, char **argv)
 		case ENABLE_SUBTITLES:
 			if (!strtobool(ary_options[i].value))
 				CLEARFLAG(SUBTITLES_MASK);
+			break;
+		case ICON_PNG_SM:
+		case ICON_PNG_LRG:
+		case ICON_JPEG_SM:
+		case ICON_JPEG_LRG:
+			{
+				FILE *f = fopen(ary_options[i].value, "rb");
+				if (f == NULL)
+				{
+					DPRINTF(E_WARN, L_GENERAL, "Icon file not found: %s\n", ary_options[i].value);
+					DPRINTF(E_WARN, L_GENERAL, "Fallback to default icon!\n");
+					break;
+				}
+				fseek(f, 0, SEEK_END);
+				size_t fsize = ftell(f);
+				if (fsize >= 192*1024)
+				{
+					fclose(f);
+					DPRINTF(E_WARN, L_GENERAL, "Icon file to big! Maximum is 192kB! [%s]\n", ary_options[i].value);
+					DPRINTF(E_WARN, L_GENERAL, "Fallback to default icon!\n");
+					break;
+				}
+				fseek(f, 0, SEEK_SET);
+				char *data = malloc(fsize);
+				if (!data)
+				{
+					fclose(f);
+					DPRINTF(E_WARN, L_GENERAL, "Not enough memory to load icon!\n");
+					DPRINTF(E_WARN, L_GENERAL, "Fallback to default icon!\n");
+					break;
+				}
+				if (fread(data, 1, fsize, f) != fsize)
+				{
+					fclose(f);
+					free(data);
+					DPRINTF(E_WARN, L_GENERAL, "I/O error while reading icon file: %s!\n", ary_options[i].value);
+					DPRINTF(E_WARN, L_GENERAL, "Fallback to default icon!\n");
+					break;
+				}
+				fclose(f);
+
+				switch (ary_options[i].id)
+				{
+				case ICON_PNG_SM:
+					png_sm = data;
+					png_sm_size = fsize;
+					break;
+				case ICON_PNG_LRG:
+					png_lrg = data;
+					png_lrg_size = fsize;
+					break;
+				case ICON_JPEG_SM:
+					jpeg_sm = data;
+					jpeg_sm_size = fsize;
+					break;
+				case ICON_JPEG_LRG:
+					jpeg_lrg = data;
+					jpeg_lrg_size = fsize;
+					break;
+				default:;
+				}
+			}
 			break;
 		default:
 			DPRINTF(E_ERROR, L_GENERAL, "Unknown option in file %s\n",

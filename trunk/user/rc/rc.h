@@ -91,6 +91,8 @@
 
 #define SAMBA_CONF			"/etc/smb.conf"
 
+#define STORAGE_MINIDLNA_CUSTOM_ICON_DIR "/etc/storage/minidlna"
+
 #define MP_MTD_RWFS			"/media/mtd_rwfs"
 
 #define SR_PREFIX_LAN			"LAN"

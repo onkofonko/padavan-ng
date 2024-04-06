@@ -855,6 +855,11 @@ void update_minidlna_conf(const char *link_path, const char *conf_path)
 	fprintf(fp, "strict_dlna=%s\n", "no");
 	fprintf(fp, "model_number=%d\n", 1);
 
+	fprintf(fp, "icon_png_small=%s\n", STORAGE_MINIDLNA_CUSTOM_ICON_DIR "/icon_x48.png");
+	fprintf(fp, "icon_png_large=%s\n", STORAGE_MINIDLNA_CUSTOM_ICON_DIR "/icon_x120.png");
+	fprintf(fp, "icon_jpeg_small=%s\n", STORAGE_MINIDLNA_CUSTOM_ICON_DIR "/icon_x48.jpg");
+	fprintf(fp, "icon_jpeg_large=%s\n", STORAGE_MINIDLNA_CUSTOM_ICON_DIR "/icon_x120.jpg");
+
 	fclose(fp);
 }
 
