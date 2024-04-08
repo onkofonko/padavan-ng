@@ -99,6 +99,8 @@ function initial(){
 		showhide_div('row_doh_conf4', 0);
 		showhide_div('row_doh_conf5', 0);
 		showhide_div('row_doh_conf6', 0);
+		showhide_div('row_doh_conf7', 0);
+		showhide_div('row_doh_conf8', 0);
 	}else{
 		change_doh_enabled();
 		}
@@ -159,6 +161,8 @@ function applyRule(){
 		showhide_div('row_doh_conf4', 0);
 		showhide_div('row_doh_conf5', 0);
 		showhide_div('row_doh_conf6', 0);
+		showhide_div('row_doh_conf7', 0);
+		showhide_div('row_doh_conf8', 0);
 	}
 
 	if(!found_app_stubby()){
@@ -352,6 +356,8 @@ function change_doh_enabled(){
 	showhide_div('row_doh_conf4', v);
 	showhide_div('row_doh_conf5', v);
 	showhide_div('row_doh_conf6', v);
+	showhide_div('row_doh_conf7', v);
+	showhide_div('row_doh_conf8', v);
 }
 
 function change_stubby_enabled(){
@@ -713,6 +719,20 @@ function change_crond_enabled(){
                                                 <span>Options:       </span>
                                                 <input type="text" maxlength="55" class="input" size="10" style="width: 225px;" name="doh_opt1_3" value="<% nvram_get_x("", "doh_opt1_3"); %>" onkeypress="return is_string(this,event);"/>&nbsp; 
                                                 <input type="text" maxlength="85" class="input" size="10" style="width: 230px;" name="doh_opt2_3" value="<% nvram_get_x("", "doh_opt2_3"); %>" onkeypress="return is_string(this,event);"/>
+                                            </td>
+                                        </tr>
+                                        <tr id="row_doh_conf7" style="display:none">
+                                            <td colspan="2" align="left" style="text-align:left;">
+                                                <span>DoH Server 4:  </span>
+                                                <input type="text" maxlength="60" class="input" size="10" style="width: 374px;" name="doh_server4" value="<% nvram_get_x("", "doh_server4"); %>" onkeypress="return is_string(this,event);"/>&nbsp;:
+                                                &nbsp;<span style="color:#888;">[65058]</span>
+                                            </td>
+                                        </tr>
+                                        <tr id="row_doh_conf8" style="display:none">
+                                            <td colspan="2" align="left" style="text-align:left;">
+                                                <span>Options:       </span>
+                                                <input type="text" maxlength="55" class="input" size="10" style="width: 225px;" name="doh_opt1_4" value="<% nvram_get_x("", "doh_opt1_4"); %>" onkeypress="return is_string(this,event);"/>&nbsp; 
+                                                <input type="text" maxlength="85" class="input" size="10" style="width: 230px;" name="doh_opt2_4" value="<% nvram_get_x("", "doh_opt2_4"); %>" onkeypress="return is_string(this,event);"/>
                                             </td>
                                         </tr>
 

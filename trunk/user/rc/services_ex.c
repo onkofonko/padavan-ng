@@ -374,7 +374,7 @@ start_dns_dhcpd(int is_ap_mode)
 #if defined(APP_DOH)
 	if (!is_ap_mode && nvram_match("doh_enable", "1")) {
 		/*  */
-		fprintf(fp, "server=127.0.0.1#65055\n" "server=127.0.0.1#65056\n" "server=127.0.0.1#65057\n");
+		fprintf(fp, "server=127.0.0.1#65055\n" "server=127.0.0.1#65056\n" "server=127.0.0.1#65057\n" "server=127.0.0.1#65058\n");
 	}
 #endif
 	if (!is_ap_mode) {
