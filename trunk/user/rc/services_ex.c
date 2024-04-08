@@ -345,12 +345,12 @@ start_dns_dhcpd(int is_ap_mode)
 		fprintf(fp, "filter-AAAA\n");
 	}
 
-	if (!is_ap_mode && nvram_match("dhcp_allservers", "1")) {
+	if (!is_ap_mode && nvram_match("dhcp_all_servers", "1")) {
 		/* DNS queries for all servers */
 		fprintf(fp, "all-servers\n");
 	}
 
-	if (!is_ap_mode && nvram_match("dhcp_strictorder", "1")) {
+	if (!is_ap_mode && nvram_match("dhcp_strict_order", "1")) {
 		/* Name servers strictly in the order listed */
 		fprintf(fp, "strict-order\n");
 	}
