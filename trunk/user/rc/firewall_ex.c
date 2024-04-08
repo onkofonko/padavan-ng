@@ -1800,7 +1800,7 @@ ipt_nat_rules(char *man_if, char *man_ip,
 		}
 #endif
 		/* redirect all LAN clients' DNS queries (PREROUTING) */
-		if (wan_ip && nvram_match("redirect_alldns", "1")) {
+		if (wan_ip && nvram_match("redirect_all_dns", "1")) {
 			fprintf(fp, "-I %s -i %s -p tcp --dport 53 -j DNAT --to %s\n", "PREROUTING", lan_if, lan_ip);
 			fprintf(fp, "-I %s -i %s -p udp --dport 53 -j DNAT --to %s\n", "PREROUTING", lan_if, lan_ip);
 		}
@@ -2211,5 +2211,4 @@ start_firewall_ex(void)
 	module_smart_unload("iptable_mangle", 0);
 	module_smart_unload("ip6table_mangle", 0);
 }
-
 

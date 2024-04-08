@@ -502,7 +502,7 @@ struct nvram_pair router_defaults[] = {
 	{ "dhcp_dns3_x", "" },
 	{ "dhcp_dnsv6_x", "" },
 	{ "dhcp_wins_x", "" },
-	{ "redirect_alldns", "0" },		/* Redirect all clients DNS requests */
+	{ "redirect_all_dns", "0" },		/* Redirect all clients DNS requests */
 	{ "dhcp_filter_aaaa", "0" },
 	{ "dhcp_all_servers", "1" },
 	{ "dhcp_strict_order", "0" },

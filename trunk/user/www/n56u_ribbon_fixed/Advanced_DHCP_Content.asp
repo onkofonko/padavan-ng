@@ -26,7 +26,7 @@ var $j = jQuery.noConflict();
 
 $j(document).ready(function() {
 	init_itoggle('dhcp_enable_x');
-	init_itoggle('redirect_alldns');
+	init_itoggle('redirect_all_dns');
 	init_itoggle('dhcp_filter_aaaa');
 	init_itoggle('dhcp_all_servers');
 	init_itoggle('dhcp_strict_order');
@@ -507,13 +507,13 @@ function changeBgColor(obj, num){
                                             <th style="border-top: 0 none;"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,12);"><#LANHostConfig_ForceDNS_itemname#></a></th>
                                             <td style="border-top: 0 none;">
                                                 <div class="main_itoggle">
-                                                    <div id="redirect_alldns_on_of">
-                                                        <input type="checkbox" id="redirect_alldns_fake" <% nvram_match_x("", "redirect_alldns", "1", "value=1 checked"); %><% nvram_match_x("", "redirect_alldns", "0", "value=0"); %>>
+                                                    <div id="redirect_all_dns_on_of">
+                                                        <input type="checkbox" id="redirect_all_dns_fake" <% nvram_match_x("", "redirect_all_dns", "1", "value=1 checked"); %><% nvram_match_x("", "redirect_all_dns", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
                                                 <div style="position: absolute; margin-left: -10000px;">
-                                                    <input type="radio" value="1" name="redirect_alldns" id="redirect_alldns_1" <% nvram_match_x("", "redirect_alldns", "1", "checked"); %>><#checkbox_Yes#>
-                                                    <input type="radio" value="0" name="redirect_alldns" id="redirect_alldns_0" <% nvram_match_x("", "redirect_alldns", "0", "checked"); %>><#checkbox_No#>
+                                                    <input type="radio" value="1" name="redirect_all_dns" id="redirect_all_dns_1" <% nvram_match_x("", "redirect_all_dns", "1", "checked"); %>><#checkbox_Yes#>
+                                                    <input type="radio" value="0" name="redirect_all_dns" id="redirect_all_dns_0" <% nvram_match_x("", "redirect_all_dns", "0", "checked"); %>><#checkbox_No#>
                                                 </div>
                                            </td>
                                         </tr>
