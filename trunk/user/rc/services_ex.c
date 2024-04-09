@@ -339,22 +339,22 @@ start_dns_dhcpd(int is_ap_mode)
 		/* listen DNS queries from clients of VPN server */
 		fprintf(fp, "listen-address=%s\n", ipaddr);
 	}
-
 	if (!is_ap_mode && nvram_match("dhcp_filter_aaaa", "1")) {
 		/* Don't include IPv6 addresses in DNS answers */
 		fprintf(fp, "filter-AAAA\n");
 	}
-
 	if (!is_ap_mode && nvram_match("dhcp_all_servers", "1")) {
 		/* DNS queries for all servers */
 		fprintf(fp, "all-servers\n");
 	}
-
 	if (!is_ap_mode && nvram_match("dhcp_strict_order", "1")) {
 		/* Name servers strictly in the order listed */
 		fprintf(fp, "strict-order\n");
 	}
-
+	if (!is_ap_mode && nvram_match("dhcp_stop_dns_rebind", "1")) {
+		/* Stop DNS rebinding and Allows upstream 127.0.0.0/8 responses */
+		fprintf(fp, "rebind-localhost-ok\n" "stop-dns-rebind\n");
+	}
 	if (!is_ap_mode && (nvram_match("doh_enable", "1") || nvram_match("stubby_enable", "1") || nvram_match("dnscrypt_enable", "1"))) {
 		/* don't use resolv-file to resovle DNS queries if doh_proxy or stubby or dnscrypt-proxy is enabled */
 		fprintf(fp, "no-resolv\n");

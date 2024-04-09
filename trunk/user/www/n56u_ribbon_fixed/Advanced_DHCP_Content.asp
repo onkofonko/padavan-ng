@@ -30,6 +30,7 @@ $j(document).ready(function() {
 	init_itoggle('dhcp_filter_aaaa');
 	init_itoggle('dhcp_all_servers');
 	init_itoggle('dhcp_strict_order');
+	init_itoggle('dhcp_stop_dns_rebind');
 	init_itoggle('lan_dhcpd_x');
 	init_itoggle('dhcp_static_x', change_dhcp_static_enabled);
 	init_itoggle('dhcp_static_arp');
@@ -559,6 +560,20 @@ function changeBgColor(obj, num){
                                                 </div>
                                            </td>
                                         </tr>
+                                        <tr>
+                                            <th style="border-top: 0 none;"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,16);"><#LANHostConfig_DHCPStopDNSRebind_itemname#></a></th>
+                                            <td style="border-top: 0 none;">
+                                                <div class="main_itoggle">
+                                                    <div id="dhcp_stop_dns_rebind_on_of">
+                                                        <input type="checkbox" id="dhcp_stop_dns_rebind_fake" <% nvram_match_x("", "dhcp_stop_dns_rebind", "1", "value=1 checked"); %><% nvram_match_x("", "dhcp_stop_dns_rebind", "0", "value=0"); %>>
+                                                    </div>
+                                                </div>
+                                                <div style="position: absolute; margin-left: -10000px;">
+                                                    <input type="radio" value="1" name="dhcp_stop_dns_rebind" id="dhcp_stop_dns_rebind_1" <% nvram_match_x("", "dhcp_stop_dns_rebind", "1", "checked"); %> /><#checkbox_Yes#>
+                                                    <input type="radio" value="0" name="dhcp_stop_dns_rebind" id="dhcp_stop_dns_rebind_0" <% nvram_match_x("", "dhcp_stop_dns_rebind", "0", "checked"); %> /><#checkbox_No#>
+                                                </div>
+                                           </td>
+                                        </tr>
                                     </table>
 
                                     <table width="100%" align="center" cellpadding="4" cellspacing="0" class="table">
@@ -623,7 +638,7 @@ function changeBgColor(obj, num){
                                             <th colspan="4" id="GWStatic" style="background-color: #E3E3E3;"><#LANHostConfig_ManualDHCPList_groupitemdesc#></th>
                                         </tr>
                                         <tr>
-                                            <th colspan="2" width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,16);"><#LANHostConfig_ManualDHCPEnable_itemname#></a></th>
+                                            <th colspan="2" width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,17);"><#LANHostConfig_ManualDHCPEnable_itemname#></a></th>
                                             <td colspan="2">
                                                 <div class="main_itoggle">
                                                     <div id="dhcp_static_x_on_of">
@@ -638,7 +653,7 @@ function changeBgColor(obj, num){
                                             </td>
                                         </tr>
                                         <tr id="row_static_arp" style="display:none">
-                                            <th colspan="2" width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,17);"><#LANHostConfig_ManualARP_itemname#></a></th>
+                                            <th colspan="2" width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,18);"><#LANHostConfig_ManualARP_itemname#></a></th>
                                             <td colspan="2">
                                                 <div class="main_itoggle">
                                                     <div id="dhcp_static_arp_on_of">

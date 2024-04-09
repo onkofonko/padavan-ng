@@ -501,6 +501,7 @@
 			{"dhcp_filter_aaaa", "", NULL, EVM_RESTART_DHCPD},
 			{"dhcp_all_servers", "", NULL, EVM_RESTART_DHCPD},
 			{"dhcp_strict_order", "", NULL, EVM_RESTART_DHCPD},
+			{"dhcp_stop_dns_rebind", "", NULL, EVM_RESTART_DHCPD},
 			{"dhcp_verbose", "", NULL, EVM_RESTART_DHCPD},
 			{"dhcp_static_x", "", NULL, EVM_RESTART_DHCPD},
 			{"dhcp_static_arp", "", NULL, EVM_RESTART_DHCPD},
@@ -1032,4 +1033,3 @@
 		{EVM_RESTART_FIREWALL,		EVT_RESTART_FIREWALL,		RCN_RESTART_FIREWALL,	0},
 		{0,0,0,0}
 	};
-
