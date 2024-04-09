@@ -355,6 +355,10 @@ start_dns_dhcpd(int is_ap_mode)
 		/* Stop DNS rebinding and Allows upstream 127.0.0.0/8 responses */
 		fprintf(fp, "rebind-localhost-ok\n" "stop-dns-rebind\n");
 	}
+	if (!is_ap_mode && nvram_match("dhcp_proxy_dnssec", "1")) {
+		/* Proxy DNSSEC validation results from upstream nameservers */
+		fprintf(fp, "proxy-dnssec\n");
+	}
 	if (!is_ap_mode && (nvram_match("doh_enable", "1") || nvram_match("stubby_enable", "1") || nvram_match("dnscrypt_enable", "1"))) {
 		/* don't use resolv-file to resovle DNS queries if doh_proxy or stubby or dnscrypt-proxy is enabled */
 		fprintf(fp, "no-resolv\n");

@@ -28,6 +28,7 @@ helpcontent[5] = new Array("",
 				"<#LANHostConfig_DHCPAllservers_itemdesc#>",
 				"<#LANHostConfig_DHCPStrictorder_itemdesc#>",
 				"<#LANHostConfig_DHCPStopDNSRebind_itemdesc#>",
+				"<#LANHostConfig_DHCPProxyDNSSEC_itemdesc#>",
 				"<#LANHostConfig_ManualDHCPEnable_itemdesc#>",
 				"<#LANHostConfig_ManualARP_itemdesc#>");
 helpcontent[6] = new Array("",

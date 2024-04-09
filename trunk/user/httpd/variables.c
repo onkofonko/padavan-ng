@@ -502,6 +502,7 @@
 			{"dhcp_all_servers", "", NULL, EVM_RESTART_DHCPD},
 			{"dhcp_strict_order", "", NULL, EVM_RESTART_DHCPD},
 			{"dhcp_stop_dns_rebind", "", NULL, EVM_RESTART_DHCPD},
+			{"dhcp_proxy_dnssec", "", NULL, EVM_RESTART_DHCPD},
 			{"dhcp_verbose", "", NULL, EVM_RESTART_DHCPD},
 			{"dhcp_static_x", "", NULL, EVM_RESTART_DHCPD},
 			{"dhcp_static_arp", "", NULL, EVM_RESTART_DHCPD},
