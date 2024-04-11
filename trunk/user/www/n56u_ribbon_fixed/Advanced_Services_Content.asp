@@ -84,7 +84,11 @@ function initial(){
 	change_crond_enabled();
 
 	if(!found_app_vlmcsd()){
-		showhide_div('div_vlmcsd', 0);
+		showhide_div('row_vlmcsd', 0);
+	}
+
+	if(!found_app_iperf3()){
+		showhide_div('row_iperf3', 0);
 	}
 
 	if(found_app_doh() || found_app_stubby() || found_app_tor() || found_app_privoxy() || found_app_dnscrypt()){
@@ -137,9 +141,6 @@ function initial(){
 		showhide_div('row_dnscrypt_options', 0);
 	}else
 		change_dnscrypt_enabled();
-
-	if(!found_app_iperf3())
-		showhide_div('row_iperf3', 0);
 }
 
 function applyRule(){
@@ -190,10 +191,6 @@ function applyRule(){
 		showhide_div('row_dnscrypt_port', 0);
 		showhide_div('row_dnscrypt_force_dns', 0);
 		showhide_div('row_dnscrypt_options', 0);
-	}
-
-	if(!found_app_iperf3()){
-		showhide_div('row_iperf3', 0);
 	}
 }
 
@@ -892,8 +889,8 @@ function change_crond_enabled(){
                                         <tr>
                                             <th colspan="2" style="background-color: #E3E3E3;"><#Adm_System_misc#></th>
                                         </tr>
-                                        <tr id="div_vlmcsd">
-                                            <th><#Adm_Svc_vlmcsd#></th>
+                                        <tr id="row_vlmcsd">
+                                            <th width="50%"><#Adm_Svc_vlmcsd#></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="vlmcsd_enable_on_of">
