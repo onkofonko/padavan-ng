@@ -665,8 +665,8 @@ CLEANFILES = $(VC14_LIBVCXPROJ) $(VC14_SRCVCXPROJ) \
  $(VC14_30_LIBVCXPROJ) $(VC14_30_SRCVCXPROJ)
 
 bin_SCRIPTS = curl-config
-SUBDIRS = lib docs src
-DIST_SUBDIRS = $(SUBDIRS) packages include docs
+SUBDIRS = lib src
+DIST_SUBDIRS = $(SUBDIRS) packages include
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libcurl.pc
 LIB_VAUTH_CFILES = \
@@ -1794,11 +1794,8 @@ cygwinbin:
 # We extend the standard install with a custom hook:
 @BUILD_DOCS_TRUE@install-data-hook:
 @BUILD_DOCS_TRUE@	(cd include && $(MAKE) install)
-@BUILD_DOCS_TRUE@	(cd docs && $(MAKE) install)
-@BUILD_DOCS_TRUE@	(cd docs/libcurl && $(MAKE) install)
 @BUILD_DOCS_FALSE@install-data-hook:
 @BUILD_DOCS_FALSE@	(cd include && $(MAKE) install)
-@BUILD_DOCS_FALSE@	(cd docs && $(MAKE) install)
 
 # We extend the standard uninstall with a custom hook:
 uninstall-hook:

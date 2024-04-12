@@ -46,7 +46,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/include        \
 bin_PROGRAMS = curl
 
 if BUILD_DOCS
-SUBDIRS = ../docs
+SUBDIRS =
 endif
 
 if USE_CPPFLAG_CURL_STATICLIB

@@ -1,0 +1,102 @@
+diff -urN curl-8.7.1-orig/Makefile.am curl-8.7.1/Makefile.am
+--- curl-8.7.1-orig/Makefile.am	2024-03-26 09:42:20.000000000 +0200
++++ curl-8.7.1/Makefile.am	2024-04-03 01:09:30.970026401 +0300
+@@ -135,7 +135,7 @@
+ bin_SCRIPTS = curl-config
+ 
+-SUBDIRS = lib docs src scripts
+-DIST_SUBDIRS = $(SUBDIRS) tests packages scripts include docs
++SUBDIRS = lib src
++DIST_SUBDIRS = $(SUBDIRS) packages include
+ 
+ pkgconfigdir = $(libdir)/pkgconfig
+ pkgconfig_DATA = libcurl.pc
+@@ -243,14 +243,11 @@
+ # We extend the standard install with a custom hook:
+ if BUILD_DOCS
+ install-data-hook:
+ 	(cd include && $(MAKE) install)
+-	(cd docs && $(MAKE) install)
+-	(cd docs/libcurl && $(MAKE) install)
+ else
+ install-data-hook:
+ 	(cd include && $(MAKE) install)
+-	(cd docs && $(MAKE) install)
+ endif
+ 
+ # We extend the standard uninstall with a custom hook:
+ uninstall-hook:
+diff -rupw curl-8.7.1-orig/Makefile.in curl-8.7.1/Makefile.in
+--- curl-8.7.1-orig/Makefile.in	2024-03-27 10:03:42.000000000 +0200
++++ curl-8.7.1/Makefile.in	2024-04-03 01:09:30.970026401 +0300
+@@ -666,7 +666,7 @@
+ 
+ bin_SCRIPTS = curl-config
+-SUBDIRS = lib docs src scripts
+-DIST_SUBDIRS = $(SUBDIRS) tests packages scripts include docs
++SUBDIRS = lib src
++DIST_SUBDIRS = $(SUBDIRS) packages include
+ pkgconfigdir = $(libdir)/pkgconfig
+ pkgconfig_DATA = libcurl.pc
+ LIB_VAUTH_CFILES = \
+@@ -1794,11 +1794,8 @@
+ # We extend the standard install with a custom hook:
+ @BUILD_DOCS_TRUE@install-data-hook:
+ @BUILD_DOCS_TRUE@	(cd include && $(MAKE) install)
+-@BUILD_DOCS_TRUE@	(cd docs && $(MAKE) install)
+-@BUILD_DOCS_TRUE@	(cd docs/libcurl && $(MAKE) install)
+ @BUILD_DOCS_FALSE@install-data-hook:
+ @BUILD_DOCS_FALSE@	(cd include && $(MAKE) install)
+-@BUILD_DOCS_FALSE@	(cd docs && $(MAKE) install)
+ 
+ # We extend the standard uninstall with a custom hook:
+ uninstall-hook:
+diff -urN curl-8.7.1-orig/configure.ac curl-8.7.1/configure.ac
+--- curl-8.7.1-orig/configure.ac	2024-03-27 00:05:31.000000000 +0200
++++ curl-8.7.1/configure.ac	2024-04-03 01:09:30.974026215 +0300
+@@ -4937,30 +4937,14 @@
+ fi
+ 
+ AC_CONFIG_FILES([Makefile \
+-           docs/Makefile \
+-           docs/examples/Makefile \
+-           docs/libcurl/Makefile \
+-           docs/libcurl/opts/Makefile \
+-           docs/cmdline-opts/Makefile \
+            include/Makefile \
+            include/curl/Makefile \
+            src/Makefile \
+            lib/Makefile \
+            scripts/Makefile \
+            lib/libcurl.vers \
+            lib/libcurl.plist \
+-           tests/Makefile \
+-           tests/config \
+-           tests/certs/Makefile \
+-           tests/certs/scripts/Makefile \
+-           tests/data/Makefile \
+-           tests/server/Makefile \
+-           tests/libtest/Makefile \
+-           tests/unit/Makefile \
+-           tests/http/config.ini \
+-           tests/http/Makefile \
+-           tests/http/clients/Makefile \
+            packages/Makefile \
+            packages/vms/Makefile \
+            curl-config \
+            libcurl.pc
+diff -urN curl-8.7.1-orig/src/Makefile.am curl-8.7.1/src/Makefile.am
+--- curl-8.7.1-orig/src/Makefile.am	2024-03-26 09:42:20.000000000 +0200
++++ curl-8.7.1/src/Makefile.am	2024-04-03 01:09:30.974026215 +0300
+@@ -45,10 +45,10 @@
+ 
+ bin_PROGRAMS = curl
+ 
+ if BUILD_DOCS
+-SUBDIRS = ../docs
++SUBDIRS =
+ endif
+ 
+ if USE_CPPFLAG_CURL_STATICLIB
+ AM_CPPFLAGS += -DCURL_STATICLIB
+ endif

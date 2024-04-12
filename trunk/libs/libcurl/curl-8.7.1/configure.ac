@@ -4937,11 +4937,6 @@ if test "x$want_curldebug_assumed" = "xyes" &&
 fi
 
 AC_CONFIG_FILES([Makefile \
-           docs/Makefile \
-           docs/examples/Makefile \
-           docs/libcurl/Makefile \
-           docs/libcurl/opts/Makefile \
-           docs/cmdline-opts/Makefile \
            include/Makefile \
            include/curl/Makefile \
            src/Makefile \
