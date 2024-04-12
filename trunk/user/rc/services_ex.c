@@ -1038,8 +1038,8 @@ write_inadyn_conf(const char *conf_file)
 
 	i_ddns1_ssl = nvram_get_int("ddns_ssl");
 	i_ddns2_ssl = nvram_get_int("ddns2_ssl");
-	ddns1_svc = get_inadyn_system(nvram_safe_get("ddns_server_x"));
 
+	ddns1_svc = get_inadyn_system(nvram_safe_get("ddns_server_x"));
 	if (!ddns1_svc) {
 		ddns1_svc = inadyn_systems[0].system;
 		nvram_set("ddns_server_x", inadyn_systems[0].alias);

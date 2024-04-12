@@ -764,7 +764,6 @@ start_services_once(int is_ap_mode)
 	start_networkmap(1);
 	start_rstats();
 	return 0;
-
 }
 
 void

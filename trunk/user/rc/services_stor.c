@@ -180,7 +180,6 @@ run_ftp(void)
 	if (nvram_get_int("st_ftp_ssl_mode") != 0)
 		eval("/sbin/vsftpd", "-olisten_port=990", "-oimplicit_ssl=YES");
 #endif
-
 	if (is_ftp_run())
 		logmessage("FTP server", "daemon is started");
 }
@@ -590,7 +589,6 @@ write_nfsd_exports(void)
 	const char *exports_file = "/etc/exports";
 	const char *exports_rule = "async,insecure,no_root_squash,no_subtree_check";
 	char *nfsmm, *acl_addr, *acl_mask;
-
 #if defined (USE_IPV6)
 	int ipv6_type;
 	char *acl_addr6, *acl_len6;
@@ -1390,4 +1388,3 @@ safe_remove_all_stor_devices(int do_spindown)
 	unload_nfsd();
 #endif
 }
-

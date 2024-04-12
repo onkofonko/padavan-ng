@@ -525,6 +525,8 @@
 			{"telnetd", "", NULL, EVM_RESTART_TELNETD},
 			{"sshd_enable", "", NULL, EVM_RESTART_SSHD},
 			{"sshd_enable_gp", "", NULL, EVM_RESTART_SSHD},
+			{"wins_enable", "", NULL, EVM_RESTART_WINS|EVM_REAPPLY_VPNSVR},
+			{"lltd_enable", "", NULL, EVM_RESTART_LLTD},
 #if defined(APP_DOH)
 			{"doh_enable", "", NULL, EVM_RESTART_DOH},
 			{"doh_server1", "", NULL, EVM_RESTART_DOH},
@@ -566,8 +568,6 @@
 #if defined (SUPPORT_WPAD)
 			{"scripts.wpad.dat", "File", NULL, EVM_BLOCK_UNSAFE},
 #endif
-			{"wins_enable", "", NULL, EVM_RESTART_WINS|EVM_REAPPLY_VPNSVR},
-			{"lltd_enable", "", NULL, EVM_RESTART_LLTD},
 #if defined (SUPPORT_ZRAM)
 			{"zram_enable", "", NULL, EVM_RESTART_ZRAM},
 			{"zram_clzx", "", NULL, EVM_RESTART_ZRAM},

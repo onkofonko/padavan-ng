@@ -1810,7 +1810,6 @@ ipt_nat_rules(char *man_if, char *man_ip,
 			fprintf(fp, "-A %s -p udp -d %s --sport %d -j NETMAP --to %s\n", "PREROUTING", wan_ip, BATTLENET_PORT, lan_net);
 			fprintf(fp, "-A %s -p udp -s %s --dport %d -j NETMAP --to %s\n", "POSTROUTING", lan_net, BATTLENET_PORT, wan_ip);
 		}
-
 #if 0
 		/* miniupnpd postrouting chain (is really needed for XBox One?) */
 		if (is_upnp_enabled)
@@ -2129,7 +2128,6 @@ start_firewall_ex(void)
 	char wan_ip[16], man_ip[16], lan_ip[16], lan_net[24] = {0};
 	const char *opt_iptables_script = "/opt/bin/update_iptables.sh";
 	const char *int_iptables_script = SCRIPT_POST_FIREWALL;
-
 	unit = 0;
 
 	snprintf(lan_if, sizeof(lan_if), "%s", IFNAME_BR);
@@ -2211,4 +2209,3 @@ start_firewall_ex(void)
 	module_smart_unload("iptable_mangle", 0);
 	module_smart_unload("ip6table_mangle", 0);
 }
-
