@@ -1,3 +1,32 @@
+# For those who want to support the project #
+
+To express gratitude and support my work:
+
+PayPal: sereja8@gmail.com
+
+My Virtual Card Privat Bank UAH: 5169 3600 0910 4443
+
+My Virtual Card Privat Bank USD: 5169 3600 0910 4385
+
+Thank you very much for your support!
+
+I wish everyone well! © by Sergey Hadzhioglu
+
+# Для желающих поддержать проект #
+
+Чтобы выразить благодарность и поддержать мою работу:
+
+PayPal: sereja8@gmail.com
+
+Моя виртуальная карта Приват Банка гривна: 5169 3600 0910 4443
+
+Моя виртуальная карта Приват Банка USD: 5169 3600 0910 4385
+
+Большое спасибо вам за вашу поддержку!
+
+Желаю всем добра! © by Sergey Hadzhioglu
+
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/4KRbrfM/maxresdefault.jpg" alt="maxresdefault" border="0"></a>
 # README #
 
 Welcome to the rt-n56u project
