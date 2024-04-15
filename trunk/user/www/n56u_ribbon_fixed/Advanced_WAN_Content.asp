@@ -137,9 +137,6 @@ function validForm(){
 			mask_obj.select();
 			return false;
 		}
-
-		if(!validate_range(document.form.wan_mtu, 1300, 1500))
-			return false;
 	}
 
 	if(!document.form.wan_dnsenable_x[0].checked){
@@ -154,6 +151,11 @@ function validForm(){
 	if(wan_proto == "pppoe" || wan_proto == "pptp" || wan_proto == "l2tp"){
 		if(!validate_string(document.form.wan_pppoe_username)
 				|| !validate_string(document.form.wan_pppoe_passwd))
+			return false;
+	}
+
+	if(wan_proto == "static"){
+		if(!validate_range(document.form.wan_mtu, 1300, 1500))
 			return false;
 	}
 
@@ -315,6 +317,9 @@ function change_wan_type(wan_type, flag){
 	showhide_div("tbl_vpn_control", is_pppoe||is_pptp||is_l2tp);
 	showhide_div("row_auth_type", is_static||is_dhcp||is_pptp);
 
+	inputCtrl(document.form.wan_mtu, is_static);
+	showhide_div("row_wan_mtu", is_static);
+
 	if(is_pppoe||is_pptp||is_l2tp){
 		$("dhcp_sect_desc").innerHTML = "<#WAN_MAN_desc#>";
 		$("dhcp_auto_desc").innerHTML = "<#WAN_MAN_DHCP#>";
@@ -399,12 +404,10 @@ function set_wan_dhcp_auto(use_auto){
 	inputCtrl(document.form.wan_ipaddr, !use_auto);
 	inputCtrl(document.form.wan_netmask, !use_auto);
 	inputCtrl(document.form.wan_gateway, !use_auto);
-	inputCtrl(document.form.wan_mtu, !use_auto);
 
 	showhide_div("row_wan_ipaddr", !use_auto);
 	showhide_div("row_wan_netmask", !use_auto);
 	showhide_div("row_wan_gateway", !use_auto);
-	showhide_div("row_wan_mtu", !use_auto);
 
 	var v = use_auto;
 	if (document.form.wan_proto.value == "pppoe" && document.form.wan_pppoe_man.value != "1")
@@ -732,6 +735,13 @@ function simplyMAC(fullMAC){
                                                 </select>
                                             </td>
                                         </tr>
+                                        <tr id="row_wan_mtu">
+                                            <th><#WAN_MTU#></th>
+                                            <td>
+                                                <input type="text" name="wan_mtu" maxlength="4" class="input" size="4" placeholder="<#Config_Prudent#>" value="<% nvram_get_x("","wan_mtu"); %>" onkeypress="return is_number(this,event);"/>
+                                                &nbsp;<span style="color:#888;">[1300..1500]</span>
+                                            </td>
+                                        </tr>
                                         <tr id="row_wan_poller">
                                             <th><#WAN_Poller#></th>
                                             <td>
@@ -779,13 +789,6 @@ function simplyMAC(fullMAC){
                                         <tr id="row_wan_gateway">
                                             <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,7,3);"><#IPConnection_x_ExternalGateway_itemname#></a></th>
                                             <td><input type="text" name="wan_gateway" maxlength="15" class="input" size="15" value="<% nvram_get_x("","wan_gateway"); %>" onKeyPress="return is_ipaddr(this,event);"/></td>
-                                        </tr>
-                                        <tr id="row_wan_mtu">
-                                            <th>MTU:</th>
-                                            <td>
-                                                <input type="text" name="wan_mtu" maxlength="4" class="input" size="5" value="<% nvram_get_x("","wan_mtu"); %>" onkeypress="return is_number(this,event);"/>
-                                                &nbsp;<span style="color:#888;">[1300..1500]</span>
-                                            </td>
                                         </tr>
                                     </table>
 

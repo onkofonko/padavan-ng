@@ -620,7 +620,7 @@ function change_crond_enabled(){
 
                                     <table width="100%" cellpadding="4" cellspacing="0" class="table" id="tbl_wins" style="display:none">
                                         <tr>
-                                            <th colspan="2" style="background-color: #E3E3E3;">Windows Internet Name Service (WINS)</th>
+                                            <th colspan="2" style="background-color: #E3E3E3;"><#Adm_Svc_Windows_Internet_Name_Service#></th>
                                         </tr>
                                         <tr>
                                             <th width="50%"><#Adm_Svc_wins#></th>
