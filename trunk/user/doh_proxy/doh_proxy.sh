@@ -2,7 +2,6 @@
 
 func_start()
 {
-### Configure DoH proxy. DNS-over-HTTPS (DoH).
 if [ -f "/var/run/doh_proxy.pid" ]; then
 		logger -t doh_proxy "DoH proxy is running."
 else
@@ -60,7 +59,6 @@ fi
 touch /var/run/doh_proxy.pid
 fi
 }
-
 
 func_stop()
 {
