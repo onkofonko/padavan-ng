@@ -1,5 +1,7 @@
-SRC_NAME=https_dns_proxy-master
-SRC_URL=https://github.com/aarond10/https_dns_proxy/archive/refs/heads/master.zip
+SRC_NAME=https_dns_proxy
+#SRC_NAME=https_dns_proxy-master
+#SRC_URL=https://github.com/aarond10/https_dns_proxy/archive/refs/heads/master.zip
+#SRC_URL=https://github.com/baranyaib90/https_dns_proxy/archive/refs/heads/master.zip
 
 CFLAGS  += -O2 -ffunction-sections -fdata-sections -fvisibility=hidden -fPIC
 LDFLAGS += -Wl,--gc-sections,-rpath-link,$(STAGEDIR)/lib -lcurl -lssl -lcrypto -lz
