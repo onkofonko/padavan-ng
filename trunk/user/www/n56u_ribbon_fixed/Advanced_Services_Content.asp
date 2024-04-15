@@ -536,7 +536,7 @@ function change_crond_enabled(){
                                             <td colspan="4" style="padding-bottom: 0px;">
                                                 <a href="javascript:spoiler_toggle('ca.crt')"><span>Root CA Certificate (optional)</span></a>
                                                 <div id="ca.crt" style="display:none;">
-                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="httpssl.ca.crt" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("httpssl.ca.crt",""); %></textarea>
+                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="httpssl.ca.crt" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("httpssl.ca.crt",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -544,7 +544,7 @@ function change_crond_enabled(){
                                             <td colspan="4" style="padding-bottom: 0px; border-top: 0 none;">
                                                 <a href="javascript:spoiler_toggle('dh1024.pem')"><span>Diffie-Hellman PEM (optional)</span></a>
                                                 <div id="dh1024.pem" style="display:none;">
-                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="httpssl.dh1024.pem" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("httpssl.dh1024.pem",""); %></textarea>
+                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="httpssl.dh1024.pem" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("httpssl.dh1024.pem",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -552,7 +552,7 @@ function change_crond_enabled(){
                                             <td colspan="4" style="padding-bottom: 0px; border-top: 0 none;">
                                                 <a href="javascript:spoiler_toggle('server.crt')"><span>Server Certificate (required)</span></a>
                                                 <div id="server.crt" style="display:none;">
-                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="httpssl.server.crt" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("httpssl.server.crt",""); %></textarea>
+                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="httpssl.server.crt" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("httpssl.server.crt",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -560,7 +560,7 @@ function change_crond_enabled(){
                                             <td colspan="4" style="padding-bottom: 0px; border-top: 0 none;">
                                                 <a href="javascript:spoiler_toggle('server.key')"><span>Server Private Key (required)</span></a>
                                                 <div id="server.key" style="display:none;">
-                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="httpssl.server.key" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("httpssl.server.key",""); %></textarea>
+                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="httpssl.server.key" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("httpssl.server.key",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -612,7 +612,7 @@ function change_crond_enabled(){
                                             <td colspan="2" style="padding-bottom: 0px;">
                                                 <a href="javascript:spoiler_toggle('authorized_keys')"><span><#Adm_System_sshd_keys#> (authorized_keys)</span></a>
                                                 <div id="authorized_keys" style="display:none;">
-                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="scripts.authorized_keys" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.authorized_keys",""); %></textarea>
+                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="scripts.authorized_keys" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.authorized_keys",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -751,7 +751,7 @@ function change_crond_enabled(){
                                             <td colspan="2">
                                                 <a href="javascript:spoiler_toggle('stubby.yml')"><span><#CustomConf#> "stubby.yml"</span></a>
                                                 <div id="stubby.yml" style="display:none;">
-                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="stubbyc.stubby.yml" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("stubbyc.stubby.yml",""); %></textarea>
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="stubbyc.stubby.yml" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("stubbyc.stubby.yml",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -774,7 +774,7 @@ function change_crond_enabled(){
                                             <td colspan="2">
                                                 <a href="javascript:spoiler_toggle('spoiler_tor_conf')"><span><#CustomConf#> "torrc"</span></a>
                                                 <div id="spoiler_tor_conf" style="display:none;">
-                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="4096" class="span12" name="torconf.torrc" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("torconf.torrc",""); %></textarea>
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="4096" class="span12" name="torconf.torrc" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("torconf.torrc",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -797,7 +797,7 @@ function change_crond_enabled(){
                                             <td colspan="2">
                                                 <a href="javascript:spoiler_toggle('spoiler_privoxy_conf')"><span><#CustomConf#> "config"</span></a>
                                                 <div id="spoiler_privoxy_conf" style="display:none;">
-                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.config" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.config",""); %></textarea>
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.config" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.config",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -805,7 +805,7 @@ function change_crond_enabled(){
                                             <td colspan="2">
                                                 <a href="javascript:spoiler_toggle('spoiler_privoxy_action')"><span><#CustomConf#> "user.action"</span></a>
                                                 <div id="spoiler_privoxy_action" style="display:none;">
-                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.user.action" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.user.action",""); %></textarea>
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.user.action" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.user.action",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -813,7 +813,7 @@ function change_crond_enabled(){
                                             <td colspan="2">
                                                 <a href="javascript:spoiler_toggle('spoiler_privoxy_filter')"><span><#CustomConf#> "user.filter"</span></a>
                                                 <div id="spoiler_privoxy_filter" style="display:none;">
-                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.user.filter" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.user.filter",""); %></textarea>
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.user.filter" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.user.filter",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -821,7 +821,7 @@ function change_crond_enabled(){
                                             <td colspan="2">
                                                 <a href="javascript:spoiler_toggle('spoiler_privoxy_trust')"><span><#CustomConf#> "user.trust"</span></a>
                                                 <div id="spoiler_privoxy_trust" style="display:none;">
-                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.user.trust" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.user.trust",""); %></textarea>
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.user.trust" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.user.trust",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -963,7 +963,7 @@ function change_crond_enabled(){
                                             <td colspan="2">
                                                 <a href="javascript:spoiler_toggle('crond_crontabs')"><span><#Adm_Svc_crontabs#></span></a>
                                                 <div id="crond_crontabs" style="display:none;">
-                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="crontab.login" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("crontab.login",""); %></textarea>
+                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="crontab.login" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("crontab.login",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
