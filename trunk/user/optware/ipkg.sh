@@ -16,7 +16,7 @@
 
 set -e
 
-if [ -f /opt/bin/opkg ] ; then
+if [ -f /opt/bin/opkg ]; then
 	echo "WARNING! Entware detected. Please remove Entware first!"
 	exit 1
 fi
@@ -535,7 +535,7 @@ ipkg_unsatisfied_dependences() {
     local remaining_deps=
     for dep in $deps; do
 	local installed="`ipkg_get_installed $dep`"
-	if [ "$installed" != "installed" ] ; then
+	if [ "$installed" != "installed" ]; then
 	    remaining_deps="$remaining_deps $dep"
 	fi
     done

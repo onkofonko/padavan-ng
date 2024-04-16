@@ -340,7 +340,7 @@ func_ipup()
 {
 #  if [ "\$peer_name" == "dmitry" ]; then
 #    route add -net 192.168.5.0 netmask 255.255.255.0 dev \$peer_if
-#  elif [ "\$peer_name" == "victoria" ] ; then
+#  elif [ "\$peer_name" == "victoria" ]; then
 #    route add -net 192.168.8.0 netmask 255.255.255.0 dev \$peer_if
 #  fi
    return 0
@@ -350,7 +350,7 @@ func_ipdown()
 {
 #  if [ "\$peer_name" == "dmitry" ]; then
 #    route del -net 192.168.5.0 netmask 255.255.255.0 dev \$peer_if
-#  elif [ "\$peer_name" == "victoria" ] ; then
+#  elif [ "\$peer_name" == "victoria" ]; then
 #    route del -net 192.168.8.0 netmask 255.255.255.0 dev \$peer_if
 #  fi
    return 0

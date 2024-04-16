@@ -11,12 +11,12 @@ if [ -z "$ROOTDIR" ]; then
 	exit 1
 fi
 
-if [ ! -x "$STRIPTOOL" ] ; then
+if [ ! -x "$STRIPTOOL" ]; then
 	echo "STRIPTOOL is not set" >&2
 	exit 1
 fi
 
-if [ ! -x "$OBJCOPY" ] ; then
+if [ ! -x "$OBJCOPY" ]; then
 	echo "OBJCOPY is not set" >&2
 	exit 1
 fi
@@ -35,7 +35,7 @@ done
 if [ -n "$NON_STRIPS_LIB" ]; then
 	${STRIPTOOL} $NON_STRIPS_LIB
 	${STRIPTOOL} -R .comment -R .note --strip-debug --strip-unneeded $NON_STRIPS_LIB
-	if [ -x "${SSTRIP_TOOL}" ] ; then
+	if [ -x "${SSTRIP_TOOL}" ]; then
 		${SSTRIP_TOOL} $NON_STRIPS_LIB
 	fi
 fi

@@ -6,7 +6,7 @@ func_create_config()
 {
 	ip_address=`ip address show br0 | grep -w inet | sed 's|.* \(.*\)/.*|\1|'`
 	cp -af /usr/share/privoxy/privoxy $dir_storage
-	if [ ! -L "$dir_storage/privoxy/templates" ] ; then
+	if [ ! -L "$dir_storage/privoxy/templates" ]; then
 		ln -s /usr/share/privoxy/templates $dir_storage/privoxy/templates
 	fi
 	chmod 755 $dir_storage/privoxy
@@ -17,7 +17,7 @@ func_create_config()
 
 func_start()
 {
-	if [ ! -d "$dir_storage/privoxy" ] ; then
+	if [ ! -d "$dir_storage/privoxy" ]; then
 		func_create_config
 	fi
 	/usr/bin/logger -t privoxy Start privoxy

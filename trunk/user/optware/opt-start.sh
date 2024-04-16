@@ -20,21 +20,20 @@ for i in `ls /opt/etc/init.d/S??* 2>/dev/null` ; do
 done
 
 # install and update ipkg/opkg in background
-if [ "$optw_enable" == "1" ] ; then
-	if [ ! -f /opt/bin/ipkg ] ; then
-		if [ -f /opt/bin/opkg ] ; then
+if [ "$optw_enable" == "1" ]; then
+	if [ ! -f /opt/bin/ipkg ]; then
+		if [ -f /opt/bin/opkg ]; then
 			logger -t "Optware:" "WARNING! Entware detected (/opt). Please remove Entware first!"
 			exit 0
 		fi
 		/usr/bin/opt-ipkg-upd.sh
 	fi
-elif [ "$optw_enable" == "2" ] ; then
-	if [ ! -f /opt/bin/opkg ] ; then
-		if [ -f /opt/bin/ipkg ] ; then
+elif [ "$optw_enable" == "2" ]; then
+	if [ ! -f /opt/bin/opkg ]; then
+		if [ -f /opt/bin/ipkg ]; then
 			logger -t "Entware:" "WARNING! Optware detected (/opt). Please remove Optware first!"
 			exit 0
 		fi
 		/usr/bin/opt-opkg-upd.sh
 	fi
 fi
-

@@ -82,10 +82,10 @@ if [ "$ID_FS_TYPE" == "msdos" -o "$ID_FS_TYPE" == "vfat" ]; then
 		func_load_module exfat
 		mount -t exfat "$dev_full" "$dev_mount" -o noatime,umask=0,iocharset=utf8
 	fi
-elif [ "$ID_FS_TYPE" == "exfat" ] ; then
+elif [ "$ID_FS_TYPE" == "exfat" ]; then
 	func_load_module exfat
 	mount -t exfat "$dev_full" "$dev_mount" -o noatime,umask=0,iocharset=utf8
-elif [ "$ID_FS_TYPE" == "ntfs" ] ; then
+elif [ "$ID_FS_TYPE" == "ntfs" ]; then
 	if [ "$achk_enable" != "0" ] && [ -x /sbin/chkntfs ]; then
 		/sbin/chkntfs -a -f --verbose "$dev_full" > "/tmp/chkntfs_result_$1" 2>&1
 	fi
@@ -93,13 +93,13 @@ elif [ "$ID_FS_TYPE" == "ntfs" ] ; then
 	if [ -n "$kernel_ufsd" ]; then
 		func_load_module ufsd
 		mount -t ufsd "$dev_full" "$dev_mount" -o noatime,sparse,nls=utf8,force
-	elif [ -x /sbin/ntfs-3g ] ; then
+	elif [ -x /sbin/ntfs-3g ]; then
 		/sbin/ntfs-3g "$dev_full" "$dev_mount" -o noatime,umask=0,big_writes
 		if [ $? -ne 0 ]; then
 			/sbin/ntfs-3g "$dev_full" "$dev_mount" -o noatime,umask=0,ro
 		fi
 	fi
-elif [ "$ID_FS_TYPE" == "hfsplus" -o "$ID_FS_TYPE" == "hfs" ] ; then
+elif [ "$ID_FS_TYPE" == "hfsplus" -o "$ID_FS_TYPE" == "hfs" ]; then
 	if [ "$achk_enable" != "0" ] && [ -x /sbin/fsck.hfsplus ]; then
 		/sbin/fsck.hfsplus -d -p -y "$dev_full" > "/tmp/fsck_hfs_result_$1" 2>&1
 	fi
@@ -111,20 +111,20 @@ elif [ "$ID_FS_TYPE" == "hfsplus" -o "$ID_FS_TYPE" == "hfs" ] ; then
 		func_load_module ufsd
 		mount -t ufsd -o noatime,nls=utf8,force "$dev_full" "$dev_mount"
 	fi
-elif [ "$ID_FS_TYPE" == "ext4" -o "$ID_FS_TYPE" == "ext3" -o "$ID_FS_TYPE" == "ext2" ] ; then
+elif [ "$ID_FS_TYPE" == "ext4" -o "$ID_FS_TYPE" == "ext3" -o "$ID_FS_TYPE" == "ext2" ]; then
 	if [ "$achk_enable" != "0" ] && [ -x /sbin/e2fsck ]; then
 		/sbin/e2fsck -p -v "$dev_full" > "/tmp/e2fsck_result_$1" 2>&1
 	fi
 	if [ "$ID_FS_TYPE" == "ext4" ]; then
 		func_load_module ext4
-	elif [ "$ID_FS_TYPE" == "ext3" ] ; then
+	elif [ "$ID_FS_TYPE" == "ext3" ]; then
 		kernel_ext3=`modprobe -l | grep ext3`
-		if [ -n "$kernel_ext3" ] ; then
+		if [ -n "$kernel_ext3" ]; then
 			func_load_module ext3
 		else
 			func_load_module ext4
 		fi
-	elif [ "$ID_FS_TYPE" == "ext2" ] ; then
+	elif [ "$ID_FS_TYPE" == "ext2" ]; then
 		kernel_ext2=`modprobe -l | grep ext2`
 		if [ -n "$kernel_ext2" ]; then
 			func_load_module ext2
@@ -133,7 +133,7 @@ elif [ "$ID_FS_TYPE" == "ext4" -o "$ID_FS_TYPE" == "ext3" -o "$ID_FS_TYPE" == "e
 		fi
 	fi
 	mount -t $ID_FS_TYPE -o noatime "$dev_full" "$dev_mount"
-elif [ "$ID_FS_TYPE" == "xfs" ] ; then
+elif [ "$ID_FS_TYPE" == "xfs" ]; then
 	func_load_module xfs
 	mount -t $ID_FS_TYPE -o noatime "$dev_full" "$dev_mount"
 fi
