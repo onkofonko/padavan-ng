@@ -457,9 +457,7 @@ EOF
 	if [ ! -f "$user_dnsmasq_conf" ]; then
 		cat > "$user_dnsmasq_conf" <<EOF
 # Custom user conf file for dnsmasq
-# Please add needed params only!
 
-### Examples:
 ### Web Proxy Automatic Discovery (WPAD)
 dhcp-option=252,"\n"
 
