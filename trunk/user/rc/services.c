@@ -233,7 +233,6 @@ restart_sshd(void)
 		restart_firewall();
 }
 #endif
-
 #if defined(SUPPORT_ZRAM)
 int
 get_zram_disksize(void)
@@ -282,7 +281,6 @@ restart_zram(void)
 	start_zram();
 }
 #endif
-
 #if defined(APP_DOH)
 int
 is_doh_run(void)
@@ -350,7 +348,6 @@ restart_stubby(void)
 	start_stubby();
 	restart_dhcpd();
 }
-
 #endif
 #if defined(APP_TOR)
 int
@@ -386,7 +383,6 @@ restart_tor(void)
 	start_tor();
 }
 #endif
-
 #if defined(APP_PRIVOXY)
 int
 is_privoxy_run(void)
