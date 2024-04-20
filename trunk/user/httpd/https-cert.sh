@@ -44,11 +44,11 @@ echo_process() {
 
 is_cn_valid() {
   # RFC 1034 (https://tools.ietf.org/html/rfc1034#section-3.5)
-  if [ -n "`echo $1 | sed 's/^[a-zA-Z][0-9a-zA-z\.-]\{1,253\}[0-9a-zA-Z]$//'`" ] ; then
+  if [ -n "`echo $1 | sed 's/^[a-zA-Z][0-9a-zA-z\.-]\{1,253\}[0-9a-zA-Z]$//'`" ]; then
     return 1
   fi
   for i in  `echo $1 | sed 's/\./ /g'` ; do
-    if [ `echo -n $i | wc -c` -gt 63 ] ; then
+    if [ `echo -n $i | wc -c` -gt 63 ]; then
       return 1
     fi
   done
@@ -112,7 +112,7 @@ EOF
   rm -f server.csr
   echo_done
 
-  if [ $DH_GEN -eq 1 ] ; then
+  if [ $DH_GEN -eq 1 ]; then
     echo_process "Creating DH Parameters (may take long time, be patient)"
     openssl dhparam -out dh1024.pem $DH_BITS &>/dev/null
     echo_done
