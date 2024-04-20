@@ -42,9 +42,13 @@ To express gratitude and support my work:
 
 PayPal: sereja8@gmail.com
 
-My Virtual Card Privat Bank UAH: 5169 3600 0910 4443
+WebMoney WMZ-wallet Z214392470005
 
-My Virtual Card Privat Bank USD: 5169 3600 0910 4385
+ЮMoney Virtual Card 5599 0020 6991 1404
+
+Virtual Card Privat Bank UAH: 5169 3600 0910 4443
+
+Virtual Card Privat Bank USD: 5169 3600 0910 4385
 
 Thank you very much for your support!
 
@@ -56,9 +60,13 @@ I wish everyone well! © by Sergey Hadzhioglu
 
 PayPal: sereja8@gmail.com
 
-Моя виртуальная карта Приват Банка гривна: 5169 3600 0910 4443
+WebMoney WMZ-кошелёк Z214392470005
 
-Моя виртуальная карта Приват Банка USD: 5169 3600 0910 4385
+ЮMoney виртуальная карта 5599 0020 6991 1404
+
+Виртуальная карта Приват Банка гривна: 5169 3600 0910 4443
+
+Виртуальная карта Приват Банка USD: 5169 3600 0910 4385
 
 Большое спасибо вам за вашу поддержку!
 
