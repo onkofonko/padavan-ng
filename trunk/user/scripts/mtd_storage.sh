@@ -481,8 +481,7 @@ dhcp-option=252,"\n"
 domain-needed
 
 ### Use time server update bypassing DoT/DoH
-server=/time.in.ua/1.1.1.1
-server=/ntp.org/1.1.1.1
+server=/ntp.org/time.cloudflare.com/1.1.1.1
 
 EOF
 	if [ -f /usr/bin/vlmcsd ]; then
