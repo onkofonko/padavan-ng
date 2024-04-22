@@ -1,0 +1,28 @@
+table {
+    empty-cells:      show;
+}
+
+.shell {
+    display:          block;
+    font-family:      Courier;
+    padding:          6px;
+    padding-top:      10px;
+    padding-bottom:   4px;
+    border:           3px  solid grey;
+    color:            lightgreen;
+    background-color: black;
+    text-align:       left;
+    white-space:      pre;
+}
+
+.error {
+    display:          inline;
+    block-size:       auto;
+    font-family:      monospace;
+    background-color: #e08080;
+    border:           4px;
+    padding:          2px;
+    padding-right:    4px;
+    border-style:     ridge;
+    border-color:     #e08080;
+}
