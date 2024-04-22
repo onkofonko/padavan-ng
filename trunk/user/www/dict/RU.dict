@@ -1667,6 +1667,7 @@ LANHostConfig_x_NTPServer1_itemname=NTP-сервер
 RouterConfig_GWStaticMT_itemname=Метрика
 RouterConfig_GWStaticIF_itemname=Интерфейс
 LANHostConfig_x_NTPServer1_linkname=Поиск NTP
+LANHostConfig_x_NTP_SyncNow=Синхр. сейчас
 t2FilterBasic=Основные настройки
 FirewallConfig_display2_sectiondesc=Включение брандмауэра (SPI Firewall) обеспечивает базовую защиту ZVMODELVZ и устройств за ним. При необходимости фильтрации определенных пакетов используйте фильтр между глобальной и локальной сетью.
 FirewallConfig_LanWanFirewallEnable_itemname=Включить фильтр сетевых служб?

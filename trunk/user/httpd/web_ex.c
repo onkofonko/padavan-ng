@@ -3187,6 +3187,15 @@ apply_cgi(const char *url, webs_t wp)
 		websWrite(wp, "{\"sys_result\": %d}", sys_result);
 		return 0;
 	}
+	else if (!strcmp(value, " NTPSyncNow "))
+	{
+#define NTPC_SYNCNOW_SCRIPT		"/sbin/ntpc_syncnow"
+		int sys_result = 1;
+		if (get_login_safe())
+			sys_result = eval(NTPC_SYNCNOW_SCRIPT);
+		websWrite(wp, "{\"sys_result\": %d}", sys_result);
+		return 0;
+	}
 	else
 	{
 		char *sid_list, *serviceId;
@@ -4018,4 +4027,3 @@ struct ej_handler ej_handlers[] =
 	{ "openvpn_cli_cert_hook", openvpn_cli_cert_hook},
 	{ NULL, NULL }
 };
-

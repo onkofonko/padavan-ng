@@ -193,6 +193,25 @@ function openLink(s) {
 	if (!link.opener) link.opener = self;
 }
 
+function ntpSyncNow() {
+	$j.ajax({
+		type: "post",
+		url: "/apply.cgi",
+		data: {
+			action_mode: " NTPSyncNow "
+		},
+		dataType: "json",
+		error: function(xhr) {
+			return false;
+		},
+		success: function(response) {
+			var sys_result = (response != null && typeof response === 'object' && "sys_result" in response)
+				? response.sys_result : -1;
+			if (sys_result == 0) refreshpage();
+		}
+	});
+}
+
 function zram_enable_change() {
 	var v = (document.form.zram_enable.value == "0") ? 0 : 1;
 	showhide_div('row_zram_clzx', v);
@@ -478,6 +497,7 @@ function updateDateTime()
                                             <th><a class="help_tooltip"  href="javascript:void(0);" onmouseover="openTooltip(this,11,3)"><#LANHostConfig_x_NTPServer1_itemname#> 2:</a></th>
                                             <td>
                                                 <input type="text" maxlength="128" class="input" size="32" name="ntp_server1" value="<% nvram_get_x("","ntp_server1"); %>" onKeyPress="return is_string(this,event);"/>
+                                                <a href="javascript:ntpSyncNow()" class="label label-info" name="x_NTP_SyncNow"><#LANHostConfig_x_NTP_SyncNow#></a>
                                             </td>
                                         </tr>
 
