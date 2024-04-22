@@ -1014,11 +1014,13 @@ parselanaddr(struct lan_addr_s * lan_addr, const char * str, int debug_flag)
 				INIT_PRINT_ERR("Error parsing address : %s\n", lan_addr->ext_ip_str);
 				return -1;
 			}
+#if 0
 			if(addr_is_reserved(&lan_addr->ext_ip_addr)) {
 				/* error */
 				INIT_PRINT_ERR("Error: option ext_ip address contains reserved / private address : %s\n", lan_addr->ext_ip_str);
 				return -1;
 			}
+#endif
 		}
 	}
 #else
@@ -1863,10 +1865,12 @@ init(int argc, char * * argv, struct runtime_vars * v)
 			INIT_PRINT_ERR("Error: option ext_ip contains invalid address %s\n", use_ext_ip_addr);
 			return 1;
 		}
+#if 0
 		if (addr_is_reserved(&addr)) {
 			INIT_PRINT_ERR("Error: option ext_ip contains reserved / private address %s, not public routable\n", use_ext_ip_addr);
 			return 1;
 		}
+#endif
 	}
 
 #ifndef NO_BACKGROUND_NO_PIDFILE
