@@ -517,6 +517,8 @@ struct nvram_pair router_defaults[] = {
 	{ "ntp_period", "24" },
 	{ "ntp_server0", DEF_NTP_SERVER0 },
 	{ "ntp_server1", DEF_NTP_SERVER1 },
+	{ "ntp_server2", DEF_NTP_SERVER2 },
+	{ "ntp_server3", DEF_NTP_SERVER3 },
 
 	/* DDNS parameters */
 	{ "ddns_enable_x", "0" },

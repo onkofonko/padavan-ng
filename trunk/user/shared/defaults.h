@@ -47,6 +47,8 @@
 #define DEF_TIMEZONE		"EET-2EETDST"
 #define DEF_NTP_SERVER0		"pool.ntp.org"
 #define DEF_NTP_SERVER1		"time.cloudflare.com"
+#define DEF_NTP_SERVER2		"time.google.com"
+#define DEF_NTP_SERVER3		"time.in.ua"
 #ifdef SUPPORT_OPENSSL_EC
 #define DEF_HTTPS_CIPH_LIST	"ECDH+CHACHA20:ECDH+AESGCM:DH+AESGCM:DH+AES256:DH+AES:DH+3DES:RSA+AES:RSA+3DES:!ADH:!MD5:!DSS"
 #else

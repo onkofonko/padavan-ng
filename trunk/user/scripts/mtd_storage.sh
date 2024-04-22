@@ -457,6 +457,7 @@ EOF
 	if [ ! -f "$user_dnsmasq_conf" ]; then
 		cat > "$user_dnsmasq_conf" <<EOF
 # Custom user conf file for dnsmasq
+# Please add needed params only!
 
 ### Web Proxy Automatic Discovery (WPAD)
 dhcp-option=252,"\n"
@@ -482,6 +483,7 @@ domain-needed
 
 ### Use time server update bypassing DoT/DoH
 server=/ntp.org/time.cloudflare.com/1.1.1.1
+server=/time.google.com/time.in.ua/1.1.1.1
 
 EOF
 	if [ -f /usr/bin/vlmcsd ]; then

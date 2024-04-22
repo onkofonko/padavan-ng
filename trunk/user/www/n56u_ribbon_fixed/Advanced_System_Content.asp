@@ -500,6 +500,18 @@ function updateDateTime()
                                                 <a href="javascript:ntpSyncNow()" class="label label-info" name="x_NTP_SyncNow"><#LANHostConfig_x_NTP_SyncNow#></a>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <th><a class="help_tooltip"  href="javascript:void(0);" onmouseover="openTooltip(this,11,3)"><#LANHostConfig_x_NTPServer1_itemname#> 3:</a></th>
+                                            <td>
+                                                <input type="text" maxlength="128" class="input" size="32" name="ntp_server2" value="<% nvram_get_x("","ntp_server2"); %>" onKeyPress="return is_string(this,event);"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><a class="help_tooltip"  href="javascript:void(0);" onmouseover="openTooltip(this,11,3)"><#LANHostConfig_x_NTPServer1_itemname#> 4:</a></th>
+                                            <td>
+                                                <input type="text" maxlength="128" class="input" size="32" name="ntp_server3" value="<% nvram_get_x("","ntp_server3"); %>" onKeyPress="return is_string(this,event);"/>
+                                            </td>
+                                        </tr>
 
                                     </table>
 

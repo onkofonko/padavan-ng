@@ -680,6 +680,8 @@
 			{"ntp_period", "", NULL, FALSE},
 			{"ntp_server0", "", NULL, EVM_RESTART_NTPC},
 			{"ntp_server1", "", NULL, EVM_RESTART_NTPC},
+			{"ntp_server2", "", NULL, EVM_RESTART_NTPC},
+			{"ntp_server3", "", NULL, EVM_RESTART_NTPC},
 			{"ddns_enable_x", "", NULL, EVM_RESTART_DDNS},
 			{"asusddns_tos_agreement", "", NULL, FALSE},
 			{"ddns_server_x", "", NULL, EVM_RESTART_DDNS},
