@@ -557,10 +557,19 @@ void run_samba(void)
 		doSystem("killall %s %s", "-SIGHUP", "wsdd2");
 	else {
 		p_workgroup = nvram_safe_get("st_samba_workgroup");
-		if (strlen(p_workgroup) > 0)
-			eval("/sbin/wsdd2", "-d", "-w", "-i", "br0", "-G", p_workgroup);
-		else
-			eval("/sbin/wsdd2", "-d", "-w", "-i", "br0");
+		// sw_mode=3 is for Access Point Mode (AP)
+		if (nvram_get_int("sw_mode") != 3) {
+			if (strlen(p_workgroup) > 0)
+				eval("/sbin/wsdd2", "-d", "-w", "-i", "br0", "-G", p_workgroup);
+			else
+				eval("/sbin/wsdd2", "-d", "-w", "-i", "br0");
+		}
+		else {
+			if (strlen(p_workgroup) > 0)
+				eval("/sbin/wsdd2", "-d", "-w", "-G", p_workgroup);
+			else
+				eval("/sbin/wsdd2", "-d", "-w");
+		}
 	}
 
 	if (pids("wsdd2"))
