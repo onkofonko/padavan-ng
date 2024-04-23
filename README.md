@@ -44,6 +44,10 @@ PayPal: sereja8@gmail.com
 
 WebMoney WMZ-wallet Z214392470005
 
+ЮMoney wallet 4100118647832050
+
+Link for quick replenishment https://yoomoney.ru/to/4100118647832050
+
 ЮMoney Virtual Card 5599 0020 6991 1404
 
 Virtual Card Privat Bank UAH: 5169 3600 0910 4443
@@ -61,6 +65,10 @@ I wish everyone well! © by Sergey Hadzhioglu
 PayPal: sereja8@gmail.com
 
 WebMoney WMZ-кошелёк Z214392470005
+
+ЮMoney кошелёк 4100118647832050
+
+Ссылка для быстрого пополнения https://yoomoney.ru/to/4100118647832050
 
 ЮMoney виртуальная карта 5599 0020 6991 1404
 
