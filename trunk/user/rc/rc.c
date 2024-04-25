@@ -1325,6 +1325,10 @@ handle_notifications(void)
 		{
 			stop_vpn_client();
 		}
+		else if (strcmp(entry->d_name, "restart_vpn_client") == 0)
+		{
+			restart_vpn_client();
+		}
 		else if (strcmp(entry->d_name, RCN_RESTART_DDNS) == 0)
 		{
 			stop_ddns();

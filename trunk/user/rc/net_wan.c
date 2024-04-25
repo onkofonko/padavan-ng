@@ -1376,7 +1376,7 @@ wan_up(char *wan_ifname, int unit, int is_static)
 
 	/* deferred start static VPN client and add delay 10s */
 	sleep(10);
-	notify_rc("start_vpn_client");
+	notify_rc("restart_vpn_client");
 }
 
 void
@@ -2732,4 +2732,3 @@ int stop_udhcpc_viptv(void)
 	snprintf(pidfile, sizeof(pidfile), "/var/run/udhcpc_viptv.pid");
 	return kill_pidfile(pidfile);
 }
-
