@@ -1,5 +1,5 @@
---- dropbear-2024.84/configure.ac
-+++ dropbear-2024.84/configure.ac
+--- dropbear-2024.85/configure.ac
++++ dropbear-2024.85/configure.ac
 @@ -123,7 +123,7 @@
  	    [AC_MSG_NOTICE([Setting $TESTFLAGS])],
  	    [
@@ -9,8 +9,8 @@
  			CFLAGS="$TESTFLAGS $CFLAGS"
  			AC_LINK_IFELSE([AC_LANG_PROGRAM([])],
  			    [AC_MSG_NOTICE([Setting $TESTFLAGS])],
---- dropbear-2024.84/src/default_options.h
-+++ dropbear-2024.84/src/default_options.h
+--- dropbear-2024.85/src/default_options.h
++++ dropbear-2024.85/src/default_options.h
 @@ -23,10 +23,10 @@
  /* Default hostkey paths - these can be specified on the command line.
   * Homedir is prepended if path begins with ~/
