@@ -6,7 +6,7 @@ mount -t sysfs sysfs /sys
 
 size_tmp="24M"
 size_var="4M"
-if [ "$1" == "-l" ] ; then
+if [ "$1" == "-l" ]; then
 	size_tmp="8M"
 	size_var="1M"
 fi
@@ -85,12 +85,12 @@ echo "1024 65535" > /proc/sys/net/ipv4/ip_local_port_range
 mtd_storage.sh fill
 
 # prepare ssh authorized_keys
-if [ -f /etc/storage/authorized_keys ] ; then
+if [ -f /etc/storage/authorized_keys ]; then
 	cp -f /etc/storage/authorized_keys /home/root/.ssh
 	chmod 600 /home/root/.ssh/authorized_keys
 fi
 
 # perform start script
-if [ -x /etc/storage/start_script.sh ] ; then
+if [ -x /etc/storage/start_script.sh ]; then
 	/etc/storage/start_script.sh
 fi

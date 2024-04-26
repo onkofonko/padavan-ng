@@ -84,7 +84,11 @@ function initial(){
 	change_crond_enabled();
 
 	if(!found_app_vlmcsd()){
-		showhide_div('div_vlmcsd', 0);
+		showhide_div('row_vlmcsd', 0);
+	}
+
+	if(!found_app_iperf3()){
+		showhide_div('row_iperf3', 0);
 	}
 
 	if(found_app_doh() || found_app_stubby() || found_app_tor() || found_app_privoxy() || found_app_dnscrypt()){
@@ -99,6 +103,8 @@ function initial(){
 		showhide_div('row_doh_conf4', 0);
 		showhide_div('row_doh_conf5', 0);
 		showhide_div('row_doh_conf6', 0);
+		showhide_div('row_doh_conf7', 0);
+		showhide_div('row_doh_conf8', 0);
 	}else{
 		change_doh_enabled();
 		}
@@ -135,9 +141,6 @@ function initial(){
 		showhide_div('row_dnscrypt_options', 0);
 	}else
 		change_dnscrypt_enabled();
-
-	if(!found_app_iperf3())
-		showhide_div('row_iperf3', 0);
 }
 
 function applyRule(){
@@ -159,6 +162,8 @@ function applyRule(){
 		showhide_div('row_doh_conf4', 0);
 		showhide_div('row_doh_conf5', 0);
 		showhide_div('row_doh_conf6', 0);
+		showhide_div('row_doh_conf7', 0);
+		showhide_div('row_doh_conf8', 0);
 	}
 
 	if(!found_app_stubby()){
@@ -186,10 +191,6 @@ function applyRule(){
 		showhide_div('row_dnscrypt_port', 0);
 		showhide_div('row_dnscrypt_force_dns', 0);
 		showhide_div('row_dnscrypt_options', 0);
-	}
-
-	if(!found_app_iperf3()){
-		showhide_div('row_iperf3', 0);
 	}
 }
 
@@ -352,6 +353,8 @@ function change_doh_enabled(){
 	showhide_div('row_doh_conf4', v);
 	showhide_div('row_doh_conf5', v);
 	showhide_div('row_doh_conf6', v);
+	showhide_div('row_doh_conf7', v);
+	showhide_div('row_doh_conf8', v);
 }
 
 function change_stubby_enabled(){
@@ -533,7 +536,7 @@ function change_crond_enabled(){
                                             <td colspan="4" style="padding-bottom: 0px;">
                                                 <a href="javascript:spoiler_toggle('ca.crt')"><span>Root CA Certificate (optional)</span></a>
                                                 <div id="ca.crt" style="display:none;">
-                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="httpssl.ca.crt" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("httpssl.ca.crt",""); %></textarea>
+                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="httpssl.ca.crt" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("httpssl.ca.crt",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -541,7 +544,7 @@ function change_crond_enabled(){
                                             <td colspan="4" style="padding-bottom: 0px; border-top: 0 none;">
                                                 <a href="javascript:spoiler_toggle('dh1024.pem')"><span>Diffie-Hellman PEM (optional)</span></a>
                                                 <div id="dh1024.pem" style="display:none;">
-                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="httpssl.dh1024.pem" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("httpssl.dh1024.pem",""); %></textarea>
+                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="httpssl.dh1024.pem" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("httpssl.dh1024.pem",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -549,7 +552,7 @@ function change_crond_enabled(){
                                             <td colspan="4" style="padding-bottom: 0px; border-top: 0 none;">
                                                 <a href="javascript:spoiler_toggle('server.crt')"><span>Server Certificate (required)</span></a>
                                                 <div id="server.crt" style="display:none;">
-                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="httpssl.server.crt" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("httpssl.server.crt",""); %></textarea>
+                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="httpssl.server.crt" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("httpssl.server.crt",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -557,7 +560,7 @@ function change_crond_enabled(){
                                             <td colspan="4" style="padding-bottom: 0px; border-top: 0 none;">
                                                 <a href="javascript:spoiler_toggle('server.key')"><span>Server Private Key (required)</span></a>
                                                 <div id="server.key" style="display:none;">
-                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="httpssl.server.key" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("httpssl.server.key",""); %></textarea>
+                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="httpssl.server.key" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("httpssl.server.key",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -609,7 +612,7 @@ function change_crond_enabled(){
                                             <td colspan="2" style="padding-bottom: 0px;">
                                                 <a href="javascript:spoiler_toggle('authorized_keys')"><span><#Adm_System_sshd_keys#> (authorized_keys)</span></a>
                                                 <div id="authorized_keys" style="display:none;">
-                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="scripts.authorized_keys" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.authorized_keys",""); %></textarea>
+                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="scripts.authorized_keys" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.authorized_keys",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -617,7 +620,7 @@ function change_crond_enabled(){
 
                                     <table width="100%" cellpadding="4" cellspacing="0" class="table" id="tbl_wins" style="display:none">
                                         <tr>
-                                            <th colspan="2" style="background-color: #E3E3E3;">Windows Internet Name Service (WINS)</th>
+                                            <th colspan="2" style="background-color: #E3E3E3;"><#Adm_Svc_Windows_Internet_Name_Service#></th>
                                         </tr>
                                         <tr>
                                             <th width="50%"><#Adm_Svc_wins#></th>
@@ -660,7 +663,7 @@ function change_crond_enabled(){
                                             <th colspan="2" style="background-color: #E3E3E3;"><#Adm_System_anon#></th>
                                         </tr>
                                         <tr id="row_doh">
-                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 26, 1);"><#Adm_Svc_doh#></a></th>
+                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 25, 1);"><#Adm_Svc_doh#></a></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="doh_enable_on_of">
@@ -715,9 +718,23 @@ function change_crond_enabled(){
                                                 <input type="text" maxlength="85" class="input" size="10" style="width: 230px;" name="doh_opt2_3" value="<% nvram_get_x("", "doh_opt2_3"); %>" onkeypress="return is_string(this,event);"/>
                                             </td>
                                         </tr>
+                                        <tr id="row_doh_conf7" style="display:none">
+                                            <td colspan="2" align="left" style="text-align:left;">
+                                                <span>DoH Server 4:  </span>
+                                                <input type="text" maxlength="60" class="input" size="10" style="width: 374px;" name="doh_server4" value="<% nvram_get_x("", "doh_server4"); %>" onkeypress="return is_string(this,event);"/>&nbsp;:
+                                                &nbsp;<span style="color:#888;">[65058]</span>
+                                            </td>
+                                        </tr>
+                                        <tr id="row_doh_conf8" style="display:none">
+                                            <td colspan="2" align="left" style="text-align:left;">
+                                                <span>Options:       </span>
+                                                <input type="text" maxlength="55" class="input" size="10" style="width: 225px;" name="doh_opt1_4" value="<% nvram_get_x("", "doh_opt1_4"); %>" onkeypress="return is_string(this,event);"/>&nbsp; 
+                                                <input type="text" maxlength="85" class="input" size="10" style="width: 230px;" name="doh_opt2_4" value="<% nvram_get_x("", "doh_opt2_4"); %>" onkeypress="return is_string(this,event);"/>
+                                            </td>
+                                        </tr>
 
                                         <tr id="row_stubby">
-                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 27, 1);"><#Adm_Svc_stubby#></a></th>
+                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 25, 2);"><#Adm_Svc_stubby#></a></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="stubby_enable_on_of">
@@ -734,7 +751,7 @@ function change_crond_enabled(){
                                             <td colspan="2">
                                                 <a href="javascript:spoiler_toggle('stubby.yml')"><span><#CustomConf#> "stubby.yml"</span></a>
                                                 <div id="stubby.yml" style="display:none;">
-                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="stubbyc.stubby.yml" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("stubbyc.stubby.yml",""); %></textarea>
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="stubbyc.stubby.yml" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("stubbyc.stubby.yml",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -757,7 +774,7 @@ function change_crond_enabled(){
                                             <td colspan="2">
                                                 <a href="javascript:spoiler_toggle('spoiler_tor_conf')"><span><#CustomConf#> "torrc"</span></a>
                                                 <div id="spoiler_tor_conf" style="display:none;">
-                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="4096" class="span12" name="torconf.torrc" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("torconf.torrc",""); %></textarea>
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="4096" class="span12" name="torconf.torrc" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("torconf.torrc",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -780,7 +797,7 @@ function change_crond_enabled(){
                                             <td colspan="2">
                                                 <a href="javascript:spoiler_toggle('spoiler_privoxy_conf')"><span><#CustomConf#> "config"</span></a>
                                                 <div id="spoiler_privoxy_conf" style="display:none;">
-                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.config" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.config",""); %></textarea>
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.config" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.config",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -788,7 +805,7 @@ function change_crond_enabled(){
                                             <td colspan="2">
                                                 <a href="javascript:spoiler_toggle('spoiler_privoxy_action')"><span><#CustomConf#> "user.action"</span></a>
                                                 <div id="spoiler_privoxy_action" style="display:none;">
-                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.user.action" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.user.action",""); %></textarea>
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.user.action" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.user.action",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -796,7 +813,7 @@ function change_crond_enabled(){
                                             <td colspan="2">
                                                 <a href="javascript:spoiler_toggle('spoiler_privoxy_filter')"><span><#CustomConf#> "user.filter"</span></a>
                                                 <div id="spoiler_privoxy_filter" style="display:none;">
-                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.user.filter" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.user.filter",""); %></textarea>
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.user.filter" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.user.filter",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -804,13 +821,13 @@ function change_crond_enabled(){
                                             <td colspan="2">
                                                 <a href="javascript:spoiler_toggle('spoiler_privoxy_trust')"><span><#CustomConf#> "user.trust"</span></a>
                                                 <div id="spoiler_privoxy_trust" style="display:none;">
-                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.user.trust" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.user.trust",""); %></textarea>
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="privoxy.user.trust" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("privoxy.user.trust",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
 
                                         <tr id="row_dnscrypt">
-                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 25, 1);"><#Adm_Svc_dnscrypt#></a></th>
+                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 25, 3);"><#Adm_Svc_dnscrypt#></a></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="dnscrypt_enable_on_of">
@@ -852,7 +869,7 @@ function change_crond_enabled(){
                                             </td>
                                         </tr>
                                         <tr id="row_dnscrypt_force_dns" style="display:none;">
-                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 25, 2);"><#Adm_Svc_dnscrypt_force_dns#></a></th>
+                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 25, 4);"><#Adm_Svc_dnscrypt_force_dns#></a></th>
                                             <td>
                                                 <select name="dnscrypt_force_dns" class="input">
                                                     <option value="0" <% nvram_match_x("", "dnscrypt_force_dns", "0", "selected"); %>><#checkbox_No#> (*)</option>
@@ -861,7 +878,7 @@ function change_crond_enabled(){
                                             </td>
                                         </tr>
                                         <tr id="row_dnscrypt_options" style="display:none">
-                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 25, 3);"><#Adm_Svc_dnscrypt_options#></a></th>
+                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 25, 5);"><#Adm_Svc_dnscrypt_options#></a></th>
                                             <td>
                                                 <input type="text" maxlength="128" size="15" name="dnscrypt_options" class="input" value="<% nvram_get_x("", "dnscrypt_options"); %>" onkeypress="return is_string(this,event);"/>
                                             </td>
@@ -872,8 +889,8 @@ function change_crond_enabled(){
                                         <tr>
                                             <th colspan="2" style="background-color: #E3E3E3;"><#Adm_System_misc#></th>
                                         </tr>
-                                        <tr id="div_vlmcsd">
-                                            <th><#Adm_Svc_vlmcsd#></th>
+                                        <tr id="row_vlmcsd">
+                                            <th width="50%"><#Adm_Svc_vlmcsd#></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="vlmcsd_enable_on_of">
@@ -887,7 +904,7 @@ function change_crond_enabled(){
                                             </td>
                                         </tr>
                                         <tr id="row_iperf3">
-                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,28,1);"><#Adm_Svc_iperf3#></a></th>
+                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,23,1);"><#Adm_Svc_iperf3#></a></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="iperf3_enable_on_of">
@@ -946,12 +963,12 @@ function change_crond_enabled(){
                                             <td colspan="2">
                                                 <a href="javascript:spoiler_toggle('crond_crontabs')"><span><#Adm_Svc_crontabs#></span></a>
                                                 <div id="crond_crontabs" style="display:none;">
-                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="crontab.login" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("crontab.login",""); %></textarea>
+                                                    <textarea rows="8" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="crontab.login" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("crontab.login",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,23,1);"><#TweaksWdg#></a></th>
+                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,23,2);"><#TweaksWdg#></a></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="watchdog_cpu_on_of">

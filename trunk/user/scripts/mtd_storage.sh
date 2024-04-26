@@ -17,7 +17,7 @@ func_get_mtd()
 	mtd_char=`echo $mtd_part | cut -d':' -f1`
 	mtd_hex=`echo $mtd_part | cut -d' ' -f2`
 	mtd_idx=`echo $mtd_char | cut -c4-5`
-	if [ -n "$mtd_idx" ] && [ $mtd_idx -ge 3 ] ; then
+	if [ -n "$mtd_idx" ] && [ $mtd_idx -ge 3 ]; then
 		mtd_part_dev="/dev/mtdblock${mtd_idx}"
 		mtd_part_size=`echo $((0x$mtd_hex))`
 	else
@@ -48,7 +48,7 @@ func_load()
 
 	bzcat $mtd_part_dev > $tmp 2>/dev/null
 	fsz=`stat -c %s $tmp 2>/dev/null`
-	if [ -n "$fsz" ] && [ $fsz -gt 0 ] ; then
+	if [ -n "$fsz" ] && [ $fsz -gt 0 ]; then
 		md5sum $tmp > $hsh
 		tar xf $tmp -C $dir_storage 2>/dev/null
 	else
@@ -67,7 +67,7 @@ func_tarb()
 	find * -print0 | xargs -0 touch -c -h -t 201001010000.00
 	find * ! -type d -print0 | sort -z | xargs -0 tar -cf $tmp 2>/dev/null
 	cd - >>/dev/null
-	if [ ! -f "$tmp" ] ; then
+	if [ ! -f "$tmp" ]; then
 		logger -t "Storage" "Cannot create tarball file: $tmp"
 		exit 1
 	fi
@@ -81,7 +81,7 @@ func_save()
 	echo "Save storage files to MTD partition \"$mtd_part_dev\""
 	rm -f $tbz
 	md5sum -c -s $hsh 2>/dev/null
-	if [ $? -eq 0 ] ; then
+	if [ $? -eq 0 ]; then
 		echo "Storage hash is not changed, skip write to MTD partition. Exit."
 		rm -f $tmp
 		return 0
@@ -89,9 +89,9 @@ func_save()
 	md5sum $tmp > $hsh
 	bzip2 -9 $tmp 2>/dev/null
 	fsz=`stat -c %s $tbz 2>/dev/null`
-	if [ -n "$fsz" ] && [ $fsz -ge 16 ] && [ $fsz -le $mtd_part_size ] ; then
+	if [ -n "$fsz" ] && [ $fsz -ge 16 ] && [ $fsz -le $mtd_part_size ]; then
 		mtd_write write $tbz $mtd_part_name
-		if [ $? -eq 0 ] ; then
+		if [ $? -eq 0 ]; then
 			echo "Done."
 			logger -t "Storage save" "Done."
 		else
@@ -112,7 +112,7 @@ func_backup()
 {
 	rm -f $tbz
 	bzip2 -9 $tmp 2>/dev/null
-	if [ $? -ne 0 ] ; then
+	if [ $? -ne 0 ]; then
 		result=1
 		logger -t "Storage backup" "Cannot create BZ2 file!"
 	fi
@@ -126,7 +126,7 @@ func_restore()
 	[ ! -f "$tbz" ] && exit 1
 
 	fsz=`stat -c %s $tbz 2>/dev/null`
-	if [ -z "$fsz" ] || [ $fsz -lt 16 ] || [ $fsz -gt $mtd_part_size ] ; then
+	if [ -z "$fsz" ] || [ $fsz -lt 16 ] || [ $fsz -gt $mtd_part_size ]; then
 		result=1
 		rm -f $tbz
 		logger -t "Storage restore" "Invalid BZ2 file size: $fsz"
@@ -137,14 +137,14 @@ func_restore()
 	rm -rf $tmp_storage
 	mkdir -p -m 755 $tmp_storage
 	tar xjf $tbz -C $tmp_storage 2>/dev/null
-	if [ $? -ne 0 ] ; then
+	if [ $? -ne 0 ]; then
 		result=1
 		rm -f $tbz
 		rm -rf $tmp_storage
 		logger -t "Storage restore" "Unable to extract BZ2 file: $tbz"
 		return 1
 	fi
-	if [ ! -f "$tmp_storage/start_script.sh" ] ; then
+	if [ ! -f "$tmp_storage/start_script.sh" ]; then
 		result=1
 		rm -f $tbz
 		rm -rf $tmp_storage
@@ -167,7 +167,7 @@ func_restore()
 func_erase()
 {
 	mtd_write erase $mtd_part_name
-	if [ $? -eq 0 ] ; then
+	if [ $? -eq 0 ]; then
 		rm -f $hsh
 		rm -rf $dir_storage
 		mkdir -p -m 755 $dir_storage
@@ -225,12 +225,12 @@ func_fill()
 	[ ! -d "$dir_httpssl" ] && mkdir -p -m 700 "$dir_httpssl"
 
 	# create start script
-	if [ ! -f "$script_start" ] ; then
+	if [ ! -f "$script_start" ]; then
 		reset_ss.sh -a
 	fi
 
 	# create started script
-	if [ ! -f "$script_started" ] ; then
+	if [ ! -f "$script_started" ]; then
 		cat > "$script_started" <<EOF
 #!/bin/sh
 
@@ -248,7 +248,7 @@ func_fill()
 ### drop caches
 sync && echo 3 > /proc/sys/vm/drop_caches
 
-### UPnP solution when router without external IP
+### Solution for UPnP working in case no delicated (no WHITE) external IP adress
 #echo "ext_ip=1.1.1.1" >> /etc/miniupnpd.conf && killall miniupnpd && miniupnpd -f /etc/miniupnpd.conf
 
 ### Mount SATA disk
@@ -259,7 +259,7 @@ EOF
 	fi
 
 	# create shutdown script
-	if [ ! -f "$script_shutd" ] ; then
+	if [ ! -f "$script_shutd" ]; then
 		cat > "$script_shutd" <<EOF
 #!/bin/sh
 
@@ -272,7 +272,7 @@ EOF
 	fi
 
 	# create post-iptables script
-	if [ ! -f "$script_postf" ] ; then
+	if [ ! -f "$script_postf" ]; then
 		cat > "$script_postf" <<EOF
 #!/bin/sh
 
@@ -284,7 +284,7 @@ EOF
 	fi
 
 	# create post-wan script
-	if [ ! -f "$script_postw" ] ; then
+	if [ ! -f "$script_postw" ]; then
 		cat > "$script_postw" <<EOF
 #!/bin/sh
 
@@ -294,7 +294,7 @@ EOF
 ### \$2 - WAN interface name (e.g. eth3 or ppp0)
 ### \$3 - WAN IPv4 address
 
-### UPnP solution when router without external IP
+### Solution for UPnP working in case no delicated (no WHITE) external IP adress
 #echo "ext_ip=1.1.1.1" >> /etc/miniupnpd.conf && killall miniupnpd && miniupnpd -f /etc/miniupnpd.conf
 
 EOF
@@ -302,7 +302,7 @@ EOF
 	fi
 
 	# create inet-state script
-	if [ ! -f "$script_inets" ] ; then
+	if [ ! -f "$script_inets" ]; then
 		cat > "$script_inets" <<EOF
 #!/bin/sh
 
@@ -318,7 +318,7 @@ EOF
 	fi
 
 	# create vpn server action script
-	if [ ! -f "$script_vpnsc" ] ; then
+	if [ ! -f "$script_vpnsc" ]; then
 		cat > "$script_vpnsc" <<EOF
 #!/bin/sh
 
@@ -338,9 +338,9 @@ peer_name="\$5"
 
 func_ipup()
 {
-#  if [ "\$peer_name" == "dmitry" ] ; then
+#  if [ "\$peer_name" == "dmitry" ]; then
 #    route add -net 192.168.5.0 netmask 255.255.255.0 dev \$peer_if
-#  elif [ "\$peer_name" == "victoria" ] ; then
+#  elif [ "\$peer_name" == "victoria" ]; then
 #    route add -net 192.168.8.0 netmask 255.255.255.0 dev \$peer_if
 #  fi
    return 0
@@ -348,9 +348,9 @@ func_ipup()
 
 func_ipdown()
 {
-#  if [ "\$peer_name" == "dmitry" ] ; then
+#  if [ "\$peer_name" == "dmitry" ]; then
 #    route del -net 192.168.5.0 netmask 255.255.255.0 dev \$peer_if
-#  elif [ "\$peer_name" == "victoria" ] ; then
+#  elif [ "\$peer_name" == "victoria" ]; then
 #    route del -net 192.168.8.0 netmask 255.255.255.0 dev \$peer_if
 #  fi
    return 0
@@ -370,7 +370,7 @@ EOF
 	fi
 
 	# create vpn client action script
-	if [ ! -f "$script_vpncs" ] ; then
+	if [ ! -f "$script_vpncs" ]; then
 		cat > "$script_vpncs" <<EOF
 #!/bin/sh
 
@@ -417,7 +417,7 @@ EOF
 	fi
 
 	# create Ez-Buttons script
-	if [ ! -f "$script_ezbtn" ] ; then
+	if [ ! -f "$script_ezbtn" ]; then
 		cat > "$script_ezbtn" <<EOF
 #!/bin/sh
 
@@ -432,8 +432,8 @@ EOF
 	fi
 
 	# create wpad.dat script
-	if [ -L "/www/wpad.dat" ] ; then
-		if [ ! -f "$script_wpad" ] ; then
+	if [ -L "/www/wpad.dat" ]; then
+		if [ ! -f "$script_wpad" ]; then
 			cat > "$script_wpad" <<EOF
 /*
    Web Proxy Automatic Discovery (WPAD) example script
@@ -454,7 +454,7 @@ EOF
 	for i in dnsmasq.conf hosts ; do
 		[ -f "$dir_storage/$i" ] && mv -n "$dir_storage/$i" "$dir_dnsmasq"
 	done
-	if [ ! -f "$user_dnsmasq_conf" ] ; then
+	if [ ! -f "$user_dnsmasq_conf" ]; then
 		cat > "$user_dnsmasq_conf" <<EOF
 # Custom user conf file for dnsmasq
 # Please add needed params only!
@@ -468,30 +468,22 @@ dhcp-option=252,"\n"
 ### Add local-only domains, queries are answered from hosts or DHCP only
 #local=/router/localdomain/
 
-### Examples:
-
 ### Enable built-in TFTP server
 #enable-tftp
-
 ### Set the root directory for files available via TFTP.
 #tftp-root=/opt/srv/tftp
-
 ### Make the TFTP server more secure
 #tftp-secure
 
 ### Set the boot filename for netboot/PXE
 #dhcp-boot=pxelinux.0
 
-### Use dnsmasq configuration recommendation
-bogus-priv
-no-negcache
-clear-on-reload
+### Do NOT forward queries with no domain part
 domain-needed
-all-servers
 
 ### Use time server update bypassing DoT/DoH
-server=/time.in.ua/1.1.1.1
-server=/ntp.org/1.1.1.1
+server=/ntp.org/time.cloudflare.com/1.1.1.1
+server=/time.google.com/time.in.ua/1.1.1.1
 
 EOF
 	if [ -f /usr/bin/vlmcsd ]; then
@@ -505,7 +497,7 @@ EOF
 	fi
 
 	# create user dns servers
-	if [ ! -f "$user_dnsmasq_serv" ] ; then
+	if [ ! -f "$user_dnsmasq_serv" ]; then
 		cat > "$user_dnsmasq_serv" <<EOF
 # Custom user servers file for dnsmasq
 # Example:
@@ -516,7 +508,7 @@ EOF
 	fi
 
 	# create user dns dhcp_conf
-	if [ ! -f "$user_dhcp_conf" ] ; then
+	if [ ! -f "$user_dhcp_conf" ]; then
 		cat > "$user_dhcp_conf" <<EOF
 # Custom user hosts for dhcp_hostsfile
 # Example:
@@ -528,7 +520,7 @@ EOF
 
 	# create user inadyn.conf"
 	[ ! -d "$dir_inadyn" ] && mkdir -p -m 755 "$dir_inadyn"
-	if [ ! -f "$user_inadyn_conf" ] ; then
+	if [ ! -f "$user_inadyn_conf" ]; then
 		cat > "$user_inadyn_conf" <<EOF
 # Custom user conf file for inadyn DDNS client
 # Please add only new custom system!
@@ -549,7 +541,7 @@ EOF
 	fi
 
 	# create user hosts
-	if [ ! -f "$user_hosts" ] ; then
+	if [ ! -f "$user_hosts" ]; then
 		cat > "$user_hosts" <<EOF
 # Custom user hosts file
 # Example:
@@ -561,7 +553,7 @@ EOF
 
 	# create user AP confs
 	[ ! -d "$dir_wlan" ] && mkdir -p -m 755 "$dir_wlan"
-	if [ ! -f "$dir_wlan/AP.dat" ] ; then
+	if [ ! -f "$dir_wlan/AP.dat" ]; then
 		cat > "$dir_wlan/AP.dat" <<EOF
 # Custom user AP conf file
 
@@ -569,7 +561,7 @@ EOF
 		chmod 644 "$dir_wlan/AP.dat"
 	fi
 
-	if [ ! -f "$dir_wlan/AP_5G.dat" ] ; then
+	if [ ! -f "$dir_wlan/AP_5G.dat" ]; then
 		cat > "$dir_wlan/AP_5G.dat" <<EOF
 # Custom user AP conf file
 
@@ -578,14 +570,14 @@ EOF
 	fi
 
 	# create openvpn files
-	if [ -x /usr/sbin/openvpn ] ; then
+	if [ -x /usr/sbin/openvpn ]; then
 		[ ! -d "$dir_ovpncli" ] && mkdir -p -m 700 "$dir_ovpncli"
 		[ ! -d "$dir_ovpnsvr" ] && mkdir -p -m 700 "$dir_ovpnsvr"
 		dir_ovpn="$dir_storage/openvpn"
 		for i in ca.crt dh1024.pem server.crt server.key server.conf ta.key ; do
 			[ -f "$dir_ovpn/$i" ] && mv -n "$dir_ovpn/$i" "$dir_ovpnsvr"
 		done
-		if [ ! -f "$user_ovpnsvr_conf" ] ; then
+		if [ ! -f "$user_ovpnsvr_conf" ]; then
 			cat > "$user_ovpnsvr_conf" <<EOF
 # Custom user conf file for OpenVPN server
 # Please add needed params only!
@@ -617,7 +609,7 @@ EOF
 			chmod 644 "$user_ovpnsvr_conf"
 		fi
 
-		if [ ! -f "$user_ovpncli_conf" ] ; then
+		if [ ! -f "$user_ovpncli_conf" ]; then
 			cat > "$user_ovpncli_conf" <<EOF
 # Custom user conf file for OpenVPN client
 # Please add needed params only!
@@ -638,28 +630,28 @@ EOF
 	fi
 
 	# create strongswan files
-	if [ -x /usr/sbin/ipsec ] ; then
+	if [ -x /usr/sbin/ipsec ]; then
 		[ ! -d "$dir_sswan" ] && mkdir -p -m 700 "$dir_sswan"
 		[ ! -d "$dir_sswan_crt" ] && mkdir -p -m 700 "$dir_sswan_crt"
 		[ ! -d "$dir_sswan_crt/cacerts" ] && mkdir -p -m 700 "$dir_sswan_crt/cacerts"
 		[ ! -d "$dir_sswan_crt/certs" ] && mkdir -p -m 700 "$dir_sswan_crt/certs"
 		[ ! -d "$dir_sswan_crt/private" ] && mkdir -p -m 700 "$dir_sswan_crt/private"
 
-		if [ ! -f "$user_sswan_conf" ] ; then
+		if [ ! -f "$user_sswan_conf" ]; then
 			cat > "$user_sswan_conf" <<EOF
 ### strongswan.conf - user strongswan configuration file
 
 EOF
 			chmod 644 "$user_sswan_conf"
 		fi
-		if [ ! -f "$user_sswan_ipsec_conf" ] ; then
+		if [ ! -f "$user_sswan_ipsec_conf" ]; then
 			cat > "$user_sswan_ipsec_conf" <<EOF
 ### ipsec.conf - user strongswan IPsec configuration file
 
 EOF
 			chmod 644 "$user_sswan_ipsec_conf"
 		fi
-		if [ ! -f "$user_sswan_secrets" ] ; then
+		if [ ! -f "$user_sswan_secrets" ]; then
 			cat > "$user_sswan_secrets" <<EOF
 ### ipsec.secrets - user strongswan IPsec secrets file
 

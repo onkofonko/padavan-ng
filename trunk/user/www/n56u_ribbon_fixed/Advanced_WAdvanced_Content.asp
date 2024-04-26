@@ -57,7 +57,6 @@ function initial(){
 			showhide_div("row_ldpc", 1);
 		} else if (wid==7615){
 			showhide_div("row_ldpc", 1);
-
 		}
 	}
 

@@ -124,7 +124,7 @@ function checkEnter(e){
                                         </tr>
                                         <tr>
                                             <td colspan="3" style="border-top: 0 none">
-                                                <textarea class="span12" id="console_area" style="font-family: 'Courier New', Courier, mono; font-size:13px;" rows="23" wrap="off" readonly="1"><% nvram_dump("syscmd.log","syscmd.sh"); %></textarea>
+                                                <textarea class="span12" id="console_area" style="resize:none; font-family: 'Courier New', Courier, mono; font-size:13px;" rows="23" wrap="off" readonly="1"><% nvram_dump("syscmd.log","syscmd.sh"); %></textarea>
                                             </td>
                                         </tr>
                                     </table>

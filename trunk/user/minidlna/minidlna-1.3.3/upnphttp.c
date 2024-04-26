@@ -1450,28 +1450,32 @@ SendResp_icon(struct upnphttp * h, char * icon)
 	{
 		DPRINTF(E_DEBUG, L_HTTP, "Sending small PNG icon\n");
 		data = (char *)png_sm;
-		size = sizeof(png_sm)-1;
+		//size = sizeof(png_sm)-1;
+		size = png_sm_size;
 		strcpy(mime+6, "png");
 	}
 	else if( strcmp(icon, "lrg.png") == 0 )
 	{
 		DPRINTF(E_DEBUG, L_HTTP, "Sending large PNG icon\n");
 		data = (char *)png_lrg;
-		size = sizeof(png_lrg)-1;
+		//size = sizeof(png_lrg)-1;
+		size = png_lrg_size;
 		strcpy(mime+6, "png");
 	}
 	else if( strcmp(icon, "sm.jpg") == 0 )
 	{
 		DPRINTF(E_DEBUG, L_HTTP, "Sending small JPEG icon\n");
 		data = (char *)jpeg_sm;
-		size = sizeof(jpeg_sm)-1;
+		//size = sizeof(jpeg_sm)-1;
+		size = jpeg_sm_size;
 		strcpy(mime+6, "jpeg");
 	}
 	else if( strcmp(icon, "lrg.jpg") == 0 )
 	{
 		DPRINTF(E_DEBUG, L_HTTP, "Sending large JPEG icon\n");
 		data = (char *)jpeg_lrg;
-		size = sizeof(jpeg_lrg)-1;
+		//size = sizeof(jpeg_lrg)-1;
+		size = jpeg_lrg_size;
 		strcpy(mime+6, "jpeg");
 	}
 	else

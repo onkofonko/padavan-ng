@@ -44,7 +44,9 @@ int send_from(int fd, int nowild, char *packet, size_t len,
 #elif defined(IP_SENDSRCADDR)
     char control[CMSG_SPACE(sizeof(struct in_addr))];
 #endif
+#ifdef HAVE_IPV6
     char control6[CMSG_SPACE(sizeof(struct in6_pktinfo))];
+#endif /* HAVE_IPV6 */
   } control_u;
   
   iov[0].iov_base = packet;
@@ -85,6 +87,7 @@ int send_from(int fd, int nowild, char *packet, size_t len,
 #endif
 	}
       else
+#ifdef HAVE_IPV6
 	{
 	  struct in6_pktinfo p;
 	  p.ipi6_ifindex = iface; /* Need iface for IPv6 to handle link-local addrs */
@@ -95,6 +98,9 @@ int send_from(int fd, int nowild, char *packet, size_t len,
 	  cmptr->cmsg_type = daemon->v6pktinfo;
 	  cmptr->cmsg_level = IPPROTO_IPV6;
 	}
+#else
+      (void)iface; /* eliminate warning */
+#endif /* HAVE_IPV6 */
     }
   
   while (retry_send(sendmsg(fd, &msg, 0)));
@@ -130,12 +136,14 @@ static void log_query_mysockaddr(unsigned int flags, char *name, union mysockadd
 	type = ntohs(addr->in.sin_port);
       log_query(flags | F_IPV4, name, (union all_addr *)&addr->in.sin_addr, arg, type);
     }
+#ifdef HAVE_IPV6
   else
     {
       if (flags & F_SERVER)
 	type = ntohs(addr->in6.sin6_port);
       log_query(flags | F_IPV6, name, (union all_addr *)&addr->in6.sin6_addr, arg, type);
     }
+#endif /* HAVE_IPV6 */
 }
 
 static void server_send(struct server *server, int fd,
@@ -937,10 +945,10 @@ static void dnssec_validate(struct frec *forward, struct dns_header *header,
 	status = dnssec_validate_reply(now, header, plen, daemon->namebuff, daemon->keyname, &forward->class, 
 				       !option_bool(OPT_DNSSEC_IGN_NS) && (forward->sentto->flags & SERV_DO_DNSSEC),
 				       NULL, NULL, NULL, &orig->validate_counter);
-    }
 
-  if (STAT_ISEQUAL(status, STAT_ABANDONED))
-    log_resource = 1;
+      if (STAT_ISEQUAL(status, STAT_ABANDONED))
+	log_resource = 1;
+    }
   
   /* Can't validate, as we're missing key data. Put this
      answer aside, whilst we get that. */     
@@ -1126,8 +1134,10 @@ void reply_query(int fd, time_t now)
   daemon->srv_save = NULL;
 
   /* Determine the address of the server replying  so that we can mark that as good */
+#ifdef HAVE_IPV6
   if (serveraddr.sa.sa_family == AF_INET6)
     serveraddr.in6.sin6_flowinfo = 0;
+#endif /* HAVE_IPV6 */
   
   header = (struct dns_header *)daemon->packet;
 
@@ -1504,7 +1514,9 @@ void receive_query(struct listener *listen, time_t now)
   struct cmsghdr *cmptr;
   union {
     struct cmsghdr align; /* this ensures alignment */
+#ifdef HAVE_IPV6
     char control6[CMSG_SPACE(sizeof(struct in6_pktinfo))];
+#endif /* HAVE_IPV6 */
 #if defined(HAVE_LINUX_NETWORK)
     char control[CMSG_SPACE(sizeof(struct in_pktinfo))];
 #elif defined(IP_RECVDSTADDR) && defined(HAVE_SOLARIS_NETWORK)
@@ -1568,6 +1580,7 @@ void receive_query(struct listener *listen, time_t now)
       if (source_addr.in.sin_port == 0)
 	return;
     }
+#ifdef HAVE_IPV6
   else
     {
       /* Source-port == 0 is an error, we can't send back to that. */
@@ -1575,12 +1588,14 @@ void receive_query(struct listener *listen, time_t now)
 	return;
       source_addr.in6.sin6_flowinfo = 0;
     }
+#endif /* HAVE_IPV6 */
   
   /* We can be configured to only accept queries from at-most-one-hop-away addresses. */
   if (option_bool(OPT_LOCAL_SERVICE))
     {
       struct addrlist *addr;
 
+#ifdef HAVE_IPV6
       if (family == AF_INET6) 
 	{
 	  for (addr = daemon->interface_addrs; addr; addr = addr->next)
@@ -1589,6 +1604,7 @@ void receive_query(struct listener *listen, time_t now)
 	      break;
 	}
       else
+#endif /* HAVE_IPV6 */
 	{
 	  struct in_addr netmask;
 	  for (addr = daemon->interface_addrs; addr; addr = addr->next)
@@ -1658,6 +1674,7 @@ void receive_query(struct listener *listen, time_t now)
 	}
 #endif
       
+#ifdef HAVE_IPV6
       if (family == AF_INET6)
 	{
 	  for (cmptr = CMSG_FIRSTHDR(&msg); cmptr; cmptr = CMSG_NXTHDR(&msg, cmptr))
@@ -1673,6 +1690,7 @@ void receive_query(struct listener *listen, time_t now)
 		if_index = p.p->ipi6_ifindex;
 	      }
 	}
+#endif /* HAVE_IPV6 */
       
       /* enforce available interface configuration */
       
@@ -2179,9 +2197,11 @@ unsigned char *tcp_request(int confd, time_t now,
     {
       union all_addr local;
 		      
+#ifdef HAVE_IPV6
       if (local_addr->sa.sa_family == AF_INET6)
 	local.addr6 = local_addr->in6.sin6_addr;
       else
+#endif /* HAVE_IPV6 */
 	local.addr4 = local_addr->in.sin_addr;
       
       have_mark = get_incoming_mark(&peer_addr, &local, 1, &mark);
@@ -2193,6 +2213,7 @@ unsigned char *tcp_request(int confd, time_t now,
     {
       struct addrlist *addr;
 
+#ifdef HAVE_IPV6
       if (peer_addr.sa.sa_family == AF_INET6) 
 	{
 	  for (addr = daemon->interface_addrs; addr; addr = addr->next)
@@ -2201,6 +2222,7 @@ unsigned char *tcp_request(int confd, time_t now,
 	      break;
 	}
       else
+#endif /* HAVE_IPV6 */
 	{
 	  struct in_addr netmask;
 	  for (addr = daemon->interface_addrs; addr; addr = addr->next)

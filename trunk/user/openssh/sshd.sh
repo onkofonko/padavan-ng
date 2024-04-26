@@ -126,11 +126,11 @@ func_start()
 		[ -f "${old_path}/${i}.pub" ] && mv -n "${old_path}/${i}.pub" "$dir_storage"
 	done
 
-	if [ ! -f "$rsa_key" ] || [ ! -f "$dsa_key" ] || [ ! -f "$ed25519_key" ] ; then
+	if [ ! -f "$rsa_key" ] || [ ! -f "$dsa_key" ] || [ ! -f "$ed25519_key" ]; then
 		/usr/bin/ssh-keygen -A
 	fi
 
-	if [ ! -f "$sshd_config" ] ; then
+	if [ ! -f "$sshd_config" ]; then
 		func_create_config
 	fi
 

@@ -781,7 +781,7 @@ function simplyMAC(fullMAC){
                                             <td><input type="text" name="wan_gateway" maxlength="15" class="input" size="15" value="<% nvram_get_x("","wan_gateway"); %>" onKeyPress="return is_ipaddr(this,event);"/></td>
                                         </tr>
                                         <tr id="row_wan_mtu">
-                                            <th>MTU:</th>
+                                            <th><#WAN_MTU#></th>
                                             <td>
                                                 <input type="text" name="wan_mtu" maxlength="4" class="input" size="5" value="<% nvram_get_x("","wan_mtu"); %>" onkeypress="return is_number(this,event);"/>
                                                 &nbsp;<span style="color:#888;">[1300..1500]</span>
@@ -1014,7 +1014,7 @@ function simplyMAC(fullMAC){
                                             </td>
                                         </tr>
                                         <tr id="row_vci">
-                                            <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,7,19);">Vendor Class Identifier:</a></th>
+                                            <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,7,19);"><#PPPConnection_x_HostNameForISP_itemvci#></a></th>
                                             <td>
                                                 <input type="text" name="wan_vci" class="input" maxlength="128" size="32" value="<% nvram_get_x("","wan_vci"); %>" onkeypress="return is_string(this,event);"/>
                                             </td>

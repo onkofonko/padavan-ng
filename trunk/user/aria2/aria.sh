@@ -16,13 +16,13 @@ DIR_LINK="/mnt/aria"
 func_start()
 {
 	# Make sure already running
-	if [ -n "`pidof aria2c`" ] ; then
+	if [ -n "`pidof aria2c`" ]; then
 		return 0
 	fi
 
 	echo -n "Starting $SVC_NAME:."
 
-	if [ ! -d "${DIR_LINK}" ] ; then
+	if [ ! -d "${DIR_LINK}" ]; then
 		echo "[FAILED]"
 		logger -t "$SVC_NAME" "Cannot start: unable to find target dir!"
 		return 1
@@ -48,7 +48,7 @@ func_start()
 	[ -z "$aria_rport" ] && aria_rport="6800"
 	[ -z "$aria_pport" ] && aria_pport="16888"
 
-	if [ ! -f "$FILE_CONF" ] ; then
+	if [ ! -f "$FILE_CONF" ]; then
 		[ ! -d "$DIR_DL1" ] && mkdir -p "$DIR_DL1"
 		chmod -R 777 "$DIR_DL1"
 		cat > "$FILE_CONF" <<EOF
@@ -110,7 +110,7 @@ log-level=notice
 EOF
 	fi
 
-	if [ ! -f "$FILE_WEB_CONF" ] ; then
+	if [ ! -f "$FILE_WEB_CONF" ]; then
 		cat > "$FILE_WEB_CONF" <<EOF
 angular
 .module('webui.services.configuration', [])
@@ -159,7 +159,7 @@ EOF
 
 	svc_user=""
 
-	if [ $SVC_ROOT -eq 0 ] ; then
+	if [ $SVC_ROOT -eq 0 ]; then
 		chmod 777 "${DIR_LINK}"
 		chown -R nobody "$DIR_CFG"
 		svc_user=" -c nobody"
@@ -169,7 +169,7 @@ EOF
 		-D --enable-rpc=true --conf-path="$FILE_CONF" --input-file="$FILE_LIST" --save-session="$FILE_LIST" \
 		--rpc-listen-port="$aria_rport" --listen-port="$aria_pport" --dht-listen-port="$aria_pport"
 
-	if [ $? -eq 0 ] ; then
+	if [ $? -eq 0 ]; then
 		echo "[  OK  ]"
 		logger -t "$SVC_NAME" "daemon is started"
 	else
@@ -180,7 +180,7 @@ EOF
 func_stop()
 {
 	# Make sure not running
-	if [ -z "`pidof aria2c`" ] ; then
+	if [ -z "`pidof aria2c`" ]; then
 		return 0
 	fi
 
@@ -198,7 +198,7 @@ func_stop()
 	done
 
 	aria_pid=`pidof aria2c`
-	if [ -n "$aria_pid" ] ; then
+	if [ -n "$aria_pid" ]; then
 		# force kill (hungup?)
 		kill -9 "$aria_pid"
 		sleep 1
@@ -212,7 +212,7 @@ func_stop()
 func_reload()
 {
 	aria_pid=`pidof aria2c`
-	if [ -n "$aria_pid" ] ; then
+	if [ -n "$aria_pid" ]; then
 		echo -n "Reload $SVC_NAME config:."
 		kill -1 "$aria_pid"
 		echo "[  OK  ]"

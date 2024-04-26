@@ -42,28 +42,28 @@ case "$hdd_spindt" in
 	;;
 esac
 
-if [ $hdd_apmoff -ne 0 ] ; then
+if [ $hdd_apmoff -ne 0 ]; then
 	HDPARM_B="-B254"
 fi
 
-if [ -z "$1" ] ; then
+if [ -z "$1" ]; then
 	for i in a b c d e f g h i k ; do
 		removable=1
-		if [ -e /sys/block/sd${i} ] ; then
+		if [ -e /sys/block/sd${i} ]; then
 			[ -r /sys/block/sd${i}/removable ] && removable=`cat /sys/block/sd${i}/removable`
 			[ $removable -eq 0 ] && /sbin/hdparm $HDPARM_S $HDPARM_B /dev/sd${i}
 		fi
 	done
 else
-	if [ -e /sys/block/$1 ] ; then
+	if [ -e /sys/block/$1 ]; then
 		removable=1
 		[ -r /sys/block/$1/removable ] && removable=`cat /sys/block/$1/removable`
-		if [ $removable -eq 0 ] ; then
-			if [ $hdd_spindt -gt 0 ] ; then
+		if [ $removable -eq 0 ]; then
+			if [ $hdd_spindt -gt 0 ]; then
 				logger -t hdparm "Set spindown timeout to device /dev/$1"
 				/sbin/hdparm $HDPARM_S /dev/$1
 			fi
-			if [ $hdd_apmoff -ne 0 ] ; then
+			if [ $hdd_apmoff -ne 0 ]; then
 				logger -t hdparm "Set APM to device /dev/$1"
 				/sbin/hdparm $HDPARM_B /dev/$1
 			fi

@@ -368,6 +368,7 @@ struct nvram_pair router_defaults[] = {
 	{ "st_samba_mode", "1" },
 	{ "st_samba_lmb", "1" },
 	{ "st_samba_workgroup", DEF_SMB_WORKGROUP },
+	{ "st_ftp_ssl_mode", "0" },
 	{ "st_ftp_mode", "1" },
 	{ "st_ftp_log", "0" },
 	{ "st_ftp_pmin", "50000" },
@@ -501,7 +502,12 @@ struct nvram_pair router_defaults[] = {
 	{ "dhcp_dns3_x", "" },
 	{ "dhcp_dnsv6_x", "" },
 	{ "dhcp_wins_x", "" },
-	{ "redirect_alldns", "0" },		/* Redirect all clients DNS requests */
+	{ "redirect_all_dns", "0" },		/* Redirect all clients DNS requests */
+	{ "dhcp_filter_aaaa", "0" },
+	{ "dhcp_all_servers", "1" },
+	{ "dhcp_strict_order", "0" },
+	{ "dhcp_stop_dns_rebind", "0" },
+	{ "dhcp_proxy_dnssec", "0" },
 	{ "dhcp_verbose", "0" },		/* 0 : quiet, 1: verbose DHCP, 2: verbose DHCPv6, 3: verbose all */
 	{ "dhcp_static_x", "0" },
 	{ "dhcp_static_arp", "0" },
@@ -511,6 +517,8 @@ struct nvram_pair router_defaults[] = {
 	{ "ntp_period", "24" },
 	{ "ntp_server0", DEF_NTP_SERVER0 },
 	{ "ntp_server1", DEF_NTP_SERVER1 },
+	{ "ntp_server2", DEF_NTP_SERVER2 },
+	{ "ntp_server3", DEF_NTP_SERVER3 },
 
 	/* DDNS parameters */
 	{ "ddns_enable_x", "0" },
@@ -612,12 +620,15 @@ struct nvram_pair router_defaults[] = {
 	{ "doh_server1", "https://blitz.ahadns.com/1:4" },
 	{ "doh_server2", "https://freedns.controld.com/x-1hosts-lite" },
 	{ "doh_server3", "https://sky.rethinkdns.com/1:AAQCAA==" },
+	{ "doh_server4", "" },
 	{ "doh_opt1_1", "-d -4 -v" },
 	{ "doh_opt2_1", "1.1.1.1,8.8.8.8,9.9.9.9,208.67.222.222" },
 	{ "doh_opt1_2", "-d -4 -v" },
 	{ "doh_opt2_2", "1.1.1.1,8.8.8.8,9.9.9.9,208.67.222.222" },
 	{ "doh_opt1_3", "-d -4 -v" },
 	{ "doh_opt2_3", "1.1.1.1,8.8.8.8,9.9.9.9,208.67.222.222" },
+	{ "doh_opt1_4", "" },
+	{ "doh_opt2_4", "" },
 #endif
 #if defined (APP_STUBBY)
 	{ "stubby_enable", "0" },
@@ -856,5 +867,3 @@ struct nvram_pair tables_defaults[] = {
 
 	{ 0, 0 }
 };
-
-

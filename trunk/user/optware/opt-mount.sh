@@ -7,7 +7,7 @@ self_name="opt-mount.sh"
 
 mtd_device=`echo "$1" | egrep '^/dev/mtd|^/dev/ubi'`
 
-if [ -z "$mtd_device" ] ; then
+if [ -z "$mtd_device" ]; then
 	optw_enable=`nvram get optw_enable`
 	[ "$optw_enable" != "1" -a "$optw_enable" != "2" ] && exit 0
 fi
@@ -22,7 +22,7 @@ logger -t "${self_name}" "started [$@]"
 
 # mount /opt (bind only)
 mount -o bind "$2/opt" /opt
-if [ $? -ne 0 ] ; then
+if [ $? -ne 0 ]; then
 	logger -t "${self_name}" "Mount $2/opt to /opt FAILED! WTF?"
 	exit 1
 fi
@@ -33,11 +33,11 @@ for i in "bin" "etc/init.d" "home/admin" "lib" "sbin" "var/log" ; do
 done
 
 # check opt profile exist
-if [ ! -f /opt/etc/profile ] ; then
+if [ ! -f /opt/etc/profile ]; then
 	cat > /opt/etc/profile <<EOF
 
 # If running interactively, then
-if [ "\$PS1" ] ; then
+if [ "\$PS1" ]; then
 
     export TERM=xterm
     export LANG=en_US.UTF-8
@@ -52,7 +52,7 @@ EOF
 fi
 
 # expand home to opt
-if [ -d /opt/home/admin ] ; then
+if [ -d /opt/home/admin ]; then
 	rm -f /home/admin
 	ln -sf /opt/home/admin /home/admin
 	chmod 700 /opt/home/admin
@@ -62,7 +62,7 @@ fi
 ln -sf /opt/etc/localtime /etc/localtime
 
 # prepare ssh authorized_keys
-if [ -f /etc/storage/authorized_keys ] && [ ! -f /opt/home/admin/.ssh/authorized_keys ] ; then
+if [ -f /etc/storage/authorized_keys ] && [ ! -f /opt/home/admin/.ssh/authorized_keys ]; then
 	mkdir -p /opt/home/admin/.ssh
 	cp -f /etc/storage/authorized_keys /opt/home/admin/.ssh
 	chmod 700 /opt/home/admin/.ssh
@@ -70,10 +70,10 @@ if [ -f /etc/storage/authorized_keys ] && [ ! -f /opt/home/admin/.ssh/authorized
 fi
 
 # check swap file exist
-if [ -z "$mtd_device" ] && [ -f /opt/.swap ] ; then
+if [ -z "$mtd_device" ] && [ -f /opt/.swap ]; then
 	swap_part=`cat /proc/swaps | grep -v 'zram' | grep 'partition' 2>/dev/null`
 	swap_file=`cat /proc/swaps | grep 'file' 2>/dev/null`
-	if [ -z "$swap_part" ] && [ -z "$swap_file" ] ; then
+	if [ -z "$swap_part" ] && [ -z "$swap_file" ]; then
 		swapon /opt/.swap
 		[ $? -eq 0 ] && logger -t "${self_name}" "Activate swap file /opt/.swap SUCCESS!"
 	fi
@@ -194,7 +194,7 @@ if [ ! -f "$lph_script" ]  ; then
 
 ### Example: load firmware to printer HP LJ1020
 lpfw="/opt/share/firmware/sihp1020.dl"
-if [ -r "\$lpfw" ] ; then
+if [ -r "\$lpfw" ]; then
 	cat "\$lpfw" > "\$1"
 fi
 
@@ -203,7 +203,7 @@ EOF
 fi
 
 # mark opt needed start
-if [ -z "$mtd_device" ] ; then
+if [ -z "$mtd_device" ]; then
 	nvram settmp usb_opt_start=1
 	exit 0
 fi

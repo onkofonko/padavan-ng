@@ -36,21 +36,21 @@ func_start()
 		[ -f "${old_pattern}_${i}" ] && mv -n "${old_pattern}_${i}" "$dir_storage/${i}"
 	done
 
-	if [ ! -f "$rsa_key" ] || [ ! -f "$dss_key" ] ; then
+	if [ ! -f "$rsa_key" ] || [ ! -f "$dss_key" ]; then
 		func_createkeys
 	fi
 
-	if [ ! -f "$ecdsa_key" ] ; then
+	if [ ! -f "$ecdsa_key" ]; then
 		/usr/bin/dropbearkey -t ecdsa -f "$ecdsa_key"
 		chmod 600 "$ecdsa_key"
 	fi
 
-	if [ ! -f "$ed25519_key" ] ; then
+	if [ ! -f "$ed25519_key" ]; then
 		/usr/bin/dropbearkey -t ed25519 -f "$ed25519_key"
 		chmod 600 "$ed25519_key"
 	fi
 
-	if [ -n "$1" ] ; then
+	if [ -n "$1" ]; then
 		key_s="-s"
 	fi
 

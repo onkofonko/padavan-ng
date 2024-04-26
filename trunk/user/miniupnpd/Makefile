@@ -1,5 +1,6 @@
-SRC_NAME=miniupnpd-2.3.4
+SRC_NAME=miniupnpd-2.3.6
 SRC_URL=https://miniupnp.tuxfamily.org/files/download.php?file=$(SRC_NAME).tar.gz
+THISDIR = $(shell pwd)
 
 # reference to iptables package
 IPT_VERSION:=iptables-1.8.10
@@ -23,9 +24,9 @@ download_test:
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
 		tar xzf $(SRC_NAME).tar.gz; \
-		patch -d $(SRC_NAME) -p1 -i ../miniupnpd-orig.patch; \
-		patch -d $(SRC_NAME) -p1 -i ../102-do-not-disable-port-forwarding-when-in-double-nat.patch; \
-		patch -d $(SRC_NAME) -p1 -i ../103-disable-libcap-ng-checking.patch; \
+		find $(THISDIR)/patches -type f -name '*.patch' -print0 \
+		  | sort -z \
+		  | xargs -t -0 -n 1 patch -d $(SRC_NAME)  -p1 -i; \
 	fi )
 
 clean:
@@ -35,4 +36,3 @@ clean:
 romfs:
 	cp $(SRC_NAME)/miniupnpd .
 	$(ROMFSINST) /usr/bin/miniupnpd
-

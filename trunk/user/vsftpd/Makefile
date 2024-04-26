@@ -14,7 +14,7 @@ LINK	= -Wl,-s
 
 LDFLAGS	 = -L$(TOP)/libdisk -ldisk -L$(TOP)/shared -lshared
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_FTPD_SSL),y)
-CFLAGS	+= -DVSF_BUILD_SSL
+CFLAGS	+= -DVSF_BUILD_SSL -Wno-deprecated-declarations
 LDFLAGS	+= -L$(STAGEDIR)/lib -lssl -lcrypto
 endif
 LDFLAGS	+= -Wl,--gc-sections

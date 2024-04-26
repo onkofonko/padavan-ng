@@ -316,33 +316,41 @@ btn_check_ez(int btn_pin, int btn_id, int *p_btn_state)
 }
 #endif
 
-static void
+static int
 refresh_ntp(void)
 {
+	int result = 0;
 	char *svcs[] = { "ntpd", NULL };
-	char *ntp_addr[2], *ntp_server;
+	char *ntp_addr[4], *ntp_server;
 
 	kill_services(svcs, 3, 1);
 
 	ntp_addr[0] = nvram_safe_get("ntp_server0");
 	ntp_addr[1] = nvram_safe_get("ntp_server1");
+	ntp_addr[2] = nvram_safe_get("ntp_server2");
+	ntp_addr[3] = nvram_safe_get("ntp_server3");
 
 	if (strlen(ntp_addr[0]) < 3)
 		ntp_addr[0] = ntp_addr[1];
 	else if (strlen(ntp_addr[1]) < 3)
 		ntp_addr[1] = ntp_addr[0];
-
+	
 	if (strlen(ntp_addr[0]) < 3) {
 		ntp_addr[0] = "pool.ntp.org";
 		ntp_addr[1] = ntp_addr[0];
 	}
+	if (strlen(ntp_addr[2]) < 3)
+		ntp_addr[2] = ntp_addr[0];
+	if (strlen(ntp_addr[3]) < 3)
+		ntp_addr[3] = ntp_addr[0];
 
-	ntp_server = (ntpc_server_idx) ? ntp_addr[1] : ntp_addr[0];
-	ntpc_server_idx = (ntpc_server_idx + 1) % 2;
+	ntp_server = ntp_addr[ntpc_server_idx];
+	ntpc_server_idx = (ntpc_server_idx + 1) % 4;
 
-	eval("/usr/sbin/ntpd", "-qt", "-S", NTPC_DONE_SCRIPT, "-p", ntp_server);
+	result = eval("/usr/sbin/ntpd", "-qt", "-S", NTPC_DONE_SCRIPT, "-p", ntp_server);
 
 	logmessage("NTP Client", "Synchronizing time to %s.", ntp_server);
+	return result;
 }
 
 int
@@ -1076,6 +1084,12 @@ ntpc_updated_main(int argc, char *argv[])
 	return 0;
 }
 
+int
+ntpc_syncnow_main(int argc, char *argv[])
+{
+	return refresh_ntp();
+}
+
 static void
 watchdog_on_sighup(void)
 {
@@ -1288,4 +1302,3 @@ watchdog_main(int argc, char *argv[])
 
 	return 0;
 }
-

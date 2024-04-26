@@ -22,7 +22,7 @@ killall -q opkg
 killall -q mc
 
 # stop all services S* in /opt/etc/init.d
-if [ -d /opt/etc/init.d ] ; then
+if [ -d /opt/etc/init.d ]; then
 	for i in `ls -r /opt/etc/init.d/S??* 2>/dev/null` ; do
 		[ ! -x "${i}" ] && continue
 		${i} stop
@@ -30,7 +30,7 @@ if [ -d /opt/etc/init.d ] ; then
 fi
 
 # check swap file exist
-if [ -f /opt/.swap ] ; then
+if [ -f /opt/.swap ]; then
 	swapoff /opt/.swap 2>/dev/null
 	[ $? -eq 0 ] && logger -t "${self_name}" "Deactivate swap file /opt/.swap SUCCESS!"
 fi
@@ -46,7 +46,7 @@ sync
 
 # unbinding
 umount /opt
-if [ $? -ne 0 ] ; then
+if [ $? -ne 0 ]; then
 	logger -t "${self_name}" "umount /opt FAILED! Device is busy?"
 	sleep 1
 	umount /opt 2>/dev/null

@@ -339,7 +339,26 @@ start_dns_dhcpd(int is_ap_mode)
 		/* listen DNS queries from clients of VPN server */
 		fprintf(fp, "listen-address=%s\n", ipaddr);
 	}
-
+	if (!is_ap_mode && nvram_match("dhcp_filter_aaaa", "1")) {
+		/* Don't include IPv6 addresses in DNS answers */
+		fprintf(fp, "filter-AAAA\n");
+	}
+	if (!is_ap_mode && nvram_match("dhcp_all_servers", "1")) {
+		/* DNS queries for all servers */
+		fprintf(fp, "all-servers\n");
+	}
+	if (!is_ap_mode && nvram_match("dhcp_strict_order", "1")) {
+		/* Name servers strictly in the order listed */
+		fprintf(fp, "strict-order\n");
+	}
+	if (!is_ap_mode && nvram_match("dhcp_stop_dns_rebind", "1")) {
+		/* Stop DNS rebinding and Allows upstream 127.0.0.0/8 responses */
+		fprintf(fp, "rebind-localhost-ok\n" "stop-dns-rebind\n");
+	}
+	if (!is_ap_mode && nvram_match("dhcp_proxy_dnssec", "1")) {
+		/* Proxy DNSSEC validation results from upstream nameservers */
+		fprintf(fp, "proxy-dnssec\n");
+	}
 	if (!is_ap_mode && (nvram_match("doh_enable", "1") || nvram_match("stubby_enable", "1") || nvram_match("dnscrypt_enable", "1"))) {
 		/* don't use resolv-file to resovle DNS queries if doh_proxy or stubby or dnscrypt-proxy is enabled */
 		fprintf(fp, "no-resolv\n");
@@ -359,7 +378,7 @@ start_dns_dhcpd(int is_ap_mode)
 #if defined(APP_DOH)
 	if (!is_ap_mode && nvram_match("doh_enable", "1")) {
 		/*  */
-		fprintf(fp, "server=127.0.0.1#65055\n" "server=127.0.0.1#65056\n" "server=127.0.0.1#65057\n");
+		fprintf(fp, "server=127.0.0.1#65055\n" "server=127.0.0.1#65056\n" "server=127.0.0.1#65057\n" "server=127.0.0.1#65058\n");
 	}
 #endif
 	if (!is_ap_mode) {
@@ -435,6 +454,11 @@ start_dns_dhcpd(int is_ap_mode)
 #if defined(APP_SMBD) || defined(APP_NMBD)
 		else if (nvram_get_int("wins_enable"))
 			fprintf(fp, "dhcp-option=tag:%s,%d,%s\n", DHCPD_RANGE_DEF_TAG, 44, ipaddr);
+#endif
+#if defined(APP_VLMCSD)
+		int vlmcsd_mode = nvram_get_int("vlmcsd_enable");
+		if ( vlmcsd_mode == 1)	
+			fprintf(fp, "srv-host=%s.%s,%s,%d\n", "_VLMCS", "_tcp", ipaddr, 1688);
 #endif
 		if (i_verbose == 0 || i_verbose == 2)
 			fprintf(fp, "quiet-dhcp\n");
@@ -1014,8 +1038,8 @@ write_inadyn_conf(const char *conf_file)
 
 	i_ddns1_ssl = nvram_get_int("ddns_ssl");
 	i_ddns2_ssl = nvram_get_int("ddns2_ssl");
-	ddns1_svc = get_inadyn_system(nvram_safe_get("ddns_server_x"));
 
+	ddns1_svc = get_inadyn_system(nvram_safe_get("ddns_server_x"));
 	if (!ddns1_svc) {
 		ddns1_svc = inadyn_systems[0].system;
 		nvram_set("ddns_server_x", inadyn_systems[0].alias);

@@ -188,9 +188,28 @@ function blanktest(obj, flag){
 
 function openLink(s) {
 	var link_params = "toolbar=yes,location=yes,directories=no,status=yes,menubar=yes,scrollbars=yes,resizable=yes,copyhistory=no,width=640,height=480";
-	var tourl = "http://support.ntp.org/bin/view/Servers/WebHome";
+	var tourl = "https://support.ntp.org/bin/view/Servers/WebHome";
 	link = window.open(tourl, "NTPLink", link_params);
 	if (!link.opener) link.opener = self;
+}
+
+function ntpSyncNow() {
+	$j.ajax({
+		type: "post",
+		url: "/apply.cgi",
+		data: {
+			action_mode: " NTPSyncNow "
+		},
+		dataType: "json",
+		error: function(xhr) {
+			return false;
+		},
+		success: function(response) {
+			var sys_result = (response != null && typeof response === 'object' && "sys_result" in response)
+				? response.sys_result : -1;
+			if (sys_result == 0) refreshpage();
+		}
+	});
 }
 
 function zram_enable_change() {
@@ -412,12 +431,13 @@ function updateDateTime()
                                                     <option value="UCT-4_2" <% nvram_match_x("","time_zone", "UCT-4_2","selected"); %>			>(GMT+04:00) <#TZ51#></option>
                                                     <option value="UCT-4.30" <% nvram_match_x("","time_zone", "UCT-4.30","selected"); %>		>(GMT+04:30) <#TZ52#></option>
                                                     <option value="UTC-5" <% nvram_match_x("","time_zone", "UTC-5","selected"); %>			>(GMT+05:00) <#TZ53#></option>
+                                                    <option value="UTC-5_1" <% nvram_match_x("","time_zone", "UTC-5_1","selected"); %>			>(GMT+05:00) <#TZ53_2#></option>
                                                     <option value="UCT-5" <% nvram_match_x("","time_zone", "UCT-5","selected"); %>			>(GMT+05:00) <#TZ54#></option>
+                                                    <option value="UCT-5_1" <% nvram_match_x("","time_zone", "UCT-5_1","selected"); %>			>(GMT+05:00) <#TZ54_2#></option>
                                                     <option value="UCT-5.30" <% nvram_match_x("","time_zone", "UCT-5.30","selected"); %>		>(GMT+05:30) <#TZ59#></option>
                                                     <option value="UCT-5.30_2" <% nvram_match_x("","time_zone", "UCT-5.30_2","selected"); %>		>(GMT+05:30) <#TZ55#></option>
                                                     <option value="UCT-5.30_1" <% nvram_match_x("","time_zone", "UCT-5.30_1","selected"); %>		>(GMT+05:30) <#TZ56#></option>
                                                     <option value="UCT-5.45" <% nvram_match_x("","time_zone", "UCT-5.45","selected"); %>		>(GMT+05:45) <#TZ57#></option>
-                                                    <option value="UTC-6_1" <% nvram_match_x("","time_zone", "UTC-6_1","selected"); %>			>(GMT+06:00) <#TZ60_2#></option>
                                                     <option value="UCT-6" <% nvram_match_x("","time_zone", "UCT-6","selected"); %>			>(GMT+06:00) <#TZ58#></option>
                                                     <option value="UCT-6.30" <% nvram_match_x("","time_zone", "UCT-6.30","selected"); %>		>(GMT+06:30) <#TZ61#></option>
                                                     <option value="UTC-7_1" <% nvram_match_x("","time_zone", "UTC-7_1","selected"); %>			>(GMT+07:00) <#TZ60#></option>
@@ -477,6 +497,19 @@ function updateDateTime()
                                             <th><a class="help_tooltip"  href="javascript:void(0);" onmouseover="openTooltip(this,11,3)"><#LANHostConfig_x_NTPServer1_itemname#> 2:</a></th>
                                             <td>
                                                 <input type="text" maxlength="128" class="input" size="32" name="ntp_server1" value="<% nvram_get_x("","ntp_server1"); %>" onKeyPress="return is_string(this,event);"/>
+                                                <a href="javascript:ntpSyncNow()" class="label label-info" name="x_NTP_SyncNow"><#LANHostConfig_x_NTP_SyncNow#></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><a class="help_tooltip"  href="javascript:void(0);" onmouseover="openTooltip(this,11,3)"><#LANHostConfig_x_NTPServer1_itemname#> 3:</a></th>
+                                            <td>
+                                                <input type="text" maxlength="128" class="input" size="32" name="ntp_server2" value="<% nvram_get_x("","ntp_server2"); %>" onKeyPress="return is_string(this,event);"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><a class="help_tooltip"  href="javascript:void(0);" onmouseover="openTooltip(this,11,3)"><#LANHostConfig_x_NTPServer1_itemname#> 4:</a></th>
+                                            <td>
+                                                <input type="text" maxlength="128" class="input" size="32" name="ntp_server3" value="<% nvram_get_x("","ntp_server3"); %>" onKeyPress="return is_string(this,event);"/>
                                             </td>
                                         </tr>
 

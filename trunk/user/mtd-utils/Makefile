@@ -1,5 +1,5 @@
 SRC_NAME=mtd-utils-2.1.6
-SRC_URL = https://github.com/sigma-star/mtd-utils/archive/refs/tags/v2.1.6.tar.gz
+SRC_URL = https://infraroot.at/pub/mtd/$(SRC_NAME).tar.bz2
 THISDIR = $(shell pwd)
 
 #all: download_test extract_test config_test
@@ -7,13 +7,13 @@ all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
 
 download_test:
-	( if [ ! -f $(SRC_NAME).tar.gz ]; then \
-		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.gz $(SRC_URL); \
+	( if [ ! -f $(SRC_NAME).tar.bz2 ]; then \
+		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.bz2 $(SRC_URL); \
 	fi )
 
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
-		tar xzf $(SRC_NAME).tar.gz; \
+		tar xjf $(SRC_NAME).tar.bz2; \
 	fi )
 
 config_test:

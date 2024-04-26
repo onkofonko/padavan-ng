@@ -63,7 +63,7 @@ var ddns_list = [
 	[ 0x0f, "SPDYN.DE",             "", "https://spdyn.de/" ],
 	[ 0x0f, "WWW.STRATO.DE",        "", "https://www.strato.de/" ],
 	[ 0x0f, "CLOUDXNS.NET",         "", "https://www.cloudxns.net/" ],
-	[ 0x0f, "WWW.PUBYUN.COM",       "(3322.NET)", "http://www.pubyun.com/accounts/signin/" ],
+	[ 0x0f, "3322.ORG",             "", "http://www.pubyun.com/" ],
 	[ 0x0f, "DNSPOD.CN",            "", "https://www.dnspod.cn/" ],
 	[ 0x0f, "DYNU.COM",             "", "https://www.dynu.com/" ],
 	[ 0x0f, "SELFHOST.DE",          "", "https://selfhost.de/cgi-bin/selfhost" ],

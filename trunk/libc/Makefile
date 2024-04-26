@@ -1,5 +1,5 @@
-#SRC_NAME=uClibc-ng-1.0.45
-#SRC_URL=https://downloads.uclibc-ng.org/releases/1.0.45/$(SRC_NAME).tar.xz
+#SRC_NAME=uClibc-ng-1.0.47
+#SRC_URL=https://downloads.uclibc-ng.org/releases/1.0.47/$(SRC_NAME).tar.xz
 .EXPORT_ALL_VARIABLES:
 .PHONY: all romfs clean
 
@@ -17,7 +17,7 @@ include $(ROOTDIR)/include/configedit.mk
 
 DESTDIR=$(ROOTDIR)/stage
 
-LIBC_DIR = uClibc-1.0.45
+LIBC_DIR = uClibc-1.0.47
 #all: download_test extract_test
 #download_test:
 #	( if [ ! -f $(SRC_NAME).tar.xz ]; then \

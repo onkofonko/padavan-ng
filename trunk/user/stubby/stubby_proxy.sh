@@ -2,8 +2,6 @@
 
 func_start()
 {
-### Configure Stubby. DNS-over-TLS (DoT).
-
 if [ ! -f "/etc/storage/stubby/stubby.yml" ]; then
 
 	mkdir /etc/storage/stubby
@@ -59,7 +57,6 @@ if [ -f "/var/run/stubby_proxy.pid" ]; then
 		logger -t stubby "Running."
 fi
 }
-
 
 func_stop()
 {

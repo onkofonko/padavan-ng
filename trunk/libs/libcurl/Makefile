@@ -1,5 +1,5 @@
-SRC_NAME=curl-8.6.0
-SRC_URL=https://github.com/curl/curl/releases/download/curl-8_6_0/$(SRC_NAME).tar.xz
+SRC_NAME=curl-8.7.1
+SRC_URL=https://github.com/curl/curl/releases/download/curl-8_7_1/$(SRC_NAME).tar.xz
 
 #all: download_test extract_test config_test
 all: config_test
@@ -57,8 +57,9 @@ configure:
 		--disable-mqtt \
 		--disable-alt-svc \
 		--disable-hsts \
-		--without-brotli \
 		--disable-ntlm \
+		--disable-docs \
+		--without-brotli \
 		--without-hyper \
 		--without-gnutls \
 		--without-ca-path \

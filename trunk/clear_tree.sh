@@ -6,7 +6,7 @@ export ROOTDIR=$ROOTDIR
 # Set toolchain default dir (may be redifined in ${ROOTDIR}/.config)
 export CONFIG_TOOLCHAIN_DIR="${ROOTDIR}/../toolchain/out"
 
-if [ ! -f "$ROOTDIR/.config" ] ; then
+if [ ! -f "$ROOTDIR/.config" ]; then
 	echo "Project config file .config not found! Terminate."
 	exit 1
 fi
@@ -19,7 +19,7 @@ kernel_cd="$ROOTDIR/configs/boards/$CONFIG_VENDOR/$CONFIG_FIRMWARE_PRODUCT_ID"
 kernel_tf="$ROOTDIR/linux-$kernel_id/.config"
 kernel_cf="${kernel_cd}/kernel-${kernel_id}.config"
 
-if [ ! -f "$kernel_cf" ] ; then
+if [ ! -f "$kernel_cf" ]; then
         echo "Target kernel config ($kernel_cf) not found! Terminate."
         exit 1
 fi

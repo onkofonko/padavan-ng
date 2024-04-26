@@ -109,6 +109,7 @@ int add_to_ipset(const char *setname, const union all_addr *ipaddr,
  
   bzero(&addr, sizeof(addr));
 
+#ifdef HAVE_IPV6
   if (flags & F_IPV6) 
     {
       addr.pfra_af = AF_INET6;
@@ -116,6 +117,7 @@ int add_to_ipset(const char *setname, const union all_addr *ipaddr,
       memcpy(&(addr.pfra_ip6addr), ipaddr, sizeof(struct in6_addr));
     } 
   else 
+#endif /* HAVE_IPV6 */
     {
       addr.pfra_af = AF_INET;
       addr.pfra_net = 0x20;

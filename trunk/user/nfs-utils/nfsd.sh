@@ -3,13 +3,13 @@
 func_start()
 {
 	# check rpcbind (needed for NFS)
-	if [ -z "`pidof rpcbind`" ] ; then
+	if [ -z "`pidof rpcbind`" ]; then
 		/sbin/rpcbind
 		sleep 1
 	fi
 
 	# check NFS server already running
-	if [ -n "`pidof nfsd`" ] && [ -n "`pidof rpc.mountd`" ] ; then
+	if [ -n "`pidof nfsd`" ] && [ -n "`pidof rpc.mountd`" ]; then
 		# reload exports only
 		[ -f /etc/exports ] && /sbin/exportfs -r
 		return 0
@@ -25,7 +25,7 @@ func_start()
 	echo -n > /var/lib/nfs/rmtab
 	echo -n > /var/lib/nfs/xtab
 
-	if [ -z "`cat /proc/filesystems | grep nfsd`" ] ; then
+	if [ -z "`cat /proc/filesystems | grep nfsd`" ]; then
 		modprobe -q nfsd
 		mount -t nfsd nfsd /proc/fs/nfsd
 	fi
@@ -41,14 +41,14 @@ func_start()
 	/sbin/rpc.nfsd -N4 -N4.1 1
 	/sbin/rpc.mountd
 
-	if [ $? -eq 0 ] ; then
+	if [ $? -eq 0 ]; then
 		logger -t "NFS server" "daemon is started"
 	fi
 }
 
 func_reload()
 {
-	if [ -n "`pidof rpcbind`" ] && [ -f /etc/exports ] ; then
+	if [ -n "`pidof rpcbind`" ] && [ -f /etc/exports ]; then
 		/sbin/exportfs -r
 	fi
 }
@@ -65,8 +65,8 @@ func_stop()
 
 	[ -n "`pidof nfsd`" ] && killall -q -9 nfsd
 
-	if [ -n "`pidof rpcbind`" ] ; then
-		if [ -f /var/lib/nfs/etab ] ; then
+	if [ -n "`pidof rpcbind`" ]; then
+		if [ -f /var/lib/nfs/etab ]; then
 			/sbin/exportfs -ua
 		fi
 	fi
@@ -98,4 +98,3 @@ reload)
 esac
 
 exit $?
-

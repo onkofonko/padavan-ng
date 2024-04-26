@@ -84,7 +84,7 @@ file_copy()
 		if [ $rc -eq 0 -a -n "$strip" ]; then
 			${STRIPTOOL} ${dstfile} 2>/dev/null
 			${STRIPTOOL} -R .comment -R .note --strip-debug --strip-unneeded ${dstfile} 2>/dev/null
-			if [ $? -eq 0 ] && [ -x "${SSTRIP_TOOL}" ] ; then
+			if [ $? -eq 0 ] && [ -x "${SSTRIP_TOOL}" ]; then
 				${SSTRIP_TOOL} ${dstfile}
 			fi
 		fi

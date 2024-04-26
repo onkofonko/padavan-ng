@@ -55,11 +55,13 @@ static int filter_mac(int family, char *addrp, char *mac, size_t maclen, void *p
 	  if (arp->addr.addr4.s_addr != ((struct in_addr *)addrp)->s_addr)
 	    continue;
 	}
+#ifdef HAVE_IPV6
       else
 	{
 	  if (!IN6_ARE_ADDR_EQUAL(&arp->addr.addr6, (struct in6_addr *)addrp))
 	    continue;
 	}
+#endif /* HAVE_IPV6 */
 
       if (arp->status == ARP_EMPTY)
 	{
@@ -96,8 +98,10 @@ static int filter_mac(int family, char *addrp, char *mac, size_t maclen, void *p
       memcpy(arp->hwaddr, mac, maclen);
       if (family == AF_INET)
 	arp->addr.addr4.s_addr = ((struct in_addr *)addrp)->s_addr;
+#ifdef HAVE_IPV6
       else
 	memcpy(&arp->addr.addr6, addrp, IN6ADDRSZ);
+#endif /* HAVE_IPV6 */
     }
   
   return 1;
@@ -127,9 +131,11 @@ int find_mac(union mysockaddr *addr, unsigned char *mac, int lazy, time_t now)
 	      arp->addr.addr4.s_addr != addr->in.sin_addr.s_addr)
 	    continue;
 	    
+#ifdef HAVE_IPV6
 	  if (arp->family == AF_INET6 && 
 	      !IN6_ARE_ADDR_EQUAL(&arp->addr.addr6, &addr->in6.sin6_addr))
 	    continue;
+#endif /* HAVE_IPV6 */
 	  
 	  /* Only accept positive entries unless in lazy mode. */
 	  if (arp->status != ARP_EMPTY || lazy || updated)
@@ -192,8 +198,10 @@ int find_mac(union mysockaddr *addr, unsigned char *mac, int lazy, time_t now)
 
       if (addr->sa.sa_family == AF_INET)
 	arp->addr.addr4.s_addr = addr->in.sin_addr.s_addr;
+#ifdef HAVE_IPV6
       else
 	memcpy(&arp->addr.addr6, &addr->in6.sin6_addr, IN6ADDRSZ);
+#endif /* HAVE_IPV6 */
     }
 	  
    return 0;
