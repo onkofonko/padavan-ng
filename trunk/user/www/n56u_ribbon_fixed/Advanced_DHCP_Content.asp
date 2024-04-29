@@ -26,13 +26,13 @@ var $j = jQuery.noConflict();
 
 $j(document).ready(function() {
 	init_itoggle('dhcp_enable_x');
+	init_itoggle('lan_dhcpd_x');
 	init_itoggle('redirect_all_dns');
 	init_itoggle('dhcp_filter_aaaa');
 	init_itoggle('dhcp_all_servers');
 	init_itoggle('dhcp_strict_order');
 	init_itoggle('dhcp_stop_dns_rebind');
 	init_itoggle('dhcp_proxy_dnssec');
-	init_itoggle('lan_dhcpd_x');
 	init_itoggle('dhcp_static_x', change_dhcp_static_enabled);
 	init_itoggle('dhcp_static_arp');
 });
@@ -66,6 +66,12 @@ function initial(){
 		showhide_div('row_dhcpd_rt', 0);
 		showhide_div('row_dhcpd_ap', 1);
 		showhide_div('row_domain', 0);
+		showhide_div('row_redirect_all_dns', 0);
+		showhide_div('row_dhcp_filter_aaaa', 0);
+		showhide_div('row_dhcp_all_servers', 0);
+		showhide_div('row_dhcp_strict_order', 0);
+		showhide_div('row_dhcp_stop_dns_rebind', 0);
+		showhide_div('row_dhcp_proxy_dnssec', 0);
 		showhide_div('row_dservers', 0);
 		showhide_div('row_dhcpconf', 0);
 		showhide_div('row_hosts', 0);
@@ -505,7 +511,7 @@ function changeBgColor(obj, num){
                                                 <input type="text" maxlength="15" class="input" size="15" name="dhcp_wins_x" value="<% nvram_get_x("", "dhcp_wins_x"); %>" onkeypress="return is_ipaddr(this,event);" />
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr id="row_redirect_all_dns">
                                             <th style="border-top: 0 none;"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,12);"><#LANHostConfig_ForceDNS_itemname#></a></th>
                                             <td style="border-top: 0 none;">
                                                 <div class="main_itoggle">
@@ -519,7 +525,7 @@ function changeBgColor(obj, num){
                                                 </div>
                                            </td>
                                         </tr>
-                                        <tr>
+                                        <tr id="row_dhcp_filter_aaaa">
                                             <th style="border-top: 0 none;"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,13);"><#LANHostConfig_DHCPFilterAAAA_itemname#></a></th>
                                             <td style="border-top: 0 none;">
                                                 <div class="main_itoggle">
@@ -533,7 +539,7 @@ function changeBgColor(obj, num){
                                                 </div>
                                            </td>
                                         </tr>
-                                        <tr>
+                                        <tr id="row_dhcp_all_servers">
                                             <th style="border-top: 0 none;"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,14);"><#LANHostConfig_DHCPAllservers_itemname#></a></th>
                                             <td style="border-top: 0 none;">
                                                 <div class="main_itoggle">
@@ -547,7 +553,7 @@ function changeBgColor(obj, num){
                                                 </div>
                                            </td>
                                         </tr>
-                                        <tr>
+                                        <tr id="row_dhcp_strict_order">
                                             <th style="border-top: 0 none;"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,15);"><#LANHostConfig_DHCPStrictorder_itemname#></a></th>
                                             <td style="border-top: 0 none;">
                                                 <div class="main_itoggle">
@@ -561,7 +567,7 @@ function changeBgColor(obj, num){
                                                 </div>
                                            </td>
                                         </tr>
-                                        <tr>
+                                        <tr id="row_dhcp_stop_dns_rebind">
                                             <th style="border-top: 0 none;"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,16);"><#LANHostConfig_DHCPStopDNSRebind_itemname#></a></th>
                                             <td style="border-top: 0 none;">
                                                 <div class="main_itoggle">
@@ -575,7 +581,7 @@ function changeBgColor(obj, num){
                                                 </div>
                                            </td>
                                         </tr>
-                                        <tr>
+                                        <tr id="row_dhcp_proxy_dnssec">
                                             <th style="border-top: 0 none;"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,17);"><#LANHostConfig_DHCPProxyDNSSEC_itemname#></a></th>
                                             <td style="border-top: 0 none;">
                                                 <div class="main_itoggle">
