@@ -12,7 +12,7 @@ var newformat_systime = uptimeStr.substring(8,11) + " " + uptimeStr.substring(5,
 var systime_millsec = Date.parse(newformat_systime); // millsec from system
 var JS_timeObj = new Date(); // 1970.1.1
 var cookie_pref = 'n56u_cookie_';
-var ss_schedule_support = '<% nvram_get_x("", "ss_schedule_enable"); %>';
+
 var uagent = navigator.userAgent.toLowerCase();
 var is_ie11p = (/trident\/7\./).test(uagent);
 var is_mobile = (/iphone|ipod|ipad|iemobile|android|blackberry|fennec/).test(uagent);
