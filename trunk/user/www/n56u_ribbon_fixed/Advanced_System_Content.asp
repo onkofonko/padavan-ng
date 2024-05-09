@@ -539,7 +539,7 @@ function updateDateTime()
                                             </td>
                                         </tr>
                                         <tr id="reboot_schedule_enable_tr">
-                                            <th width="50%" style="border-top: 0 none;"><#Reboot_Schedule#></th>
+                                            <th width="50%"><#Reboot_Schedule#></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="reboot_schedule_enable_on_of">
@@ -575,7 +575,7 @@ function updateDateTime()
                                             </td>
                                         </tr>
                                         <tr id="reboot_schedule_time_tr">
-                                        <th style="border-top: 0 none;"><#Reboot_Schedule_Time#></th>
+                                            <th style="border-top: 0 none;"><#Reboot_Schedule_Time#></th>
                                             <td style="border-top: 0 none;">
                                                 <input type="text" maxlength="2" style="width: 20px;" size="2" name="reboot_time_x_hour" onKeyPress="return validator.isNumber(this,event);" onblur="validator.timeRange(this, 0);" autocorrect="off" autocapitalize="off"><#Hour#>:
                                                 <input type="text" maxlength="2" style="width: 20px;" size="2" name="reboot_time_x_min" onKeyPress="return validator.isNumber(this,event);" onblur="validator.timeRange(this, 1);" autocorrect="off" autocapitalize="off"><#Minute#>
