@@ -225,7 +225,6 @@ function done_validating(action){
                                                         <input type="checkbox" id="wl_greenap_fake" <% nvram_match_x("", "wl_greenap", "1", "value=1 checked"); %><% nvram_match_x("", "wl_greenap", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" value="1" name="wl_greenap" id="wl_greenap_1" class="input" <% nvram_match_x("", "wl_greenap", "1", "checked"); %>><#checkbox_Yes#>
                                                     <input type="radio" value="0" name="wl_greenap" id="wl_greenap_0" class="input" <% nvram_match_x("", "wl_greenap", "0", "checked"); %>><#checkbox_No#>
@@ -240,7 +239,6 @@ function done_validating(action){
                                                         <input type="checkbox" id="wl_ap_isolate_fake" <% nvram_match_x("","wl_ap_isolate", "1", "value=1 checked"); %><% nvram_match_x("","wl_ap_isolate", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" name="wl_ap_isolate" id="wl_ap_isolate_1" value="1" <% nvram_match_x("","wl_ap_isolate", "1", "checked"); %>><#checkbox_Yes#>
                                                     <input type="radio" name="wl_ap_isolate" id="wl_ap_isolate_0" value="0" <% nvram_match_x("","wl_ap_isolate", "0", "checked"); %>><#checkbox_No#>

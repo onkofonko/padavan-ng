@@ -146,7 +146,6 @@ function done_validating(action){
                                                         <input type="checkbox" id="lprd_enable_fake" <% nvram_match_x("General", "lprd_enable", "1", "value=1 checked"); %><% nvram_match_x("General", "lprd_enable", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" value="1" name="lprd_enable" id="lprd_enable_1" class="input" <% nvram_match_x("General", "lprd_enable", "1", "checked"); %>/><#checkbox_Yes#>
                                                     <input type="radio" value="0" name="lprd_enable" id="lprd_enable_0" class="input" <% nvram_match_x("General", "lprd_enable", "0", "checked"); %>/><#checkbox_No#>
@@ -163,7 +162,6 @@ function done_validating(action){
                                                         <input type="checkbox" id="u2ec_enable_fake" <% nvram_match_x("General", "u2ec_enable", "1", "value=1 checked"); %><% nvram_match_x("General", "u2ec_enable", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" value="1" name="u2ec_enable" id="u2ec_enable_1" class="input" <% nvram_match_x("General", "u2ec_enable", "1", "checked"); %>/><#checkbox_Yes#>
                                                     <input type="radio" value="0" name="u2ec_enable" id="u2ec_enable_0" class="input" <% nvram_match_x("General", "u2ec_enable", "0", "checked"); %>/><#checkbox_No#>

@@ -422,7 +422,6 @@ function changeBgColor(obj, num){
                                                         <input type="checkbox" id="dhcp_enable_x_fake" <% nvram_match_x("", "dhcp_enable_x", "1", "value=1 checked"); %><% nvram_match_x("", "dhcp_enable_x", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" value="1" name="dhcp_enable_x" id="dhcp_enable_x_1" <% nvram_match_x("","dhcp_enable_x", "1", "checked"); %>><#checkbox_Yes#>
                                                     <input type="radio" value="0" name="dhcp_enable_x" id="dhcp_enable_x_0" <% nvram_match_x("","dhcp_enable_x", "0", "checked"); %>><#checkbox_No#>
@@ -437,7 +436,6 @@ function changeBgColor(obj, num){
                                                         <input type="checkbox" id="lan_dhcpd_x_fake" <% nvram_match_x("", "lan_dhcpd_x", "1", "value=1 checked"); %><% nvram_match_x("", "lan_dhcpd_x", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" value="1" name="lan_dhcpd_x" id="lan_dhcpd_x_1" <% nvram_match_x("","lan_dhcpd_x", "1", "checked"); %>><#checkbox_Yes#>
                                                     <input type="radio" value="0" name="lan_dhcpd_x" id="lan_dhcpd_x_0" <% nvram_match_x("","lan_dhcpd_x", "0", "checked"); %>><#checkbox_No#>
@@ -666,7 +664,6 @@ function changeBgColor(obj, num){
                                                         <input type="checkbox" id="dhcp_static_x_fake" <% nvram_match_x("", "dhcp_static_x", "1", "value=1 checked"); %><% nvram_match_x("", "dhcp_static_x", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" value="1" name="dhcp_static_x" id="dhcp_static_x_1" onclick="change_dhcp_static_enabled()" <% nvram_match_x("", "dhcp_static_x", "1", "checked"); %> /><#checkbox_Yes#>
                                                     <input type="radio" value="0" name="dhcp_static_x" id="dhcp_static_x_0" onclick="change_dhcp_static_enabled()" <% nvram_match_x("", "dhcp_static_x", "0", "checked"); %> /><#checkbox_No#>
@@ -681,7 +678,6 @@ function changeBgColor(obj, num){
                                                         <input type="checkbox" id="dhcp_static_arp_fake" <% nvram_match_x("", "dhcp_static_arp", "1", "value=1 checked"); %><% nvram_match_x("", "dhcp_static_arp", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" value="1" name="dhcp_static_arp" id="dhcp_static_arp_1" onclick="change_dhcp_static_enabled()" <% nvram_match_x("", "dhcp_static_arp", "1", "checked"); %> /><#checkbox_Yes#>
                                                     <input type="radio" value="0" name="dhcp_static_arp" id="dhcp_static_arp_0" onclick="change_dhcp_static_enabled()" <% nvram_match_x("", "dhcp_static_arp", "0", "checked"); %> /><#checkbox_No#>

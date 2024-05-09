@@ -566,7 +566,6 @@ function change_ip6_lan_dhcp(){
                                                         <input type="checkbox" id="ip6_dns_auto_fake" <% nvram_match_x("", "ip6_dns_auto", "1", "value=1 checked"); %><% nvram_match_x("", "ip6_dns_auto", "0", "value=0"); %> />
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" name="ip6_dns_auto" id="ip6_dns_auto_1" class="input" value="1" onclick="change_ip6_dns_auto();" <% nvram_match_x("", "ip6_dns_auto", "1", "checked"); %>/><#checkbox_Yes#>
                                                     <input type="radio" name="ip6_dns_auto" id="ip6_dns_auto_0" class="input" value="0" onclick="change_ip6_dns_auto();" <% nvram_match_x("", "ip6_dns_auto", "0", "checked"); %>/><#checkbox_No#>
@@ -605,7 +604,6 @@ function change_ip6_lan_dhcp(){
                                                         <input type="checkbox" id="ip6_lan_auto_fake" <% nvram_match_x("", "ip6_lan_auto", "1", "value=1 checked"); %><% nvram_match_x("", "ip6_lan_auto", "0", "value=0"); %> />
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" name="ip6_lan_auto" id="ip6_lan_auto_1" class="input" value="1" onclick="change_ip6_lan_auto();" <% nvram_match_x("", "ip6_lan_auto", "1", "checked"); %>/><#checkbox_Yes#>
                                                     <input type="radio" name="ip6_lan_auto" id="ip6_lan_auto_0" class="input" value="0" onclick="change_ip6_lan_auto();" <% nvram_match_x("", "ip6_lan_auto", "0", "checked"); %>/><#checkbox_No#>
@@ -632,7 +630,6 @@ function change_ip6_lan_dhcp(){
                                                         <input type="checkbox" id="ip6_lan_radv_fake" <% nvram_match_x("", "ip6_lan_radv", "1", "value=1 checked"); %><% nvram_match_x("", "ip6_lan_radv", "0", "value=0"); %> />
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" name="ip6_lan_radv" id="ip6_lan_radv_1" class="input" value="1" onclick="change_ip6_lan_radv();" <% nvram_match_x("", "ip6_lan_radv", "1", "checked"); %>/><#checkbox_Yes#>
                                                     <input type="radio" name="ip6_lan_radv" id="ip6_lan_radv_0" class="input" value="0" onclick="change_ip6_lan_radv();" <% nvram_match_x("", "ip6_lan_radv", "0", "checked"); %>/><#checkbox_No#>

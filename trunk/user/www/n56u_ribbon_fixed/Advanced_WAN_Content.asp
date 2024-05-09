@@ -740,7 +740,6 @@ function simplyMAC(fullMAC){
                                                         <input type="checkbox" id="gw_arp_ping_fake" <% nvram_match_x("", "gw_arp_ping", "1", "value=1 checked"); %><% nvram_match_x("", "gw_arp_ping", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" name="gw_arp_ping" id="gw_arp_ping_1" value="1" <% nvram_match_x("", "gw_arp_ping", "1", "checked"); %>/><#checkbox_Yes#>
                                                     <input type="radio" name="gw_arp_ping" id="gw_arp_ping_0" value="0" <% nvram_match_x("", "gw_arp_ping", "0", "checked"); %>/><#checkbox_No#>
@@ -761,7 +760,6 @@ function simplyMAC(fullMAC){
                                                         <input type="checkbox" id="x_DHCPClient_fake" <% nvram_match_x("", "x_DHCPClient", "1", "value=1 checked"); %><% nvram_match_x("", "x_DHCPClient", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" name="x_DHCPClient" id="x_DHCPClient_1" class="input" value="1" onclick="set_wan_dhcp_auto(1);" <% nvram_match_x("", "x_DHCPClient", "1", "checked"); %>/><#checkbox_Yes#>
                                                     <input type="radio" name="x_DHCPClient" id="x_DHCPClient_0" class="input" value="0" onclick="set_wan_dhcp_auto(0);" <% nvram_match_x("", "x_DHCPClient", "0", "checked"); %>/><#checkbox_No#>
@@ -801,7 +799,6 @@ function simplyMAC(fullMAC){
                                                         <input type="checkbox" id="wan_dnsenable_x_fake" <% nvram_match_x("", "wan_dnsenable_x", "1", "value=1 checked"); %><% nvram_match_x("", "wan_dnsenable_x", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" name="wan_dnsenable_x" id="wan_dnsenable_x_1" value="1" onclick="set_wan_dns_auto(1);" <% nvram_match_x("", "wan_dnsenable_x", "1", "checked"); %>/><#checkbox_Yes#>
                                                     <input type="radio" name="wan_dnsenable_x" id="wan_dnsenable_x_0" value="0" onclick="set_wan_dns_auto(0);" <% nvram_match_x("", "wan_dnsenable_x", "0", "checked"); %>/><#checkbox_No#>
@@ -1110,7 +1107,6 @@ function simplyMAC(fullMAC){
                                                         <input type="checkbox" id="vlan_filter_fake" <% nvram_match_x("", "vlan_filter", "1", "value=1 checked"); %><% nvram_match_x("", "vlan_filter", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" name="vlan_filter" id="vlan_filter_1" value="1" onClick="change_stb_port_and_vlan();" <% nvram_match_x("", "vlan_filter", "1", "checked"); %>/><#checkbox_Yes#>
                                                     <input type="radio" name="vlan_filter" id="vlan_filter_0" value="0" onClick="change_stb_port_and_vlan();" <% nvram_match_x("", "vlan_filter", "0", "checked"); %>/><#checkbox_No#>

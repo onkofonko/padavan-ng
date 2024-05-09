@@ -264,7 +264,6 @@ function done_validating(action){
                                                         <input type="checkbox" id="lan_proto_x_fake" <% nvram_match_x("", "lan_proto_x", "1", "value=1 checked"); %><% nvram_match_x("", "lan_proto_x", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" id="lan_proto_x_1" name="lan_proto_x" value="1" class="input" onClick="on_change_lan_dhcp();" <% nvram_match_x("","lan_proto_x", "1", "checked"); %>><#checkbox_Yes#>
                                                     <input type="radio" id="lan_proto_x_0" name="lan_proto_x" value="0" class="input" onClick="on_change_lan_dhcp();" <% nvram_match_x("","lan_proto_x", "0", "checked"); %>><#checkbox_No#>
@@ -305,7 +304,6 @@ function done_validating(action){
                                                         <input type="checkbox" id="lan_dns_x_fake" <% nvram_match_x("", "lan_dns_x", "1", "value=1 checked"); %><% nvram_match_x("", "lan_dns_x", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" id="lan_dns_x_1" name="lan_dns_x" value="1" class="input" onClick="on_change_lan_dns();" <% nvram_match_x("","lan_dns_x", "1", "checked"); %>><#checkbox_Yes#>
                                                     <input type="radio" id="lan_dns_x_0" name="lan_dns_x" value="0" class="input" onClick="on_change_lan_dns();" <% nvram_match_x("","lan_dns_x", "0", "checked"); %>><#checkbox_No#>

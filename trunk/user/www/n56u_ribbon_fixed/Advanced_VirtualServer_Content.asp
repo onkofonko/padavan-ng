@@ -550,7 +550,6 @@ function valid_IP_subnet(obj){
                                                         <input type="checkbox" id="upnp_enable_x_fake" <% nvram_match_x("", "upnp_enable_x", "1", "value=1 checked"); %><% nvram_match_x("", "upnp_enable_x", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" value="1" name="upnp_enable_x" id="upnp_enable_x_1" onclick="change_upnp_enabled();" <% nvram_match_x("", "upnp_enable_x", "1", "checked"); %>/><#checkbox_Yes#>
                                                     <input type="radio" value="0" name="upnp_enable_x" id="upnp_enable_x_0" onclick="change_upnp_enabled();" <% nvram_match_x("", "upnp_enable_x", "0", "checked"); %>/><#checkbox_No#>
@@ -621,7 +620,6 @@ function valid_IP_subnet(obj){
                                                         <input type="checkbox" id="vts_enable_x_fake" <% nvram_match_x("", "vts_enable_x", "1", "value=1 checked"); %><% nvram_match_x("", "vts_enable_x", "0", "value=0"); %> />
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" value="1" name="vts_enable_x" id="vts_enable_x_1" onclick="change_vts_enabled();" <% nvram_match_x("", "vts_enable_x", "1", "checked"); %>/><#checkbox_Yes#>
                                                     <input type="radio" value="0" name="vts_enable_x" id="vts_enable_x_0" onclick="change_vts_enabled();" <% nvram_match_x("", "vts_enable_x", "0", "checked"); %>/><#checkbox_No#>
