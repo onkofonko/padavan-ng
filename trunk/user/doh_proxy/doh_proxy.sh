@@ -57,6 +57,7 @@ logger -t doh_proxy2 "Start resolving to $DOH_S4 : 65058."
 fi
 
 touch /var/run/doh_proxy.pid
+sync && echo 3 > /proc/sys/vm/drop_caches
 fi
 }
 
