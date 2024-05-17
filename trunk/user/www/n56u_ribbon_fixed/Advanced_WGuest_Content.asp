@@ -296,7 +296,6 @@ function change_guest_auth_mode(mflag) {
                                                         <input type="checkbox" id="wl_guest_enable_fake" <% nvram_match_x("", "wl_guest_enable", "1", "value=1 checked"); %><% nvram_match_x("", "wl_guest_enable", "0", "value=0"); %> />
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" value="1" id="wl_guest_enable_1" name="wl_guest_enable" class="input" onClick="change_guest_enabled(1);" <% nvram_match_x("","wl_guest_enable", "1", "checked"); %>/><#checkbox_Yes#>
                                                     <input type="radio" value="0" id="wl_guest_enable_0" name="wl_guest_enable" class="input" onClick="change_guest_enabled(1);" <% nvram_match_x("","wl_guest_enable", "0", "checked"); %>/><#checkbox_No#>
@@ -354,7 +353,6 @@ function change_guest_auth_mode(mflag) {
                                                         <input type="checkbox" id="wl_guest_closed_fake" <% nvram_match_x("", "wl_guest_closed", "1", "value=1 checked"); %><% nvram_match_x("", "wl_guest_closed", "0", "value=0"); %> />
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" value="1" id="wl_guest_closed_1" name="wl_guest_closed" class="input" <% nvram_match_x("","wl_guest_closed", "1", "checked"); %>/><#checkbox_Yes#>
                                                     <input type="radio" value="0" id="wl_guest_closed_0" name="wl_guest_closed" class="input" <% nvram_match_x("","wl_guest_closed", "0", "checked"); %>/><#checkbox_No#>
@@ -369,7 +367,6 @@ function change_guest_auth_mode(mflag) {
                                                         <input type="checkbox" id="wl_guest_lan_isolate_fake" <% nvram_match_x("", "wl_guest_lan_isolate", "1", "value=1 checked"); %><% nvram_match_x("", "wl_guest_lan_isolate", "0", "value=0"); %> />
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" value="1" id="wl_guest_lan_isolate_1" name="wl_guest_lan_isolate" class="input" <% nvram_match_x("","wl_guest_lan_isolate", "1", "checked"); %>/><#checkbox_Yes#>
                                                     <input type="radio" value="0" id="wl_guest_lan_isolate_0" name="wl_guest_lan_isolate" class="input" <% nvram_match_x("","wl_guest_lan_isolate", "0", "checked"); %>/><#checkbox_No#>
@@ -384,7 +381,6 @@ function change_guest_auth_mode(mflag) {
                                                         <input type="checkbox" id="wl_guest_ap_isolate_fake" <% nvram_match_x("", "wl_guest_ap_isolate", "1", "value=1 checked"); %><% nvram_match_x("", "wl_guest_ap_isolate", "0", "value=0"); %> />
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" value="1" id="wl_guest_ap_isolate_1" name="wl_guest_ap_isolate" class="input" <% nvram_match_x("","wl_guest_ap_isolate", "1", "checked"); %>/><#checkbox_Yes#>
                                                     <input type="radio" value="0" id="wl_guest_ap_isolate_0" name="wl_guest_ap_isolate" class="input" <% nvram_match_x("","wl_guest_ap_isolate", "0", "checked"); %>/><#checkbox_No#>
@@ -446,7 +442,6 @@ function change_guest_auth_mode(mflag) {
                                                         <input type="checkbox" id="wl_guest_macrule_fake" <% nvram_match_x("", "wl_guest_macrule", "1", "value=1 checked"); %><% nvram_match_x("", "wl_guest_macrule", "0", "value=0"); %> />
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" value="1" id="wl_guest_macrule_1" name="wl_guest_macrule" class="input" <% nvram_match_x("","wl_guest_macrule", "1", "checked"); %>/><#checkbox_Yes#>
                                                     <input type="radio" value="0" id="wl_guest_macrule_0" name="wl_guest_macrule" class="input" <% nvram_match_x("","wl_guest_macrule", "0", "checked"); %>/><#checkbox_No#>

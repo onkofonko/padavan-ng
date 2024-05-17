@@ -261,7 +261,6 @@ function on_xupnpd_link(){
                                                         <input type="checkbox" id="mr_enable_x_fake" <% nvram_match_x("", "mr_enable_x", "1", "value=1 checked"); %><% nvram_match_x("", "mr_enable_x", "0", "value=0"); %> />
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" value="1" name="mr_enable_x" id="mr_enable_x_1" class="input" onclick="on_click_mroute();" <% nvram_match_x("", "mr_enable_x", "1", "checked"); %> /><#checkbox_Yes#>
                                                     <input type="radio" value="0" name="mr_enable_x" id="mr_enable_x_0" class="input" onclick="on_click_mroute();" <% nvram_match_x("", "mr_enable_x", "0", "checked"); %> /><#checkbox_No#>
@@ -334,7 +333,6 @@ function on_xupnpd_link(){
                                                         <input type="checkbox" id="ether_igmp_fake" <% nvram_match_x("", "ether_igmp", "1", "value=1 checked"); %><% nvram_match_x("", "ether_igmp", "0", "value=0"); %> />
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" value="1" name="ether_igmp" id="ether_igmp_1" class="input" onclick="on_click_snoop();" <% nvram_match_x("", "ether_igmp", "1", "checked"); %> /><#checkbox_Yes#>
                                                     <input type="radio" value="0" name="ether_igmp" id="ether_igmp_0" class="input" onclick="on_click_snoop();" <% nvram_match_x("", "ether_igmp", "0", "checked"); %> /><#checkbox_No#>

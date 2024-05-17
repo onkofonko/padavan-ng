@@ -481,10 +481,6 @@ dhcp-option=252,"\n"
 ### Do NOT forward queries with no domain part
 domain-needed
 
-### Use time server update bypassing DoT/DoH
-server=/ntp.org/time.cloudflare.com/1.1.1.1
-server=/time.google.com/time.in.ua/1.1.1.1
-
 EOF
 	if [ -f /usr/bin/vlmcsd ]; then
 		cat >> "$user_dnsmasq_conf" <<EOF
@@ -500,8 +496,9 @@ EOF
 	if [ ! -f "$user_dnsmasq_serv" ]; then
 		cat > "$user_dnsmasq_serv" <<EOF
 # Custom user servers file for dnsmasq
-# Example:
-#server=/mit.ru/izmuroma.ru/10.25.11.30
+
+### Use time server update bypassing DoT/DoH
+server=/ntp.org/time.cloudflare.com/time.google.com/time.in.ua/1.1.1.1
 
 EOF
 		chmod 644 "$user_dnsmasq_serv"

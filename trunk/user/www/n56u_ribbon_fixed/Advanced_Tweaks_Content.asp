@@ -424,7 +424,6 @@ function change_led_all(){
                                                         <input type="checkbox" id="front_led_all_fake" <% nvram_match_x("", "front_led_all", "1", "value=1 checked"); %><% nvram_match_x("", "front_led_all", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" value="1" name="front_led_all" id="front_led_all_1" class="input" onclick="change_led_all();" <% nvram_match_x("", "front_led_all", "1", "checked"); %> /><#checkbox_Yes#>
                                                     <input type="radio" value="0" name="front_led_all" id="front_led_all_0" class="input" onclick="change_led_all();" <% nvram_match_x("", "front_led_all", "0", "checked"); %> /><#checkbox_No#>

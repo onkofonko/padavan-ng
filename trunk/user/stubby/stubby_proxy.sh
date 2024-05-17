@@ -55,6 +55,7 @@ if [ -f "/var/run/stubby_proxy.pid" ]; then
 ###		/usr/sbin/stubby -g -l /tmp/stubby.log
 		touch /var/run/stubby_proxy.pid
 		logger -t stubby "Running."
+		sync && echo 3 > /proc/sys/vm/drop_caches
 fi
 }
 

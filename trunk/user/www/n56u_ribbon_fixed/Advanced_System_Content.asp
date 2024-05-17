@@ -539,14 +539,13 @@ function updateDateTime()
                                             </td>
                                         </tr>
                                         <tr id="reboot_schedule_enable_tr">
-                                            <th width="50%" style="border-top: 0 none;"><#Reboot_Schedule#></th>
+                                            <th width="50%"><#Reboot_Schedule#></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="reboot_schedule_enable_on_of">
                                                         <input type="checkbox" id="reboot_schedule_enable_fake" <% nvram_match_x("", "reboot_schedule_enable", "1", "value=1 checked"); %><% nvram_match_x("", "reboot_schedule_enable", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" name="reboot_schedule_enable_x" id="reboot_schedule_enable_1" class="input" value="1" <% nvram_match_x("", "reboot_schedule_enable", "1", "checked"); %>/><#checkbox_Yes#>
                                                     <input type="radio" name="reboot_schedule_enable_x" id="reboot_schedule_enable_0" class="input" value="0" <% nvram_match_x("", "reboot_schedule_enable", "0", "checked"); %>/><#checkbox_No#>
@@ -575,7 +574,7 @@ function updateDateTime()
                                             </td>
                                         </tr>
                                         <tr id="reboot_schedule_time_tr">
-                                        <th style="border-top: 0 none;"><#Reboot_Schedule_Time#></th>
+                                            <th style="border-top: 0 none;"><#Reboot_Schedule_Time#></th>
                                             <td style="border-top: 0 none;">
                                                 <input type="text" maxlength="2" style="width: 20px;" size="2" name="reboot_time_x_hour" onKeyPress="return validator.isNumber(this,event);" onblur="validator.timeRange(this, 0);" autocorrect="off" autocapitalize="off"><#Hour#>:
                                                 <input type="text" maxlength="2" style="width: 20px;" size="2" name="reboot_time_x_min" onKeyPress="return validator.isNumber(this,event);" onblur="validator.timeRange(this, 1);" autocorrect="off" autocapitalize="off"><#Minute#>
@@ -614,7 +613,6 @@ function updateDateTime()
                                                         <input type="checkbox" id="help_enable_fake" <% nvram_match_x("General", "help_enable", "1", "value=1 checked"); %><% nvram_match_x("General", "help_enable", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" name="help_enable" id="help_enable_1" class="input" value="1" <% nvram_match_x("General", "help_enable", "1", "checked"); %>/><#checkbox_Yes#>
                                                     <input type="radio" name="help_enable" id="help_enable_0" class="input" value="0" <% nvram_match_x("General", "help_enable", "0", "checked"); %>/><#checkbox_No#>
