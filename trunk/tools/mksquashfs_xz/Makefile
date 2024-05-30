@@ -1,5 +1,5 @@
 SRC_NAME1=squashfs-4.6.1
-SRC_NAME2=xz-5.4.7
+SRC_NAME2=xz-5.6.2
 SRC_URL2=https://netactuate.dl.sourceforge.net/project/lzmautils/$(SRC_NAME2).tar.xz
 
 #all: download_test extract_test config_xz build_xz build_squashfs
