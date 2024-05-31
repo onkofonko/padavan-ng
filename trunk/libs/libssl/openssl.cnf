@@ -121,6 +121,3 @@ nsComment="OpenSSL Generated Certificate"
 subjectKeyIdentifier=hash
 authorityKeyIdentifier=keyid,issuer:always
 proxyCertInfo=critical,language:id-ppl-anyLanguage,pathlen:3,policy:foo
-
-[ system_default_sect ]
-Options = UnsafeLegacyRenegotiation,UnsafeLegacyServerConnect
