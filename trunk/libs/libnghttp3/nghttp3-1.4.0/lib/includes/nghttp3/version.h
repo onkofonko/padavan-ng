@@ -2,7 +2,7 @@
  * nghttp3
  *
  * Copyright (c) 2019 nghttp3 contributors
- * Copyright (c) 2017 ngtcp2 contributors
+ * Copyright (c) 2016 ngtcp2 contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -23,40 +23,24 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include "nghttp3_range.h"
-#include "nghttp3_macro.h"
+#ifndef NGHTTP3_VERSION_H
+#define NGHTTP3_VERSION_H
 
-void nghttp3_range_init(nghttp3_range *r, uint64_t begin, uint64_t end) {
-  r->begin = begin;
-  r->end = end;
-}
+/**
+ * @macro
+ *
+ * Version number of the nghttp3 library release.
+ */
+#define NGHTTP3_VERSION "1.4.0"
 
-nghttp3_range nghttp3_range_intersect(const nghttp3_range *a,
-                                      const nghttp3_range *b) {
-  nghttp3_range r = {0, 0};
-  uint64_t begin = nghttp3_max(a->begin, b->begin);
-  uint64_t end = nghttp3_min(a->end, b->end);
-  if (begin < end) {
-    nghttp3_range_init(&r, begin, end);
-  }
-  return r;
-}
+/**
+ * @macro
+ *
+ * Numerical representation of the version number of the nghttp3
+ * library release. This is a 24 bit number with 8 bits for major
+ * number, 8 bits for minor and 8 bits for patch. Version 1.2.3
+ * becomes 0x010203.
+ */
+#define NGHTTP3_VERSION_NUM 0x010400
 
-uint64_t nghttp3_range_len(const nghttp3_range *r) { return r->end - r->begin; }
-
-int nghttp3_range_eq(const nghttp3_range *a, const nghttp3_range *b) {
-  return a->begin == b->begin && a->end == b->end;
-}
-
-void nghttp3_range_cut(nghttp3_range *left, nghttp3_range *right,
-                       const nghttp3_range *a, const nghttp3_range *b) {
-  /* Assume that b is included in a */
-  left->begin = a->begin;
-  left->end = b->begin;
-  right->begin = b->end;
-  right->end = a->end;
-}
-
-int nghttp3_range_not_after(const nghttp3_range *a, const nghttp3_range *b) {
-  return a->end <= b->end;
-}
+#endif /* NGHTTP3_VERSION_H */
