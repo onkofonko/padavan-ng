@@ -1,4 +1,4 @@
-SRC_NAME=miniupnpd-2.3.6
+SRC_NAME=miniupnpd-2.3.7
 SRC_URL=https://miniupnp.tuxfamily.org/files/download.php?file=$(SRC_NAME).tar.gz
 THISDIR = $(shell pwd)
 

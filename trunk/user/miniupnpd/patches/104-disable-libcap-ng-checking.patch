@@ -1,6 +1,6 @@
 --- miniupnpd/configure
 +++ miniupnpd/configure
-@@ -542,13 +542,13 @@ 
+@@ -562,13 +562,13 @@ 
  	if [ "$PKG_CONFIG" ] ; then
  		if ${PKG_CONFIG} --exists libcap-ng ; then
 -			echo "detected libcap-ng `${PKG_CONFIG} --modversion libcap-ng`"

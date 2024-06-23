@@ -1,4 +1,4 @@
-/* $Id: getifaddr.c,v 1.29 2024/01/04 00:55:28 nanard Exp $ */
+/* $Id: getifaddr.c,v 1.30 2024/06/04 23:05:28 nanard Exp $ */
 /* vim: tabstop=4 shiftwidth=4 noexpandtab
  * MiniUPnP project
  * http://miniupnp.free.fr/ or https://miniupnp.tuxfamily.org/
@@ -261,8 +261,6 @@ find_ipv6_addr(const char * ifname,
 			continue;
 		if(ife->ifa_addr->sa_family == AF_INET6)
 		{
-			addr = (const struct sockaddr_in6 *)ife->ifa_addr;
-			if(!IN6_IS_ADDR_LOOPBACK(&addr->sin6_addr)
 			addr = (const struct sockaddr_in6 *)ife->ifa_addr;
 			if(!IN6_IS_ADDR_LOOPBACK(&addr->sin6_addr)
 			   && !IN6_IS_ADDR_LINKLOCAL(&addr->sin6_addr)

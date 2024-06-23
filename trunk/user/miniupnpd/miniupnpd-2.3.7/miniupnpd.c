@@ -1,4 +1,4 @@
-/* $Id: miniupnpd.c,v 1.261 2024/03/11 23:28:19 nanard Exp $ */
+/* $Id: miniupnpd.c,v 1.264 2024/06/22 18:14:08 nanard Exp $ */
 /* vim: tabstop=4 shiftwidth=4 noexpandtab
  * MiniUPnP project
  * http://miniupnp.free.fr/ or https://miniupnp.tuxfamily.org/
@@ -2070,7 +2070,7 @@ print_usage:
 #endif
 			"\n"
 	        "\nNotes:\n\tThere can be one or several listening_ips.\n"
-	        "\tNotify interval is in seconds. Default is 30 seconds.\n"
+	        "\tNotify interval is in seconds. Default is 900 seconds.\n"
 #ifndef NO_BACKGROUND_NO_PIDFILE
 			"\tDefault pid file is '%s'.\n"
 #endif

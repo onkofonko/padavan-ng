@@ -1,5 +1,5 @@
 #! /bin/sh
-# $Id: configure,v 1.126 2024/03/02 10:47:03 nanard Exp $
+# $Id: configure,v 1.130 2024/06/22 19:20:10 nanard Exp $
 # vim: tabstop=4 shiftwidth=4 noexpandtab
 #
 # miniupnp daemon
@@ -60,7 +60,7 @@ case "$argv" in
 	--host-machine=*)
 		OS_MACHINE=$(echo $argv | cut -d= -f2) ;;
 	--help|-h)
-		echo "Usage : $0 [options]"
+		echo "Usage: $0 [options]"
 		echo " --help                Show this help"
 		echo " --ipv6                Enable IPv6"
 		echo " --igd2                Build an IGDv2 instead of an IGDv1"
@@ -613,7 +613,7 @@ if [ -z "$V6SOCKETS_ARE_V6ONLY" ] ; then
 	V6SOCKETS_ARE_V6ONLY=0
 fi
 
-echo "Configuring compilation for [$OS_NAME] [$OS_VERSION] with [$FW] firewall software."
+echo "Configuring compilation for [$OS_NAME] [$OS_VERSION] [$OS_MACHINE] with [$FW] firewall software."
 echo "Please edit config.h for more compilation options."
 
 # define SUPPORT_REMOTEHOST if the FW related code really supports setting

@@ -1,6 +1,6 @@
 --- miniupnpd/Changelog.txt
 +++ miniupnpd/Changelog.txt
-@@ -12,10 +12,6 @@
+@@ -25,10 +25,6 @@
  2024/02/25:
    fix IGDv2 WANIPConnection XML service description for AddAnyPortMapping
    out argument is NewReservedPort, not NewExternalPort
@@ -27,7 +27,7 @@
  ext_ifname :   WAN network interface (interface connected to the internet)
 --- miniupnpd/configure
 +++ miniupnpd/configure
-@@ -556,12 +556,6 @@ if [ "$FW" = "iptables" ] || [ "$FW" = "nftables" ] ; then
+@@ -576,12 +576,6 @@ if [ "$FW" = "iptables" ] || [ "$FW" = "nftables" ] ; then
  	fi
  fi
  
@@ -40,7 +40,7 @@
  if [ "$MAKEFILE" = "Makefile.bsd" ] || [ "$OS_NAME" = "Darwin" ] || [ "$OS_NAME" = "SunOS" ] ; then
  	echo "FWNAME = $FW" > bsdmake.inc
  	echo "SRCDIR = ${BASEDIR}" >> bsdmake.inc
-@@ -816,9 +810,6 @@ echo "/* disable reading and parsing of config file (miniupnpd.conf) */" >> ${CO
+@@ -841,9 +835,6 @@ echo "/* disable reading and parsing of config file (miniupnpd.conf) */" >> ${CO
  echo "/*#define DISABLE_CONFIG_FILE*/" >> ${CONFIGFILE}
  echo "" >> ${CONFIGFILE}
  

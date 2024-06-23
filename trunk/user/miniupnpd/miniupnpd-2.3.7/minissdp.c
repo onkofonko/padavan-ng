@@ -1,4 +1,4 @@
-/* $Id: minissdp.c,v 1.107 2024/01/15 00:20:21 nanard Exp $ */
+/* $Id: minissdp.c,v 1.108 2024/05/16 00:15:56 nanard Exp $ */
 /* vim: tabstop=4 shiftwidth=4 noexpandtab
  * MiniUPnP project
  * http://miniupnp.free.fr/ or https://miniupnp.tuxfamily.org/
