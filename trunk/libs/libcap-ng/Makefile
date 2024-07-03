@@ -1,8 +1,6 @@
 SRC_NAME=libcap-ng-0.8.5
 SRC_URL=https://github.com/stevegrubb/libcap-ng/archive/refs/tags/v0.8.5.tar.gz
 
-CFLAGS += -Os
-
 #all: download_test extract_test config_test
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
