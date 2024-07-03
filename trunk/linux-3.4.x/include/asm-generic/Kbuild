@@ -1,5 +1,12 @@
+header-y += bitops/
+
 header-y += auxvec.h
+header-y += atomic-long.h
+header-y += atomic64.h
 header-y += bitsperlong.h
+header-y += bug.h
+header-y += cmpxchg-local.h
+header-y += div64.h
 header-y += errno-base.h
 header-y += errno.h
 header-y += fcntl.h
