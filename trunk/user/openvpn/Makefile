@@ -32,6 +32,8 @@ configure:
 	IFCONFIG=/sbin/ifconfig \
 	ROUTE=/sbin/route \
 	NETSTAT=/bin/netstat \
+	LIBNL_GENL_CFLAGS=-I$(STAGEDIR)/include/libnl3 \
+	LIBNL_GENL_LIBS="-L$(STAGEDIR)/lib -lnl-genl-3" \
 	LIBCAPNG_CFLAGS=-I$(STAGEDIR)/include \
 	LIBCAPNG_LIBS="-L$(STAGEDIR)/lib -lcap-ng" \
 	OPENSSL_CFLAGS=-I$(STAGEDIR)/include/openssl \
