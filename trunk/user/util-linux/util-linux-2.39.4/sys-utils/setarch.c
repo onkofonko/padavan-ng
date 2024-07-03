@@ -103,7 +103,6 @@
     X(PER_SUNOS) \
     X(PER_XENIX) \
     X(PER_LINUX32) \
-    X(PER_LINUX32_3GB) \
     X(PER_IRIX32) \
     X(PER_IRIXN32) \
     X(PER_IRIX64) \

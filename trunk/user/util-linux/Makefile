@@ -18,7 +18,7 @@ download_test:
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
 		tar xJf $(SRC_NAME).tar.xz; \
-		patch -d $(SRC_NAME) -p1 -i ../libblkid.patch; \
+		patch -d $(SRC_NAME) -p1 -i ../$(SRC_NAME).patch; \
 	fi )
 
 config_test:
@@ -50,6 +50,7 @@ configure:
 		--without-btrfs \
 		--without-readline \
 		--enable-libblkid \
+		--enable-blkid \
 		--enable-libuuid \
 		--disable-cal \
 		--disable-fdformat \
