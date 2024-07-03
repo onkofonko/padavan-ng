@@ -23,7 +23,7 @@
  LZMA_XZ_SUPPORT ?= 0
  LZMA_SUPPORT ?= 0
 -LZMA_DIR ?= ../../../../LZMA/lzma465
-+LZMA_DIR ?= ../../../../LZMA/lzma-19.00
++LZMA_DIR ?= ../../../../LZMA/lzma-23.01
  endif
  
  

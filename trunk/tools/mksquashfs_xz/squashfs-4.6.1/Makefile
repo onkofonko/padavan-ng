@@ -196,7 +196,7 @@ INSTALL_DIR ?= $(INSTALL_PREFIX)/bin
 INSTALL_MANPAGES_DIR ?= $(INSTALL_PREFIX)/man/man1
 LZMA_XZ_SUPPORT ?= 0
 LZMA_SUPPORT ?= 0
-LZMA_DIR ?= ../../../../LZMA/lzma-19.00
+LZMA_DIR ?= ../../../../LZMA/lzma-23.01
 endif
 
 
