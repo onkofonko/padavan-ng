@@ -1,5 +1,5 @@
-SRC_NAME=c-ares-1.31.0
-SRC_URL=https://github.com/c-ares/c-ares/releases/download/v1.31.0/$(SRC_NAME).tar.gz
+SRC_NAME=c-ares-1.32.0
+SRC_URL=https://github.com/c-ares/c-ares/releases/download/v1.32.0/$(SRC_NAME).tar.gz
 
 #all: download_test extract_test config_test
 all: config_test
