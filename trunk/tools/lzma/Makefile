@@ -1,4 +1,4 @@
-SRC_NAME=lzma-23.01
+SRC_NAME=lzma-24.07
 
 all:
 	make -j$(HOST_NCPU) -C $(SRC_NAME)/CPP/7zip/Bundles/LzmaCon -f makefile.gcc ;\
