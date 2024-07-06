@@ -1,0 +1,7 @@
+header-y += atomic.h
+header-y += ffs.h
+header-y += ffz.h
+header-y += find.h
+header-y += fls.h
+header-y += fls64.h
+header-y += non-atomic.h

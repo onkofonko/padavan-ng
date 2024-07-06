@@ -107,7 +107,7 @@ static const struct blkid_idinfo *idinfos[] =
 	&hfsplus_idinfo,
 	&hfs_idinfo,
 	&ntfs_idinfo,
-	&exfat_idinfo
+	&exfat_idinfo,
 };
 
 /*

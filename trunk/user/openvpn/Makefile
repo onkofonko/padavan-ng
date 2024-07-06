@@ -1,5 +1,5 @@
-SRC_NAME=openvpn-2.6.10
-SRC_URL = https://github.com/OpenVPN/openvpn/archive/refs/tags/v2.6.10.tar.gz
+SRC_NAME=openvpn-2.6.11
+SRC_URL=https://github.com/OpenVPN/openvpn/archive/refs/tags/v2.6.11.tar.gz
 
 CFLAGS += -ffunction-sections -fdata-sections -fvisibility=hidden
 LDFLAGS += -Wl,--gc-sections
@@ -32,6 +32,12 @@ configure:
 	IFCONFIG=/sbin/ifconfig \
 	ROUTE=/sbin/route \
 	NETSTAT=/bin/netstat \
+	LIBNL_GENL_CFLAGS=-I$(STAGEDIR)/include/libnl3 \
+	LIBNL_GENL_LIBS="-L$(STAGEDIR)/lib -lnl-genl-3" \
+	LIBCAPNG_CFLAGS=-I$(STAGEDIR)/include \
+	LIBCAPNG_LIBS="-L$(STAGEDIR)/lib -lcap-ng" \
+	OPENSSL_CFLAGS=-I$(STAGEDIR)/include/openssl \
+	OPENSSL_LIBS="-L$(STAGEDIR)/lib -lssl -lcrypto" \
 	./configure \
 		--prefix=/usr \
 		--disable-debug \
@@ -43,11 +49,11 @@ configure:
 		--disable-iproute2 \
 		--disable-unit-tests \
 		--disable-management \
+		--disable-lz4 \
+		--disable-dco \
 		--enable-small \
 		--enable-fragment \
 		--enable-lzo \
-		--disable-lz4 \
-		--disable-dco \
 		--with-crypto-library=openssl \
 		--with-sysroot=$(STAGEDIR) \
 		--host=$(HOST_TARGET) \

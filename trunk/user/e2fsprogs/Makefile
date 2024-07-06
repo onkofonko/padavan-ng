@@ -1,5 +1,5 @@
-SRC_NAME=e2fsprogs-1.47.0
-SRC_URL=https://mirrors.edge.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.47.0/$(SRC_NAME).tar.xz
+SRC_NAME=e2fsprogs-1.47.1
+SRC_URL=https://mirrors.edge.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.47.1/$(SRC_NAME).tar.xz
 THISDIR = $(shell pwd)
 
 CFLAGS += -ffunction-sections -fdata-sections
@@ -17,6 +17,7 @@ download_test:
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
 		tar xJf $(SRC_NAME).tar.xz; \
+		patch -d $(SRC_NAME) -p1 -i ../e2fsprogs-orig.patch; \
 	fi )
 
 config_test:

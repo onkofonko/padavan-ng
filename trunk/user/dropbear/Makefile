@@ -7,7 +7,9 @@ else
 COPT=-DSFTPSERVER_PATH=\"/opt/libexec/sftp-server\"
 endif
 ifneq ($(CONFIG_FIRMWARE_INCLUDE_DROPBEAR_FAST_CODE),y)
-COPT+=-DDROPBEAR_SMALL_CODE
+COPT+=-DDROPBEAR_SMALL_CODE=1
+else
+COPT+=-DDROPBEAR_SMALL_CODE=0
 endif
 CFLAGS+=$(COPT) -ffunction-sections -fdata-sections -fvisibility=hidden
 LDFLAGS += -Wl,--gc-sections

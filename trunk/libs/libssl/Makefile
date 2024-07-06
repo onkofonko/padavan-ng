@@ -75,6 +75,7 @@ configure:
 		enable-tls1_3 \
 		--prefix=/ \
 		--openssldir=/etc/ssl \
+		no-tests \
 		$(OPENSSL_OPTIONS) ; \
 	)
 

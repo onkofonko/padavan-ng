@@ -1,4 +1,4 @@
-SRC_NAME=libsodium-1.0.19
+SRC_NAME=libsodium-1.0.20
 SRC_URL=https://download.libsodium.org/libsodium/releases/$(SRC_NAME).tar.gz
 
 CFLAGS   += -Os -Wall -ffunction-sections -fdata-sections

@@ -1,5 +1,31 @@
 include include/asm-generic/Kbuild.asm
 
+header-y += addrspace.h
+header-y += asm.h
+header-y += atomic.h
+header-y += barrier.h
+header-y += bitops.h
+header-y += break.h
+header-y += bug.h
+header-y += cache.h
 header-y += cachectl.h
+header-y += cacheops.h
+header-y += cmpxchg.h
+header-y += cpu.h
+header-y += cpu-features.h
+header-y += cpu-info.h
+header-y += div64.h
+header-y += hazards.h
+header-y += irqflags.h
+header-y += jump_label.h
+header-y += linkage.h
+header-y += mipsregs.h
+header-y += prefetch.h
+header-y += processor.h
 header-y += sgidefs.h
+header-y += spinlock.h
+header-y += spinlock_types.h
 header-y += sysmips.h
+header-y += thread_info.h
+header-y += war.h
+header-y += wbflush.h
