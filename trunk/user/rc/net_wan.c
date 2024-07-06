@@ -2590,7 +2590,7 @@ int start_udhcpc_wan(char *wan_ifname, int unit, int wait_lease)
 		"-t4",
 		"-T4",
 		NULL,
-		NULL, NULL,	/* -H hostname		*/
+		NULL, NULL,	/* -x hostname:hostname */
 		NULL, NULL,	/* -V vendorclass	*/
 		NULL,		/* -O mtu		*/
 		NULL,		/* -O routes		*/
@@ -2617,8 +2617,11 @@ int start_udhcpc_wan(char *wan_ifname, int unit, int wait_lease)
 
 	wan_hostname = get_wan_unit_value(unit, "hostname");
 	if (strlen(wan_hostname) > 0) {
-		dhcp_argv[index++] = "-H";
-		dhcp_argv[index++] = sanity_hostname(wan_hostname);
+		dhcp_argv[index++] = "-x";
+		char wan_mergedhostname[26] = "hostname:";
+		size_t remaining_space = sizeof(wan_mergedhostname) - strlen(wan_mergedhostname) - 1;
+		strncat(wan_mergedhostname, sanity_hostname(wan_hostname), remaining_space);
+		dhcp_argv[index++] = wan_mergedhostname;
 	}
 
 	wan_vci = get_wan_unit_value(unit, "vci");
