@@ -678,56 +678,56 @@ function change_crond_enabled(){
                                         </tr>
                                         <tr id="row_doh_conf1" style="display:none">
                                             <td colspan="2" align="left" style="text-align:left;">
-                                                <span>DoH Server 1:  </span>
+                                                <span class="caption-bold">DoH Server 1:</span>
                                                 <input type="text" maxlength="60" class="input" size="10" style="width: 374px;" name="doh_server1" value="<% nvram_get_x("", "doh_server1"); %>" onkeypress="return is_string(this,event);"/>&nbsp;:
                                                 &nbsp;<span style="color:#888;">[65055]</span>
                                         </td>
                                         </tr>
                                         <tr id="row_doh_conf2" style="display:none">
                                             <td colspan="2" align="left" style="text-align:left;">
-                                                <span>Options:       </span>
+                                                <span class="caption-bold">Options:</span>
                                                 <input type="text" maxlength="55" class="input" size="10" style="width: 225px;" name="doh_opt1_1" value="<% nvram_get_x("", "doh_opt1_1"); %>" onkeypress="return is_string(this,event);"/>&nbsp; 
                                                 <input type="text" maxlength="85" class="input" size="10" style="width: 230px;" name="doh_opt2_1" value="<% nvram_get_x("", "doh_opt2_1"); %>" onkeypress="return is_string(this,event);"/>
                                             </td>
                                         </tr>
                                         <tr id="row_doh_conf3" style="display:none">
                                             <td colspan="2" align="left" style="text-align:left;">
-                                                <span>DoH Server 2:  </span>
+                                                <span class="caption-bold">DoH Server 2:</span>
                                                 <input type="text" maxlength="60" class="input" size="10" style="width: 374px;" name="doh_server2" value="<% nvram_get_x("", "doh_server2"); %>" onkeypress="return is_string(this,event);"/>&nbsp;:
                                                 &nbsp;<span style="color:#888;">[65056]</span>
                                             </td>
                                         </tr>
                                         <tr id="row_doh_conf4" style="display:none">
                                             <td colspan="2" align="left" style="text-align:left;">
-                                                <span">Options:       </span>
+                                                <span class="caption-bold">Options:</span>
                                                 <input type="text" maxlength="55" class="input" size="10" style="width: 225px;" name="doh_opt1_2" value="<% nvram_get_x("", "doh_opt1_2"); %>" onkeypress="return is_string(this,event);"/>&nbsp; 
                                                 <input type="text" maxlength="85" class="input" size="10" style="width: 230px;" name="doh_opt2_2" value="<% nvram_get_x("", "doh_opt2_2"); %>" onkeypress="return is_string(this,event);"/>
                                             </td>
                                         </tr>
                                         <tr id="row_doh_conf5" style="display:none">
                                             <td colspan="2" align="left" style="text-align:left;">
-                                                <span>DoH Server 3:  </span>
+                                                <span class="caption-bold">DoH Server 3:</span>
                                                 <input type="text" maxlength="60" class="input" size="10" style="width: 374px;" name="doh_server3" value="<% nvram_get_x("", "doh_server3"); %>" onkeypress="return is_string(this,event);"/>&nbsp;:
                                                 &nbsp;<span style="color:#888;">[65057]</span>
                                             </td>
                                         </tr>
                                         <tr id="row_doh_conf6" style="display:none">
                                             <td colspan="2" align="left" style="text-align:left;">
-                                                <span>Options:       </span>
+                                                <span class="caption-bold">Options:</span>
                                                 <input type="text" maxlength="55" class="input" size="10" style="width: 225px;" name="doh_opt1_3" value="<% nvram_get_x("", "doh_opt1_3"); %>" onkeypress="return is_string(this,event);"/>&nbsp; 
                                                 <input type="text" maxlength="85" class="input" size="10" style="width: 230px;" name="doh_opt2_3" value="<% nvram_get_x("", "doh_opt2_3"); %>" onkeypress="return is_string(this,event);"/>
                                             </td>
                                         </tr>
                                         <tr id="row_doh_conf7" style="display:none">
                                             <td colspan="2" align="left" style="text-align:left;">
-                                                <span>DoH Server 4:  </span>
+                                                <span class="caption-bold">DoH Server 4:</span>
                                                 <input type="text" maxlength="60" class="input" size="10" style="width: 374px;" name="doh_server4" value="<% nvram_get_x("", "doh_server4"); %>" onkeypress="return is_string(this,event);"/>&nbsp;:
                                                 &nbsp;<span style="color:#888;">[65058]</span>
                                             </td>
                                         </tr>
                                         <tr id="row_doh_conf8" style="display:none">
                                             <td colspan="2" align="left" style="text-align:left;">
-                                                <span>Options:       </span>
+                                                <span class="caption-bold">Options:</span>
                                                 <input type="text" maxlength="55" class="input" size="10" style="width: 225px;" name="doh_opt1_4" value="<% nvram_get_x("", "doh_opt1_4"); %>" onkeypress="return is_string(this,event);"/>&nbsp; 
                                                 <input type="text" maxlength="85" class="input" size="10" style="width: 230px;" name="doh_opt2_4" value="<% nvram_get_x("", "doh_opt2_4"); %>" onkeypress="return is_string(this,event);"/>
                                             </td>
