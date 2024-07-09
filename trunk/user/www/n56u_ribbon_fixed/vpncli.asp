@@ -387,7 +387,7 @@ function getHash(){
                                     <th><#OVPN_Port#></th>
                                     <td>
                                         <input type="text" maxlength="5" size="5" name="vpnc_ov_port" class="input" value="<% nvram_get_x("", "vpnc_ov_port"); %>" onkeypress="return is_number(this,event);">
-                                        &nbsp;<span style="color:#888;">[ 1194 ]</span>
+                                        &nbsp;<span style="color:#888;">[ 1194/1196 ]</span>
                                     </td>
                                 </tr>
                                 <tr id="row_vpnc_ov_prot" style="display:none">
