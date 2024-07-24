@@ -411,6 +411,7 @@ program RPCBPROG {
 %#define	RPCBVERS_4		RPCBVERS4
 %
 %#define	_PATH_RPCBINDSOCK	"/var/run/rpcbind.sock"
+%#define	_PATH_RPCBINDSOCK_ABSTRACT "\0/run/rpcbind.sock"
 %
 %#else		/* ndef _KERNEL */
 %#ifdef __cplusplus

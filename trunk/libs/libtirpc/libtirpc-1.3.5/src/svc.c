@@ -657,8 +657,6 @@ svc_getreqset (readfds)
   assert (readfds != NULL);
 
   setsize = _rpc_dtablesize ();
-  if (setsize > FD_SETSIZE)
-    setsize = FD_SETSIZE;
   maskp = readfds->fds_bits;
   for (sock = 0; sock < setsize; sock += NFDBITS)
     {

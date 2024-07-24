@@ -650,7 +650,8 @@ __rpc_taddr2uaddr_af(int af, const struct netbuf *nbuf)
 		if (path_len < 0)
 			return NULL;
 
-		if (asprintf(&ret, "%.*s", path_len, sun->sun_path) < 0)
+		if (asprintf(&ret, "%c%.*s", sun->sun_path[0] ?: '@',
+			     path_len - 1, sun->sun_path + 1) < 0)
 			return (NULL);
 		break;
 	default:
@@ -682,9 +683,10 @@ __rpc_uaddr2taddr_af(int af, const char *uaddr)
 
 	/*
 	 * AF_LOCAL addresses are expected to be absolute
-	 * pathnames, anything else will be AF_INET or AF_INET6.
+	 * pathnames or abstract names, anything else will be
+	 * AF_INET or AF_INET6.
 	 */
-	if (*addrstr != '/') {
+	if (*addrstr != '/' && *addrstr != '@') {
 		p = strrchr(addrstr, '.');
 		if (p == NULL)
 			goto out;
@@ -747,6 +749,9 @@ __rpc_uaddr2taddr_af(int af, const char *uaddr)
 		strncpy(sun->sun_path, addrstr, sizeof(sun->sun_path) - 1);
 		ret->len = SUN_LEN(sun);
 		ret->maxlen = sizeof(struct sockaddr_un);
+		if (sun->sun_path[0] == '@')
+			/* Abstract address */
+			sun->sun_path[0] = '\0';
 		ret->buf = sun;
 		break;
 	default:
@@ -834,6 +839,7 @@ __rpc_sockisbound(int fd)
 		struct sockaddr_un  usin;
 	} u_addr;
 	socklen_t slen;
+	int path_len;
 
 	slen = sizeof (struct sockaddr_storage);
 	if (getsockname(fd, (struct sockaddr *)(void *)&ss, &slen) < 0)
@@ -849,9 +855,9 @@ __rpc_sockisbound(int fd)
 			return (u_addr.sin6.sin6_port != 0);
 #endif
 		case AF_LOCAL:
-			/* XXX check this */
-			memcpy(&u_addr.usin, &ss, sizeof(u_addr.usin)); 
-			return (u_addr.usin.sun_path[0] != 0);
+			memcpy(&u_addr.usin, &ss, sizeof(u_addr.usin));
+			path_len = slen - offsetof(struct sockaddr_un, sun_path);
+			return path_len > 0;
 		default:
 			break;
 	}

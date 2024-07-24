@@ -42,6 +42,8 @@ _rpc_dtablesize(void)
 
 	if (size == 0) {
 		size = sysconf(_SC_OPEN_MAX);
+		if (size > FD_SETSIZE)
+			size = FD_SETSIZE;
 	}
 	return (size);
 }

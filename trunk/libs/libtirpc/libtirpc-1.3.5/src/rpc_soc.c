@@ -701,7 +701,11 @@ svcunix_create(sock, sendsize, recvsize, path)
 	memset(&sun, 0, sizeof sun);
 	sun.sun_family = AF_LOCAL;
 	strncpy(sun.sun_path, path, (sizeof(sun.sun_path)-1));
-	addrlen = sizeof(struct sockaddr_un);
+	if (sun.sun_path[0] == '@')
+		/* abstract address */
+		sun.sun_path[0] = '\0';
+
+	addrlen = SUN_LEN_A(&sun);
 	sa = (struct sockaddr *)&sun;
 
 	if (bind(sock, sa, addrlen) < 0)

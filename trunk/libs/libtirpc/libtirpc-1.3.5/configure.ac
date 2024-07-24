@@ -1,4 +1,4 @@
-AC_INIT(libtirpc, 1.3.4)
+AC_INIT(libtirpc, 1.3.5)
 AM_INIT_AUTOMAKE([silent-rules])
 AM_SILENT_RULES([yes])
 AC_CONFIG_SRCDIR([src/auth_des.c])
@@ -64,7 +64,7 @@ fi
 AC_ARG_ENABLE(ipv6,
 	[AC_HELP_STRING([--disable-ipv6], [Disable IPv6 support @<:@default=no@:>@])],
 	[],[enable_ipv6=yes])
-AM_CONDITIONAL(INET6, test "x$disable_ipv6" != xno)
+AM_CONDITIONAL(INET6, test "x$enable_ipv6" != xno)
 if test "x$enable_ipv6" != xno; then
 	AC_DEFINE(INET6, 1, [Define to 1 if IPv6 is available])
 fi

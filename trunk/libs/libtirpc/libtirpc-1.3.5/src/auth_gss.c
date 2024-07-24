@@ -184,7 +184,6 @@ authgss_create(CLIENT *clnt, gss_name_t name, struct rpc_gss_sec *sec)
 	AUTH			*auth, *save_auth;
 	struct rpc_gss_data	*gd;
 	OM_uint32		min_stat = 0;
-	rpc_gss_options_ret_t	ret;
 
 	gss_log_debug("in authgss_create()");
 
@@ -230,12 +229,8 @@ authgss_create(CLIENT *clnt, gss_name_t name, struct rpc_gss_sec *sec)
 	save_auth = clnt->cl_auth;
 	clnt->cl_auth = auth;
 
-	memset(&ret, 0, sizeof(rpc_gss_options_ret_t));
-	if (!authgss_refresh(auth, &ret)) {
+	if (!authgss_refresh(auth, NULL))
 		auth = NULL;
-		sec->major_status = ret.major_status;
-		sec->minor_status = ret.minor_status;
-	}
 	else
 		authgss_auth_get(auth); /* Reference for caller */
 
@@ -624,9 +619,12 @@ _rpc_gss_refresh(AUTH *auth, rpc_gss_options_ret_t *options_ret)
 }
 
 static bool_t
-authgss_refresh(AUTH *auth, void *ret)
+authgss_refresh(AUTH *auth, void *dummy)
 {
-	return _rpc_gss_refresh(auth, (rpc_gss_options_ret_t *)ret);
+	rpc_gss_options_ret_t ret;
+
+	memset(&ret, 0, sizeof(ret));
+	return _rpc_gss_refresh(auth, &ret);
 }
 
 bool_t
@@ -844,9 +842,9 @@ rpc_gss_seccreate(CLIENT *clnt, char *principal, char *mechanism,
 	gd->sec = sec;
 
 	if (req) {
-		sec.req_flags = req->req_flags;
+		gd->sec.req_flags = req->req_flags;
 		gd->time_req = req->time_req;
-		sec.cred = req->my_cred;
+		gd->sec.cred = req->my_cred;
 		gd->icb = req->input_channel_bindings;
 	}
 

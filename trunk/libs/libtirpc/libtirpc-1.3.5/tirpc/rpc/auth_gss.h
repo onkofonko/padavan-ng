@@ -64,8 +64,6 @@ struct rpc_gss_sec {
 	rpc_gss_svc_t	svc;		/* service */
 	gss_cred_id_t	cred;		/* cred handle */
 	u_int		req_flags;	/* req flags for init_sec_context */
-	int		major_status;
-	int		minor_status;
 };
 
 /* Private data required for kernel implementation */
