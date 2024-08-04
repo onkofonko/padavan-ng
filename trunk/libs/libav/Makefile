@@ -27,10 +27,6 @@ DEMUXERS_CONFIG=--enable-demuxer=aac --enable-demuxer=ac3 --enable-demuxer=asf \
 
 DECODERS_CONFIG=
 
-ifeq ($(CONFIG_FIRMWARE_INCLUDE_FIREFLY),y)
-DECODERS_CONFIG+=--enable-decoder=flac --enable-decoder=alac
-endif
-
 PROTOCOLS_CONFIG=--enable-protocol=file
 
 CFLAGS += -D_LARGEFILE64_SOURCE -D_LFS64_LARGEFILE
@@ -122,4 +118,3 @@ ifeq ($(LIBS_BUILD_SHARED),y)
 	cp -fP $(DESTDIR)/lib/libavformat.so* $(ROMFSDIR)/lib ;
 	cp -fP $(DESTDIR)/lib/libavutil.so* $(ROMFSDIR)/lib ;
 endif
-
