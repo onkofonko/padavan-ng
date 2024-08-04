@@ -130,6 +130,9 @@ ifndef CONFIG_USB_SUPPORT
 	rm -f $(INSTALLDIR)/www/device-map/printer.asp
 	rm -f $(INSTALLDIR)/www/device-map/hub.asp
 endif
+ifndef SUPPORT_DDNS_SSL
+	rm -f $(INSTALLDIR)/www/Advanced_DDNS_Content.asp
+endif
 ifneq ($(STORAGE_ENABLED),y)
 	rm -f $(INSTALLDIR)/www/Advanced_AiDisk_ftp.asp
 	rm -f $(INSTALLDIR)/www/Advanced_AiDisk_others.asp

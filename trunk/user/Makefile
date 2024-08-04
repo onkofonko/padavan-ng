@@ -93,7 +93,7 @@ dir_y						+= httpd
 dir_y						+= www
 dir_y						+= rc
 dir_y						+= infosvr
-dir_y						+= inadyn
+dir_$(CONFIG_FIRMWARE_INCLUDE_DDNS_SSL)		+= inadyn
 dir_y						+= miniupnpd
 dir_y						+= dnsmasq
 dir_y						+= igmpproxy
@@ -200,5 +200,3 @@ clean:
 		[ ! -d $$i ] || \
 		$(MAKE) -C $$i clean ; \
 	done
-
-
