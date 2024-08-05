@@ -1,7 +1,6 @@
 SRC_NAME=openssl-1.1.1w-quic
-#SRC_NAME=openssl-OpenSSL_1_1_1v-quic1
-SRC_URL=https://github.com/quictls/openssl/archive/refs/tags/OpenSSL_1_1_1v-quic1.tar.gz
-
+#SRC_NAME=openssl-OpenSSL_1_1_1w-quic1
+#SRC_URL=https://github.com/quictls/openssl/archive/refs/tags/OpenSSL_1_1_1w-quic1.tar.gz
 THISDIR = $(shell pwd)
 
 # openssl use CROSS_COMPILE prefix
@@ -20,8 +19,8 @@ CXXFLAGS := $(COPTS)
 OPENSSL_OPTIONS = no-capieng no-cms no-rfc3779 no-seed no-async \
                   no-ec2m no-err no-idea no-rc5 no-rmd160 no-blake2 \
                   no-static-engine no-hw-padlock no-md2 no-sse2 no-dso no-ts no-mdc2 \
-                  no-cast no-whirlpool no-sctp no-srp no-ssl3 \
-                  no-aria no-sm2 no-sm3 no-sm4
+                  no-cast no-whirlpool no-sctp no-srp no-ssl2 no-ssl3 \
+                  no-aria no-ssl3-method no-tests no-sm2 no-sm3 no-sm4 no-afalgeng no-comp
 
 ifneq ($(CONFIG_FIRMWARE_INCLUDE_TOR),y)
 OPENSSL_OPTIONS += no-threads
@@ -74,13 +73,14 @@ configure:
 		enable-tls1_3 \
 		--prefix=/ \
 		--openssldir=/etc/ssl \
-		$(COPTS) \
-		$(LOPTS) \
+		no-tests \
 		$(OPENSSL_OPTIONS) ; \
 	)
 
 clean:
-	$(MAKE) -C $(SRC_NAME) distclean
+	if [ -f $(SRC_NAME)/Makefile ] ; then \
+		$(MAKE) -C $(SRC_NAME) clean ; \
+	fi ; \
 	rm -f config_done
 
 install:
