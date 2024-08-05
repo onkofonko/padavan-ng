@@ -29,7 +29,7 @@ configure:
 	autoreconf -fi ; \
 	./configure \
 		--prefix=/usr \
-		--enable-openssl \
+		$(if $(CONFIG_FIRMWARE_INCLUDE_DDNS_SSL),--enable-openssl,--disable-ssl) \
 		PKG_CONFIG_LIBDIR="$(STAGEDIR)/lib/pkgconfig/" \
 		--host=$(HOST_TARGET) \
 		--build=$(HOST_BUILD) ; \

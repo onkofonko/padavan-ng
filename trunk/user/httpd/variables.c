@@ -682,7 +682,6 @@
 			{"ntp_server1", "", NULL, EVM_RESTART_NTPC},
 			{"ntp_server2", "", NULL, EVM_RESTART_NTPC},
 			{"ntp_server3", "", NULL, EVM_RESTART_NTPC},
-#if defined (SUPPORT_DDNS_SSL)
 			{"ddns_enable_x", "", NULL, EVM_RESTART_DDNS},
 			{"asusddns_tos_agreement", "", NULL, FALSE},
 			{"ddns_server_x", "", NULL, EVM_RESTART_DDNS},
@@ -702,13 +701,14 @@
 			{"ddns_source", "", NULL, EVM_RESTART_DDNS },
 			{"ddns_checkip", "", NULL, EVM_RESTART_DDNS },
 			{"ddns2_checkip", "", NULL, EVM_RESTART_DDNS },
+#if defined (SUPPORT_DDNS_SSL)
 			{"ddns_ssl", "", NULL, EVM_RESTART_DDNS },
 			{"ddns2_ssl", "", NULL, EVM_RESTART_DDNS },
+#endif
 			{"ddns2_server", "", NULL, EVM_RESTART_DDNS },
 			{"ddns2_hname", "", NULL, EVM_RESTART_DDNS },
 			{"ddns2_user", "", NULL, EVM_RESTART_DDNS },
 			{"ddns2_pass", "", NULL, EVM_RESTART_DDNS },
-#endif
 			{"ManualDHCPList", "Group", ARGV((char*)variables_LANHostConfig_ManualDHCPList, "8", "55", "dhcp_staticnum_x"), EVM_RESTART_DHCPD},
 			{"VPNSACLList", "Group", ARGV((char*)variables_LANHostConfig_VPNSACLList, "8", "107", "vpns_num_x"), EVM_RESTART_VPNSVR},
 			{0,0,0,0}
