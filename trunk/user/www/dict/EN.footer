@@ -109,6 +109,7 @@ WIFIStreamRX=HT Spatial Streams RX:
 WIFIGreenAP=Enable Energy Saving Green AP?
 WIFIPMF_itemname=Enable PMF?
 WIFIPMF_itemdesc=Enable PMF (Protected Management Frames), 802.11w standard, which can defend against attacks specifically targeting WLAN management frames, ensuring the security and stability of wireless communications.
+WIFIPMFsha256=Enable WPA2 SHA256 Support?
 WIFILDPC_itemname=Enable LDPC Codes Support?
 WIFILDPC_itemdesc=Enable support for LDPC encoding allows the use of a more modern error correction standard used to ensure high coding reliability and improve coding efficiency. This thing is mandatory for 11ac, optional for 11n. Required for PMF (802.11w).
 WIFILDPC2_itemname=Enable LDPC Codes Support?

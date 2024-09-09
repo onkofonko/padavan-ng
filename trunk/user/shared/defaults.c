@@ -196,8 +196,6 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_PktAggregate", "1" },
 	{ "wl_APSDCapable", "1" },
 	{ "wl_HT_OpMode", "0" },
-	{ "wl_pmf", "0" },
-	{ "wl_pmfsha256", "0" },
 #if BOARD_HAS_5G_11AC
 	{ "wl_HT_BW", "2" },
 #else
@@ -221,6 +219,8 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_stream_rx", STR(BOARD_NUM_ANT_5G_RX) },
 	{ "wl_preamble", "1" },
 	{ "wl_greenap", "0" },		/* 5GHz GreenAP */
+	{ "wl_pmf", "0" },
+	{ "wl_pmfsha256", "0" },
 	{ "wl_ldpc", "0" },
 	{ "wl_stbc", "0" },
 	{ "wl_HT_RDG", "0" },
