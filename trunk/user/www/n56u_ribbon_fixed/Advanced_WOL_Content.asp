@@ -12,7 +12,6 @@
 <link rel="stylesheet" type="text/css" href="/bootstrap/css/main.css">
 
 <script type="text/javascript" src="/jquery.js"></script>
-<script type="text/javascript" src="/bootstrap/js/jquery.xdomainajax.js"></script>
 <script type="text/javascript" src="/bootstrap/js/jquery.maskedinput-1.3.min.js"></script>
 <script type="text/javascript" src="/state.js"></script>
 <script type="text/javascript" src="/general.js"></script>
@@ -63,7 +62,7 @@ function get_resolved_clients()
     return clients;
 }
 
-// get mac vendors by api from site https://services13.ieee.org/RST/standards-ra-web/rest/assignments/?registry=MAC&text=6C709F
+// get mac vendors by api from site https://maclookup.app/
 function getVendors()
 {
     var $macs = $j('#wol_table .mac');
@@ -78,17 +77,16 @@ function getVendors()
 
         if(company == null)
         {
-            // this ajax request with hack from xdomainajax.js
             $j.ajax({
-                url: 'https://services13.ieee.org/RST/standards-ra-web/rest/assignments/?registry=MAC&text='+hw_addr,
+                url: 'https://api.maclookup.app/v2/macs/'+hw_addr+'?format=jsonp',
                 type: 'GET',
+                dataType: "jsonp",
                 success: function(response){
                     try{
-                        var vendorObj = response.data.hits[0].organizationName;
-                        $j(value).parents('tr').find('td.vendor').html(vendorObj);
+                        $j(value).parents('tr').find('td.vendor').html(response.company);
 
                         // add new vendor for saving to localStorage
-                        allMacs[hw_addr] = vendorObj
+                        allMacs[hw_addr] = response.company;
 
                         // save vendor to localStorage
                         setToLocalStorage('hw_addr', JSON.stringify(allMacs));
