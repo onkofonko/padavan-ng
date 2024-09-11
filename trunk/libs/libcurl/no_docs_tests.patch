@@ -1,17 +1,17 @@
-diff -urN curl-8.7.1-orig/Makefile.am curl-8.7.1/Makefile.am
---- curl-8.7.1-orig/Makefile.am	2024-05-22 08:55:00.000000000 +0300
-+++ curl-8.7.1/Makefile.am	2024-05-23 00:24:17.262971959 +0300
-@@ -87,7 +87,7 @@
+diff -urN curl-8.10.0-orig/Makefile.am curl-8.10.0/Makefile.am
+--- curl-8.10.0-orig/Makefile.am	2024-09-11 08:37:35.000000000 +0300
++++ curl-8.10.0/Makefile.am	2024-09-11 20:32:19.372545159 +0300
+@@ -94,7 +94,7 @@
  bin_SCRIPTS = curl-config
  
 -SUBDIRS = lib docs src scripts
--DIST_SUBDIRS = $(SUBDIRS) tests packages scripts include docs
+-DIST_SUBDIRS = $(SUBDIRS) tests packages include docs
 +SUBDIRS = lib src
 +DIST_SUBDIRS = $(SUBDIRS) packages include
  
  pkgconfigdir = $(libdir)/pkgconfig
  pkgconfig_DATA = libcurl.pc
-@@ -195,14 +195,11 @@
+@@ -202,14 +202,11 @@
  # We extend the standard install with a custom hook:
  if BUILD_DOCS
  install-data-hook:
@@ -26,20 +26,20 @@ diff -urN curl-8.7.1-orig/Makefile.am curl-8.7.1/Makefile.am
  
  # We extend the standard uninstall with a custom hook:
  uninstall-hook:
-diff -rupw curl-8.7.1-orig/Makefile.in curl-8.7.1/Makefile.in
---- curl-8.7.1-orig/Makefile.in	2024-05-22 08:55:00.000000000 +0300
-+++ curl-8.7.1/Makefile.in	2024-05-23 00:24:17.262971959 +0300
-@@ -622,7 +622,7 @@
+diff -rupw curl-8.10.0-orig/Makefile.in curl-8.10.0/Makefile.in
+--- curl-8.10.0-orig/Makefile.in	2024-09-11 08:37:35.000000000 +0300
++++ curl-8.10.0/Makefile.in	2024-09-11 20:32:19.372545159 +0300
+@@ -631,7 +631,7 @@
  
  bin_SCRIPTS = curl-config
 -SUBDIRS = lib docs src scripts
--DIST_SUBDIRS = $(SUBDIRS) tests packages scripts include docs
+-DIST_SUBDIRS = $(SUBDIRS) tests packages include docs
 +SUBDIRS = lib src
 +DIST_SUBDIRS = $(SUBDIRS) packages include
  pkgconfigdir = $(libdir)/pkgconfig
  pkgconfig_DATA = libcurl.pc
  LIB_VAUTH_CFILES = \
-@@ -1751,11 +1751,8 @@
+@@ -1764,11 +1764,8 @@
  # We extend the standard install with a custom hook:
  @BUILD_DOCS_TRUE@install-data-hook:
  @BUILD_DOCS_TRUE@	(cd include && $(MAKE) install)
@@ -51,51 +51,39 @@ diff -rupw curl-8.7.1-orig/Makefile.in curl-8.7.1/Makefile.in
  
  # We extend the standard uninstall with a custom hook:
  uninstall-hook:
-diff -urN curl-8.7.1-orig/configure.ac curl-8.7.1/configure.ac
---- curl-8.7.1-orig/configure.ac	2024-05-22 08:55:00.000000000 +0300
-+++ curl-8.7.1/configure.ac	2024-05-23 00:24:17.262971959 +0300
-@@ -4956,29 +4956,13 @@
+diff -urN curl-8.10.0-orig/configure.ac curl-8.10.0/configure.ac
+--- curl-8.10.0-orig/configure.ac	2024-09-11 08:37:35.000000000 +0300
++++ curl-8.10.0/configure.ac	2024-09-11 20:32:19.372545159 +0300
+@@ -5216,32 +5116,16 @@
  fi
  
- AC_CONFIG_FILES([Makefile \
--           docs/Makefile \
--           docs/examples/Makefile \
--           docs/libcurl/Makefile \
--           docs/libcurl/opts/Makefile \
--           docs/cmdline-opts/Makefile \
-            include/Makefile \
-            include/curl/Makefile \
-            src/Makefile \
-            lib/Makefile \
-            scripts/Makefile \
-            lib/libcurl.vers \
--           tests/Makefile \
--           tests/config \
--           tests/certs/Makefile \
--           tests/certs/scripts/Makefile \
--           tests/data/Makefile \
--           tests/server/Makefile \
--           tests/libtest/Makefile \
--           tests/unit/Makefile \
--           tests/http/config.ini \
--           tests/http/Makefile \
--           tests/http/clients/Makefile \
-            packages/Makefile \
-            packages/vms/Makefile \
-            curl-config \
-            libcurl.pc
-diff -urN curl-8.7.1-orig/src/Makefile.am curl-8.7.1/src/Makefile.am
---- curl-8.7.1-orig/src/Makefile.am	2024-05-22 08:55:00.000000000 +0300
-+++ curl-8.7.1/src/Makefile.am	2024-05-23 00:24:17.274971592 +0300
-@@ -45,10 +45,10 @@
- 
- bin_PROGRAMS = curl
- 
- if BUILD_DOCS
--SUBDIRS = ../docs
-+SUBDIRS =
- endif
- 
- if USE_CPPFLAG_CURL_STATICLIB
- AM_CPPFLAGS += -DCURL_STATICLIB
- endif
+ AC_CONFIG_FILES([\
+   Makefile \
+-  docs/Makefile \
+-  docs/examples/Makefile \
+-  docs/libcurl/Makefile \
+-  docs/libcurl/opts/Makefile \
+-  docs/cmdline-opts/Makefile \
+   include/Makefile \
+   include/curl/Makefile \
+   src/Makefile \
+   lib/Makefile \
+   scripts/Makefile \
+   lib/libcurl.vers \
+-  tests/Makefile \
+-  tests/config \
+-  tests/certs/Makefile \
+-  tests/certs/scripts/Makefile \
+-  tests/data/Makefile \
+-  tests/server/Makefile \
+-  tests/libtest/Makefile \
+-  tests/unit/Makefile \
+-  tests/http/config.ini \
+-  tests/http/Makefile \
+-  tests/http/clients/Makefile \
+   packages/Makefile \
+   packages/vms/Makefile \
+   curl-config \
+   libcurl.pc
+ ])
+ AC_OUTPUT
