@@ -1,6 +1,6 @@
-SRC_NAME=openssl-3.1.7-quic
-#SRC_NAME=openssl-openssl-3.1.7-quic1
-#SRC_URL=https://github.com/quictls/openssl/archive/refs/tags/openssl-3.1.7-quic1.tar.gz
+SRC_NAME=openssl-3.3.0-quic
+#SRC_NAME=openssl-openssl-3.3.0-quic1
+#SRC_URL=https://github.com/quictls/openssl/archive/refs/tags/openssl-3.3.0-quic1.tar.gz
 THISDIR = $(shell pwd)
 
 # openssl use CROSS_COMPILE prefix
