@@ -1511,6 +1511,7 @@ static void async_event(int pipe, time_t now)
 	  {
 	    lease_prune(NULL, now);
 	    lease_update_file(now);
+	    lease_update_dns(0);
 	  }
 #ifdef HAVE_DHCP6
 	else if (daemon->doing_ra)
