@@ -23,7 +23,6 @@ config_test:
 		make configure && touch config_done; \
 	fi )
 
-
 configure:
 	( cd $(SRC_NAME) ; \
 	autoreconf -fi ; \
