@@ -129,7 +129,7 @@ dir_$(LIBS_INCLUDE_LIBNL)			+= libnl
 dir_$(LIBS_INCLUDE_LIBCAP_NG)			+= libcap-ng
 dir_$(LIBS_INCLUDE_LIBSSL)			+= libssl
 #dir_$(LIBS_INCLUDE_LIBSSL)			+= libssl3.1
-#dir_$(LIBS_INCLUDE_LIBSSL)			+= libssl1.1
+#dir_$(LIBS_INCLUDE_LIBSSL)			+= libssl-1.1
 dir_$(LIBS_INCLUDE_LIBUSB_0)			+= libusb
 dir_$(LIBS_INCLUDE_LIBUSB_1)			+= libusb-1.0
 dir_y						+= libnfnetlink
@@ -212,4 +212,3 @@ clean:
 			rm -f $(DESTDIR)/.installed_$$i ; \
 		fi ; \
 	done
-
