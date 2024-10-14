@@ -1,2 +1,2 @@
-#lib*.so
-#lib*.so.*
+lib*.so
+lib*.so.*
