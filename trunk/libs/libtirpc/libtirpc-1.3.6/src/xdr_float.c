@@ -83,7 +83,13 @@ static struct sgl_limits {
 };
 #else
 
+#ifdef HAVE_ENDIAN_H
 #include <endian.h>
+#else
+#ifdef HAVE_MACHINE_ENDIAN_H
+#include <machine/endian.h>
+#endif
+#endif
 #define IEEEFP
 
 #endif /* vax */

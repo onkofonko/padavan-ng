@@ -59,6 +59,7 @@
 #include <rpc/rpc.h>
 
 #include "rpc_com.h"
+#include "debug.h"
 
 #include <getpeereid.h>
 
@@ -232,6 +233,12 @@ svc_fd_create(fd, sendsize, recvsize)
 
 	slen = sizeof (struct sockaddr_storage);
 	if (getsockname(fd, (struct sockaddr *)(void *)&ss, &slen) < 0) {
+		if (errno == ENOTSOCK) {
+			if (libtirpc_debug_level > 3) {
+				LIBTIRPC_DEBUG(4, ("svc_fd_create: ENOTSOCK, return directly"));
+			}
+			return ret;
+		}
 		warnx("svc_fd_create: could not retrieve local addr");
 		goto freedata;
 	}
