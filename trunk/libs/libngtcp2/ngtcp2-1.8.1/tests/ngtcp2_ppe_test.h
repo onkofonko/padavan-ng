@@ -1,7 +1,7 @@
 /*
  * ngtcp2
  *
- * Copyright (c) 2016 ngtcp2 contributors
+ * Copyright (c) 2024 ngtcp2 contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -22,30 +22,20 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#ifndef NGTCP2_VERSION_H
-#define NGTCP2_VERSION_H
+#ifndef NGTCP2_PPE_TEST_H
+#define NGTCP2_PPE_TEST_H
 
-/**
- * @macrosection
- *
- * Library version macros
- */
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif /* defined(HAVE_CONFIG_H) */
 
-/**
- * @macro
- *
- * Version number of the ngtcp2 library release.
- */
-#define NGTCP2_VERSION "1.8.0"
+#define MUNIT_ENABLE_ASSERT_ALIASES
 
-/**
- * @macro
- *
- * Numerical representation of the version number of the ngtcp2
- * library release. This is a 24 bit number with 8 bits for major
- * number, 8 bits for minor and 8 bits for patch. Version 1.2.3
- * becomes 0x010203.
- */
-#define NGTCP2_VERSION_NUM 0x010800
+#include "munit.h"
 
-#endif /* !defined(NGTCP2_VERSION_H) */
+extern const MunitSuite ppe_suite;
+
+munit_void_test_decl(test_ngtcp2_ppe_dgram_padding_size);
+munit_void_test_decl(test_ngtcp2_ppe_padding_size);
+
+#endif /* !defined(NGTCP2_PPE_TEST_H) */
