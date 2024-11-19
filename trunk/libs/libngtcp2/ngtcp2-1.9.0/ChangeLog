@@ -1,0 +1,647 @@
+commit 491193ce1fcff6dcaf2518cf054298700e077112
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-11-19
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-11-19
+
+    Bump package and library versions
+
+commit 19270f7bf82bcb152007399ae7b90b39d9ed6e5e
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-11-19
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-11-19
+
+    Update AUTHORS
+
+commit 3786f10b3900e2aaff71f9ead6ee4eac96790c7a
+Merge: c3e1155c 25b5ca15
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-11-19
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-11-19
+
+    Merge pull request #1419 from ngtcp2/bump-aws-lc
+    
+    Bump aws-lc to v1.39.0
+
+commit 25b5ca151db0222c73ef6531c46d7b7be77fbf6d
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-11-19
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-11-19
+
+    Bump aws-lc to v1.39.0
+
+commit c3e1155c76083111f2ab7064170089476b9326fd
+Merge: 0a27a1ea 3347323f
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-11-18
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-11-18
+
+    Merge pull request #1418 from ngtcp2/bump-libressl
+    
+    Bump libressl to v4.0.0
+
+commit 3347323f79d6e4cf948bb7b0f38b06f217125e0e
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-11-18
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-11-18
+
+    Bump libressl to v4.0.0
+
+commit 0a27a1ea817c6acb1b668429d47ea3eee345c02b
+Merge: 04edc278 c80b34d4
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-11-18
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-11-18
+
+    Merge pull request #1417 from ngtcp2/bump-picotls
+    
+    Bump picotls
+
+commit c80b34d4edc00d5a57a2fb619e58920bf16a9ec0
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-11-18
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-11-18
+
+    Bump picotls
+
+commit 04edc2789141441275592c9e6136ba4cd7fd8b52
+Merge: 6c745fa8 35e1029b
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-11-18
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-11-18
+
+    Merge pull request #1416 from ngtcp2/bump-boringssl
+    
+    Bump boringssl
+
+commit 35e1029b6929aa6025b5e4b0a1ce6ee20fe48626
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-11-18
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-11-18
+
+    Bump boringssl
+
+commit 6c745fa801e00a9518b86cee73b5c00f9760bfb4
+Merge: a4023a29 c48f54e6
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-11-18
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-11-18
+
+    Merge pull request #1415 from ngtcp2/bump-wolfssl
+    
+    Bump wolfssl to v5.7.4
+
+commit c48f54e679ba3e1f9c7c5bd5b3814eb0084e3d0d
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-11-18
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-11-18
+
+    Bump wolfssl to v5.7.4
+
+commit a4023a292a0131ec834691e674fcedb42b5e2911
+Merge: 9ddd87d6 1a4b6513
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-11-18
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-11-18
+
+    Merge pull request #1414 from ngtcp2/failmalloc-server
+    
+    tests: Add failmalloc tests for server scenario
+
+commit 1a4b651321cb0144a9e9c7a19ac2f6db873ce67c
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-11-17
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-11-18
+
+    tests: Add failmalloc tests for server scenario
+
+commit 9ddd87d6d9b40af328f76d5b8579652aa8f6e4b8
+Merge: 7562daf4 65fa1f9d
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-11-17
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-11-17
+
+    Merge pull request #1413 from ngtcp2/fix-error-assertion
+    
+    Fix assertion which refers to the wrong variable
+
+commit 65fa1f9d34a2f06bf1fb075df4c870edc90c6f9f
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-11-17
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-11-17
+
+    Fix assertion which refers to the wrong variable
+
+commit 7562daf4132cc478e7d0c062b8bd82c4e387d682
+Merge: 7698761e 17cf0cf1
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-11-17
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-11-17
+
+    Merge pull request #1412 from ngtcp2/too-small-rtt
+    
+    Deal with super small RTT
+
+commit 17cf0cf1ce6a5c9dcd8437f405202afda0a8939c
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-11-16
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-11-17
+
+    Deal with super small RTT
+
+commit 7698761e13af544f03b8da8c35eefced013c32ee
+Merge: 14b98093 624863a4
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-11-15
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-11-15
+
+    Merge pull request #1410 from ngtcp2/urlparse
+    
+    Replace http_parser_parse_url with urlparse
+
+commit 624863a43e418c701725d0c9504c2d33c731c9d9
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-11-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-11-15
+
+    Replace http_parser_parse_url with urlparse
+
+commit 14b9809301c25ed6d361cc4da8c14863bab5a37d
+Merge: 2090f717 b97c402f
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-11-06
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-11-06
+
+    Merge pull request #1406 from ngtcp2/examples-getnameinfo-logging
+    
+    examples: Call getnameinfo only when logging is required
+
+commit b97c402f580a74f33a4e17bb2b6a90bce0fdbd23
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-11-06
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-11-06
+
+    examples: Call getnameinfo only when logging is required
+
+commit 2090f717715606cb19a36ec653136276d0a75d81
+Merge: 6a106371 5cb1e43c
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-11-06
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-11-06
+
+    Merge pull request #1402 from ngtcp2/crypto-retry-token2
+    
+    Retry token validation with more detailed error reporting
+
+commit 5cb1e43c3aca7d01409c61a8b04a9400e94cc999
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-11-04
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-11-06
+
+    Retry token validation with more detailed error reporting
+    
+    Allow an application to deal with the situation described in
+    https://www.rfc-editor.org/errata/eid7861
+
+commit 6a10637106d7489f3ef14618ccd5286354f03bca
+Merge: 1f200987 02793330
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-30
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-30
+
+    Merge pull request #1401 from ngtcp2/ksl-proper-type
+    
+    ngtcp2_ksl: Use proper type
+
+commit 027933308dd02c01675b9348a18638bc5d443ac0
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-30
+
+    ngtcp2_ksl: Use proper type
+
+commit 1f2009877999989c411709b2c2ed322935295bc8
+Merge: 718100dd 447554ac
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-27
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-27
+
+    Merge pull request #1398 from ngtcp2/client-disable-window-auto-tuning
+    
+    examples/client: Disable window auto-tuning by default
+
+commit 718100dd4ba71d5326960daab81819e9a7f1c700
+Merge: 2805453b 3b45db1c
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-27
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-27
+
+    Merge pull request #1397 from ngtcp2/window-auto-tuning-note
+    
+    Add note for window auto-tuning
+
+commit 2805453b3ae4869b251928202c77f2676bfd4ea8
+Merge: 5f615a2b 149c8bf6
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-27
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-27
+
+    Merge pull request #1396 from ngtcp2/tweak-max-stream-data-threshold
+    
+    Tweak threshold for max_stream_data and max_data transmission
+
+commit 5f615a2b216917861c02795e6e11100b9f04390d
+Merge: c0ed7969 838ad766
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-27
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-27
+
+    Merge pull request #1400 from ngtcp2/slow-start-app-limited
+    
+    Loosen app-limited condition
+
+commit 838ad766e7e3456f5f2c1a6d64d0f78d7ba1afaa
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-27
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-27
+
+    Loosen app-limited condition
+    
+    As TCP Linux does, during slow-start, only enter app-limited when less
+    than half of CWND is used.  Also do not enter app-limited during
+    handshake because we have not that much to send in that state, and it
+    would be nicer to warm up CWND with handshake bytes for the upcoming
+    application traffic.
+
+commit 447554acb2e5d7beb1d251530fa4b8d70d74136c
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-26
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-26
+
+    examples/client: Disable window auto-tuning by default
+
+commit 3b45db1c82d775b94ccfa081de81c487acbd165d
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-26
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-26
+
+    Add note for window auto-tuning
+
+commit 149c8bf6df518640fb171d8c66f725288347890b
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-26
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-26
+
+    Tweak threshold for max_stream_data and max_data transmission
+    
+    The previous value is too conservative and does not work well with
+    auto-tuning.
+
+commit c0ed796950a724abf1070a5f365fe99ff9f43861
+Merge: a820cdef 52379dca
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-25
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-25
+
+    Merge pull request #1395 from ngtcp2/fix-fuzz
+    
+    fuzz: Fix compile error
+
+commit 52379dcafb9de7edf794bddcbdd404f0fdbb95e1
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-24
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-24
+
+    fuzz: Fix compile error
+
+commit a820cdef76d0bbf5152ec3f19beec3c1393c428d
+Merge: 6de46ce4 ac3a9c7c
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-23
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-23
+
+    Merge pull request #1394 from ngtcp2/update-doc
+    
+    Update doc
+
+commit ac3a9c7c77158bb16c0b461b0f7ce74b1282e2b5
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-23
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-23
+
+    Update doc
+
+commit 6de46ce4e63522ebe15976856735fb15139f642b
+Merge: c08f9a52 ca9f08c4
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-23
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-23
+
+    Merge pull request #1391 from ngtcp2/ksl-search
+    
+    Introduce ngtcp2_ksl_search
+
+commit c08f9a526e4faf7b9d5b1344ee3d926f7578e72e
+Merge: e550c1a4 5edc40ae
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-23
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-23
+
+    Merge pull request #1393 from ngtcp2/no-ack-in-0rtt
+    
+    Nothing to acknowledge in a 0RTT packet
+
+commit 5edc40ae9803a1f0af41d422a21d61b335c05f12
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-23
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-23
+
+    Nothing to acknowledge in a 0RTT packet
+
+commit ca9f08c4bc384ba1b878e73515a5fb595cdcfb19
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-22
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-22
+
+    Introduce ngtcp2_ksl_search
+    
+    Introduce ngtcp2_ksl_search to inline ngtcp2_ksl_compar that aims to
+    reduce overhead.
+
+commit e550c1a414318d0f3f01fca1a621ae0b0428ca15
+Merge: db714b1d d0f95a4a
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-20
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-20
+
+    Merge pull request #1390 from ngtcp2/ack-per-pkt
+    
+    Limit the number of ACK frames per packet
+
+commit db714b1dd41a51b2d2ff4a5e0c2335796fe8cfcd
+Merge: 2a537d4c f18e7292
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-20
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-20
+
+    Merge pull request #1389 from ngtcp2/fix-gro-buffer-size
+    
+    examples: GRO buffer size should be 64KiB
+
+commit d0f95a4afcb12e1f89345cfd2ef86feddb62e834
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-19
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-20
+
+    Limit the number of ACK frames per packet
+
+commit f18e7292933054c621a68c22016cbc48de1594a2
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-20
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-20
+
+    examples: GRO buffer size should be 64KiB
+
+commit 2a537d4ca52662fda4d061eea84795d58f8ebd8f
+Merge: 5f9547e9 0a42342d
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-18
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-18
+
+    Merge pull request #1388 from ngtcp2/remove-extra-semicolons
+    
+    Remove extra semicolons
+
+commit 0a42342d1e7eb08af60c4ad8eb739a8e08aae642
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-18
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-18
+
+    Remove extra semicolons
+
+commit 5f9547e96819b10a65723a0cc3137be263a714f2
+Merge: 2fb8c0bc 60bc8e5e
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-18
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-18
+
+    Merge pull request #1385 from donny-dont/require-libs
+    
+    Use REQUIRED when finding a package
+
+commit 60bc8e5e2a7c1d2f7a66d579a6175dde5c1d34cc
+Author:     Don Olmstead <don.j.olmstead@gmail.com>
+AuthorDate: 2024-10-16
+Commit:     Don Olmstead <don.j.olmstead@gmail.com>
+CommitDate: 2024-10-17
+
+    Use REQUIRED when finding a package
+    
+    If an `ENABLE` option is `ON` and requires a package to be present it should fail the build if its not found. OpenSSL is still detected for the picotls backend but the OpenSSL backend will not be compiled out unless it was explicitly requested.
+    
+    Update the Windows GitHub Action build to set `ENABLE_OPENSSL` to `OFF` since an appropriate OpenSSL installation is not present.
+
+commit 2fb8c0bc59deaeb70a51a5662cb5ed656413cc69
+Merge: 3070ced0 5f822dd7
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-17
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-17
+
+    Merge pull request #1386 from ngtcp2/clang-format
+    
+    clang-format
+
+commit 3070ced00379a6f0a4415a2650dafb1550ff708e
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-17
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-17
+
+    Bump library version due to the patch release
+
+commit 5f822dd7e9fbcdd25f46a4f77f3ea3587d778aa0
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-17
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-17
+
+    clang-format
+
+commit 4152c78c5b0e6e5b580405558ed29be4f14e6f6e
+Merge: b7955337 f51704be
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-15
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-15
+
+    Merge pull request #1382 from Dook97/main
+    
+    ringbuf: silence superfluous unused function warning on NDEBUG builds
+
+commit f51704be324e5897246bf92fc88c9c74bec94ab2
+Author:     Jan Doskočil <30779172+Dook97@users.noreply.github.com>
+AuthorDate: 2024-10-15
+Commit:     Jan Doskočil <30779172+Dook97@users.noreply.github.com>
+CommitDate: 2024-10-15
+
+    ringbuf: silence unused function warning on NDEBUG builds
+
+commit b7955337354a1c545ec5d77a37369e68b9874d74
+Merge: fcd362b2 2b178ee2
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-15
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-15
+
+    Merge pull request #1383 from ngtcp2/wine-run-i686
+    
+    GHA: Run tests for i686-w64-mingw32 host
+
+commit 2b178ee2270bed6f50fafc763b93dc96591e1b02
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-14
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-15
+
+    GHA: Run tests for i686-w64-mingw32 host
+
+commit fcd362b2642e57cb4219cf8f5661d1dba2289874
+Merge: 7325a682 bcce4954
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-14
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-14
+
+    Merge pull request #1381 from ngtcp2/gha-no-gcc-build-cache
+    
+    GHA: No need to install g++-14 when building cache
+
+commit bcce4954f68fc5e319cfd3a3fcdadaf87a3a19f3
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-14
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-14
+
+    GHA: No need to install g++-14 when building cache
+
+commit 7325a682367a601ee136a7b8e8a9c9bb4b4aaf4a
+Merge: 0bf8a3af 366f6738
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-14
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-14
+
+    Merge pull request #1380 from ngtcp2/gha-ubuntu-24.04
+    
+    GHA: Bump Ubuntu runner to 24.04
+
+commit 366f67385a8f2014cbee9c200293b9b3c32374d0
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-06-14
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-14
+
+    GHA: Bump Ubuntu runner to 24.04
+
+commit 0bf8a3aff9c8944521d19ea69ce51495b1763566
+Merge: 8d5ab787 a21e143e
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-12
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-12
+
+    Merge pull request #1379 from ngtcp2/fix-connection-stall-due-to-cwnd-limited
+    
+    Fix connection stall due to cwnd limited
+
+commit a21e143eb582d1c102f21e00a1cc50b453dcba92
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-12
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-12
+
+    Add test for ACK padding
+
+commit a2855653ce6db9cbb9d7f3697760bb69c4f177ad
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-11
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-12
+
+    Fix minimum packet size computation
+    
+    The Connection ID used in minimum packet size computation should be
+    Connection ID length that a local endpoint is generated and sends to a
+    remote endpoint.
+    
+    Merge ngtcp2_ppe_padding_hp_sample to ngtcp2_ppe_padding_size to
+    ensure that minimum packet size is always honored.
+
+commit 787a14f44b810e45e5f77cba66d411cdbfdd26cf
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-11
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-11
+
+    Do not count PADDING to CWND if it is added to make minimum sized packet
+    
+    Otherwise, we ended up cwnd-limited situation, and if ACKs from remote
+    is lost frequently, local endpoint is unable to send any ack eliciting
+    packet.
+
+commit 8d5ab7874f7b8846f6e398f0a76069e4e5766d70
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-05
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-05
+
+    Bump package version
