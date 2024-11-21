@@ -135,6 +135,7 @@ dir_$(LIBS_INCLUDE_LIBUSB_1)			+= libusb-1.0
 dir_y						+= libnfnetlink
 dir_y						+= libconfuse
 dir_y						+= libmnl
+dir_y						+= libnetfilter_queue
 
 # tcpdump shared libs
 dir_$(CONFIG_FIRMWARE_INCLUDE_TCPDUMP)		+= libpcap
