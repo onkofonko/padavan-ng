@@ -327,6 +327,32 @@ void restart_stubby(void){
 	restart_dhcpd();
 }
 #endif
+#if defined(APP_ZAPRET)
+int is_zapret_run(void){
+	if (check_if_file_exist("/usr/bin/nfqws"))
+	{
+		if (pids("zapret"))
+			return 1;
+	}
+	return 0;
+}
+
+void stop_zapret(void){
+	eval("/usr/bin/zapret.sh", "stop");
+}
+
+void start_zapret(void){
+	int zapret_mode = nvram_get_int("zapret_enable");
+
+	if (zapret_mode == 1)
+		eval("/usr/bin/zapret.sh", "start");
+}
+
+void restart_zapret(void){
+	stop_zapret();
+	start_zapret();
+}
+#endif
 #if defined(APP_TOR)
 int is_tor_run(void){
 	if (check_if_file_exist("/usr/sbin/tor"))
@@ -659,6 +685,9 @@ start_services_once(int is_ap_mode)
 #if defined(APP_STUBBY)
 	start_stubby();
 #endif
+#if defined(APP_ZAPRET)
+	start_zapret();
+#endif
 #if defined(APP_TOR)
 	start_tor();
 #endif
@@ -726,6 +755,9 @@ stop_services(int stopall)
 #endif
 #if defined(APP_STUBBY)
 	stop_stubby();
+#endif
+#if defined(APP_ZAPRET)
+	stop_zapret();
 #endif
 #if defined(APP_TOR)
 	stop_tor();
