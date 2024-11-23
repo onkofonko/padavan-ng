@@ -1,6 +1,16 @@
-diff -urN nfq.orig/sec.c nfq/sec.c
---- nfq.orig/sec.c	2024-10-29 08:52:10.181846862 +0700
-+++ nfq/sec.c	2024-11-05 22:06:10.638190137 +0700
+diff -ru nfq.orig/Makefile nfq/Makefile
+--- nfq.orig/Makefile	2024-11-23 16:41:36.944347169 +0700
++++ nfq/Makefile	2024-11-23 16:49:22.309396131 +0700
+@@ -1,5 +1,5 @@
+ CC ?= gcc
+-CFLAGS += -std=gnu99 -Os -flto=auto
++CFLAGS += -std=gnu99 -Os
+ CFLAGS_BSD = -Wno-address-of-packed-member
+ CFLAGS_CYGWIN = -Wno-address-of-packed-member -static
+ LIBS_LINUX = -lnetfilter_queue -lnfnetlink -lz
+diff -ru nfq.orig/sec.c nfq/sec.c
+--- nfq.orig/sec.c	2024-11-22 03:39:48.316906031 +0700
++++ nfq/sec.c	2024-11-23 16:49:06.567054921 +0700
 @@ -13,7 +13,7 @@
  
  #include <sys/prctl.h>
@@ -56,9 +66,9 @@ diff -urN nfq.orig/sec.c nfq/sec.c
  }
  
  
-diff -urN nfq.orig/sec.h nfq/sec.h
---- nfq.orig/sec.h	2024-10-29 08:52:10.181846862 +0700
-+++ nfq/sec.h	2024-11-05 22:05:08.758630836 +0700
+diff -ru nfq.orig/sec.h nfq/sec.h
+--- nfq.orig/sec.h	2024-11-22 03:39:48.316906031 +0700
++++ nfq/sec.h	2024-11-23 16:49:06.567054921 +0700
 @@ -2,11 +2,12 @@
  
  #include <sys/types.h>
