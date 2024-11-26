@@ -1,0 +1,15 @@
+commit 7c068a856c3385c250563b3abd7c8ad7a5950a1e
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-11-25
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-11-25
+
+    Bump package and library versions
+
+commit d2604c0be7a409251134d768d932a74eddb1deaf
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-11-22
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-11-25
+
+    Fix heap buffer overflow writing not validated ACK to qlog
