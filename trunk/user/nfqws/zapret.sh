@@ -248,7 +248,7 @@ start() {
   fi
 
   echo "$res" | grep -iv "loading" | while read i; do
-    log "$i"
+    [ -n "$i" ] && log "$i"
   done
 }
 
