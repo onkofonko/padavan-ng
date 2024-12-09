@@ -1,8 +1,23 @@
 #!/bin/sh
 
+# for openwrt versions 21 and above (iptables):
+# opkg install iptables-mod-nfqueue iptables-mod-conntrack-extra
+#
+# for openwrt versions 22 and later (nftables):
+# opkg install kmod-nft-queue kmod-nfnetlink-queue
+
+# for linux with nftables may need to install:
+# debian: libnetfilter-conntrack3 libnetfilter-queue1
+# arch: libnetfilter-conntrack libnetfilter-queue
+
 NFQWS_BIN="/usr/bin/nfqws"
 NFQWS_BIN_OPT="/opt/bin/nfqws"
-CONFDIR="/etc/storage/zapret"
+ETC_DIR="/etc"
+
+# padavan
+[ -d "/etc_ro" ] && ETC_DIR="/etc/storage"
+
+CONFDIR="${ETC_DIR}/zapret"
 CONFDIR_EXAMPLE="/usr/share/zapret"
 CONFFILE="$CONFDIR/config"
 PIDFILE="/var/run/zapret.pid"
@@ -10,18 +25,19 @@ PIDFILE="/var/run/zapret.pid"
 readonly HOSTLIST_MARKER="<HOSTLIST>"
 readonly HOSTLIST_NOAUTO_MARKER="<HOSTLIST_NOAUTO>"
 
-### default config
-
 HOSTLIST_NOAUTO="
-    --hostlist=/etc/storage/zapret/user.list
-    --hostlist=/etc/storage/zapret/auto.list
-    --hostlist-exclude=/etc/storage/zapret/exclude.list
+  --hostlist=${ETC_DIR}/zapret/user.list
+  --hostlist=${ETC_DIR}/zapret/auto.list
+  --hostlist-exclude=${ETC_DIR}/zapret/exclude.list
 "
 HOSTLIST="
-    --hostlist=/etc/storage/zapret/user.list
-    --hostlist-exclude=/etc/storage/zapret/exclude.list
-    --hostlist-auto=/etc/storage/zapret/auto.list
+  --hostlist=${ETC_DIR}/zapret/user.list
+  --hostlist-exclude=${ETC_DIR}/zapret/exclude.list
+  --hostlist-auto=${ETC_DIR}/zapret/auto.list
 "
+
+### default config
+
 ISP_INTERFACE=
 IPV6_ENABLED=0
 TCP_PORTS=80,443
@@ -32,7 +48,25 @@ USER="nobody"
 
 ###
 
-for i in "a1" "a2" "a3" "a4" "b1" "b2" "b3" "b4" ; do
+log() {
+  [ -n "$@" ] || return
+  echo "$@"
+  local pid
+  [ -f "$PIDFILE" ] && pid="[$(cat "$PIDFILE" 2>/dev/null)]"
+  logger -t "zapret$pid" "$@"
+}
+
+error() {
+  log "$@"
+  exit 1
+}
+
+if id -u >/dev/null 2>&1; then
+  [ $(id -u) != "0" ] && echo "root user is required to start" && exit 1
+fi
+
+# padavan: possibility of running nfqws from usb-flash drive
+[ -d "/etc_ro" ] && for i in "a1" "a2" "a3" "a4" "b1" "b2" "b3" "b4" ; do
     disk_path="/media/AiDisk_${i}"
     if [ -d "${disk_path}" ] && grep -q ${disk_path} /proc/mounts ; then
         if [ -f "${disk_path}$NFQWS_BIN_OPT" ]; then
@@ -43,108 +77,63 @@ for i in "a1" "a2" "a3" "a4" "b1" "b2" "b3" "b4" ; do
     fi
 done
 
-test -f "$NFQWS_BIN" || exit
-test -f "$CONFDIR" && rm -f "$CONFDIR"
-test -d "$CONFDIR" || mkdir -p "$CONFDIR"
+[ -f "$NFQWS_BIN" ] || error "$NFQWS_BIN: not found"
+[ -f "$CONFDIR" ] && rm -f "$CONFDIR"
+[ -d "$CONFDIR" ] || mkdir -p "$CONFDIR" || exit 1
 # copy all non-existent config files to storage except fake dir
-cp -n "${CONFDIR_EXAMPLE}"/* -t "$CONFDIR" >/dev/null 2>&1
+[ -d "$CONFDIR_EXAMPLE" ] && false | cp -i "${CONFDIR_EXAMPLE}"/* "$CONFDIR" >/dev/null 2>&1
+[ -f "$CONFFILE" ] && . "$CONFFILE"
+for i in user.list exclude.list auto.list strategy config; do
+  [ -f ${ETC_DIR}/zapret/$i ] || touch ${ETC_DIR}/zapret/$i || exit 1
+done
 
-source "$CONFFILE"
+###
+
+unset OPENWRT
+[ -f "/etc/openwrt_release" ] && OPENWRT=1
+unset NFT
+nft -v >/dev/null 2>&1 && NFT=1
+
+_ISP_IF=$(
+  echo "$ISP_INTERFACE,$(ip -4 r s default | cut -d ' ' -f5)" |\
+    tr " " "\n" | tr "," "\n" | sort -u
+);
+
+_ISP_IF6=$(
+  echo "$ISP_INTERFACE,$(ip -6 r s default | cut -d ' ' -f5)" |\
+    tr " " "\n" | tr "," "\n" | sort -u
+);
 
 _MANGLE_RULES() ( echo "
+-A PREROUTING  -i $IFACE -p tcp -m multiport --sports $TCP_PORTS -m connbytes --connbytes-dir=reply    --connbytes-mode=packets --connbytes 1:3 -m mark ! --mark 0x40000000/0x40000000 -j NFQUEUE --queue-num $NFQUEUE_NUM --queue-bypass
 -A POSTROUTING -o $IFACE -p tcp -m multiport --dports $TCP_PORTS -m connbytes --connbytes-dir=original --connbytes-mode=packets --connbytes 1:9 -m mark ! --mark 0x40000000/0x40000000 -j NFQUEUE --queue-num $NFQUEUE_NUM --queue-bypass
--A PREROUTING  -i $IFACE -p tcp -m multiport --sports $TCP_PORTS -m connbytes --connbytes-dir=reply    --connbytes-mode=packets --connbytes 1:6 -m mark ! --mark 0x40000000/0x40000000 -j NFQUEUE --queue-num $NFQUEUE_NUM --queue-bypass
 -A POSTROUTING -o $IFACE -p udp -m multiport --dports $UDP_PORTS -m connbytes --connbytes-dir=original --connbytes-mode=packets --connbytes 1:9 -m mark ! --mark 0x40000000/0x40000000 -j NFQUEUE --queue-num $NFQUEUE_NUM --queue-bypass
 ")
 
-_NAT_RULES() ( echo "
--A POSTROUTING -o $IFACE -p udp -m mark --mark 0x40000000/0x40000000 -j MASQUERADE
-")
-
-log() {
-  echo "$@"
-  test -f "$PIDFILE" && _pid="[$(cat "$PIDFILE" 2>/dev/null)]"
-  logger -t "zapret${_pid}" "$@"
-}
-
-error() {
-  log "$@"
-  exit 1
-}
-
 is_running() {
-  PID_RUNNING=$(pgrep -nf "`basename $NFQWS_BIN`.*daemon" 2>/dev/null)
-
-  if [ -z "$PID_RUNNING" ]; then
-    return 1
-  fi
-
-  if [ ! -f "$PIDFILE" ]; then
-    return 1
-  fi
-
-  PID_SAVED=$(cat "$PIDFILE" 2>/dev/null)
-  if [ "$PID_RUNNING" -ne "$PID_SAVED" ]; then
-    return 1
-  fi
-
-  if ! kill -0 $PID_SAVED; then
-    return 1
-  fi
-
-  # 0 = true, 1 = false
+  [ -z "$(pgrep -f "$NFQWS_BIN" 2>/dev/null)" ] && return 1
+  [ ! -f "$PIDFILE" ] && return 1
   return 0
 }
 
 status_service() {
   if is_running; then
-    echo 'Service nfqws is running'
+    echo "service nfqws is running"
+    exit 0
   else
-    echo 'Service nfqws is stopped'
+    echo "service nfqws is stopped"
+    exit 1
   fi
 }
 
 kernel_modules() {
-  KERNEL=$(uname -r)
-
-  # Try to load all modules (OpenWRT or Padavan)
-  modprobe -a -q nfnetlink_queue xt_connbytes xt_NFQUEUE &> /dev/null
-
-  if [ -z "$(lsmod 2>/dev/null | grep "nfnetlink_queue ")" ]; then
-    nfnetlink_mod_path=$(find "/lib/modules/$KERNEL" -name "nfnetlink_queue.ko*")
-
-    if [ -n "$nfnetlink_mod_path" ]; then
-      insmod "$nfnetlink_mod_path" &> /dev/null
-      echo "nfnetlink_queue.ko loaded"
-    else
-      echo "Cannot find nfnetlink_queue.ko module"
-    fi
-  fi
-
-  if [ -z "$(lsmod 2>/dev/null | grep "xt_connbytes ")" ]; then
-    connbytes_mod_path=$(find "/lib/modules/$KERNEL" -name "xt_connbytes.ko*")
-
-    if [ -n "$connbytes_mod_path" ]; then
-      insmod "$connbytes_mod_path" &> /dev/null
-      echo "xt_connbytes.ko loaded"
-    else
-      echo "Cannot find xt_connbytes.ko module"
-    fi
-  fi
-
-  if [ -z "$(lsmod 2>/dev/null | grep "xt_NFQUEUE ")" ]; then
-    nfqueue_mod_path=$(find "/lib/modules/$KERNEL" -name "xt_NFQUEUE.ko*")
-
-    if [ -n "$nfqueue_mod_path" ]; then
-      insmod "$nfqueue_mod_path" &> /dev/null
-      echo "xt_NFQUEUE.ko loaded"
-    else
-      echo "Cannot find xt_NFQUEUE.ko module"
-    fi
-  fi
+  # "modprobe -a" may not supported
+  for i in nfnetlink_queue xt_connbytes xt_NFQUEUE nft-queue; do
+    modprobe -q $i >/dev/null 2>&1
+  done
 }
 
-_replace_str()
+replace_str()
 {
   local a=$(echo "$1" | sed 's/\//\\\//g')
   local b=$(echo "$2" | tr '\n' ' ' | sed 's/\//\\\//g')
@@ -152,135 +141,217 @@ _replace_str()
   echo "$@" | tr '\n' ' ' | sed "s/$a/$b/g; s/[ \t]\{1,\}/ /g"
 }
 
-_startup_args() {
+startup_args() {
   local args="--user=$USER --qnum=$NFQUEUE_NUM"
 
-  # Logging
-  if [ "$LOG_LEVEL" -eq "1" ]; then
-    args="--debug=syslog $args"
-  fi
+  [ "$LOG_LEVEL" = "1" ] && args="--debug=syslog $args"
 
-  NFQWS_ARGS="$(grep -v '^#' /etc/storage/zapret/strategy)"
-  NFQWS_ARGS=$(_replace_str "$HOSTLIST_MARKER" "$HOSTLIST" "$NFQWS_ARGS")
-  NFQWS_ARGS=$(_replace_str "$HOSTLIST_NOAUTO_MARKER" "$HOSTLIST_NOAUTO" "$NFQWS_ARGS")
+  NFQWS_ARGS="$(grep -v '^#' ${ETC_DIR}/zapret/strategy)"
+  NFQWS_ARGS=$(replace_str "$HOSTLIST_MARKER" "$HOSTLIST" "$NFQWS_ARGS")
+  NFQWS_ARGS=$(replace_str "$HOSTLIST_NOAUTO_MARKER" "$HOSTLIST_NOAUTO" "$NFQWS_ARGS")
   echo "$args $NFQWS_ARGS"
 }
 
+offload_unset_rules() {
+  eval "$(ip$1tables-save -t filter 2>/dev/null | grep "FORWARD.*forwarding_rule_zapret" | sed 's/^-A/ip$1tables -D/g')"
+  ip$1tables -F forwarding_rule_zapret 2>/dev/null
+  ip$1tables -X forwarding_rule_zapret 2>/dev/null
+}
+
+offload_stop() {
+  [ -n "$NFT" ] && return
+  [ -n "$OPENWRT" ] || return
+  offload_unset_rules
+  offload_unset_rules 6
+}
+
+offload_set_rules() {
+  local HW_OFFLOAD
+  [ "$(uci -q get firewall.@defaults[0].flow_offloading_hw)" = "1" ] && \
+    HW_OFFLOAD="--hw"
+
+  local FW_FORWARD=$(
+    for IFACE in $(eval echo "\$_ISP_IF$1"); do
+      # insert after custom forwarding rule chain
+      echo "-I FORWARD 2 -o $IFACE -j forwarding_rule_zapret"
+    done)
+
+  [ -n "$FW_FORWARD" ] && ip$1tables-restore -n 2>/dev/null <<EOF
+*filter
+:forwarding_rule_zapret - [0:0]
+-A forwarding_rule_zapret -p udp -m multiport --dports $UDP_PORTS -m connbytes --connbytes 1:9 --connbytes-mode packets --connbytes-dir original -m comment --comment zapret_traffic_offloading_exemption -j RETURN
+-A forwarding_rule_zapret -p tcp -m multiport --dports $TCP_PORTS -m connbytes --connbytes 1:9 --connbytes-mode packets --connbytes-dir original -m comment --comment zapret_traffic_offloading_exemption -j RETURN
+-A forwarding_rule_zapret -m comment --comment zapret_traffic_offloading_enable -m conntrack --ctstate RELATED,ESTABLISHED -j FLOWOFFLOAD $HW_OFFLOAD
+$(echo "$FW_FORWARD")
+COMMIT
+EOF
+}
+
+offload_start() {
+  [ -n "$NFT" ] && return
+  # offloading is supported only in OpenWrt
+  [ -n "$OPENWRT" ] || return
+
+  offload_stop
+  [ -n "$_ISP_IF$_ISP_IF6" ] || return
+  [ "$(uci -q get firewall.@defaults[0].flow_offloading)" = "1" ] || return
+
+  # delete system offloading
+  [ -n "$_ISP_IF" ] && eval "$(iptables-save -t filter 2>/dev/null | grep "FLOWOFFLOAD" | sed 's/^-A/iptables -D/g')"
+  [ "$IPV6_ENABLED" = "1" ] && \
+    [ -n "$_ISP_IF6" ] && eval "$(ip6tables-save -t filter 2>/dev/null | grep "FLOWOFFLOAD" | sed 's/^-A/ip6tables -D/g')"
+
+  offload_set_rules
+  [ "$IPV6_ENABLED" = "1" ] && offload_set_rules 6
+
+  log "offloading rules updated"
+}
+
+nftables_stop() {
+  [ -n "$NFT" ] || return
+  nft delete table inet zapret 2>/dev/null
+}
+
+iptables_stop() {
+  [ -n "$NFT" ] && return
+  eval "$(iptables-save -t mangle 2>/dev/null | grep "queue-num $NFQUEUE_NUM " | sed 's/^-A/iptables -t mangle -D/g')"
+  eval "$(ip6tables-save -t mangle 2>/dev/null | grep "queue-num $NFQUEUE_NUM " | sed 's/^-A/ip6tables -t mangle -D/g')"
+}
+
 firewall_stop() {
-  eval "$(iptables-save -t mangle 2>/dev/null | grep 0x40000000 | sed 's/^-[A,I]/iptables -t mangle -D/g')"
-  eval "$(iptables-save -t nat 2>/dev/null | grep 0x40000000 | sed 's/^-[A,I]/iptables -t nat -D/g')"
-  eval "$(ip6tables-save -t mangle 2>/dev/null | grep 0x40000000 | sed 's/^-[A,I]/ip6tables -t mangle -D/g')"
+  nftables_stop
+  iptables_stop
+  offload_stop
+}
+
+nftables_start() {
+  [ -n "$NFT" ] || return
+
+  UDP_PORTS=$(echo $UDP_PORTS | tr ":" "-")
+  TCP_PORTS=$(echo $TCP_PORTS | tr ":" "-")
+
+  nft create table inet zapret
+  nft add chain inet zapret post "{type filter hook postrouting priority mangle;}"
+  nft add chain inet zapret pre "{type filter hook prerouting priority filter;}"
+
+  for IFACE in $(echo "$_ISP_IF$_ISP_IF6" | sort -u); do
+    nft add rule inet zapret post oifname $IFACE meta mark and 0x40000000 == 0 tcp dport "{$TCP_PORTS}" ct original packets 1-9 queue num $NFQUEUE_NUM bypass
+    nft add rule inet zapret post oifname $IFACE meta mark and 0x40000000 == 0 udp dport "{$UDP_PORTS}" ct original packets 1-9 queue num $NFQUEUE_NUM bypass
+    nft add rule inet zapret pre iifname $IFACE tcp sport "{$TCP_PORTS}" ct reply packets 1-3 queue num $NFQUEUE_NUM bypass
+  done
+}
+
+iptables_set_rules() {
+  local FW_MANGLE
+  for IFACE in $(eval echo "\$_ISP_IF$1"); do
+    FW_MANGLE="$FW_MANGLE$(_MANGLE_RULES)"
+  done
+
+  [ -n "$FW_MANGLE" ] && ip$1tables-restore -n 2>/dev/null <<EOF
+*mangle
+$(echo "$FW_MANGLE")
+COMMIT
+EOF
+}
+
+iptables_start() {
+  [ -n "$NFT" ] && return
+
+  UDP_PORTS=$(echo $UDP_PORTS | tr "-" ":")
+  TCP_PORTS=$(echo $TCP_PORTS | tr "-" ":")
+
+  iptables_set_rules
+  [ "$IPV6_ENABLED" = "1" ] && iptables_set_rules 6
 }
 
 firewall_start() {
   firewall_stop
 
-  unset IF_LOG
-  unset FW_MANGLE
-  unset FW_NAT
+  nftables_start
+  iptables_start
 
-  _ISP_IF=$(
-    echo "$ISP_INTERFACE,$(ip -4 r s default | cut -d ' ' -f5)" |\
-    tr " " "\n" | tr "," "\n" | sort -u
-  );
+  IF_LOG="$_ISP_IF"
+  [ "$IPV6_ENABLED" = "1" ] && IF_LOG="$_ISP_IF$_ISP_IF6"
 
-  for IFACE in ${_ISP_IF}; do
-    FW_MANGLE="$FW_MANGLE$(_MANGLE_RULES)"
-    FW_NAT="$FW_NAT$(_NAT_RULES)"
-    IF_LOG="$IF_LOG $IFACE"
-  done
+  if [ -n "$IF_LOG" ]; then
+    IF_LOG=$(echo $IF_LOG | sort -u | tr "\n" " ")
+    log "firewall rules were applied on interface(s): $IF_LOG"
+  else
+    log "firewall rules were not set"
+  fi
 
-  [ -n "$FW_MANGLE" ] &&\
-  iptables-restore -n  2>/dev/null <<EOF
-*mangle
-$(echo "$FW_MANGLE")
-COMMIT
-*nat
-$(echo "$FW_NAT")
-COMMIT
-EOF
-
-  if [ -n "$IPV6_ENABLED" ] && [ "$IPV6_ENABLED" -ne "1" ]; then return; fi
-
-  unset FW_MANGLE
-
-  _ISP_IF=$(
-    echo "$ISP_INTERFACE,$(ip -6 r s default | cut -d ' ' -f5)" |\
-    tr " " "\n" | tr "," "\n" | sort -u
-  );
-
-  for IFACE in ${_ISP_IF}; do
-    FW_MANGLE="$FW_MANGLE$(_MANGLE_RULES)"
-    IF_LOG="$IF_LOG $IFACE"
-  done
-
-  [ -n "$FW_MANGLE" ] &&\
-  ip6tables-restore -n  2>/dev/null <<EOF
-*mangle
-$(echo "$FW_MANGLE")
-COMMIT
-EOF
+  offload_start
 }
 
 system_config() {
-  sysctl -w net.netfilter.nf_conntrack_checksum=0 &> /dev/null
-  sysctl -w net.netfilter.nf_conntrack_tcp_be_liberal=1 &> /dev/null
+  sysctl -w net.netfilter.nf_conntrack_checksum=0 >/dev/null 2>&1
+  sysctl -w net.netfilter.nf_conntrack_tcp_be_liberal=1 >/dev/null 2>&1
+  [ -n "$NFT" ] && return
+  [ -n "$OPENWRT" ] || return
+  [ -f /etc/firewall.zapret ] || \
+    echo "/etc/init.d/zapret enabled && /etc/init.d/zapret reload" > /etc/firewall.zapret
+  uci -q get firewall.zapret >/dev/null || (
+    uci -q set firewall.zapret=include
+    uci -q set firewall.zapret.path='/etc/firewall.zapret'
+    uci -q set firewall.zapret.reload='1'
+    uci commit
+  )
 }
 
-start() {
+start_service() {
   if is_running; then
-    echo 'Service nfqws is already running' >&2
-    return 1
+    echo "service nfqws is already running"
+    return
   fi
 
   kernel_modules
 
-  res=$($NFQWS_BIN --daemon --pidfile=$PIDFILE $(_startup_args) 2>&1) ||\
+  res=$($NFQWS_BIN --daemon --pidfile=$PIDFILE $(startup_args) 2>&1) ||\
     error "failed to start nfqws service: $res"
 
   firewall_start
   system_config
 
-  if [ -n "$IF_LOG" ]; then
-    log "Service nfqws is started on "$(echo $IF_LOG | tr " " "\n" | sort -u)" interface(s)"
-  else
-    log "Service nfqws is started without iptables rules: unknown interface(s)"
-  fi
-
   echo "$res" | grep -iv "loading" | while read i; do
-    [ -n "$i" ] && log "$i"
+    log "$i"
   done
 }
 
-stop() {
+stop_service() {
   firewall_stop
 
   if ! is_running; then
-    echo 'Service zapret is not running' >&2
-    return 1
+    echo 'service zapret is not running'
+    return
   fi
 
   killall -q -s 15 $(basename "$NFQWS_BIN") && rm -f "$PIDFILE"
   if is_running; then
-    log 'Service nfqws is not stopped'
+    log "service nfqws not stopped"
   else
-    log 'Service nfqws is stopped'
+    log "service nfqws stopped"
   fi
+}
+
+reload_service() {
+  is_running || return
+  firewall_start
+  kill -HUP $(cat "$PIDFILE")
 }
 
 case "$1" in
   start)
-    start
+    start_service
     ;;
   stop)
-    stop
+    stop_service
     ;;
   status)
     status_service
     ;;
   restart)
-    stop
-    start
+    stop_service
+    start_service
     ;;
   firewall-start)
     firewall_start
@@ -288,8 +359,14 @@ case "$1" in
   firewall-stop)
     firewall_stop
     ;;
-  kernel-modules)
-    kernel_modules
+  offload-start)
+    offload_start
+    ;;
+  offload-stop)
+    offload_stop
+    ;;
+  reload)
+    reload_service
     ;;
   *)
     echo "Usage: $0 {start|stop|restart|status}"
