@@ -1,5 +1,6 @@
-SRC_NAME=libdeflate-1.21
-SRC_URL=https://github.com/ebiggers/libdeflate/archive/refs/tags/v1.21.tar.gz
+SRC_NAME=libdeflate-1.22
+SRC_URL=https://github.com/ebiggers/libdeflate/archive/refs/tags/v1.22.tar.gz
+#SRC_URL=https://github.com/transmission/libdeflate/archive/refs/tags/v1.22.tar.gz
 
 CFLAGS += -fPIC
 CXXFLAGS += -fPIC
