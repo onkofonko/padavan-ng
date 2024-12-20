@@ -165,7 +165,6 @@ am__objects_1 = bsslclient-client_base.$(OBJEXT) \
 @ENABLE_EXAMPLE_BORINGSSL_TRUE@	bsslclient-util_openssl.$(OBJEXT)
 bsslclient_OBJECTS = $(am_bsslclient_OBJECTS)
 am__DEPENDENCIES_1 = $(top_builddir)/lib/libngtcp2.la \
-	$(top_builddir)/third-party/libhttp-parser.la \
 	$(top_builddir)/third-party/liburlparse.la
 @ENABLE_EXAMPLE_BORINGSSL_TRUE@bsslclient_DEPENDENCIES =  \
 @ENABLE_EXAMPLE_BORINGSSL_TRUE@	$(am__DEPENDENCIES_1) \
@@ -298,7 +297,8 @@ am__objects_6 = h09wsslserver-server_base.$(OBJEXT) \
 @ENABLE_EXAMPLE_WOLFSSL_TRUE@	h09wsslserver-util_wolfssl.$(OBJEXT)
 h09wsslserver_OBJECTS = $(am_h09wsslserver_OBJECTS)
 @ENABLE_EXAMPLE_WOLFSSL_TRUE@h09wsslserver_DEPENDENCIES =  \
-@ENABLE_EXAMPLE_WOLFSSL_TRUE@	$(am__DEPENDENCIES_4)
+@ENABLE_EXAMPLE_WOLFSSL_TRUE@	$(am__DEPENDENCIES_4) \
+@ENABLE_EXAMPLE_WOLFSSL_TRUE@	$(top_builddir)/third-party/libhttp-parser.la
 am__ptlsclient_SOURCES_DIST = client.cc client.h client_base.cc \
 	client_base.h tls_client_context.h tls_client_session.h \
 	template.h debug.cc debug.h util.cc util.h shared.cc shared.h \
@@ -1053,7 +1053,6 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/includes \
 	-I$(top_builddir)/lib/includes \
 	-I$(top_srcdir)/crypto/includes \
-	-I$(top_srcdir)/third-party \
 	-I$(top_srcdir)/third-party/urlparse \
 	@LIBEV_CFLAGS@ \
 	@LIBNGHTTP3_CFLAGS@ \
@@ -1066,7 +1065,6 @@ AM_LDFLAGS = -no-install \
 	@LIBTOOL_LDFLAGS@
 
 LDADD = $(top_builddir)/lib/libngtcp2.la \
-	$(top_builddir)/third-party/libhttp-parser.la \
 	$(top_builddir)/third-party/liburlparse.la \
 	@LIBEV_LIBS@ \
 	@LIBNGHTTP3_LIBS@ \
@@ -1233,8 +1231,12 @@ CLIENT_SRCS = \
 @ENABLE_EXAMPLE_WOLFSSL_TRUE@	tls_session_base_wolfssl.cc tls_session_base_wolfssl.h \
 @ENABLE_EXAMPLE_WOLFSSL_TRUE@	util_wolfssl.cc
 
-@ENABLE_EXAMPLE_WOLFSSL_TRUE@h09wsslserver_CPPFLAGS = ${wsslclient_CPPFLAGS}
-@ENABLE_EXAMPLE_WOLFSSL_TRUE@h09wsslserver_LDADD = ${wsslclient_LDADD}
+@ENABLE_EXAMPLE_WOLFSSL_TRUE@h09wsslserver_CPPFLAGS = ${wsslclient_CPPFLAGS} \
+@ENABLE_EXAMPLE_WOLFSSL_TRUE@	-I$(top_srcdir)/third-party
+
+@ENABLE_EXAMPLE_WOLFSSL_TRUE@h09wsslserver_LDADD = ${wsslclient_LDADD} \
+@ENABLE_EXAMPLE_WOLFSSL_TRUE@	$(top_builddir)/third-party/libhttp-parser.la
+
 @ENABLE_EXAMPLE_WOLFSSL_TRUE@h09wsslserver_SOURCES = h09server.cc h09server.h ${SERVER_SRCS} \
 @ENABLE_EXAMPLE_WOLFSSL_TRUE@	tls_server_context_wolfssl.cc tls_server_context_wolfssl.h \
 @ENABLE_EXAMPLE_WOLFSSL_TRUE@	tls_server_session_wolfssl.cc tls_server_session_wolfssl.h \
