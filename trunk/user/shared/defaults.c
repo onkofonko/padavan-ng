@@ -219,7 +219,10 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_stream_rx", STR(BOARD_NUM_ANT_5G_RX) },
 	{ "wl_preamble", "1" },
 	{ "wl_greenap", "0" },		/* 5GHz GreenAP */
+	{ "wl_pmf", "0" },
+	{ "wl_pmfsha256", "0" },
 	{ "wl_ldpc", "0" },
+	{ "wl_stbc", "0" },
 	{ "wl_HT_RDG", "0" },
 	{ "wl_HT_AMSDU", "0" },
 	{ "wl_HT_MpduDensity", "5" },
@@ -318,7 +321,10 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_stream_rx", STR(BOARD_NUM_ANT_2G_RX) },
 	{ "rt_preamble", "1" },
 	{ "rt_greenap", "0" },		/* 2.4GHz GreenAP */
+	{ "rt_pmf", "0" },
+	{ "rt_pmfsha256", "0" },
 	{ "rt_ldpc", "0" },
+	{ "rt_stbc", "1" },
 	{ "rt_HT_RDG", "0" },
 	{ "rt_HT_AMSDU", "0" },
 	{ "rt_HT_MpduDensity", "5" },
@@ -632,6 +638,9 @@ struct nvram_pair router_defaults[] = {
 #endif
 #if defined (APP_STUBBY)
 	{ "stubby_enable", "0" },
+#endif
+#if defined (APP_ZAPRET)
+	{ "zapret_enable", "0" },
 #endif
 #if defined (APP_TOR)
 	{ "tor_enable", "0" },

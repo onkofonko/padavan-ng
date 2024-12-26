@@ -1,4 +1,4 @@
-SRC_NAME=sqlite-autoconf-3460000
+SRC_NAME=sqlite-autoconf-3470200
 SRC_URL=https://www.sqlite.org/2024/$(SRC_NAME).tar.gz
 
 #all: download_test extract_test config_test
@@ -24,6 +24,7 @@ config_test:
 
 configure:
 	( cd $(SRC_NAME) ; \
+	autoreconf -fi ; \
 	./configure \
 		--prefix= \
 		$(if $(LIBS_BUILD_SHARED),--disable-static,--enable-static) \

@@ -1,4 +1,4 @@
-SRC_NAME=libpcap-1.10.4
+SRC_NAME=libpcap-1.10.5
 SRC_URL=https://www.tcpdump.org/release/$(SRC_NAME).tar.gz
 
 #all: download_test extract_test config_test
@@ -57,4 +57,3 @@ install:
 	rm -f $(DESTDIR)/lib/libpcap.so* ;
 
 romfs:
-

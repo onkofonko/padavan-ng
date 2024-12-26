@@ -546,6 +546,14 @@
 			{"stubby_enable", "", NULL, EVM_RESTART_STUBBY},
 			{"stubbyc.stubby.yml", "File", NULL, EVM_RESTART_STUBBY|EVM_BLOCK_UNSAFE},
 #endif
+#if defined(APP_ZAPRET)
+			{"zapret_enable", "", NULL, EVM_RESTART_ZAPRET},
+			{"zapretc.config", "File", NULL, EVM_RESTART_ZAPRET|EVM_BLOCK_UNSAFE},
+			{"zapretc.strategy", "File", NULL, EVM_RESTART_ZAPRET|EVM_BLOCK_UNSAFE},
+			{"zapretc.auto.list", "File", NULL, EVM_RESTART_ZAPRET|EVM_BLOCK_UNSAFE},
+			{"zapretc.user.list", "File", NULL, EVM_RESTART_ZAPRET|EVM_BLOCK_UNSAFE},
+			{"zapretc.exclude.list", "File", NULL, EVM_RESTART_ZAPRET|EVM_BLOCK_UNSAFE},
+#endif
 #if defined(APP_TOR)
 			{"tor_enable", "", NULL, EVM_RESTART_TOR},
 			{"torconf.torrc", "File", NULL, EVM_RESTART_TOR|EVM_BLOCK_UNSAFE},
@@ -701,8 +709,10 @@
 			{"ddns_source", "", NULL, EVM_RESTART_DDNS },
 			{"ddns_checkip", "", NULL, EVM_RESTART_DDNS },
 			{"ddns2_checkip", "", NULL, EVM_RESTART_DDNS },
+#if defined (SUPPORT_DDNS_SSL)
 			{"ddns_ssl", "", NULL, EVM_RESTART_DDNS },
 			{"ddns2_ssl", "", NULL, EVM_RESTART_DDNS },
+#endif
 			{"ddns2_server", "", NULL, EVM_RESTART_DDNS },
 			{"ddns2_hname", "", NULL, EVM_RESTART_DDNS },
 			{"ddns2_user", "", NULL, EVM_RESTART_DDNS },
@@ -809,7 +819,10 @@
 			{"wl_stream_rx", "", NULL, EVM_RESTART_WIFI5},
 			{"wl_preamble", "", NULL, EVM_RESTART_WIFI5},
 			{"wl_greenap", "", NULL, EVM_RESTART_WIFI5},
+			{"wl_pmf", "", NULL, EVM_RESTART_WIFI5},
+			{"wl_pmfsha256", "", NULL, EVM_RESTART_WIFI5},
 			{"wl_ldpc", "", NULL, EVM_RESTART_WIFI5},
+			{"wl_stbc", "", NULL, EVM_RESTART_WIFI5},
 			{"wl_sta_ssid", "", NULL, EVM_RESTART_WIFI5},
 			{"wl_sta_auth_mode", "", NULL, EVM_RESTART_WIFI5},
 			{"wl_sta_wpa_mode", "", NULL, EVM_RESTART_WIFI5},
@@ -900,7 +913,10 @@
 			{"rt_stream_rx", "", NULL, EVM_RESTART_WIFI2},
 			{"rt_preamble", "", NULL, EVM_RESTART_WIFI2},
 			{"rt_greenap", "", NULL, EVM_RESTART_WIFI2},
+			{"rt_pmf", "", NULL, EVM_RESTART_WIFI2},
+			{"rt_pmfsha256", "", NULL, EVM_RESTART_WIFI2},
 			{"rt_ldpc", "", NULL, EVM_RESTART_WIFI2},
+			{"rt_stbc", "", NULL, EVM_RESTART_WIFI2},
 			{"rt_sta_ssid", "", NULL, EVM_RESTART_WIFI2},
 			{"rt_sta_auth_mode", "", NULL, EVM_RESTART_WIFI2},
 			{"rt_sta_wpa_mode", "", NULL, EVM_RESTART_WIFI2},
@@ -964,14 +980,17 @@
 		{EVM_RESTART_VPNCLI,		EVT_RESTART_VPNCLI,		RCN_RESTART_VPNCLI,	EVM_RESTART_FIREWALL},
 		{EVM_RESTART_HTTPD,		EVT_RESTART_HTTPD,		RCN_RESTART_HTTPD,	EVM_RESTART_FIREWALL},
 		{EVM_RESTART_SSHD,		EVT_RESTART_SSHD,		RCN_RESTART_SSHD,	EVM_RESTART_FIREWALL},
-#if defined(APP_TOR)
-		{EVM_RESTART_TOR,		EVT_RESTART_TOR,		RCN_RESTART_TOR,	EVM_RESTART_FIREWALL},
-#endif
 #if defined(APP_DOH)
 		{EVM_RESTART_DOH,		EVT_RESTART_DOH,		RCN_RESTART_DOH,	EVM_RESTART_FIREWALL},
 #endif
 #if defined(APP_STUBBY)
 		{EVM_RESTART_STUBBY,		EVT_RESTART_STUBBY,		RCN_RESTART_STUBBY,	EVM_RESTART_FIREWALL},
+#endif
+#if defined(APP_ZAPRET)
+		{EVM_RESTART_ZAPRET,		EVT_RESTART_ZAPRET,		RCN_RESTART_ZAPRET,	0},
+#endif
+#if defined(APP_TOR)
+		{EVM_RESTART_TOR,		EVT_RESTART_TOR,		RCN_RESTART_TOR,	EVM_RESTART_FIREWALL},
 #endif
 #if defined(APP_PRIVOXY)
 		{EVM_RESTART_PRIVOXY,		EVT_RESTART_PRIVOXY,		RCN_RESTART_PRIVOXY,	EVM_RESTART_FIREWALL},

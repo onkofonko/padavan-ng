@@ -77,6 +77,7 @@ dir_y =
 dir_n =
 dir_  =
 
+dir_$(CONFIG_FIRMWARE_INCLUDE_NFQWS)		+= nfqws
 dir_y						+= busybox
 dir_y						+= iptables
 dir_$(CONFIG_FIRMWARE_INCLUDE_IPSET)		+= ipset
@@ -129,6 +130,7 @@ dir_$(CONFIG_FIRMWARE_INCLUDE_PRIVOXY)		+= privoxy
 dir_$(CONFIG_FIRMWARE_INCLUDE_DNSCRYPT)		+= dnscrypt-proxy
 dir_$(CONFIG_FIRMWARE_INCLUDE_STUBBY)		+= stubby
 dir_$(CONFIG_FIRMWARE_INCLUDE_DOH)		+= doh_proxy
+dir_$(CONFIG_FIRMWARE_INCLUDE_OBFS4)            += obfs4
 ifneq (,$(filter y,$(CONFIG_FIRMWARE_INCLUDE_XUPNPD) $(CONFIG_FIRMWARE_INCLUDE_LUA)))
 dir_y						+= lua
 dir_$(CONFIG_FIRMWARE_INCLUDE_XUPNPD)           += xupnpd
@@ -200,5 +202,3 @@ clean:
 		[ ! -d $$i ] || \
 		$(MAKE) -C $$i clean ; \
 	done
-
-

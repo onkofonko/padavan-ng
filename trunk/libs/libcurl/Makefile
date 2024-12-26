@@ -1,5 +1,5 @@
-SRC_NAME=curl-8.8.0
-SRC_URL=https://github.com/curl/curl/releases/download/curl-8_8_0/$(SRC_NAME).tar.xz
+SRC_NAME=curl-8.11.1
+SRC_URL=https://github.com/curl/curl/releases/download/curl-8_11_1/$(SRC_NAME).tar.xz
 
 #all: download_test extract_test config_test
 all: config_test
@@ -22,7 +22,6 @@ config_test:
 	else \
 		make configure && touch config_done; \
 	fi )
-
 
 configure:
 	( cd $(SRC_NAME) ; \

@@ -1,0 +1,188 @@
+commit 86a72e9e64b81c770315636da8756d3ce38c3281
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-12-19
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-12-19
+
+    Bump package and library versions
+
+commit ca0755024df55564eebb07b9e929adac7da31780
+Merge: 594e2b3 9942ce6
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-11-23
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-11-23
+
+    Merge pull request #280 from ngtcp2/revert-264
+    
+    Revert "Do huffman encoding only when the reduction is more than 25%"
+
+commit 9942ce6c4ab9b81e2ebb5dfee32894990a253230
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-11-23
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-11-23
+
+    Revert "Do huffman encoding only when the reduction is more than 25%"
+    
+    This reverts commit 8fd4bd833e764f5b0d46f7b8ed2ae2708cafbfd1.
+
+commit 594e2b3d2b285e06d8ffad2cf3a4c783bd2bce1e
+Merge: 8828bfd 9dadfaf
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-11-18
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-11-18
+
+    Merge pull request #278 from ngtcp2/bump-sfparse
+    
+    Bump sfparse
+
+commit 9dadfafb18975a897178ccba4e24662bd3d36bef
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-11-17
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-11-17
+
+    Bump sfparse
+
+commit 8828bfd673f1eedcbde4130e6c950c2a988bf529
+Merge: 26aa257 3408226
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-11-08
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-11-08
+
+    Merge pull request #277 from ngtcp2/ksl-search
+    
+    Port ngtcp2_ksl changes that introduced ngtcp2_ksl_search
+
+commit 34082265840a89b75c032e7855f3f76861cb1ace
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-11-08
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-11-08
+
+    Port ngtcp2_ksl changes that introduced ngtcp2_ksl_search
+
+commit 26aa257a5d2395b2db7206f83be8aa8f35c6e4b0
+Merge: f5b3fb4 984d063
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-23
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-23
+
+    Merge pull request #276 from ngtcp2/ndebug
+    
+    Fix compile error with NDEBUG
+
+commit 984d0639c1f521f00502f3e04e83f194f5634499
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-23
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-23
+
+    Fix compile error with NDEBUG
+
+commit f5b3fb4ce9bce7a67de00585bf3f7a8c2eb47be3
+Merge: d10bb5f a1c3c7f
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-19
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-19
+
+    Merge pull request #275 from ngtcp2/authority-at-sign
+    
+    Do not allow '@' in :authority or host field value
+
+commit a1c3c7f9d0c04da073f6b9207d95d444e2ed48ce
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-19
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-19
+
+    Do not allow '@' in :authority or host field value
+
+commit d10bb5f61ccedb2162a24f16bbac72aec40608cd
+Merge: 77baac6 9d47108
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-18
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-18
+
+    Merge pull request #274 from ngtcp2/wine-run-i686
+    
+    GHA: Run tests for i686-w64-mingw32 host
+
+commit 77baac6ff66d8c44bcd3db78592e88fb5685f027
+Merge: 399bb65 f678d6e
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-18
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-18
+
+    Merge pull request #273 from ngtcp2/remove-extra-semicolons
+    
+    Remove extra semicolons
+
+commit 9d47108e604adc3a3dbb9804dfb7cd7a39a56700
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-18
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-18
+
+    GHA: Run tests for i686-w64-mingw32 host
+
+commit f678d6e1d6f1a5dffc4bc0a167ead33936d8924c
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-18
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-18
+
+    Remove extra semicolons
+
+commit 399bb656114756ff677f2331d380af27bfce6d01
+Merge: dd4a3b8 87596e0
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-14
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-14
+
+    Merge pull request #272 from ngtcp2/gha-fix-excludes
+    
+    GHA: Fix build excludes
+
+commit 87596e0142951792bd6dbae4c81a4dd70be37707
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-14
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-14
+
+    GHA: Fix build excludes
+
+commit dd4a3b8bf72776933c192de22354c19ea0dd3e67
+Merge: 7f40779 2d99b8a
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2024-10-14
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2024-10-14
+
+    Merge pull request #271 from ngtcp2/gha-ubuntu-24.04
+    
+    GHA: Bump Ubuntu runner to 24.04
+
+commit 2d99b8a8e3db1d969b800932d32439b30bd1fd60
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-14
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-14
+
+    GHA: Bump Ubuntu runner to 24.04
+
+commit 7f4077981cefb825a2732688976201ba47f21d57
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2024-10-05
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2024-10-05
+
+    Bump package version

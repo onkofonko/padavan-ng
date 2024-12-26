@@ -18,6 +18,7 @@ RUN apt update && \
         cmake \
         cpio \
         curl \
+        dos2unix \
         doxygen \
         fakeroot \
         flex \
@@ -27,6 +28,7 @@ RUN apt update && \
         gperf \
         help2man \
         kmod \
+        libarchive-tools \
         libblkid-dev \
         libc-ares-dev \
         libcurl4-openssl-dev \
@@ -54,6 +56,7 @@ RUN apt update && \
         libvorbis-dev \
         libxml2-dev \
         locales \
+        nano \
         pkg-config \
         ppp-dev \
         python3 \
