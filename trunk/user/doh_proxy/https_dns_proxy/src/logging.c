@@ -10,17 +10,15 @@
 
 // logs of this severity or higher are flushed immediately after write
 #define LOG_FLUSH_LEVEL LOG_WARNING
-// Log line should be at least 100
 enum {
-LOG_LINE_SIZE = 2048,
-LOG_FLIGHT_RECORDER_LIMIT = 10
+LOG_LINE_SIZE = 2048  // Log line should be at least 100
 };
 
-static FILE *logfile = NULL;                // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
-static int loglevel = LOG_ERROR;            // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
-static ev_timer logging_timer;              // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
-static ev_signal sigusr2;                   // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
-static struct ring_buffer flight_recorder;  // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+static FILE *logfile = NULL;                         // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+static int loglevel = LOG_ERROR;                     // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+static ev_timer logging_timer;                       // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+static ev_signal sigusr2;                            // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+static struct ring_buffer * flight_recorder = NULL;  // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 
 static const char * const SeverityStr[] = {
   "[D]",
@@ -40,8 +38,12 @@ void logging_timer_cb(struct ev_loop __attribute__((unused)) *loop,
 }
 
 void logging_flight_recorder_dump(void) {
-  ILOG("Flight recorder dump");  // will be also at the end of the dump :)
-  ring_buffer_dump(&flight_recorder, logfile);
+  if (flight_recorder) {
+    ILOG("Flight recorder dump");  // will be also at the end of the dump :)
+    ring_buffer_dump(flight_recorder, logfile);
+  } else {
+    ILOG("Flight recorder is disabled");
+  }
 }
 
 static void logging_flight_recorder_dump_cb(struct ev_loop __attribute__((unused)) *loop,
@@ -50,34 +52,33 @@ static void logging_flight_recorder_dump_cb(struct ev_loop __attribute__((unused
   logging_flight_recorder_dump();
 }
 
-void logging_flush_init(struct ev_loop *loop) {
-  // NOLINTNEXTLINE(clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling)
-  ev_timer_init(&logging_timer, logging_timer_cb, 0, 10);
+void logging_events_init(struct ev_loop *loop) {
   /* don't start timer if we will never write messages that are not flushed */
-  if (loglevel >= LOG_FLUSH_LEVEL) {
-    return;
+  if (loglevel < LOG_FLUSH_LEVEL) {
+    DLOG("starting periodic log flush timer");
+    // NOLINTNEXTLINE(clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling)
+    ev_timer_init(&logging_timer, logging_timer_cb, 0, 10);
+    ev_timer_start(loop, &logging_timer);
   }
-  DLOG("starting periodic log flush timer");
-  ev_timer_start(loop, &logging_timer);
 
   DLOG("starting SIGUSR2 handler");
   ev_signal_init(&sigusr2, logging_flight_recorder_dump_cb, SIGUSR2);
   ev_signal_start(loop, &sigusr2);
 }
 
-void logging_flush_cleanup(struct ev_loop *loop) {
+void logging_events_cleanup(struct ev_loop *loop) {
   ev_timer_stop(loop, &logging_timer);
   ev_signal_stop(loop, &sigusr2);
 }
 
-void logging_init(int fd, int level) {
+void logging_init(int fd, int level, uint32_t flight_recorder_size) {
   if (logfile) {
     (void)fclose(logfile);
   }
   logfile = fdopen(fd, "a");
   loglevel = level;
 
-  ring_buffer_init(&flight_recorder, LOG_FLIGHT_RECORDER_LIMIT);
+  ring_buffer_init(&flight_recorder, flight_recorder_size);
 }
 
 void logging_cleanup(void) {
@@ -85,16 +86,18 @@ void logging_cleanup(void) {
     (void)fclose(logfile);
   }
   logfile = NULL;
-  ring_buffer_free(&flight_recorder);
+  if (flight_recorder) {
+    ring_buffer_free(&flight_recorder);
+  }
 }
 
 int logging_debug_enabled(void) {
-  return loglevel <= LOG_DEBUG;
+  return loglevel <= LOG_DEBUG || flight_recorder;
 }
 
 // NOLINTNEXTLINE(misc-no-recursion) because of severity check
 void _log(const char *file, int line, int severity, const char *fmt, ...) {
-  if (severity < loglevel && flight_recorder.size == 0) {
+  if (severity < loglevel && !flight_recorder) {
     return;
   }
   if (severity < 0 || severity >= LOG_MAX) {
@@ -133,7 +136,9 @@ void _log(const char *file, int line, int severity, const char *fmt, ...) {
     buff[buff_pos - 1] = '$'; // indicate truncation
   }
 
-  ring_buffer_push_back(&flight_recorder, buff, buff_pos);
+  if (flight_recorder) {
+    ring_buffer_push_back(flight_recorder, buff, buff_pos);
+  }
 
   if (severity < loglevel) {
     return;
@@ -146,7 +151,7 @@ void _log(const char *file, int line, int severity, const char *fmt, ...) {
     (void)fflush(logfile);
   }
   if (severity == LOG_FATAL) {
-    ring_buffer_dump(&flight_recorder, logfile);
+    ring_buffer_dump(flight_recorder, logfile);
 #ifdef DEBUG
     abort();
 #else

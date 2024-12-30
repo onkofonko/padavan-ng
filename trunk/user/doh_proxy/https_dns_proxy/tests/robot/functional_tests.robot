@@ -49,7 +49,9 @@ Start Proxy With Valgrind
 Stop Proxy
   Send Signal To Process  SIGINT  ${proxy}
   ${result} =  Wait For Process  ${proxy}  timeout=15 secs
+  Log  ${result.rc}
   Log  ${result.stdout}
+  Log  ${result.stderr}
   FOR  ${log}  ${times}  IN  &{expected_logs}
     Should Contain X Times  ${result.stdout}  ${log}  ${times}
   END

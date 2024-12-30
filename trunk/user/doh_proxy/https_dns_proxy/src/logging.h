@@ -11,11 +11,11 @@ extern "C" {
 
 // Initializes logging.
 // Writes logs to descriptor 'fd' for log levels above or equal to 'level'.
-void logging_init(int fd, int level);
+void logging_init(int fd, int level, unsigned flight_recorder_size);
 
 // Initialize periodic timer to flush logs.
-void logging_flush_init(struct ev_loop *loop);
-void logging_flush_cleanup(struct ev_loop *loop);
+void logging_events_init(struct ev_loop *loop);
+void logging_events_cleanup(struct ev_loop *loop);
 
 // Cleans up and flushes open logs.
 void logging_cleanup(void);
