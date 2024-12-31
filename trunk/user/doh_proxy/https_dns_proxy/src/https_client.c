@@ -81,8 +81,8 @@ static curl_socket_t opensocket_callback(void *clientp, curlsocktype purpose,
                                          struct curl_sockaddr *addr) {
   GET_PTR(https_client_t, client, clientp);
 
-  if (client->connections >= MAX_TOTAL_CONNECTIONS) {
-    ELOG("curl needed more socket, than the number of maximum connections: %d", MAX_TOTAL_CONNECTIONS);
+  if (client->connections >= HTTPS_SOCKET_LIMIT) {
+    ELOG("curl needed more socket, than the number of maximum sockets: %d", HTTPS_SOCKET_LIMIT);
     return CURL_SOCKET_BAD;
   }
 
@@ -314,13 +314,8 @@ static void https_fetch_ctx_init(https_client_t *client,
   ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_POSTFIELDS, data);
   ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_WRITEFUNCTION, &write_buffer);
   ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_WRITEDATA, ctx);
-#ifdef CURLOPT_MAXAGE_CONN
-  ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_TCP_KEEPALIVE, 1L);
-  ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_TCP_KEEPIDLE, 50L);
-  ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_TCP_KEEPINTVL, 50L);
   ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_MAXAGE_CONN, 300L);
-#endif
-  // FIXME: consider adding usage of: CURLOPT_PIPEWAIT
+  // FIXME: consider adding CURLOPT_PIPEWAIT
   ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_USERAGENT, "https_dns_proxy/0.3");
   ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_FOLLOWLOCATION, 0);
   ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_NOSIGNAL, 0);
@@ -597,7 +592,7 @@ static void timer_cb(struct ev_loop __attribute__((unused)) *loop,
 }
 
 static struct ev_io * get_io_event(struct ev_io io_events[], curl_socket_t sock) {
-  for (int i = 0; i < MAX_TOTAL_CONNECTIONS; i++) {
+  for (int i = 0; i < HTTPS_SOCKET_LIMIT; i++) {
     if (io_events[i].fd == sock) {
       return &io_events[i];
     }
@@ -606,7 +601,7 @@ static struct ev_io * get_io_event(struct ev_io io_events[], curl_socket_t sock)
 }
 
 static void dump_io_events(struct ev_io io_events[]) {
-  for (int i = 0; i < MAX_TOTAL_CONNECTIONS; i++) {
+  for (int i = 0; i < HTTPS_SOCKET_LIMIT; i++) {
     ILOG("IO event #%d: fd=%d, events=%d/%s%s",
          i+1, io_events[i].fd, io_events[i].events,
          (io_events[i].events & EV_READ ? "R" : ""),
@@ -633,7 +628,7 @@ static int multi_sock_cb(CURL *curl, curl_socket_t sock, int what,
   // reserve and start new event on unused slot
   io_event_ptr = get_io_event(c->io_events, 0);
   if (!io_event_ptr) {
-    ELOG("curl needed more IO event handler, than the number of maximum connections: %d", MAX_TOTAL_CONNECTIONS);
+    ELOG("curl needed more IO event handler, than the number of maximum sockets: %d", HTTPS_SOCKET_LIMIT);
     dump_io_events(c->io_events);
     logging_flight_recorder_dump();
     return -1;
@@ -670,14 +665,15 @@ void https_client_init(https_client_t *c, options_t *opt,
     "Content-Type: " DOH_CONTENT_TYPE);
   c->fetches = NULL;
   c->timer.data = c;
-  for (int i = 0; i < MAX_TOTAL_CONNECTIONS; i++) {
+  for (int i = 0; i < HTTPS_SOCKET_LIMIT; i++) {
     c->io_events[i].data = c;
   }
   c->opt = opt;
   c->stat = stat;
 
   ASSERT_CURL_MULTI_SETOPT(c->curlm, CURLMOPT_PIPELINING, CURLPIPE_HTTP1 | CURLPIPE_MULTIPLEX);
-  ASSERT_CURL_MULTI_SETOPT(c->curlm, CURLMOPT_MAX_TOTAL_CONNECTIONS, MAX_TOTAL_CONNECTIONS);  // extra -2 solves the issue
+  ASSERT_CURL_MULTI_SETOPT(c->curlm, CURLMOPT_MAX_TOTAL_CONNECTIONS, HTTPS_CONNECTION_LIMIT);
+  ASSERT_CURL_MULTI_SETOPT(c->curlm, CURLMOPT_MAX_HOST_CONNECTIONS, HTTPS_CONNECTION_LIMIT);
   ASSERT_CURL_MULTI_SETOPT(c->curlm, CURLMOPT_SOCKETDATA, c);
   ASSERT_CURL_MULTI_SETOPT(c->curlm, CURLMOPT_SOCKETFUNCTION, multi_sock_cb);
   ASSERT_CURL_MULTI_SETOPT(c->curlm, CURLMOPT_TIMERDATA, c);
