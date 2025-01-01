@@ -1051,8 +1051,7 @@ udhcpc_lan_main(int argc, char **argv)
 int 
 start_udhcpc_lan(char *lan_ifname)
 {
-	char lan_hostname[26] = "hostname:";
-	strncat(lan_hostname, get_our_hostname(), sizeof(lan_hostname) - strlen(lan_hostname) - 1);
+	char *lan_hostname = get_our_hostname();
 	char *dhcp_argv[] = {
 		"/sbin/udhcpc",
 		"-i", lan_ifname,
@@ -1061,7 +1060,7 @@ start_udhcpc_lan(char *lan_ifname)
 		"-t4",
 		"-T4",
 		"-d", /* Background after run (new patch for udhcpc) */
-		"-x", lan_hostname,
+		"-H", lan_hostname,
 		NULL
 	};
 	
