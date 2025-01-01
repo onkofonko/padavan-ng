@@ -24,9 +24,6 @@
  * SUCH DAMAGE.
  */
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
 
 #include <sys/param.h>
 #include <sys/socket.h>
@@ -34,8 +31,6 @@
 
 #include <errno.h>
 #include <unistd.h>
-
-#if !HAVE_GETPEEREID
 
 int
 getpeereid(int s, uid_t *euid, gid_t *egid)
@@ -54,5 +49,3 @@ getpeereid(int s, uid_t *euid, gid_t *egid)
 	*egid = uc.gid;
 	return (0);
  }
-
-#endif

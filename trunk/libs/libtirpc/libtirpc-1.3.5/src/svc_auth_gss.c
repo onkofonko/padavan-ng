@@ -990,12 +990,8 @@ _rpc_gss_fill_in_ucreds(struct svc_rpc_gss_data *gd)
 	ucred->gidlen = 0;
 	ucred->gidlist = gd->gids;
 
-#ifdef HAVE_GSS_PNAME_TO_UID
 	maj_stat = gss_pname_to_uid(&min_stat, gd->client_name,
 						gd->sec.mech, &uid);
-#else
-    maj_stat = GSS_S_FAILURE;
-#endif
 	if (maj_stat != GSS_S_COMPLETE)
 		return;
 

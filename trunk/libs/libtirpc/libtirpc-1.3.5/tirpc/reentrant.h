@@ -36,7 +36,7 @@
  * These definitions are only guaranteed to be valid on Linux. 
  */
 
-#if defined(__linux__) || defined(__APPLE__)
+#if defined(__linux__)
 
 #include <pthread.h>
 
