@@ -24,7 +24,7 @@ void logging_cleanup(void);
 int logging_debug_enabled(void);
 
 // Dump flight recorder.
-void logging_flight_recorder_dump();
+void logging_flight_recorder_dump(void);
 
 // Internal. Don't use.
 void _log(const char *file, int line, int severity, const char *fmt, ...);
