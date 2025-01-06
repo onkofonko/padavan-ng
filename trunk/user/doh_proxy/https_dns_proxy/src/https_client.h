@@ -7,7 +7,7 @@
 #include "stat.h"
 
 enum {
-  HTTPS_SOCKET_LIMIT = 8,  // TODO: raise to 12
+  HTTPS_SOCKET_LIMIT = 12,
   HTTPS_CONNECTION_LIMIT = 8,
 };
 

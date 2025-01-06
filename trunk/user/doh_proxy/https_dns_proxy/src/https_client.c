@@ -53,7 +53,7 @@ DOH_MAX_RESPONSE_SIZE = 65535
 static void https_fetch_ctx_cleanup(https_client_t *client,
                                     struct https_fetch_ctx *prev,
                                     struct https_fetch_ctx *ctx,
-                                    int curl_result_code);  // FIXME: temporary
+                                    int curl_result_code);
 
 static size_t write_buffer(void *buf, size_t size, size_t nmemb, void *userp) {
   GET_PTR(struct https_fetch_ctx, ctx, userp);
@@ -315,11 +315,11 @@ static void https_fetch_ctx_init(https_client_t *client,
   ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_WRITEFUNCTION, &write_buffer);
   ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_WRITEDATA, ctx);
   ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_MAXAGE_CONN, 300L);
-  // FIXME: consider adding CURLOPT_PIPEWAIT
+  ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_PIPEWAIT, client->opt->use_http_version > 1);
   ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_USERAGENT, "https_dns_proxy/0.3");
   ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_FOLLOWLOCATION, 0);
   ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_NOSIGNAL, 0);
-  ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_TIMEOUT, 10 /* seconds */);
+  ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_TIMEOUT, client->connections > 0 ? 5 : 10 /* seconds */);
   // We know Google supports this, so force it.
   ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
   ASSERT_CURL_EASY_SETOPT(ctx, CURLOPT_ERRORBUFFER, ctx->curl_errbuf); // zeroed by calloc
@@ -337,7 +337,7 @@ static void https_fetch_ctx_init(https_client_t *client,
       WLOG_REQ("Resetting HTTPS client to recover from faulty state!");
       https_client_reset(client);
     } else {
-      https_fetch_ctx_cleanup(client, NULL, client->fetches, -1);
+      https_fetch_ctx_cleanup(client, NULL, client->fetches, -1);  // dropping current failed request
     }
   }
 }
@@ -554,7 +554,7 @@ static void check_multi_info(https_client_t *c) {
       }
     }
     else {
-      ELOG("Unhandled curl message: %d", msg->msg);
+      ELOG("Unhandled curl message: %d", msg->msg);  // unlikely
     }
   }
 }
@@ -562,11 +562,11 @@ static void check_multi_info(https_client_t *c) {
 static void sock_cb(struct ev_loop __attribute__((unused)) *loop,
                     struct ev_io *w, int revents) {
   GET_PTR(https_client_t, c, w->data);
-  int still_running;
+  int ignore = 0;
   CURLMcode code = curl_multi_socket_action(
       c->curlm, w->fd, (revents & EV_READ ? CURL_CSELECT_IN : 0) |
                        (revents & EV_WRITE ? CURL_CSELECT_OUT : 0),
-      &still_running);
+      &ignore);
   if (code == CURLM_OK) {
     check_multi_info(c);
   }
@@ -582,9 +582,9 @@ static void sock_cb(struct ev_loop __attribute__((unused)) *loop,
 static void timer_cb(struct ev_loop __attribute__((unused)) *loop,
                      struct ev_timer *w, int __attribute__((unused)) revents) {
   GET_PTR(https_client_t, c, w->data);
-  int still_running;
+  int ignore = 0;
   CURLMcode code = curl_multi_socket_action(c->curlm, CURL_SOCKET_TIMEOUT, 0,
-                                            &still_running);
+                                            &ignore);
   if (code != CURLM_OK) {
     ELOG("curl_multi_socket_action error %d: %s", code, curl_multi_strerror(code));
   }

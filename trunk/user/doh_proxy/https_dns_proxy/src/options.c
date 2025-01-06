@@ -235,7 +235,7 @@ void options_show_usage(int __attribute__((unused)) argc, char **argv) {
   printf("                         Levels: fatal, stats, error, warning, info, debug\n");
   printf("                         Request issues are logged on warning level.\n");
   printf("  -F                     Flight recorder limit: storing the latest logs from all levels\n"\
-         "                         in memory and dumping them on fatal error.\n"
+         "                         in memory and dumping them on fatal error or on SIGUSR2 signal.\n"
          "                         (Default: %u, Min: 100, Max: 100000)\n",
          defaults.flight_recorder_size);
   printf("  -V                     Print version and exit.\n");
