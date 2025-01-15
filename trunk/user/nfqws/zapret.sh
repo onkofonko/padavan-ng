@@ -3,14 +3,10 @@
 # https://github.com/nilabsent/zapretsh
 
 # for openwrt versions 21 and above (iptables):
-# opkg install iptables-mod-nfqueue iptables-mod-conntrack-extra
+# opkg install curl iptables-mod-nfqueue iptables-mod-conntrack-extra
 #
 # for openwrt versions 22 and later (nftables):
-# opkg install kmod-nft-queue kmod-nfnetlink-queue
-
-# for linux with nftables may need to install:
-# debian: libnetfilter-conntrack3 libnetfilter-queue1
-# arch: libnetfilter-conntrack libnetfilter-queue
+# opkg install curl kmod-nft-queue kmod-nfnetlink-queue
 
 NFQWS_BIN="/usr/bin/nfqws"
 NFQWS_BIN_OPT="/opt/bin/nfqws"
@@ -25,18 +21,22 @@ CONFDIR_EXAMPLE="/usr/share/zapret"
 CONFFILE="$CONFDIR/config"
 PIDFILE="/var/run/zapret.pid"
 
-readonly HOSTLIST_MARKER="<HOSTLIST>"
-readonly HOSTLIST_NOAUTO_MARKER="<HOSTLIST_NOAUTO>"
+HOSTLIST_DOMAINS="https://github.com/1andrevich/Re-filter-lists/releases/latest/download/domains_all.lst"
+
+HOSTLIST_MARKER="<HOSTLIST>"
+HOSTLIST_NOAUTO_MARKER="<HOSTLIST_NOAUTO>"
 
 HOSTLIST_NOAUTO="
   --hostlist=${ETC_DIR}/zapret/user.list
   --hostlist=${ETC_DIR}/zapret/auto.list
   --hostlist-exclude=${ETC_DIR}/zapret/exclude.list
+  --hostlist=/tmp/filter.list
 "
 HOSTLIST="
   --hostlist=${ETC_DIR}/zapret/user.list
   --hostlist-exclude=${ETC_DIR}/zapret/exclude.list
   --hostlist-auto=${ETC_DIR}/zapret/auto.list
+  --hostlist=/tmp/filter.list
 "
 
 ### default config
@@ -80,9 +80,8 @@ fi
     fi
 done
 
-[ -f "$NFQWS_BIN_GIT" ] && [ -x "$NFQWS_BIN_GIT" ] && NFQWS_BIN="$NFQWS_BIN_GIT"
+[ -s "$NFQWS_BIN_GIT" ] && NFQWS_BIN="$NFQWS_BIN_GIT"
 
-[ -f "$NFQWS_BIN" ] || error "$NFQWS_BIN: not found"
 [ -f "$CONFDIR" ] && rm -f "$CONFDIR"
 [ -d "$CONFDIR" ] || mkdir -p "$CONFDIR" || exit 1
 # copy all non-existent config files to storage except fake dir
@@ -147,6 +146,7 @@ replace_str()
 }
 
 startup_args() {
+  [ -f /tmp/filter.list ] || touch /tmp/filter.list
   local args="--user=$USER --qnum=$NFQUEUE_NUM"
 
   [ "$LOG_LEVEL" = "1" ] && args="--debug=syslog $args"
@@ -303,6 +303,7 @@ system_config() {
 }
 
 start_service() {
+  [ -f "$NFQWS_BIN" ] || error "$NFQWS_BIN: not found"
   if is_running; then
     echo "service nfqws is already running"
     return
@@ -336,7 +337,7 @@ reload_service() {
 download_nfqws() {
   cd /tmp
 
-  ARCH=$(uname -m | grep -oE 'mips|mipsel|aarch64|armv|i386|i686|x86_64')
+  ARCH=$(uname -m | grep -oE 'mips|mipsel|aarch64|arm|i386|i686|x86_64')
   case "$ARCH" in
     mips)
       ARCH="mips32r1-msb"
@@ -344,9 +345,6 @@ download_nfqws() {
       ;;
     mipsel)
       ARCH="mips32r1-lsb"
-      ;;
-    armv)
-      ARCH="armv7l"
       ;;
     i386|i686)
       ARCH="x86"
@@ -358,20 +356,37 @@ download_nfqws() {
     URL=$(curl -s --connect-timeout 5 'https://api.github.com/repos/bol-van/zapret/releases/latest' |\
       grep 'browser_download_url.*openwrt-embedded' | cut -d '"' -f4)
     [ -n "$URL" ] || error "unable to get link to nfqws"
-    curl -sSL --connect-timeout 5 $URL -o zapret.tar.gz
+    curl -sSL --connect-timeout 5 $URL -o zapret.tar.gz || error "unable to download $URL"
   else
     URL=$(wget -q -T 5 'https://api.github.com/repos/bol-van/zapret/releases/latest' -O- |\
       grep 'browser_download_url.*openwrt-embedded' | cut -d '"' -f4)
     [ -n "$URL" ] || error "unable to get link to nfqws"
-    wget -q -T 5 $URL -O zapret.tar.gz
+    wget -q -T 5 $URL -O zapret.tar.gz || error "unable to download $URL"
   fi
-  [ -f zapret.tar.gz ] || error "unable to download $URL"
+  [ -s zapret.tar.gz ] || exit
+  [ $(cat zapret.tar.gz | head -c3) = "Not" ] && exit
+  log "downloaded successfully: $URL"
 
-  local nfqws=$(tar tzfv zapret.tar.gz | grep binaries/$ARCH/nfqws | awk '{print $6}')
-  [ -n "$nfqws" ] || error "nfqws not found in archive zapret.tar.gz for arch $ARCH"
-  tar xzf zapret.tar.gz "$nfqws" -O > nfqws
-  chmod +x nfqws
+  local NFQWS=$(tar tzfv zapret.tar.gz | grep binaries/$ARCH/nfqws | awk '{print $6}')
+  [ -n "$NFQWS" ] || error "nfqws not found in archive zapret.tar.gz for arch $ARCH"
+  tar xzf zapret.tar.gz "$NFQWS" -O > $NFQWS_BIN_GIT
+  [ -s $NFQWS_BIN_GIT ] && chmod +x $NFQWS_BIN_GIT
   rm -f zapret.tar.gz
+}
+
+download_list() {
+  local LIST="/tmp/filter.list"
+  if [ -f /usr/bin/curl ]; then
+    curl -sSL --connect-timeout 5 "$HOSTLIST_DOMAINS" -o $LIST || error "unable to download $HOSTLIST_DOMAINS"
+  else
+    wget -q -T 5 "$HOSTLIST_DOMAINS" -O $LIST || error "unable to download $HOSTLIST_DOMAINS"
+  fi
+  [ -s "$LIST" ] && log "downloaded successfully: $HOSTLIST_DOMAINS"
+}
+
+download() {
+  download_nfqws
+  download_list
 }
 
 case "$1" in
@@ -404,8 +419,14 @@ case "$1" in
     reload_service
     ;;
   download)
+    download
+    ;;
+  download-nfqws)
     download_nfqws
     ;;
+  download-list)
+    download_list
+    ;;
   *)
-    echo "Usage: $0 {start|stop|restart|download|status}"
+    echo "Usage: $0 {start|stop|restart|download|download-nfqws|download-list|status}"
 esac
