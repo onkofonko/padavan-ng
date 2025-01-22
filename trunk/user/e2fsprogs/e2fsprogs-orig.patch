@@ -1,6 +1,6 @@
-diff -urw e2fsprogs-1.47.1-ref/misc/mke2fs.conf.in e2fsprogs-1.47.1/misc/mke2fs.conf.in
---- e2fsprogs-1.47.1-ref/misc/mke2fs.conf.in	2024-05-29 01:34:20.699351940 +0000
-+++ e2fsprogs-1.47.1/misc/mke2fs.conf.in	2024-05-29 01:51:46.195465734 +0000
+diff -urw e2fsprogs-1.47.2-ref/misc/mke2fs.conf.in e2fsprogs-1.47.2/misc/mke2fs.conf.in
+--- e2fsprogs-1.47.2-ref/misc/mke2fs.conf.in	2024-05-29 01:34:20.699351940 +0000
++++ e2fsprogs-1.47.2/misc/mke2fs.conf.in	2024-05-29 01:51:46.195465734 +0000
 @@ -1,6 +1,6 @@
  [defaults]
 -	base_features = sparse_super,large_file,filetype,resize_inode,dir_index,ext_attr
