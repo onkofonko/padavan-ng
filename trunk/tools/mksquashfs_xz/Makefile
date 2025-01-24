@@ -1,6 +1,6 @@
 SRC_NAME1=squashfs-4.6.1
-SRC_NAME2=xz-5.6.3
-SRC_URL2=https://github.com/tukaani-project/xz/releases/download/v5.6.3/$(SRC_NAME2).tar.xz
+SRC_NAME2=xz-5.6.4
+SRC_URL2=https://github.com/tukaani-project/xz/releases/download/v5.6.4/$(SRC_NAME2).tar.xz
 
 #all: download_test extract_test config_xz build_xz build_squashfs
 all: config_xz build_xz build_squashfs
