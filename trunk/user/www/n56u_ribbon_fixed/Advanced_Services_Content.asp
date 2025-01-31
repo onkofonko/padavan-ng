@@ -108,14 +108,14 @@ function initial(){
 		showhide_div('row_doh_conf8', 0);
 	}else{
 		change_doh_enabled();
-		}
+	}
 
 	if(!found_app_stubby()){
 		showhide_div('row_stubby', 0);
 		showhide_div('row_stubby_conf', 0);
 	}else{
 		change_stubby_enabled();
-		}
+	}
 
 	if(!found_app_zapret()){
 		showhide_div('row_zapret', 0);
@@ -133,7 +133,7 @@ function initial(){
 		showhide_div('row_tor_conf', 0);
 	}else{
 		change_tor_enabled();
-		}
+	}
 
 	if(!found_app_privoxy()){
 		showhide_div('row_privoxy', 0);
@@ -153,6 +153,7 @@ function initial(){
 		showhide_div('row_dnscrypt_options', 0);
 	}else
 		change_dnscrypt_enabled();
+
 }
 
 function applyRule(){
