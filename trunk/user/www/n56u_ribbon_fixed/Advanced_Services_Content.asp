@@ -96,6 +96,16 @@ function initial(){
 		showhide_div('tbl_anon', 1);
 	}
 
+	$j('#doh_server_list1 option').clone().appendTo('#doh_server_list2');
+	$j('#doh_server_list1 option').clone().appendTo('#doh_server_list3');
+	$j('#doh_server_list1 option').clone().appendTo('#doh_server_list4');
+
+// fix for firefox
+	$j('#doh_server_list1').prop('selectedIndex', -1)
+	$j('#doh_server_list2').prop('selectedIndex', -1)
+	$j('#doh_server_list3').prop('selectedIndex', -1)
+	$j('#doh_server_list4').prop('selectedIndex', -1)
+
 	if(!found_app_doh()){
 		showhide_div('row_doh', 0);
 		showhide_div('row_doh_conf1', 0);
@@ -381,6 +391,11 @@ function change_doh_enabled(){
 	showhide_div('row_doh_conf6', v);
 	showhide_div('row_doh_conf7', v);
 	showhide_div('row_doh_conf8', v);
+}
+
+function on_doh_select_change(selectObject, i){
+	if ( !$j(selectObject).val() ) return false;
+	$j('input[name=' + "doh_server" + i +']').val($j(selectObject).val()).focus();
 }
 
 function change_stubby_enabled(){
@@ -717,8 +732,52 @@ function change_crond_enabled(){
                                         <tr id="row_doh_conf1" style="display:none">
                                             <td colspan="2" align="left" style="text-align:left;">
                                                 <span class="caption-bold">DoH Server 1:</span>
-                                                <input type="text" maxlength="60" class="input" size="10" style="width: 374px;" name="doh_server1" value="<% nvram_get_x("", "doh_server1"); %>" onkeypress="return is_string(this,event);"/>&nbsp;:
-                                                &nbsp;<span style="color:#888;">[65055]</span>
+                                                <input type="text" maxlength="60" class="input" size="10" style="width: 354px;" name="doh_server1" value="<% nvram_get_x("", "doh_server1"); %>" onkeypress="return is_string(this,event);"/>
++                                                <select class="input" id="doh_server_list1" style="max-width:20px;" onchange="on_doh_select_change(this, 1)" onclick="this.selectedIndex=-1;">
++                                                    <option value="https://0ms.dev/dns-query">0ms DNS</option>
++                                                    <option value="https://dns.adguard-dns.com/dns-query">Adguard: ads and trackers</option>
++                                                    <option value="https://family.adguard-dns.com/dns-query">Adguard: family filter</option>
++                                                    <option value="https://unfiltered.adguard-dns.com/dns-query">Adguard: unfiltered</option>
++                                                    <option value="https://blitz.ahadns.com/1:1">AhaDNS: ads, malware, privacy</option>
++                                                    <option value="https://blitz.ahadns.com/1:27">AhaDNS: no-Google</option>
++                                                    <option value="https://blitz.ahadns.com/1:4">AhaDNS: privacy</option>
++                                                    <option value="https://blitz.ahadns.com/1:5">AhaDNS: privacy strict</option>
++                                                    <option value="https://dns.alidns.com/dns-query">Ali DNS</option>
++                                                    <option value="https://dns.bebasid.com/dns-query">BebasDNS</option>
++                                                    <option value="https://antivirus.bebasid.com/dns-query">BebasDNS: antivirus</option>
++                                                    <option value="https://internetsehat.bebasid.com/dns-query">BebasDNS: family</option>
++                                                    <option value="https://dns.bebasid.com/unfiltered">BebasDNS: unfiltered</option>
++                                                    <option value="https://dns.cfiec.net/dns-query">CFIEC Public DNS</option>
++                                                    <option value="https://doh.opendns.com/dns-query">Cisco OpenDNS</option>
++                                                    <option value="https://doh.familyshield.opendns.com/dns-query">Cisco OpenDNS: family</option>
++                                                    <option value="https://doh.sandbox.opendns.com/dns-query">Cisco OpenDNS: unfiltered</option>
++                                                    <option value="https://doh.cleanbrowsing.org/doh/adult-filter">CleanBrowsing: adult</option>
++                                                    <option value="https://doh.cleanbrowsing.org/doh/family-filter">CleanBrowsing: family</option>
++                                                    <option value="https://doh.cleanbrowsing.org/doh/security-filter">CleanBrowsing: security</option>
++                                                    <option value="https://dns.cloudflare.com/dns-query">Cloudflare</option>
++                                                    <option value="https://family.cloudflare-dns.com/dns-query">Cloudflare: family</option>
++                                                    <option value="https://security.cloudflare-dns.com/dns-query">Cloudflare: security</option>
++                                                    <option value="https://dns.comss.one/dns-query">Comss.one DNS</option>
++                                                    <option value="https://freedns.controld.com/p2">ControlD: ads and trackers</option>
++                                                    <option value="https://freedns.controld.com/family">ControlD: family filter</option>
++                                                    <option value="https://freedns.controld.com/p1">ControlD: malware</option>
++                                                    <option value="https://freedns.controld.com/p0">ControlD: unfiltered</option>
++                                                    <option value="https://dns.decloudus.com/dns-query">DeCloudUs DNS</option>
++                                                    <option value="https://dns.pub/dns-query">DNSPod Public DNS+</option>
++                                                    <option value="https://doh.dns.sb/dns-query">DNS.SB</option>
++                                                    <option value="https://dns.google/dns-query">Google</option>
++                                                    <option value="https://dns.nextdns.io">NextDNS</option>
++                                                    <option value="https://ada.openbld.net/dns-query">OpenBLD.net DNS</option>
++                                                    <option value="https://dns.quad9.net/dns-query">Quad9</option>
++                                                    <option value="https://family.rabbitdns.org/dns-query">Rabbit DNS: family</option>
++                                                    <option value="https://security.rabbitdns.org/dns-query">Rabbit DNS: security</option>
++                                                    <option value="https://dns.rabbitdns.org/dns-query">Rabbit DNS: unfiltered</option>
++                                                    <option value="https://wikimedia-dns.org/dns-query">Wikimedia DNS</option>
++                                                    <option value="https://common.dot.dns.yandex.net/dns-query">Yandex</option>
++                                                    <option value="https://family.dot.dns.yandex.net/dns-query">Yandex: family</option>
++                                                    <option value="https://safe.dot.dns.yandex.net/dns-query">Yandex: security</option>
++                                                </select>
++                                                &nbsp;:&nbsp;<span style="color:#888;">[65055]</span>
                                         </td>
                                         </tr>
                                         <tr id="row_doh_conf2" style="display:none">
@@ -731,8 +790,9 @@ function change_crond_enabled(){
                                         <tr id="row_doh_conf3" style="display:none">
                                             <td colspan="2" align="left" style="text-align:left;">
                                                 <span class="caption-bold">DoH Server 2:</span>
-                                                <input type="text" maxlength="60" class="input" size="10" style="width: 374px;" name="doh_server2" value="<% nvram_get_x("", "doh_server2"); %>" onkeypress="return is_string(this,event);"/>&nbsp;:
-                                                &nbsp;<span style="color:#888;">[65056]</span>
+                                                <input type="text" maxlength="60" class="input" size="10" style="width: 354px;" name="doh_server2" value="<% nvram_get_x("", "doh_server2"); %>" onkeypress="return is_string(this,event);"/>
++                                                <select class="input" id="doh_server_list2" style="max-width:20px;" onchange="on_doh_select_change(this, 2)" onfocus="this.selectedIndex=-1;"></select>
++                                                &nbsp;:&nbsp;<span style="color:#888;">[65056]</span>
                                             </td>
                                         </tr>
                                         <tr id="row_doh_conf4" style="display:none">
@@ -745,8 +805,9 @@ function change_crond_enabled(){
                                         <tr id="row_doh_conf5" style="display:none">
                                             <td colspan="2" align="left" style="text-align:left;">
                                                 <span class="caption-bold">DoH Server 3:</span>
-                                                <input type="text" maxlength="60" class="input" size="10" style="width: 374px;" name="doh_server3" value="<% nvram_get_x("", "doh_server3"); %>" onkeypress="return is_string(this,event);"/>&nbsp;:
-                                                &nbsp;<span style="color:#888;">[65057]</span>
+                                                <input type="text" maxlength="60" class="input" size="10" style="width: 354px;" name="doh_server3" value="<% nvram_get_x("", "doh_server3"); %>" onkeypress="return is_string(this,event);"/>
++                                                <select class="input" id="doh_server_list3" style="max-width:20px;" onchange="on_doh_select_change(this, 3)" onfocus="this.selectedIndex=-1;"></select>
++                                                &nbsp;:&nbsp;<span style="color:#888;">[65057]</span>
                                             </td>
                                         </tr>
                                         <tr id="row_doh_conf6" style="display:none">
@@ -759,8 +820,9 @@ function change_crond_enabled(){
                                         <tr id="row_doh_conf7" style="display:none">
                                             <td colspan="2" align="left" style="text-align:left;">
                                                 <span class="caption-bold">DoH Server 4:</span>
-                                                <input type="text" maxlength="60" class="input" size="10" style="width: 374px;" name="doh_server4" value="<% nvram_get_x("", "doh_server4"); %>" onkeypress="return is_string(this,event);"/>&nbsp;:
-                                                &nbsp;<span style="color:#888;">[65058]</span>
+                                                <input type="text" maxlength="60" class="input" size="10" style="width: 354px;" name="doh_server4" value="<% nvram_get_x("", "doh_server4"); %>" onkeypress="return is_string(this,event);"/>
++                                                <select class="input" id="doh_server_list4" style="max-width:20px;" onchange="on_doh_select_change(this, 4)" onfocus="this.selectedIndex=-1;"></select>
++                                                &nbsp;:&nbsp;<span style="color:#888;">[65058]</span>
                                             </td>
                                         </tr>
                                         <tr id="row_doh_conf8" style="display:none">
