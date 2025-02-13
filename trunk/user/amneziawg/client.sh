@@ -217,9 +217,9 @@ start() {
 
   $log "Setting up interface"
   [ -f "$preup" ] && . "$preup"
-  #modprobe amneziawg
-  #ip link add $iface type amneziawg
-  amneziawg-go $iface
+  modprobe amneziawg
+  ip link add $iface type amneziawg
+  #amneziawg-go $iface
   ip addr add $client_addr/$client_mask dev $iface
   awg setconf $iface "$filtered_config_file"
   ip link set $iface up mtu $mtu
