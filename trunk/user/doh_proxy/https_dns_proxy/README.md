@@ -187,6 +187,8 @@ Usage: ./https_dns_proxy [-a <listen_addr>] [-p <listen_port>]
   -x                     Use HTTP/1.1 instead of HTTP/2. Useful with broken
                          or limited builds of libcurl.
   -q                     Use HTTP/3 (QUIC) only.
+  -m max_idle_time       Maximum idle time in seconds allowed for reusing a HTTPS connection.
+                         (Default: 118, Min: 0, Max: 3600)
   -C ca_path             Optional file containing CA certificates.
   -c dscp_codepoint      Optional DSCP codepoint to set on upstream HTTPS server
                          connections. (Min: 0, Max: 63)
