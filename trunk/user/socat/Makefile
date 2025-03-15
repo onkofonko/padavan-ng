@@ -1,5 +1,5 @@
-SRC_NAME = socat-1.8.0.0
-SRC_URL = http://www.dest-unreach.org/socat/download/$(SRC_NAME).tar.gz
+SRC_NAME = socat-1.8.0.3
+SRC_URL = http://www.dest-unreach.org/socat/download/$(SRC_NAME).tar.bz2
 THISDIR = $(shell pwd)
 
 # all: download_test extract_test config_test
@@ -8,12 +8,12 @@ all: config_test
 
 download_test:
 	( if [ ! -f $(SRC_NAME).tar.bz2 ]; then \
-		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.gz $(SRC_URL); \
+		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.bz2 $(SRC_URL); \
 	fi )
 
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
-		tar xf $(SRC_NAME).tar.gz; \
+		tar xf $(SRC_NAME).tar.bz2; \
 		sed -i 's/CC=\\"\$$(CC)\\"/'\''CC="\$$(CC)"'\''/g' $(SRC_NAME)/Makefile.in; \
 	fi )
 
