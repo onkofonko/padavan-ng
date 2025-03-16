@@ -530,8 +530,8 @@ if [ "$CONFIG_FIRMWARE_INCLUDE_WIREGUARD" = "y" ]; then
 fi
 
 if [ "$CONFIG_FIRMWARE_INCLUDE_AMNEZIAWG" = "y" ]; then
-        func_enable_kernel_param_as_m "CONFIG_AMNEZIAWG"
-        func_enable_kernel_param "CONFIG_AMNEZIAWG_DEBUG"
+	func_enable_kernel_param_as_m "CONFIG_AMNEZIAWG"
+	func_enable_kernel_param "CONFIG_AMNEZIAWG_DEBUG"
 fi
 
 if [ "$CONFIG_FIRMWARE_INCLUDE_SHORTCUT_FE" = "y" ]; then
@@ -541,10 +541,10 @@ if [ "$CONFIG_FIRMWARE_INCLUDE_SHORTCUT_FE" = "y" ]; then
 fi
 ############################## NFQWS SUPPORT ##########################
 if [ "$CONFIG_FIRMWARE_INCLUDE_NFQWS" = "y" ] ; then
-        func_enable_kernel_param_as_m "CONFIG_NETFILTER_NETLINK_QUEUE"
-        func_enable_kernel_param_as_m "CONFIG_NETFILTER_XT_TARGET_NFQUEUE"
-        func_enable_kernel_param_as_m "CONFIG_IP_NF_QUEUE"
-        func_enable_kernel_param_as_m "CONFIG_IP6_NF_QUEUE"
+	func_enable_kernel_param_as_m "CONFIG_NETFILTER_NETLINK_QUEUE"
+	func_enable_kernel_param_as_m "CONFIG_NETFILTER_XT_TARGET_NFQUEUE"
+	func_enable_kernel_param_as_m "CONFIG_IP_NF_QUEUE"
+	func_enable_kernel_param_as_m "CONFIG_IP6_NF_QUEUE"
 fi
 
 #######################################################################
