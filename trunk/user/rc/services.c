@@ -343,7 +343,6 @@ void stop_zapret(void){
 
 void start_zapret(void){
 	int zapret_mode = nvram_get_int("zapret_enable");
-
 	if (zapret_mode == 1)
 		eval("/usr/bin/zapret.sh", "start");
 }
@@ -351,6 +350,12 @@ void start_zapret(void){
 void restart_zapret(void){
 	stop_zapret();
 	start_zapret();
+}
+
+void reload_zapret(void){
+	int zapret_mode = nvram_get_int("zapret_enable");
+	if (zapret_mode == 1)
+		eval("/usr/bin/zapret.sh", "reload");
 }
 #endif
 #if defined(APP_TOR)
