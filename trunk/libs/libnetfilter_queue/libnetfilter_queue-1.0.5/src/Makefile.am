@@ -31,6 +31,7 @@ libnetfilter_queue_la_LDFLAGS = -Wc,-nostartfiles -lnfnetlink \
 libnetfilter_queue_la_SOURCES = libnetfilter_queue.c	\
 				nlmsg.c			\
 				extra/checksum.c	\
+				extra/icmp.c		\
 				extra/ipv6.c		\
 				extra/tcp.c		\
 				extra/ipv4.c		\

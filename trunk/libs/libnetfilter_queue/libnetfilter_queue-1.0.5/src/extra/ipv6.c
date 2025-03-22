@@ -67,9 +67,18 @@ int nfq_ip6_set_transport_header(struct pkt_buff *pktb, struct ip6_hdr *ip6h,
 	uint8_t nexthdr = ip6h->ip6_nxt;
 	uint8_t *cur = (uint8_t *)ip6h + sizeof(struct ip6_hdr);
 
-	while (nexthdr != target) {
+	while (nexthdr == IPPROTO_HOPOPTS ||
+	       nexthdr == IPPROTO_ROUTING ||
+	       nexthdr == IPPROTO_FRAGMENT ||
+	       nexthdr == IPPROTO_AH ||
+	       nexthdr == IPPROTO_NONE ||
+	       nexthdr == IPPROTO_DSTOPTS) {
 		struct ip6_ext *ip6_ext;
 		uint32_t hdrlen;
+
+		/* Extension header was requested, we're done. */
+		if (nexthdr == target)
+			break;
 
 		/* No more extensions, we're done. */
 		if (nexthdr == IPPROTO_NONE) {
@@ -107,11 +116,13 @@ int nfq_ip6_set_transport_header(struct pkt_buff *pktb, struct ip6_hdr *ip6h,
 		} else if (nexthdr == IPPROTO_AH)
 			hdrlen = (ip6_ext->ip6e_len + 2) << 2;
 		else
-			hdrlen = ip6_ext->ip6e_len;
+			hdrlen = (ip6_ext->ip6e_len + 1) << 3;
 
 		nexthdr = ip6_ext->ip6e_nxt;
 		cur += hdrlen;
 	}
+	if (nexthdr != target)
+		cur = NULL;
 	pktb->transport_header = cur;
 	return cur ? 1 : 0;
 }
