@@ -550,9 +550,9 @@
 			{"zapret_enable", "", NULL, EVM_RESTART_ZAPRET},
 			{"zapretc.config", "File", NULL, EVM_RESTART_ZAPRET|EVM_BLOCK_UNSAFE},
 			{"zapretc.strategy", "File", NULL, EVM_RESTART_ZAPRET|EVM_BLOCK_UNSAFE},
-			{"zapretc.auto.list", "File", NULL, EVM_RESTART_ZAPRET|EVM_BLOCK_UNSAFE},
-			{"zapretc.user.list", "File", NULL, EVM_RESTART_ZAPRET|EVM_BLOCK_UNSAFE},
-			{"zapretc.exclude.list", "File", NULL, EVM_RESTART_ZAPRET|EVM_BLOCK_UNSAFE},
+			{"zapretc.auto.list", "File", NULL, EVM_BLOCK_UNSAFE},
+			{"zapretc.user.list", "File", NULL, EVM_BLOCK_UNSAFE},
+			{"zapretc.exclude.list", "File", NULL, EVM_BLOCK_UNSAFE},
 #endif
 #if defined(APP_TOR)
 			{"tor_enable", "", NULL, EVM_RESTART_TOR},

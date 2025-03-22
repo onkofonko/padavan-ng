@@ -810,7 +810,7 @@ restart_firewall(void)
 	update_upnp();
 
 #if defined(APP_ZAPRET)
-	restart_zapret();
+	reload_zapret();
 #endif
 }
 
