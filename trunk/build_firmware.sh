@@ -543,8 +543,6 @@ fi
 if [ "$CONFIG_FIRMWARE_INCLUDE_NFQWS" = "y" ] ; then
 	func_enable_kernel_param_as_m "CONFIG_NETFILTER_NETLINK_QUEUE"
 	func_enable_kernel_param_as_m "CONFIG_NETFILTER_XT_TARGET_NFQUEUE"
-	func_enable_kernel_param_as_m "CONFIG_IP_NF_QUEUE"
-	func_enable_kernel_param_as_m "CONFIG_IP6_NF_QUEUE"
 fi
 
 #######################################################################
