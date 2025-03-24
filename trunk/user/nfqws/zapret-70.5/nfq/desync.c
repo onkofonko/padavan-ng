@@ -66,6 +66,9 @@ const uint8_t fake_tls_clienthello_default[648] = {
 #define PKTDATA_MAXDUMP 32
 #define IP_MAXDUMP 80
 
+#define TCP_MAX_REASM 16384
+#define UDP_MAX_REASM 16384
+
 bool desync_valid_zero_stage(enum dpi_desync_mode mode)
 {
 	return mode==DESYNC_SYNACK || mode==DESYNC_SYNDATA;
@@ -606,45 +609,48 @@ static uint16_t IP4_IP_ID_FIX(const struct ip *ip)
 // fake_mod buffer must at least sizeof(desync_profile->fake_tls)
 // size does not change
 // return : true - altered, false - not altered
-static bool runtime_tls_mod(const struct desync_profile *dp, uint8_t *fake_mod, const uint8_t *payload, size_t payload_len)
+static bool runtime_tls_mod(int fake_n,const struct fake_tls_mod_cache *modcache, uint8_t fake_tls_mod, const uint8_t *fake_data, size_t fake_data_size, const uint8_t *payload, size_t payload_len, uint8_t *fake_mod)
 {
 	bool b=false;
-	if (dp->fake_tls_mod & FAKE_TLS_MOD_PADENCAP)
+	if (modcache) // it's filled only if it's TLS
 	{
-		size_t sz_rec = pntoh16(dp->fake_tls+3) + payload_len;
-		size_t sz_handshake = pntoh24(dp->fake_tls+6) + payload_len;
-		size_t sz_ext = pntoh16(dp->fake_tls+dp->fake_tls_extlen_offset) + payload_len;
-		size_t sz_pad = pntoh16(dp->fake_tls+dp->fake_tls_padlen_offset) + payload_len;
-		if ((sz_rec & ~0xFFFF) || (sz_handshake & ~0xFFFFFF) || (sz_ext & ~0xFFFF) || (sz_pad & ~0xFFFF))
-			DLOG("cannot apply padencap tls mod. length overflow.\n");
-		else
+		if (fake_tls_mod & FAKE_TLS_MOD_PADENCAP)
 		{
-			memcpy(fake_mod,dp->fake_tls,dp->fake_tls_size);
-			phton16(fake_mod+3,(uint16_t)sz_rec);
-			phton24(fake_mod+6,(uint32_t)sz_handshake);
-			phton16(fake_mod+dp->fake_tls_extlen_offset,(uint16_t)sz_ext);
-			phton16(fake_mod+dp->fake_tls_padlen_offset,(uint16_t)sz_pad);
+			size_t sz_rec = pntoh16(fake_data+3) + payload_len;
+			size_t sz_handshake = pntoh24(fake_data+6) + payload_len;
+			size_t sz_ext = pntoh16(fake_data+modcache->extlen_offset) + payload_len;
+			size_t sz_pad = pntoh16(fake_data+modcache->padlen_offset) + payload_len;
+			if ((sz_rec & ~0xFFFF) || (sz_handshake & ~0xFFFFFF) || (sz_ext & ~0xFFFF) || (sz_pad & ~0xFFFF))
+				DLOG("fake[%d] cannot apply padencap tls mod. length overflow.\n", fake_n);
+			else
+			{
+				memcpy(fake_mod,fake_data,fake_data_size);
+				phton16(fake_mod+3,(uint16_t)sz_rec);
+				phton24(fake_mod+6,(uint32_t)sz_handshake);
+				phton16(fake_mod+modcache->extlen_offset,(uint16_t)sz_ext);
+				phton16(fake_mod+modcache->padlen_offset,(uint16_t)sz_pad);
+				b=true;
+			}
+		}
+		if (fake_tls_mod & FAKE_TLS_MOD_RND)
+		{
+			if (!b)	memcpy(fake_mod,fake_data,fake_data_size);
+			fill_random_bytes(fake_mod+11,32); // random
+			fill_random_bytes(fake_mod+44,fake_mod[43]); // session id
 			b=true;
 		}
-	}
-	if (dp->fake_tls_mod & FAKE_TLS_MOD_RND)
-	{
-		if (!b)	memcpy(fake_mod,dp->fake_tls,dp->fake_tls_size);
-		fill_random_bytes(fake_mod+11,32); // random
-		fill_random_bytes(fake_mod+44,fake_mod[43]); // session id
-		b=true;
-	}
-	if (dp->fake_tls_mod & FAKE_TLS_MOD_DUP_SID)
-	{
-		if (dp->fake_tls[43]!=payload[43])
-			DLOG("cannot apply dupsid tls mod. fake and orig session id length mismatch.\n");
-		else if (payload_len<(44+payload[43]))
-			DLOG("cannot apply dupsid tls mod. data payload is not valid.\n");
-		else
+		if (fake_tls_mod & FAKE_TLS_MOD_DUP_SID)
 		{
-			if (!b)	memcpy(fake_mod,dp->fake_tls,dp->fake_tls_size);
-			memcpy(fake_mod+44,payload+44,fake_mod[43]); // session id
-			b=true;
+			if (fake_data[43]!=payload[43])
+				DLOG("fake[%d] cannot apply dupsid tls mod. fake and orig session id length mismatch.\n",fake_n);
+			else if (payload_len<(44+payload[43]))
+				DLOG("fake[%d] cannot apply dupsid tls mod. data payload is not valid.\n",fake_n);
+			else
+			{
+				if (!b)	memcpy(fake_mod,fake_data,fake_data_size);
+				memcpy(fake_mod+44,payload+44,fake_mod[43]); // session id
+				b=true;
+			}
 		}
 	}
 	return b;
@@ -880,8 +886,8 @@ static uint8_t dpi_desync_tcp_packet_play(bool replay, size_t reasm_offset, uint
 
 	if (!(dis->tcp->th_flags & TH_SYN) && dis->len_payload)
 	{
-		const uint8_t *fake;
-		size_t fake_size;
+		struct blob_collection_head *fake;
+
 		char host[256];
 		bool bHaveHost=false;
 		uint8_t *p, *phost=NULL;
@@ -893,7 +899,6 @@ static uint8_t dpi_desync_tcp_packet_play(bool replay, size_t reasm_offset, uint
 		int i;
 		uint16_t ip_id;
 		t_l7proto l7proto = UNKNOWN;
-		uint8_t fake_mod[sizeof(dp->fake_tls)];
 
 		if (replay)
 		{
@@ -952,7 +957,7 @@ static uint8_t dpi_desync_tcp_packet_play(bool replay, size_t reasm_offset, uint
 					!(ctrack->req_seq_finalized && seq_within(ctrack->seq_last, ctrack->req_seq_start, ctrack->req_seq_end)))
 				{
 					// do not reconstruct unexpected large payload (they are feeding garbage ?)
-					if (!reasm_orig_start(ctrack,IPPROTO_TCP,TLSRecordLen(dis->data_payload),16384,dis->data_payload,dis->len_payload))
+					if (!reasm_orig_start(ctrack,IPPROTO_TCP,TLSRecordLen(dis->data_payload),TCP_MAX_REASM,dis->data_payload,dis->len_payload))
 					{
 						reasm_orig_cancel(ctrack);
 						return verdict;
@@ -1183,16 +1188,13 @@ static uint8_t dpi_desync_tcp_packet_play(bool replay, size_t reasm_offset, uint
 		switch(l7proto)
 		{
 			case HTTP:
-				fake = dp->fake_http;
-				fake_size = dp->fake_http_size;
+				fake = &dp->fake_http;
 				break;
 			case TLS:
-				fake = runtime_tls_mod(dp,fake_mod,rdata_payload,rlen_payload) ? fake_mod : dp->fake_tls;
-				fake_size = dp->fake_tls_size;
+				fake = &dp->fake_tls;
 				break;
 			default:
-				fake = dp->fake_unknown;
-				fake_size = dp->fake_unknown_size;
+				fake = &dp->fake_unknown;
 				break;
 		}
 		if (dp->desync_mode==DESYNC_MULTISPLIT || dp->desync_mode==DESYNC_MULTIDISORDER || dp->desync_mode2==DESYNC_MULTISPLIT || dp->desync_mode2==DESYNC_MULTIDISORDER)
@@ -1273,13 +1275,8 @@ static uint8_t dpi_desync_tcp_packet_play(bool replay, size_t reasm_offset, uint
 		else
 			seqovl_pos = 0;
 
-		// we do not need reasm buffer anymore
-		reasm_orig_cancel(ctrack);
-		rdata_payload=NULL;
-
 		uint32_t fooling_orig = FOOL_NONE;
 		bool bFake = false;
-		pkt1_len = sizeof(pkt1);
 		switch(dp->desync_mode)
 		{
 			case DESYNC_FAKE_KNOWN:
@@ -1291,28 +1288,69 @@ static uint8_t dpi_desync_tcp_packet_play(bool replay, size_t reasm_offset, uint
 				}
 			case DESYNC_FAKE:
 				if (reasm_offset) break;
-				if (!prepare_tcp_segment((struct sockaddr *)&src, (struct sockaddr *)&dst, flags_orig, dis->tcp->th_seq, dis->tcp->th_ack, dis->tcp->th_win, scale_factor, timestamps,
-					ttl_fake,IP4_TOS(dis->ip),IP4_IP_ID_FIX(dis->ip),IP6_FLOW(dis->ip6),
-					dp->desync_fooling_mode,dp->desync_badseq_increment,dp->desync_badseq_ack_increment,
-					fake, fake_size, pkt1, &pkt1_len))
+
 				{
-					return verdict;
+					struct blob_item *fake_item;
+					uint8_t *fake_data;
+					uint8_t fake_data_buf[FAKE_MAX_TCP];
+					int n=0;
+
+					ip_id = IP4_IP_ID_FIX(dis->ip);
+
+					LIST_FOREACH(fake_item, fake, next)
+					{
+						n++;
+						switch(l7proto)
+						{
+							case TLS:
+								if ((fake_item->size <= sizeof(fake_data_buf)) &&
+									runtime_tls_mod(n,(struct fake_tls_mod_cache *)fake_item->extra, dp->fake_tls_mod, fake_item->data, fake_item->size, rdata_payload, rlen_payload, fake_data_buf))
+								{
+									fake_data = fake_data_buf;
+									break;
+								}
+							default:
+								fake_data = fake_item->data;
+						}
+						pkt1_len = sizeof(pkt1);
+						if (!prepare_tcp_segment((struct sockaddr *)&src, (struct sockaddr *)&dst, flags_orig, dis->tcp->th_seq, dis->tcp->th_ack, dis->tcp->th_win, scale_factor, timestamps,
+							ttl_fake,IP4_TOS(dis->ip),ip_id,IP6_FLOW(dis->ip6),
+							dp->desync_fooling_mode,dp->desync_badseq_increment,dp->desync_badseq_ack_increment,
+							fake_data, fake_item->size, pkt1, &pkt1_len))
+						{
+							reasm_orig_cancel(ctrack);
+							return verdict;
+						}
+						DLOG("sending fake[%d] : ", n);
+						hexdump_limited_dlog(fake_data,fake_item->size,PKTDATA_MAXDUMP); DLOG("\n");
+						if (!rawsend_rep(dp->desync_repeats,(struct sockaddr *)&dst, desync_fwmark, ifout , pkt1, pkt1_len))
+						{
+							reasm_orig_cancel(ctrack);
+							return verdict;
+						}
+						ip_id=IP4_IP_ID_NEXT(ip_id);
+					}
 				}
-				DLOG("sending fake : ");
-				hexdump_limited_dlog(fake,fake_size,PKTDATA_MAXDUMP); DLOG("\n");
 				bFake = true;
 				break;
 			case DESYNC_RST:
 			case DESYNC_RSTACK:
 				if (reasm_offset) break;
+				pkt1_len = sizeof(pkt1);
 				if (!prepare_tcp_segment((struct sockaddr *)&src, (struct sockaddr *)&dst, TH_RST | (dp->desync_mode==DESYNC_RSTACK ? TH_ACK:0), dis->tcp->th_seq, dis->tcp->th_ack, dis->tcp->th_win, scale_factor, timestamps,
 					ttl_fake,IP4_TOS(dis->ip),IP4_IP_ID_FIX(dis->ip),IP6_FLOW(dis->ip6),
 					dp->desync_fooling_mode,dp->desync_badseq_increment,dp->desync_badseq_ack_increment,
 					NULL, 0, pkt1, &pkt1_len))
 				{
+					reasm_orig_cancel(ctrack);
 					return verdict;
 				}
 				DLOG("sending fake RST/RSTACK\n");
+				if (!rawsend_rep(dp->desync_repeats,(struct sockaddr *)&dst, desync_fwmark, ifout , pkt1, pkt1_len))
+				{
+					reasm_orig_cancel(ctrack);
+					return verdict;
+				}
 				bFake = true;
 				break;
 			case DESYNC_HOPBYHOP:
@@ -1323,8 +1361,12 @@ static uint8_t dpi_desync_tcp_packet_play(bool replay, size_t reasm_offset, uint
 					(!split_pos && (dp->desync_mode2==DESYNC_FAKEDSPLIT || dp->desync_mode2==DESYNC_FAKEDDISORDER)) ||
 					(!multisplit_count && (dp->desync_mode2==DESYNC_MULTISPLIT || dp->desync_mode2==DESYNC_MULTIDISORDER))))
 				{
+					reasm_orig_cancel(ctrack);
+					rdata_payload=NULL;
+
+					pkt1_len = sizeof(pkt1);
 					if (!prepare_tcp_segment((struct sockaddr *)&src, (struct sockaddr *)&dst, flags_orig, dis->tcp->th_seq, dis->tcp->th_ack, dis->tcp->th_win, scale_factor, timestamps,
-						ttl_orig,IP4_TOS(dis->ip),IP4_IP_ID_FIX(dis->ip),IP6_FLOW(dis->ip6),
+						ttl_orig,0,0,IP6_FLOW(dis->ip6),
 						fooling_orig,0,0,
 						dis->data_payload, dis->len_payload, pkt1, &pkt1_len))
 					{
@@ -1341,11 +1383,9 @@ static uint8_t dpi_desync_tcp_packet_play(bool replay, size_t reasm_offset, uint
 				break;
 		}
 
-		if (bFake)
-		{
-			if (!rawsend_rep(dp->desync_repeats,(struct sockaddr *)&dst, desync_fwmark, ifout , pkt1, pkt1_len))
-				return verdict;
-		}
+		// we do not need reasm buffer anymore
+		reasm_orig_cancel(ctrack);
+		rdata_payload=NULL;
 
 		enum dpi_desync_mode desync_mode = dp->desync_mode2==DESYNC_NONE ? dp->desync_mode : dp->desync_mode2;
 		switch(desync_mode)
@@ -1875,8 +1915,7 @@ static uint8_t dpi_desync_udp_packet_play(bool replay, size_t reasm_offset, uint
 
 	if (dis->len_payload)
 	{
-		const uint8_t *fake;
-		size_t fake_size;
+		struct blob_collection_head *fake;
 		char host[256];
 		bool bHaveHost=false;
 		uint16_t ip_id;
@@ -1917,29 +1956,82 @@ static uint8_t dpi_desync_udp_packet_play(bool replay, size_t reasm_offset, uint
 						return verdict; // cannot be first packet
 					}
 				}
-
-				uint8_t defrag[16384];
+				uint8_t defrag[UDP_MAX_REASM];
 				size_t hello_offset, hello_len, defrag_len = sizeof(defrag);
-				if (QUICDefragCrypto(pclean,clean_len,defrag,&defrag_len))
+				bool bFull;
+				if (QUICDefragCrypto(pclean,clean_len,defrag,&defrag_len,&bFull))
 				{
-					bool bIsHello = IsQUICCryptoHello(defrag, defrag_len, &hello_offset, &hello_len);
-					bool bReqFull = bIsHello ? IsTLSHandshakeFull(defrag+hello_offset,hello_len) : false;
-
-					DLOG(bIsHello ? bReqFull ? "packet contains full TLS ClientHello\n" : "packet contains partial TLS ClientHello\n" : "packet does not contain TLS ClientHello\n");
-
-					if (ctrack)
+					if (bFull)
 					{
-						if (bIsHello && !bReqFull && ReasmIsEmpty(&ctrack->reasm_orig))
+						DLOG("QUIC initial contains CRYPTO with full fragment coverage\n");
+
+						bool bIsHello = IsQUICCryptoHello(defrag, defrag_len, &hello_offset, &hello_len);
+						bool bReqFull = bIsHello ? IsTLSHandshakeFull(defrag+hello_offset,hello_len) : false;
+
+						DLOG(bIsHello ? bReqFull ? "packet contains full TLS ClientHello\n" : "packet contains partial TLS ClientHello\n" : "packet does not contain TLS ClientHello\n");
+
+						if (ctrack)
 						{
-							// preallocate max buffer to avoid reallocs that cause memory copy
-							if (!reasm_orig_start(ctrack,IPPROTO_UDP,16384,16384,clean,clean_len))
+							if (bIsHello && !bReqFull && ReasmIsEmpty(&ctrack->reasm_orig))
+							{
+								// preallocate max buffer to avoid reallocs that cause memory copy
+								if (!reasm_orig_start(ctrack,IPPROTO_UDP,UDP_MAX_REASM,UDP_MAX_REASM,clean,clean_len))
+								{
+									reasm_orig_cancel(ctrack);
+									return verdict;
+								}
+							}
+							if (!ReasmIsEmpty(&ctrack->reasm_orig))
+							{
+								verdict_udp_csum_fix(verdict, dis->udp, dis->transport_len, dis->ip, dis->ip6);
+								if (rawpacket_queue(&ctrack->delayed, &dst, desync_fwmark, ifout, dis->data_pkt, dis->len_pkt, dis->len_payload))
+								{
+									DLOG("DELAY desync until reasm is complete (#%u)\n", rawpacket_queue_count(&ctrack->delayed));
+								}
+								else
+								{
+									DLOG_ERR("rawpacket_queue failed !\n");
+									reasm_orig_cancel(ctrack);
+									return verdict;
+								}
+								if (bReqFull)
+								{
+									replay_queue(&ctrack->delayed);
+									reasm_orig_fin(ctrack);
+								}
+								return ct_new_postnat_fix_udp(ctrack, dis->ip, dis->ip6, dis->udp, &dis->len_pkt);
+							}
+						}
+
+						if (bIsHello)
+						{
+							bHaveHost = TLSHelloExtractHostFromHandshake(defrag + hello_offset, hello_len, host, sizeof(host), TLS_PARTIALS_ENABLE);
+							if (!bHaveHost && dp->desync_skip_nosni)
 							{
 								reasm_orig_cancel(ctrack);
+								DLOG("not applying tampering to QUIC ClientHello without hostname in the SNI\n");
 								return verdict;
 							}
 						}
-						if (!ReasmIsEmpty(&ctrack->reasm_orig))
+						else
 						{
+							if (!quic_reasm_cancel(ctrack,"QUIC initial without ClientHello")) return verdict;
+						}
+					}
+					else
+					{
+						DLOG("QUIC initial contains CRYPTO with partial fragment coverage\n");
+						if (ctrack)
+						{
+							if (ReasmIsEmpty(&ctrack->reasm_orig))
+							{
+								// preallocate max buffer to avoid reallocs that cause memory copy
+								if (!reasm_orig_start(ctrack,IPPROTO_UDP,UDP_MAX_REASM,UDP_MAX_REASM,clean,clean_len))
+								{
+									reasm_orig_cancel(ctrack);
+									return verdict;
+								}
+							}
 							verdict_udp_csum_fix(verdict, dis->udp, dis->transport_len, dis->ip, dis->ip6);
 							if (rawpacket_queue(&ctrack->delayed, &dst, desync_fwmark, ifout, dis->data_pkt, dis->len_pkt, dis->len_payload))
 							{
@@ -1951,28 +2043,9 @@ static uint8_t dpi_desync_udp_packet_play(bool replay, size_t reasm_offset, uint
 								reasm_orig_cancel(ctrack);
 								return verdict;
 							}
-							if (bReqFull)
-							{
-								replay_queue(&ctrack->delayed);
-								reasm_orig_fin(ctrack);
-							}
 							return ct_new_postnat_fix_udp(ctrack, dis->ip, dis->ip6, dis->udp, &dis->len_pkt);
 						}
-					}
-			
-					if (bIsHello)
-					{
-						bHaveHost = TLSHelloExtractHostFromHandshake(defrag + hello_offset, hello_len, host, sizeof(host), TLS_PARTIALS_ENABLE);
-						if (!bHaveHost && dp->desync_skip_nosni)
-						{
-							reasm_orig_cancel(ctrack);
-							DLOG("not applying tampering to QUIC ClientHello without hostname in the SNI\n");
-							return verdict;
-						}
-					}
-					else
-					{
-						if (!quic_reasm_cancel(ctrack,"QUIC initial without ClientHello")) return verdict;
+						if (!quic_reasm_cancel(ctrack,"QUIC initial fragmented CRYPTO")) return verdict;
 					}
 				}
 				else
@@ -1991,7 +2064,7 @@ static uint8_t dpi_desync_udp_packet_play(bool replay, size_t reasm_offset, uint
 		{
 			// received payload without host. it means we are out of the request retransmission phase. stop counter
 			ctrack_stop_retrans_counter(ctrack);
-			
+
 			reasm_orig_cancel(ctrack);
 
 			if (IsWireguardHandshakeInitiation(dis->data_payload,dis->len_payload))
@@ -2110,20 +2183,16 @@ static uint8_t dpi_desync_udp_packet_play(bool replay, size_t reasm_offset, uint
 		switch(l7proto)
 		{
 			case QUIC:
-				fake = dp->fake_quic;
-				fake_size = dp->fake_quic_size;
+				fake = &dp->fake_quic;
 				break;
 			case WIREGUARD:
-				fake = dp->fake_wg;
-				fake_size = dp->fake_wg_size;
+				fake = &dp->fake_wg;
 				break;
 			case DHT:
-				fake = dp->fake_dht;
-				fake_size = dp->fake_dht_size;
+				fake = &dp->fake_dht;
 				break;
 			default:
-				fake = dp->fake_unknown_udp;
-				fake_size = dp->fake_unknown_udp_size;
+				fake = &dp->fake_unknown_udp;
 				break;
 		}
 
@@ -2140,7 +2209,6 @@ static uint8_t dpi_desync_udp_packet_play(bool replay, size_t reasm_offset, uint
 		}
 
 		bool bFake = false;
-		pkt1_len = sizeof(pkt1);
 		switch(dp->desync_mode)
 		{
 			case DESYNC_FAKE_KNOWN:
@@ -2150,12 +2218,30 @@ static uint8_t dpi_desync_udp_packet_play(bool replay, size_t reasm_offset, uint
 					break;
 				}
 			case DESYNC_FAKE:
-				if (!prepare_udp_segment((struct sockaddr *)&src, (struct sockaddr *)&dst, ttl_fake, IP4_TOS(dis->ip),IP4_IP_ID_FIX(dis->ip),IP6_FLOW(dis->ip6), dp->desync_fooling_mode, NULL, 0, 0, fake, fake_size, pkt1, &pkt1_len))
-					return verdict;
-				DLOG("sending fake : ");
-				hexdump_limited_dlog(fake,fake_size,PKTDATA_MAXDUMP); DLOG("\n");
-				if (!rawsend_rep(dp->desync_repeats,(struct sockaddr *)&dst, desync_fwmark, ifout , pkt1, pkt1_len))
-					return verdict;
+				{
+					struct blob_item *fake_item;
+					int n=0;
+
+					ip_id = IP4_IP_ID_FIX(dis->ip);
+
+					LIST_FOREACH(fake_item, fake, next)
+					{
+						n++;
+						pkt1_len = sizeof(pkt1);
+						if (!prepare_udp_segment((struct sockaddr *)&src, (struct sockaddr *)&dst,
+							ttl_fake, IP4_TOS(dis->ip),ip_id,IP6_FLOW(dis->ip6),
+							dp->desync_fooling_mode, NULL, 0, 0,
+							fake_item->data, fake_item->size, pkt1, &pkt1_len))
+						{
+							return verdict;
+						}
+						DLOG("sending fake[%d] : ", n);
+						hexdump_limited_dlog(fake_item->data,fake_item->size,PKTDATA_MAXDUMP); DLOG("\n");
+						if (!rawsend_rep(dp->desync_repeats,(struct sockaddr *)&dst, desync_fwmark, ifout , pkt1, pkt1_len))
+							return verdict;
+						ip_id=IP4_IP_ID_NEXT(ip_id);
+					}
+				}
 				bFake = true;
 				break;
 			case DESYNC_HOPBYHOP:
@@ -2164,9 +2250,9 @@ static uint8_t dpi_desync_udp_packet_play(bool replay, size_t reasm_offset, uint
 				fooling_orig = (dp->desync_mode==DESYNC_HOPBYHOP) ? FOOL_HOPBYHOP : (dp->desync_mode==DESYNC_DESTOPT) ? FOOL_DESTOPT : FOOL_IPFRAG1;
 				if (dis->ip6 && (dp->desync_mode2==DESYNC_NONE || !desync_valid_second_stage_udp(dp->desync_mode2)))
 				{
+					pkt1_len = sizeof(pkt1);
 					if (!prepare_udp_segment((struct sockaddr *)&src, (struct sockaddr *)&dst,
-						ttl_orig,IP4_TOS(dis->ip),IP4_IP_ID_FIX(dis->ip),IP6_FLOW(dis->ip6),
-						fooling_orig,NULL,0,0,
+						ttl_orig,0,0,IP6_FLOW(dis->ip6),fooling_orig,NULL,0,0,
 						dis->data_payload, dis->len_payload, pkt1, &pkt1_len))
 					{
 						return verdict;

@@ -1,9 +1,6 @@
-# https://github.com/bol-van/zapret
-
-SRC_VER = 70.4
+SRC_VER = 70.5
 SRC_NAME = zapret-$(SRC_VER)
 SRC_URL = https://github.com/bol-van/zapret/archive/refs/tags/v$(SRC_VER).tar.gz
-THISDIR = $(shell pwd)
 
 CFLAGS += -DZAPRET_GH_VER=v$(SRC_VER) -DZAPRET_GH_HASH=release
 
@@ -18,8 +15,7 @@ download_test:
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
 		tar zxf $(SRC_NAME).tar.gz; \
-		[ ! -d $(THISDIR)/patches ] || \
-		find $(THISDIR)/patches -type f -name '*.patch' -print0 \
+		find "$(shell pwd)"/patches -type f -name '*.patch' -print0 \
 		  | sort -z \
 		  | xargs -r -t -0 -n 1 patch -d $(SRC_NAME) -p1 -i; \
 	fi )
