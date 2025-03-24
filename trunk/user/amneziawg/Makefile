@@ -18,9 +18,7 @@ clean:
 	if [ -f $(SRC_NAME)/Makefile ] ; then \
 		$(MAKE) -C $(SRC_NAME) clean ; \
 	fi ; \
-	rm config_done
+	rm -f config_done
 
 romfs:
 	$(ROMFSINST) $(SRC_NAME)/wg /usr/sbin/awg
-
-
