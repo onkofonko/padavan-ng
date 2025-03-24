@@ -225,14 +225,28 @@ static bool nfq_init(struct nfq_handle **h,struct nfq_q_handle **qh)
 
 	DLOG_CONDUP("unbinding existing nf_queue handler for AF_INET (if any)\n");
 	if (nfq_unbind_pf(*h, AF_INET) < 0) {
-		DLOG_PERROR("nfq_unbind_pf()");
+		DLOG_PERROR("nfq_unbind_pf() AF_INET");
 		goto exiterr;
 	}
 
 	DLOG_CONDUP("binding nfnetlink_queue as nf_queue handler for AF_INET\n");
 	if (nfq_bind_pf(*h, AF_INET) < 0) {
-		DLOG_PERROR("nfq_bind_pf()");
+		DLOG_PERROR("nfq_bind_pf() AF_INET");
 		goto exiterr;
+	}
+	else
+		DLOG_CONDUP("binding for AF_INET success\n");
+	
+	DLOG_CONDUP("unbinding existing nf_queue handler for AF_INET6 (if any)\n");
+	if (nfq_unbind_pf(*h, AF_INET6) < 0)
+		DLOG_PERROR("nfq_unbind_pf() AF_INET6");
+	
+	if (system("grep '^IPV6_ENABLED=1' /etc/storage/zapret/config") == 0) {
+		DLOG_CONDUP("binding nfnetlink_queue as nf_queue handler for AF_INET6\n");
+		if (nfq_bind_pf(*h, AF_INET6) < 0)
+			DLOG_PERROR("nfq_bind_pf() AF_INET6");
+		else
+			DLOG_CONDUP("binding for AF_INET6 success\n");
 	}
 
 	DLOG_CONDUP("binding this socket to queue '%u'\n", params.qnum);
