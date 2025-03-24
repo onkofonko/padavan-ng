@@ -744,7 +744,6 @@ function change_crond_enabled(){
                                                     <option value="https://antivirus.bebasid.com/dns-query">BebasDNS: antivirus</option>
                                                     <option value="https://internetsehat.bebasid.com/dns-query">BebasDNS: family</option>
                                                     <option value="https://dns.bebasid.com/unfiltered">BebasDNS: unfiltered</option>
-                                                    <option value="https://dns.cfiec.net/dns-query">CFIEC Public DNS</option>
                                                     <option value="https://doh.opendns.com/dns-query">Cisco OpenDNS</option>
                                                     <option value="https://doh.familyshield.opendns.com/dns-query">Cisco OpenDNS: family</option>
                                                     <option value="https://doh.sandbox.opendns.com/dns-query">Cisco OpenDNS: unfiltered</option>
