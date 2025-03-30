@@ -1,6 +1,6 @@
-diff -urN libusb-1.0.27-orig/configure.ac libusb-1.0.27-orig/configure.ac
---- libusb-1.0.26-orig/configure.ac	2024-02-01 00:07:28.000000000 +0200
-+++ libusb-1.0.26/configure.ac	2024-02-02 03:50:08.038313183 +0200
+diff -urN libusb-1.0.28-orig/configure.ac libusb-1.0.28-orig/configure.ac
+--- libusb-1.0.28-orig/configure.ac	2025-03-19 00:13:45.000000000 +0200
++++ libusb-1.0.28/configure.ac	2025-03-30 21:39:46.471443585 +0300
 @@ -182,8 +182,8 @@ usb_modeswitch fix by removing libatomic dependency from libusb
  	AC_MSG_RESULT($GCC_ATOMIC_BUILTINS_SUPPORTED)
 -	if test "x$GCC_ATOMIC_BUILTINS_SUPPORTED" != xyes; then
