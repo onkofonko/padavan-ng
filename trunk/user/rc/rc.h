@@ -90,6 +90,7 @@
 #define NTPC_DONE_SCRIPT		"/sbin/ntpc_updated"
 
 #define SAMBA_CONF			"/etc/smb.conf"
+#define SAMBA_CONF_USER		"/etc/storage/smb.conf"
 
 #define STORAGE_MINIDLNA_CUSTOM_ICON_DIR "/etc/storage/minidlna"
 

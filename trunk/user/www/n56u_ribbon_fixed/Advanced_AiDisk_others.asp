@@ -240,6 +240,7 @@ function change_smb_enabled(){
 	showhide_div('row_smb_mode', v);
 	showhide_div('row_smb_lmb', v);
 	showhide_div('row_smb_fp', v);
+	showhide_div('row_smb_conf', v);
 }
 
 var id_timeout_btn_gen;
@@ -599,6 +600,14 @@ function done_validating(action){
                                                 </select>
                                             </td>
                                         </tr>
+                                        <tr id="row_smb_conf">
+                                            <td colspan="2">
+                                                <a href="javascript:spoiler_toggle('spoiler_conf')"><span><#CustomConf#> "smb.conf"</span></a>
+                                                <div id="spoiler_conf" style="display:none;">
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="16384" class="span12" name="smbd.smb.conf" style="resize:none; font-family:'Courier New'; font-size:12px;"><% nvram_dump("smbd.smb.conf",""); %></textarea>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </table>
 
                                     <table id="tbl_ftpd" width="100%" cellpadding="4" cellspacing="0" class="table" style="display:none;">
@@ -621,8 +630,8 @@ function done_validating(action){
                                                 </div>
                                             </td>
                                         </tr>
-										<tr id="row_ftp_ssl_mode">
-										    <th>
+                                        <tr id="row_ftp_ssl_mode">
+                                            <th>
                                                 <a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,17, 4);"><#enableFTP_SSL#></a>
                                             </th>
                                             <td>

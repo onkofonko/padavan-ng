@@ -207,6 +207,7 @@
 			{"enable_samba", "", NULL, EVM_RESTART_SMBD},
 			{"st_samba_fp", "", NULL, EVM_RESTART_SYSCTL},
 			{"st_samba_mode", "", NULL, EVM_RESTART_SMBD},
+			{"smbd.smb.conf", "File", NULL, EVM_RESTART_SMBD},
 #endif
 #if defined(APP_SMBD) || defined(APP_NMBD)
 			{"st_samba_lmb", "", NULL, EVM_RESTART_NMBD},
