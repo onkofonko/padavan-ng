@@ -20,14 +20,14 @@ post_reload()
 
 case "$1" in
     start)
-        post_start
+        # post_start
     ;;
 
     stop)
-        post_stop
+        # post_stop
     ;;
 
     reload)
-        post_reload
+        # post_reload
     ;;
 esac
