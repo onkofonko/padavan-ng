@@ -281,6 +281,7 @@ write_smb_conf(void)
 	fprintf(fp, "dos filemode = yes\n");
 	fprintf(fp, "dos filetimes = yes\n");
 	fprintf(fp, "dos filetime resolution = yes\n");
+	fprintf(fp, "include = %s\n", SAMBA_CONF_USER);
 	fprintf(fp, "\n");
 
 	disks_info = read_disk_data();

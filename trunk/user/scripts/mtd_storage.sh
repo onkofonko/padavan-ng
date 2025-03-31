@@ -661,22 +661,23 @@ EOF
 	if [ -x "/sbin/smbd" ]; then
 		if [ ! -f "$user_smb_conf" ]; then
 			cat > "$user_smb_conf" <<EOF
-# Custom user conf file for Samba server
-# Please add needed params only!
+### Custom user conf file for Samba server
 
-# [global]
-### Bind to 0.0.0.0 and :: instead of interfaces only
-# bind interfaces only = no
+### This is continuation of global section of auto-generated config
+### DO NOT define [global] here or it may break configuration!
 
 ### Limit minimal protocol version to 2
 # min protocol = smb2
 
-### Allows symbolic links following
+### Bind to 0.0.0.0 and :: instead of interfaces only
+# bind interfaces only = no
+
+### Allows symlinks to be followed
 # follow symlinks = yes
 # wide links = yes
 
 
-### Share examples
+### You can add custom shares here (only after defining all global parameters)
 ### Hide opt directory
 # [opt]
 # browseable = no
