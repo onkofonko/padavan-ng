@@ -1,0 +1,340 @@
+'\" t
+.\"     Title: column
+.\"    Author: [see the "AUTHOR(S)" section]
+.\" Generator: Asciidoctor 2.0.20
+.\"      Date: 2025-02-26
+.\"    Manual: User Commands
+.\"    Source: util-linux 2.41
+.\"  Language: English
+.\"
+.TH "COLUMN" "1" "2025-02-26" "util\-linux 2.41" "User Commands"
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.ss \n[.ss] 0
+.nh
+.ad l
+.de URL
+\fI\\$2\fP <\\$1>\\$3
+..
+.als MTO URL
+.if \n[.g] \{\
+.  mso www.tmac
+.  am URL
+.    ad l
+.  .
+.  am MTO
+.    ad l
+.  .
+.  LINKSTYLE blue R < >
+.\}
+.SH "NAME"
+column \- columnate lists
+.SH "SYNOPSIS"
+.sp
+\fBcolumn\fP [options] [\fIfile\fP ...]
+.SH "DESCRIPTION"
+.sp
+The \fBcolumn\fP utility formats its input into multiple columns. It supports three modes:
+.sp
+\fBfill columns before rows\fP
+.RS 4
+This is the default mode (required for backwards compatibility).
+.RE
+.sp
+\fBfill rows before columns\fP
+.RS 4
+This mode is enabled with the \fB\-x, \-\-fillrows\fP option.
+.RE
+.sp
+\fBcreate a table\fP
+.RS 4
+Determine the number of columns the input contains and create a table. This mode is enabled with the \fB\-t, \-\-table\fP option. Output is aligned to the terminal width in interactive mode and 80 columns in non\-interactive mode (see \fB\-\-output\-width\fP for more details). Custom formatting can be applied by using various \fB\-\-table\-\(rs\fP* options.
+.RE
+.sp
+Input is taken from \fIfile\fP, or otherwise from standard input. Empty lines are ignored and all invalid multibyte sequences are encoded with the x<hex> convention.
+.SH "OPTIONS"
+.sp
+The argument \fIcolumns\fP for \fB\-\-table\-\(rs\fP* options is a comma separated list of
+user supplied names, defined with \fB\-\-table\-column \fIname1\fP,\fIname2\fP,...\fP, indices of columns, as they
+appear in the input, beginning with 1, or names, defined by a \fB\-\-table\-columns\fP attribute.
+It\(cqs possible to mix names and indices. The special placeholder \*(Aq0\*(Aq (e.g. \-R0) may
+be used to specify all columns and \*(Aq\-1\*(Aq (e.g. \-R \-1) to specify the last visible column.
+It\(cqs possible to use ranges like \*(Aq1\-5\*(Aq when addressing columns by indices.
+.sp
+\fB\-J, \-\-json\fP
+.RS 4
+Use JSON output format to print the table. The option \fB\-\-table\-columns\fP is required and the option \fB\-\-table\-name\fP is recommended.
+.RE
+.sp
+\fB\-c, \-\-output\-width\fP \fIwidth\fP
+.RS 4
+Output is formatted to a width specified as a number of characters. The original name of this option is \fB\-\-columns\fP; this name is deprecated since v2.30. Note that input longer than \fIwidth\fP is not truncated by default. The default is the terminal width and 80 columns in non\-interactive mode. The column headers are never truncated.
+.sp
+The placeholder "unlimited" (or 0) can be used to prevent restricting output width. This is recommended for example when redirecting output to a file.
+.RE
+.sp
+\fB\-d, \-\-table\-noheadings\fP
+.RS 4
+Omit printing the header. This option allows the use of user supplied column names on the command line, but keeps the header hidden when printing the table.
+.RE
+.sp
+\fB\-o, \-\-output\-separator\fP \fIstring\fP
+.RS 4
+Column delimiter for table output (default is two spaces).
+.RE
+.sp
+\fB\-s, \-\-separator\fP \fIseparators\fP
+.RS 4
+Possible input item delimiters (default is whitespace).
+.RE
+.sp
+\fB\-S, \-\-use\-spaces\fP \fInumber\fP
+.RS 4
+When not in table mode, use whitespaces instead of tabulators to align the columns. This option specifies the minimum number of whitespaces that separate two columns.
+.RE
+.sp
+\fB\-t, \-\-table\fP
+.RS 4
+Determine the number of columns the input contains and create a table. Columns are by default delimited with whitespace, or with characters supplied using the \fB\-\-output\-separator\fP option. Table output is useful for pretty\-printing.
+.RE
+.sp
+\fB\-C, \-\-table\-column\fP \fIattributes\fP
+.RS 4
+Define a column with a comma separated list of column attributes.
+This option can be used more than once, every use defines a single column.
+Attributes replace some of \fB\-\-table\-\fP options. For example, \fB\-\-table\-column name=FOO,right\fP
+defines a column where text is aligned to right. The option is
+mutually exclusive to \fB\-\-table\-columns\fP.
+.sp
+Supported attributes are:
+.sp
+\fBname=string\fP
+.RS 4
+Column name.
+.RE
+.sp
+\fBtrunc\fP
+.RS 4
+Truncate column text when necessary. The same as \fB\-\-table\-truncate\fP.
+.RE
+.sp
+\fBright\fP
+.RS 4
+Right align text. The same as \fB\-\-table\-right\fP.
+.RE
+.sp
+\fBwidth=number\fP
+.RS 4
+Column width. It\(cqs used only as a hint. To force it, specify the \fBstrictwidth\fP attribute
+as well.
+.RE
+.sp
+\fBstrictwidth\fP
+.RS 4
+Strictly follow column \fBwidth=\fP setting.
+.RE
+.sp
+\fBnoextreme\fP
+.RS 4
+Ignore unusually long cell width. See \fB\-\-table\-noextreme\fP for more details.
+.RE
+.sp
+\fBwrap\fP
+.RS 4
+Allow using a multi\-line cell for long text if necessary. See \fB\-\-table\-wrap\fP for more details.
+.RE
+.sp
+\fBhide\fP
+.RS 4
+Don\(cqt print the column. See \fB\-\-table\-hide\fP for more details.
+.RE
+.sp
+\fBjson=type\fP
+.RS 4
+Define column type for JSON output. Supported types are string, number and boolean.
+.RE
+.RE
+.sp
+\fB\-N, \-\-table\-columns\fP \fInames\fP
+.RS 4
+Specify column names with a comma separated list. The names are used
+for the table header and column addressing in option arguments. See also \fB\-\-table\-column\fP.
+.RE
+.sp
+\fB\-l, \-\-table\-columns\-limit\fP \fInumber\fP
+.RS 4
+Specify maximum number of input columns. The last column will contain all remaining line data if the limit is smaller than the number of the columns in the input data.
+.RE
+.sp
+\fB\-R, \-\-table\-right\fP \fIcolumns\fP
+.RS 4
+Right align text in specified columns.
+.RE
+.sp
+\fB\-T, \-\-table\-truncate\fP \fIcolumns\fP
+.RS 4
+Specify columns where text can be truncated when necessary, otherwise very long table entries may be printed on multiple lines.
+.RE
+.sp
+\fB\-E, \-\-table\-noextreme\fP \fIcolumns\fP
+.RS 4
+Specify columns where is possible to ignore unusually long (longer than average) cells when calculate column width. The option has impact to the width calculation and table formatting, but the printed text is not affected.
+.sp
+The option is used for the last visible column by default.
+.RE
+.sp
+\fB\-e, \-\-table\-header\-repeat\fP
+.RS 4
+Print header line for each page.
+.RE
+.sp
+\fB\-W, \-\-table\-wrap\fP \fIcolumns\fP
+.RS 4
+Specify columns where multi\-line cells can be used for long text.
+.RE
+.sp
+\fB\-H, \-\-table\-hide\fP \fIcolumns\fP
+.RS 4
+Don\(cqt print specified columns. The special placeholder \*(Aq\-\*(Aq may be used to hide all unnamed columns (see \fB\-\-table\-columns\fP).
+.RE
+.sp
+\fB\-O, \-\-table\-order\fP \fIcolumns\fP
+.RS 4
+Specify the output column order.
+.RE
+.sp
+\fB\-n, \-\-table\-name\fP \fIname\fP
+.RS 4
+Specify the table name used for JSON output. The default is "table".
+.RE
+.sp
+\fB\-m, \-\-table\-maxout\fP
+.RS 4
+Fill all available space on output.
+.RE
+.sp
+\fB\-L, \-\-keep\-empty\-lines\fP
+.RS 4
+Preserve whitespace\-only lines in the input. The default is to ignore all empty lines. This option\(cqs original name was \fB\-\-table\-empty\-lines\fP, but has since been deprecated because it gives the false impression that the option only applies to table mode.
+.RE
+.sp
+\fB\-r, \-\-tree\fP \fIcolumn\fP
+.RS 4
+Specify the column to use for a tree\-like output. Note that the circular dependencies and other anomalies in child and parent relation are silently ignored.
+.RE
+.sp
+\fB\-i, \-\-tree\-id\fP \fIcolumn\fP
+.RS 4
+Specify the column that contains each line\(cqs unique child IDs for a child\-parent relation.
+.RE
+.sp
+\fB\-p, \-\-tree\-parent\fP \fIcolumn\fP
+.RS 4
+Specify the column that contains each line\(cqs parent IDs for a child\-parent relation.
+.RE
+.sp
+\fB\-x, \-\-fillrows\fP
+.RS 4
+Fill rows before filling columns.
+.RE
+.sp
+\fB\-h\fP, \fB\-\-help\fP
+.RS 4
+Display help text and exit.
+.RE
+.sp
+\fB\-V\fP, \fB\-\-version\fP
+.RS 4
+Display version and exit.
+.RE
+.SH "ENVIRONMENT"
+.sp
+The environment variable \fBCOLUMNS\fP is used to determine the size of the screen if no other information is available.
+.SH "HISTORY"
+.sp
+The \fBcolumn\fP command appeared in 4.3BSD\-Reno.
+.SH "BUGS"
+.sp
+Version 2.23 changed the \fB\-s\fP option to be non\-greedy, for example:
+.sp
+.if n .RS 4
+.nf
+.fam C
+printf "a:b:c\(rsn1::3\(rsn" | column \-t \-s \*(Aq:\*(Aq
+.fam
+.fi
+.if n .RE
+.sp
+Old output:
+.sp
+.if n .RS 4
+.nf
+.fam C
+a  b  c
+1  3
+.fam
+.fi
+.if n .RE
+.sp
+New output (since util\-linux 2.23):
+.sp
+.if n .RS 4
+.nf
+.fam C
+a  b  c
+1     3
+.fam
+.fi
+.if n .RE
+.sp
+Historical versions of this tool indicated that "rows are filled before columns" by default, and that the \fB\-x\fP option reverses this. This wording did not reflect the actual behavior, and it has since been corrected (see above). Other implementations of \fBcolumn\fP may continue to use the older documentation, but the behavior should be identical in any case.
+.SH "EXAMPLES"
+.sp
+Print fstab with a header line and align numbers to the right:
+.sp
+.if n .RS 4
+.nf
+.fam C
+sed \*(Aqs/#.*//\*(Aq /etc/fstab | column \-\-table \-\-table\-columns SOURCE,TARGET,TYPE,OPTIONS,FREQ,PASS \-\-table\-right FREQ,PASS
+.fam
+.fi
+.if n .RE
+.sp
+Print fstab and hide unnamed columns:
+.sp
+.if n .RS 4
+.nf
+.fam C
+sed \*(Aqs/#.*//\*(Aq /etc/fstab | column \-\-table \-\-table\-columns SOURCE,TARGET,TYPE \-\-table\-hide \-
+.fam
+.fi
+.if n .RE
+.sp
+Print a tree:
+.sp
+.if n .RS 4
+.nf
+.fam C
+echo \-e \*(Aq1 0 A\(rsn2 1 AA\(rsn3 1 AB\(rsn4 2 AAA\(rsn5 2 AAB\*(Aq | column \-\-tree\-id 1 \-\-tree\-parent 2 \-\-tree 3
+1  0  A
+2  1  |\-AA
+4  2  | |\-AAA
+5  2  | `\-AAB
+3  1  `\-AB
+.fam
+.fi
+.if n .RE
+.SH "SEE ALSO"
+.sp
+\fBcolrm\fP(1),
+\fBls\fP(1),
+\fBpaste\fP(1),
+\fBsort\fP(1)
+.SH "REPORTING BUGS"
+.sp
+For bug reports, use the \c
+.URL "https://github.com/util\-linux/util\-linux/issues" "issue tracker" "."
+.SH "AVAILABILITY"
+.sp
+The \fBcolumn\fP command is part of the util\-linux package which can be downloaded from \c
+.URL "https://www.kernel.org/pub/linux/utils/util\-linux/" "Linux Kernel Archive" "."
