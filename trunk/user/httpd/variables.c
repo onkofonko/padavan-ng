@@ -554,6 +554,7 @@
 			{"zapretc.auto.list", "File", NULL, EVM_BLOCK_UNSAFE},
 			{"zapretc.user.list", "File", NULL, EVM_BLOCK_UNSAFE},
 			{"zapretc.exclude.list", "File", NULL, EVM_BLOCK_UNSAFE},
+			{"zapretc.post_script.sh", "File", NULL, EVM_BLOCK_UNSAFE},
 #endif
 #if defined(APP_TOR)
 			{"tor_enable", "", NULL, EVM_RESTART_TOR},
