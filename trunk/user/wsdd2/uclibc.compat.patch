@@ -1,0 +1,11 @@
+diff -ur wsdd2-1.8.7-ref/wsdd.h wsdd2-1.8.7/wsdd.h
+--- wsdd2-1.8.7-ref/wsdd.h	2025-04-02 05:44:47.724151830 +0300
++++ wsdd2-1.8.7/wsdd.h	2025-04-02 05:45:07.657829728 +0300
+@@ -27,7 +27,6 @@
+ #include <net/if.h> // IFNAMSIZ
+ #include <arpa/inet.h> // ntohs()
+ #include <netinet/in.h> // struct sockaddr_in, struct ip_mreq
+-#include <linux/in.h> // struct ip_mreqn
+ #include <linux/netlink.h> // struct sockaddr_nl
+ #include <time.h> // time_t, time()
+ 
