@@ -48,11 +48,12 @@ UDP_PORTS=443,50000:50099
 NFQUEUE_NUM=200
 LOG_LEVEL=0
 USER="nobody"
+POST_SCRIPT=
 
 ###
 
 log() {
-  [ -n "$@" ] || return
+  [ -n "$*" ] || return
   echo "$@"
   local pid
   [ -f "$PIDFILE" ] && pid="[$(cat "$PIDFILE" 2>/dev/null)]"
@@ -99,13 +100,11 @@ unset NFT
 nft -v >/dev/null 2>&1 && NFT=1
 
 _ISP_IF=$(
-  echo "$ISP_INTERFACE,$(ip -4 r s default | cut -d ' ' -f5)" |\
-    tr " " "\n" | tr "," "\n" | sort -u
+  sed -nre 's/^([^\t]+)\t00000000\t[0-9A-F]{8}\t[0-9A-F]{4}\t[0-9]+\t[0-9]+\t[0-9]+\t00000000.*$/\1/p' /proc/net/route | xargs echo "$ISP_INTERFACE," | tr " " "\n" | tr "," "\n" | sort -u
 );
 
 _ISP_IF6=$(
-  echo "$ISP_INTERFACE,$(ip -6 r s default | cut -d ' ' -f5)" |\
-    tr " " "\n" | tr "," "\n" | sort -u
+  sed -nre 's/^00000000000000000000000000000000 00 [0-9a-f]{32} [0-9a-f]{2} [0-9a-f]{32} [0-9a-f]{8} [0-9a-f]{8} [0-9a-f]{8} [0-9a-f]{8} +(.*)$/\1/p' /proc/net/ipv6_route | grep -v '^lo$' | xargs echo "$ISP_INTERFACE," | tr " " "\n" | tr "," "\n" | sort -u
 );
 
 _MANGLE_RULES() ( echo "
@@ -181,7 +180,7 @@ offload_set_rules() {
       echo "-I FORWARD 2 -o $IFACE -j forwarding_rule_zapret"
     done)
 
-  [ -n "$FW_FORWARD" ] && ip$1tables-restore -n 2>/dev/null <<EOF
+  [ -n "$FW_FORWARD" ] && ip$1tables-restore -n <<EOF
 *filter
 :forwarding_rule_zapret - [0:0]
 -A forwarding_rule_zapret -p udp -m multiport --dports $UDP_PORTS -m connbytes --connbytes 1:9 --connbytes-mode packets --connbytes-dir original -m comment --comment zapret_traffic_offloading_exemption -j RETURN
@@ -252,7 +251,7 @@ iptables_set_rules() {
     FW_MANGLE="$FW_MANGLE$(_MANGLE_RULES)"
   done
 
-  [ -n "$FW_MANGLE" ] && ip$1tables-restore -n 2>/dev/null <<EOF
+  [ -n "$FW_MANGLE" ] && ip$1tables-restore -n <<EOF
 *mangle
 $(echo "$FW_MANGLE")
 COMMIT
@@ -303,7 +302,7 @@ system_config() {
 }
 
 start_service() {
-  [ -f "$NFQWS_BIN" ] || error "$NFQWS_BIN: not found"
+  [ -s "$NFQWS_BIN" -a -x "$NFQWS_BIN" ] || error "$NFQWS_BIN: not found or invalid"
   if is_running; then
     echo "service nfqws is already running"
     return
@@ -337,20 +336,23 @@ reload_service() {
 download_nfqws() {
   cd /tmp
 
-  ARCH=$(uname -m | grep -oE 'mips|mipsel|aarch64|arm|i386|i686|x86_64')
+  ARCH=$(uname -m | grep -oE 'mips|mipsel|aarch64|arm|rlx|i386|i686|x86_64')
   case "$ARCH" in
+    rlx)
+      ARCH="lexra"
+    ;;
     mips)
       ARCH="mips32r1-msb"
       grep -qE 'system type.*(MediaTek|Ralink)' /proc/cpuinfo && ARCH="mips32r1-lsb"
-      ;;
+    ;;
     mipsel)
       ARCH="mips32r1-lsb"
-      ;;
+    ;;
     i386|i686)
       ARCH="x86"
-      ;;
+    ;;
   esac
-  [ -n "$ARCH" ] || exit
+  [ -n "$ARCH" ] || error "cpu arch unknown"
 
   if [ -f /usr/bin/curl ]; then
     URL=$(curl -s --connect-timeout 5 'https://api.github.com/repos/bol-van/zapret/releases/latest' |\
@@ -430,3 +432,5 @@ case "$1" in
   *)
     echo "Usage: $0 {start|stop|restart|download|download-nfqws|download-list|status}"
 esac
+
+[ -s "$POST_SCRIPT" -a -x "$POST_SCRIPT" ] && . "$POST_SCRIPT"

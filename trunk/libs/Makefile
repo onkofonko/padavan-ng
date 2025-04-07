@@ -127,8 +127,15 @@ dir_y						+= libz
 dir_$(LIBS_INCLUDE_LIBLZO)			+= liblzo
 dir_$(LIBS_INCLUDE_LIBNL)			+= libnl
 dir_$(LIBS_INCLUDE_LIBCAP_NG)			+= libcap-ng
-#dir_$(LIBS_INCLUDE_LIBSSL)			+= libssl-1.1
-dir_$(LIBS_INCLUDE_LIBSSL)			+= libssl-3.1
+
+ifeq ($(LIBS_INCLUDE_LIBSSL),y)
+ifeq ($(CONFIG_FIRMWARE_INCLUDE_OPENSSL_OLD),y)
+dir_y						+= libssl-1.1
+else
+dir_y						+= libssl-3.1
+endif
+endif
+
 #dir_$(LIBS_INCLUDE_LIBSSL)			+= libssl-3.3
 dir_$(LIBS_INCLUDE_LIBUSB_0)			+= libusb
 dir_$(LIBS_INCLUDE_LIBUSB_1)			+= libusb-1.0

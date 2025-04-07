@@ -1,10 +1,10 @@
-SRC_NAME=mtd-utils-2.1.6
+SRC_NAME=mtd-utils-2.3.0
 SRC_URL = https://infraroot.at/pub/mtd/$(SRC_NAME).tar.bz2
 THISDIR = $(shell pwd)
 
 #all: download_test extract_test config_test
 all: config_test
-	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
+	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME) ubiattach ubidetach ubiformat ubimkvol ubinfo
 
 download_test:
 	( if [ ! -f $(SRC_NAME).tar.bz2 ]; then \

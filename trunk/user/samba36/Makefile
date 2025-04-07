@@ -116,7 +116,9 @@ distclean: clean
 	@find $(SRC_NAME) -name config.status | xargs rm -f
 	@find $(SRC_NAME) -name config.cache | xargs rm -f
 
-romfs:
+romfs: romfs_generic romfs_testparm
+
+romfs_generic:
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_SMBD),y)
 	$(ROMFSINST) $(THISDIR)/$(SRC_NAME)/bin/samba_multicall /sbin/smbmulti
 	$(ROMFSINST) -s smbmulti /sbin/smbd
@@ -128,4 +130,9 @@ else
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_WINS),y)
 	$(ROMFSINST) $(THISDIR)/$(SRC_NAME)/bin/nmbd /sbin/nmbd
 endif
+endif
+
+romfs_testparm: 
+ifeq ($(CONFIG_FIRMWARE_INCLUDE_TESTPARM),y)
+	$(ROMFSINST) $(THISDIR)/$(SRC_NAME)/bin/testparm /sbin/testparm
 endif

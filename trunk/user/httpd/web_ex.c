@@ -723,6 +723,8 @@ ej_dump(int eid, webs_t wp, int argc, char **argv)
 		snprintf(filename, sizeof(filename), "%s/%s", STORAGE_ZAPRET_DIR, file+8);
 	else if (strncmp(file, "privoxy.", 8)==0)
 		snprintf(filename, sizeof(filename), "%s/%s", STORAGE_PRIVOXY_DIR, file+8);
+	else if (strncmp(file, "smbd.", 5)==0)
+		snprintf(filename, sizeof(filename), "%s/%s", STORAGE_SCRIPTS_DIR, file+5);
 	else
 		snprintf(filename, sizeof(filename), "%s/%s", "/tmp", file);
 
@@ -943,6 +945,12 @@ validate_asp_apply(webs_t wp, int sid)
 #if defined(APP_PRIVOXY)
 			else if (!strncmp(v->name, "privoxy.", 8)) {
 				if (write_textarea_to_file(value, STORAGE_PRIVOXY_DIR, file_name))
+					restart_needed_bits |= event_mask;
+			}
+#endif
+#if defined(APP_SMBD)
+			else if (!strncmp(v->name, "smbd.", 5)) {
+				if (write_textarea_to_file(value, STORAGE_SCRIPTS_DIR, file_name-3))
 					restart_needed_bits |= event_mask;
 			}
 #endif

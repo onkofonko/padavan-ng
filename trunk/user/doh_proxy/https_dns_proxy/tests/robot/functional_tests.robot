@@ -36,7 +36,7 @@ Start Proxy With Valgrind
   @{default_args} =  Create List  --track-fds=yes  --time-stamp=yes  --log-file=valgrind-%p.log  --suppressions=valgrind.supp
   ...  --gen-suppressions=all  --tool=memcheck  --leak-check=full  --leak-resolution=high
   ...  --show-leak-kinds=all  --track-origins=yes  --keep-stacktraces=alloc-and-free
-  ...  ${BINARY_PATH}  -v  -v  -v  -4  -p  ${PORT}
+  ...  ${BINARY_PATH}  -v  -v  -v  -F 100 -4  -p  ${PORT}  # using flight recorder with smallest possible buffer size to test memory leak
   @{proces_args} =  Combine Lists  ${default_args}  ${args}
   ${proxy} =  Start Process  valgrind  @{proces_args}
   ...  stderr=STDOUT  alias=proxy

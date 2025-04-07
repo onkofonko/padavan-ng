@@ -137,8 +137,8 @@ libnetfilter_queue_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 am__dirstamp = $(am__leading_dot)dirstamp
 am_libnetfilter_queue_la_OBJECTS = libnetfilter_queue.lo nlmsg.lo \
-	extra/checksum.lo extra/ipv6.lo extra/tcp.lo extra/ipv4.lo \
-	extra/pktbuff.lo extra/udp.lo
+	extra/checksum.lo extra/icmp.lo extra/ipv6.lo extra/tcp.lo \
+	extra/ipv4.lo extra/pktbuff.lo extra/udp.lo
 libnetfilter_queue_la_OBJECTS = $(am_libnetfilter_queue_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -165,9 +165,9 @@ depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/libnetfilter_queue.Plo \
 	./$(DEPDIR)/nlmsg.Plo extra/$(DEPDIR)/checksum.Plo \
-	extra/$(DEPDIR)/ipv4.Plo extra/$(DEPDIR)/ipv6.Plo \
-	extra/$(DEPDIR)/pktbuff.Plo extra/$(DEPDIR)/tcp.Plo \
-	extra/$(DEPDIR)/udp.Plo
+	extra/$(DEPDIR)/icmp.Plo extra/$(DEPDIR)/ipv4.Plo \
+	extra/$(DEPDIR)/ipv6.Plo extra/$(DEPDIR)/pktbuff.Plo \
+	extra/$(DEPDIR)/tcp.Plo extra/$(DEPDIR)/udp.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -372,6 +372,7 @@ libnetfilter_queue_la_LDFLAGS = -Wc,-nostartfiles -lnfnetlink \
 libnetfilter_queue_la_SOURCES = libnetfilter_queue.c	\
 				nlmsg.c			\
 				extra/checksum.c	\
+				extra/icmp.c		\
 				extra/ipv6.c		\
 				extra/tcp.c		\
 				extra/ipv4.c		\
@@ -455,6 +456,7 @@ extra/$(DEPDIR)/$(am__dirstamp):
 	@: > extra/$(DEPDIR)/$(am__dirstamp)
 extra/checksum.lo: extra/$(am__dirstamp) \
 	extra/$(DEPDIR)/$(am__dirstamp)
+extra/icmp.lo: extra/$(am__dirstamp) extra/$(DEPDIR)/$(am__dirstamp)
 extra/ipv6.lo: extra/$(am__dirstamp) extra/$(DEPDIR)/$(am__dirstamp)
 extra/tcp.lo: extra/$(am__dirstamp) extra/$(DEPDIR)/$(am__dirstamp)
 extra/ipv4.lo: extra/$(am__dirstamp) extra/$(DEPDIR)/$(am__dirstamp)
@@ -476,6 +478,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnetfilter_queue.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nlmsg.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@extra/$(DEPDIR)/checksum.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@extra/$(DEPDIR)/icmp.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@extra/$(DEPDIR)/ipv4.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@extra/$(DEPDIR)/ipv6.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@extra/$(DEPDIR)/pktbuff.Plo@am__quote@ # am--include-marker
@@ -651,6 +654,7 @@ distclean: distclean-am
 		-rm -f ./$(DEPDIR)/libnetfilter_queue.Plo
 	-rm -f ./$(DEPDIR)/nlmsg.Plo
 	-rm -f extra/$(DEPDIR)/checksum.Plo
+	-rm -f extra/$(DEPDIR)/icmp.Plo
 	-rm -f extra/$(DEPDIR)/ipv4.Plo
 	-rm -f extra/$(DEPDIR)/ipv6.Plo
 	-rm -f extra/$(DEPDIR)/pktbuff.Plo
@@ -704,6 +708,7 @@ maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/libnetfilter_queue.Plo
 	-rm -f ./$(DEPDIR)/nlmsg.Plo
 	-rm -f extra/$(DEPDIR)/checksum.Plo
+	-rm -f extra/$(DEPDIR)/icmp.Plo
 	-rm -f extra/$(DEPDIR)/ipv4.Plo
 	-rm -f extra/$(DEPDIR)/ipv6.Plo
 	-rm -f extra/$(DEPDIR)/pktbuff.Plo

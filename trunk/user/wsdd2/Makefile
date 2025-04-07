@@ -1,21 +1,35 @@
-ifndef ROOTDIR
-ROOTDIR=../..
-endif
+SRC_VERSION = 1.8.7
+SRC_NAME = wsdd2-$(SRC_VERSION)
+SRC_URL = https://github.com/Netgear/wsdd2/archive/refs/tags/$(SRC_VERSION).tar.gz
+THISDIR = $(shell pwd)
 
-CFLAGS  += -ffunction-sections -fdata-sections -fvisibility=hidden
-LDFLAGS += -Wl,--gc-sections
+# all: download_test extract_test config_test
+all: config_test
+	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
 
-SHDIR		= $(ROOTDIR)/user/shared
-CFLAGS		+= -I$(SHDIR)
-LDFLAGS		+= -L$(SHDIR) -lshared
+download_test:
+	( if [ ! -f $(SRC_NAME).tar.gz ]; then \
+		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.gz $(SRC_URL); \
+	fi )
 
-all:
-	$(CC) $(CFLAGS) $(LDFLAGS) wsdd2.c wsd.c llmnr.c -o wsdd2
+extract_test:
+	( if [ ! -d $(SRC_NAME) ]; then \
+		tar xf $(SRC_NAME).tar.gz; \
+		patch -d $(SRC_NAME) -p1 -i ../uclibc.compat.patch; \
+	fi )
 
-install:
+config_test:
+	( if [ -f ./config_done ]; then \
+		echo "the same configuration"; \
+	else \
+		touch config_done; \
+	fi )
 
 clean:
-	rm -f wsdd2
+	if [ -f $(SRC_NAME)/Makefile ] ; then \
+		$(MAKE) -C $(SRC_NAME) clean ; \
+	fi ; \
+	rm -f config_done
 
 romfs:
-	$(ROMFSINST) wsdd2 /sbin/wsdd2
+	$(ROMFSINST) $(SRC_NAME)/wsdd2 /sbin/wsdd2

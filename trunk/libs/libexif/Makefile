@@ -1,5 +1,5 @@
-SRC_NAME=libexif-0.6.24
-SRC_URL=https://github.com/libexif/libexif/releases/download/v0.6.24/$(SRC_NAME).tar.bz2
+SRC_NAME=libexif-0.6.25
+SRC_URL=https://github.com/libexif/libexif/releases/download/v0.6.25/$(SRC_NAME).tar.bz2
 
 #all: download_test extract_test config_test
 all: config_test

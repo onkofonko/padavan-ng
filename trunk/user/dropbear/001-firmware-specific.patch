@@ -1,5 +1,5 @@
---- dropbear-2024.86/configure.ac
-+++ dropbear-2024.86/configure.ac
+--- dropbear-2025.87/configure.ac
++++ dropbear-2025.87/configure.ac
 @@ -123,7 +123,7 @@
  	    [AC_MSG_NOTICE([Setting $TESTFLAGS])],
  	    [
@@ -9,8 +9,8 @@
  			CFLAGS="$TESTFLAGS $CFLAGS"
  			AC_LINK_IFELSE([AC_LANG_PROGRAM([])],
  			    [AC_MSG_NOTICE([Setting $TESTFLAGS])],
---- dropbear-2024.86/src/default_options.h
-+++ dropbear-2024.86/src/default_options.h
+--- dropbear-2025.87/src/default_options.h
++++ dropbear-2025.87/src/default_options.h
 @@ -23,10 +23,10 @@
  /* Default hostkey paths - these can be specified on the command line.
   * Homedir is prepended if path begins with ~/
@@ -26,16 +26,7 @@
  
  /* Set NON_INETD_MODE if you require daemon functionality (ie Dropbear listens
   * on chosen ports and keeps accepting connections. This is the default.
-@@ -197,7 +197,7 @@
-  * Small systems should generally include either curve25519 or ecdh for performance.
-  * curve25519 is less widely supported but is faster
-  */
--#define DROPBEAR_DH_GROUP14_SHA1 1
-+#define DROPBEAR_DH_GROUP14_SHA1 0
- #define DROPBEAR_DH_GROUP14_SHA256 1
- #define DROPBEAR_DH_GROUP16 0
- #define DROPBEAR_CURVE25519 1
-@@ -222,7 +222,7 @@
+@@ -228,7 +228,7 @@
  #define DO_HOST_LOOKUP 0
  
  /* Whether to print the message of the day (MOTD). */

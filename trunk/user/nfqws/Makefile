@@ -1,26 +1,29 @@
-# https://github.com/bol-van/zapret
-# https://github.com/Anonym-tsk/nfqws-keenetic
+SRC_VER = 70.5
+SRC_NAME = zapret-$(SRC_VER)
+SRC_URL = https://github.com/bol-van/zapret/archive/refs/tags/v$(SRC_VER).tar.gz
 
-SRC_ZAPRET = src
-SRC_NFQ = nfq
-URL_ZAPRET = https://github.com/bol-van/zapret
+CFLAGS += -DZAPRET_GH_VER=v$(SRC_VER) -DZAPRET_GH_HASH=release
 
-CFLAGS += $(shell test -d $(SRC_ZAPRET)/.git && echo -n -DZAPRET_GH_VER= && git -C $(SRC_ZAPRET) describe --tags | cut -d '-' -f1)
-CFLAGS += $(shell test -d $(SRC_ZAPRET)/.git && echo -n -DZAPRET_GH_HASH= && git -C $(SRC_ZAPRET) rev-parse --short HEAD)
+all: download_test extract_test
+	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
 
-all: clean download
-	cp -rf $(SRC_ZAPRET)/$(SRC_NFQ) $(SRC_NFQ)
-	patch -p0 -i nfq-compat.patch
-	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NFQ)
+download_test:
+	( if [ ! -f $(SRC_NAME).tar.gz ]; then \
+		wget -t5 -T20 --no-check-certificate -O $(SRC_NAME).tar.gz $(SRC_URL) || rm -f $(SRC_NAME).tar.gz; \
+	fi )
 
-download:
-	test -d $(SRC_ZAPRET) || git clone $(URL_ZAPRET) $(SRC_ZAPRET)
-	test -d $(SRC_ZAPRET)/.git && git -C $(SRC_ZAPRET) pull || :
+extract_test:
+	( if [ ! -d $(SRC_NAME) ]; then \
+		tar zxf $(SRC_NAME).tar.gz; \
+		find "$(shell pwd)"/patches -type f -name '*.patch' -print0 \
+		  | sort -z \
+		  | xargs -r -t -0 -n 1 patch -d $(SRC_NAME) -p1 -i; \
+	fi )
 
 clean:
-	rm -rf $(SRC_NFQ)
+	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME) clean
 
 romfs:
-	$(ROMFSINST) -p +x $(SRC_NFQ)/nfqws /usr/bin/nfqws
+	$(ROMFSINST) -p +x $(SRC_NAME)/binaries/my/nfqws /usr/bin/nfqws
 	$(ROMFSINST) -p +x /usr/bin/zapret.sh
-	$(ROMFSINST) /usr/share/zapret
+	$(ROMFSINST) -d config /usr/share/zapret

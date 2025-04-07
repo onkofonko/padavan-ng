@@ -217,6 +217,7 @@ func_fill()
 	user_sswan_conf="$dir_sswan/strongswan.conf"
 	user_sswan_ipsec_conf="$dir_sswan/ipsec.conf"
 	user_sswan_secrets="$dir_sswan/ipsec.secrets"
+	user_smb_conf="$dir_storage/smb.conf"
 
 	# create crond dir
 	[ ! -d "$dir_crond" ] && mkdir -p -m 730 "$dir_crond"
@@ -654,6 +655,44 @@ EOF
 
 EOF
 			chmod 644 "$user_sswan_secrets"
+		fi
+	fi
+	# create user smb.conf file
+	if [ -x "/sbin/smbd" ]; then
+		if [ ! -f "$user_smb_conf" ]; then
+			cat > "$user_smb_conf" <<EOF
+### Custom user conf file for Samba server
+
+### This is continuation of global section of auto-generated config
+### DO NOT define [global] here or it may break configuration!
+
+### Limit minimal protocol version to 2
+# min protocol = smb2
+
+### Bind to 0.0.0.0 and :: instead of interfaces only
+# bind interfaces only = no
+
+### Allows symlinks to be followed
+# follow symlinks = yes
+# wide links = yes
+
+
+### You can add custom shares here (only after defining all global parameters)
+### Hide opt directory
+# [opt]
+# browseable = no
+
+### Export router storage
+# [storage]
+# comment = storage
+# path = /etc/storage
+# read only = no
+# valid users = admin
+# read list = admin
+# write list = admin
+
+EOF
+			chmod 644 "$user_smb_conf"
 		fi
 	fi
 }

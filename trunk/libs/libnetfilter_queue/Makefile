@@ -1,5 +1,6 @@
 SRC_NAME=libnetfilter_queue-1.0.5
 SRC_URL=https://www.netfilter.org/pub/libnetfilter_queue/$(SRC_NAME).tar.bz2
+# https://github.com/openwrt/packages/tree/master/libs/libnetfilter-queue/patches
 
 #all: download_test extract_test config_test
 all: config_test
@@ -13,6 +14,9 @@ download_test:
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
 		tar jxf $(SRC_NAME).tar.bz2 ; \
+		find "$(shell pwd)"/patches -type f -name "*.patch" -print0 \
+		  | sort -z \
+		  | xargs -r -t -0 -n 1 patch -d $(SRC_NAME) -p1 -i; \
 	fi )
 
 config_test:

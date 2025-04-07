@@ -16,7 +16,7 @@ export CONFIG_TOOLCHAIN_DIR="${ROOTDIR}/../toolchain/out"
 kernel_id="3.4.x"
 kernel_cf=""
 kernel_tf=""
-busybox_id="1.36.1"
+busybox_id="1.33.1"
 busybox_cf="$ROOTDIR/configs/boards/busybox.config"
 busybox_tf="$ROOTDIR/user/busybox/busybox-${busybox_id}/.config"
 board_h=""
@@ -81,7 +81,7 @@ fi
 . ${ROOTDIR}/.config
 
 # remove this later
-if [ ! -f "${CONFIG_TOOLCHAIN_DIR}/mipsel-linux-uclibc/sysroot/lib/libuClibc-1.0.50.so" ]; then
+if [ ! -f "${CONFIG_TOOLCHAIN_DIR}/mipsel-linux-uclibc/sysroot/lib/libuClibc-1.0.51.so" ]; then
 	echo "Toolchain and uClibc are updated! Please recompile toolchain."
 	exit 1
 fi
@@ -529,10 +529,20 @@ if [ "$CONFIG_FIRMWARE_INCLUDE_WIREGUARD" = "y" ]; then
 	func_enable_kernel_param "CONFIG_WIREGUARD_DEBUG"
 fi
 
+if [ "$CONFIG_FIRMWARE_INCLUDE_AMNEZIAWG" = "y" ]; then
+	func_enable_kernel_param_as_m "CONFIG_AMNEZIAWG"
+	func_enable_kernel_param "CONFIG_AMNEZIAWG_DEBUG"
+fi
+
 if [ "$CONFIG_FIRMWARE_INCLUDE_SHORTCUT_FE" = "y" ]; then
 	func_enable_kernel_param "CONFIG_SHORTCUT_FE"
 	func_enable_kernel_param "CONFIG_NF_CONNTRACK_EVENTS"
 	func_enable_kernel_param "CONFIG_NF_CONNTRACK_CHAIN_EVENTS"
+fi
+############################## NFQWS SUPPORT ##########################
+if [ "$CONFIG_FIRMWARE_INCLUDE_NFQWS" = "y" ] ; then
+	func_enable_kernel_param_as_m "CONFIG_NETFILTER_NETLINK_QUEUE"
+	func_enable_kernel_param_as_m "CONFIG_NETFILTER_XT_TARGET_NFQUEUE"
 fi
 
 #######################################################################

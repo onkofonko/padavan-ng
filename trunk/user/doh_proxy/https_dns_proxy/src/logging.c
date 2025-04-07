@@ -82,6 +82,11 @@ void logging_init(int fd, int level, uint32_t flight_recorder_size) {
 }
 
 void logging_cleanup(void) {
+  if (flight_recorder) {
+    ring_buffer_free(&flight_recorder);
+    flight_recorder = NULL;
+  }
+
   if (logfile) {
     (void)fclose(logfile);
   }
@@ -151,7 +156,9 @@ void _log(const char *file, int line, int severity, const char *fmt, ...) {
     (void)fflush(logfile);
   }
   if (severity == LOG_FATAL) {
-    ring_buffer_dump(flight_recorder, logfile);
+    if (flight_recorder) {
+      ring_buffer_dump(flight_recorder, logfile);
+    }
 #ifdef DEBUG
     abort();
 #else
