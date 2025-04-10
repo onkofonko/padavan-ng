@@ -34,9 +34,9 @@
 #include "switch.h"
 
 #if BOARD_RAM_SIZE < 32
-#define SHRINK_TX_QUEUE_LEN	(300)
+#define SHRINK_TX_QUEUE_LEN (300)
 #elif BOARD_RAM_SIZE < 64
-#define SHRINK_TX_QUEUE_LEN	(600)
+#define SHRINK_TX_QUEUE_LEN (600)
 #endif
 
 static char udhcpc_lan_state[16] = {0};
@@ -46,8 +46,7 @@ in_addr_t get_lan_ip4(void)
 	return get_interface_addr4(IFNAME_BR);
 }
 
-int
-has_lan_ip4(void)
+int has_lan_ip4(void)
 {
 	if (get_lan_ip4() != INADDR_ANY)
 		return 1;
@@ -55,8 +54,7 @@ has_lan_ip4(void)
 	return 0;
 }
 
-int
-has_lan_gw4(void)
+int has_lan_gw4(void)
 {
 	if (is_valid_ipv4(nvram_safe_get("lan_gateway_t")))
 		return 1;
@@ -64,20 +62,17 @@ has_lan_gw4(void)
 	return 0;
 }
 
-int
-add_static_lan_routes(char *lan_ifname)
+int add_static_lan_routes(char *lan_ifname)
 {
 	return control_static_routes(SR_PREFIX_LAN, lan_ifname, 1);
 }
 
-int
-del_static_lan_routes(char *lan_ifname)
+int del_static_lan_routes(char *lan_ifname)
 {
 	return control_static_routes(SR_PREFIX_LAN, lan_ifname, 0);
 }
 
-void
-init_loopback(void)
+void init_loopback(void)
 {
 	/* Bring up loopback interface */
 	ifconfig("lo", IFUP, "127.0.0.1", "255.0.0.0");
@@ -86,8 +81,7 @@ init_loopback(void)
 	route_add("lo", 0, "127.0.0.0", "0.0.0.0", "255.0.0.0");
 }
 
-void
-init_bridge(int is_ap_mode)
+void init_bridge(int is_ap_mode)
 {
 	int rt_radio_on = get_enabled_radio_rt();
 #if !defined(USE_RT3352_MII)
@@ -123,14 +117,14 @@ init_bridge(int is_ap_mode)
 	/* power up all switch PHY */
 	phy_ports_power(1);
 
-#if defined (USE_SINGLE_MAC)
+#if defined(USE_SINGLE_MAC)
 	if (!is_ap_mode)
 	{
 		/* create VLAN1/2 */
 		create_vlan_iface(IFNAME_MAC, 1, -1, -1, lan_hwaddr, 1);
 		create_vlan_iface(IFNAME_MAC, 2, -1, -1, NULL, 0);
 	}
-#if defined (AP_MODE_LAN_TAGGED)
+#if defined(AP_MODE_LAN_TAGGED)
 	else
 	{
 		/* create VLAN1 */
@@ -139,13 +133,13 @@ init_bridge(int is_ap_mode)
 #endif
 #endif
 
-#if defined (USE_RT3352_MII)
+#if defined(USE_RT3352_MII)
 	/* create VLAN3 for guest AP */
 	create_vlan_iface(IFNAME_MAC, INIC_GUEST_VLAN_VID, -1, -1, lan_hwaddr, 1);
 #endif
 
 #if BOARD_2G_IN_SOC
-#if !defined (USE_RT3352_MII)
+#if !defined(USE_RT3352_MII)
 	if (!rt_radio_on || (rt_mode_x == 1 || rt_mode_x == 3))
 	{
 		/* workaround for create all pseudo interfaces and fix iNIC issue (common PLL config) */
@@ -170,7 +164,7 @@ init_bridge(int is_ap_mode)
 		doSystem("ifconfig %s %s", IFNAME_5G_MAIN, "up");
 	}
 #endif
-#if !defined (USE_RT3352_MII)
+#if !defined(USE_RT3352_MII)
 	if (!rt_radio_on || (rt_mode_x == 1 || rt_mode_x == 3))
 	{
 		/* workaround for create all pseudo interfaces */
@@ -185,28 +179,33 @@ init_bridge(int is_ap_mode)
 	br_set_fd(IFNAME_BR, 2);
 	set_interface_hwaddr(IFNAME_BR, lan_hwaddr);
 
-	if (!is_ap_mode) {
+	if (!is_ap_mode)
+	{
 		/* add eth2 (or eth2.1) to bridge */
-#if defined (USE_GMAC2_TO_GPHY) || defined (USE_GMAC2_TO_GSW)
-		if (get_wan_bridge_mode() != SWAPI_WAN_BRIDGE_DISABLE) {
+#if defined(USE_GMAC2_TO_GPHY) || defined(USE_GMAC2_TO_GSW)
+		if (get_wan_bridge_mode() != SWAPI_WAN_BRIDGE_DISABLE)
+		{
 			create_vlan_iface(IFNAME_MAC, 1, -1, -1, lan_hwaddr, 1);
 			br_add_del_if(IFNAME_BR, "eth2.1", 1);
-		} else
+		}
+		else
 #endif
-		br_add_del_if(IFNAME_BR, IFNAME_LAN, 1);
-	} else {
-#if defined (AP_MODE_LAN_TAGGED)
+			br_add_del_if(IFNAME_BR, IFNAME_LAN, 1);
+	}
+	else
+	{
+#if defined(AP_MODE_LAN_TAGGED)
 		/* add eth2 (or eth2.1) to bridge */
 		br_add_del_if(IFNAME_BR, IFNAME_LAN, 1);
 #else
 		/* add only eth2 to bridge */
 		br_add_del_if(IFNAME_BR, IFNAME_MAC, 1);
 #endif
-#if defined (USE_GMAC2_TO_GPHY) || defined (USE_GMAC2_TO_GSW)
+#if defined(USE_GMAC2_TO_GPHY) || defined(USE_GMAC2_TO_GSW)
 		/* add eth3 to bridge */
 		ifconfig(IFNAME_MAC2, IFUP, NULL, NULL);
 		br_add_del_if(IFNAME_BR, IFNAME_MAC2, 1);
-#if defined (USE_HW_NAT)
+#if defined(USE_HW_NAT)
 		/* enable PPE to forward bridge traffic */
 		module_smart_load("hw_nat", "ttl_regen=0");
 		logmessage(LOGNAME, "%s: %s", "Hardware NAT/Routing", "Enabled, L2 bridge offload");
@@ -218,7 +217,7 @@ init_bridge(int is_ap_mode)
 	{
 		char inic_param[80];
 		snprintf(inic_param, sizeof(inic_param), "miimaster=%s mode=%s syncmiimac=%d bridge=%d max_fw_upload=%d",
-			IFNAME_MAC, "ap", 0, 1, 10);
+				 IFNAME_MAC, "ap", 0, 1, 10);
 		module_smart_load("iNIC_mii", inic_param);
 	}
 #endif
@@ -243,11 +242,11 @@ init_bridge(int is_ap_mode)
 	start_wifi_apcli_rt(rt_radio_on);
 #endif
 
-#if defined (BOARD_GPIO_LED_SW2G)
+#if defined(BOARD_GPIO_LED_SW2G)
 	if (rt_radio_on)
 		LED_CONTROL(BOARD_GPIO_LED_SW2G, LED_ON);
 #endif
-#if defined (BOARD_GPIO_LED_SW5G) && BOARD_HAS_5G_RADIO
+#if defined(BOARD_GPIO_LED_SW5G) && BOARD_HAS_5G_RADIO
 	if (wl_radio_on)
 		LED_CONTROL(BOARD_GPIO_LED_SW5G, LED_ON);
 #endif
@@ -267,7 +266,8 @@ init_bridge(int is_ap_mode)
 	ifconfig(IFNAME_BR, IFUP, NULL, NULL);
 
 #if BOARD_HAS_5G_RADIO
-	if (!wl_radio_on || (wl_mode_x == 1 || wl_mode_x == 3)) {
+	if (!wl_radio_on || (wl_mode_x == 1 || wl_mode_x == 3))
+	{
 		usleep(500000);
 		doSystem("ifconfig %s %s", IFNAME_5G_MAIN, "down");
 		gen_ralink_config_5g(0);
@@ -278,7 +278,8 @@ init_bridge(int is_ap_mode)
 #endif
 
 #if !defined(USE_RT3352_MII)
-	if (!rt_radio_on || (rt_mode_x == 1 || rt_mode_x == 3)) {
+	if (!rt_radio_on || (rt_mode_x == 1 || rt_mode_x == 3))
+	{
 		usleep(500000);
 		doSystem("ifconfig %s %s", IFNAME_2G_MAIN, "down");
 		gen_ralink_config_2g(0);
@@ -294,33 +295,38 @@ init_bridge(int is_ap_mode)
 	nvram_set_int_temp("reload_svc_rt", 0);
 }
 
-void
-config_bridge(int is_ap_mode)
+void config_bridge(int is_ap_mode)
 {
 	const char *wired_ifname;
 	int multicast_router, multicast_querier, igmp_static_port;
 	int igmp_snoop = nvram_get_int("ether_igmp");
 	int wired_m2u = nvram_get_int("ether_m2u");
 
-	if (!is_ap_mode) {
+	if (!is_ap_mode)
+	{
 		igmp_static_port = -1;
-		if (nvram_match("mr_enable_x", "1")) {
-			multicast_router = 2;   // bridge is mcast router path (br0 <--igmpproxy--> eth3)
-			multicast_querier = 0;  // bridge is not needed internal mcast querier (igmpproxy is mcast querier)
-		} else {
-			multicast_router = 1;   // bridge may be mcast router path
-			multicast_querier = 1;  // bridge is needed internal mcast querier (for eth2-ra0-rai0 snooping work)
+		if (nvram_match("mr_enable_x", "1"))
+		{
+			multicast_router = 2;  // bridge is mcast router path (br0 <--igmpproxy--> eth3)
+			multicast_querier = 0; // bridge is not needed internal mcast querier (igmpproxy is mcast querier)
+		}
+		else
+		{
+			multicast_router = 1;  // bridge may be mcast router path
+			multicast_querier = 1; // bridge is needed internal mcast querier (for eth2-ra0-rai0 snooping work)
 		}
 		wired_ifname = IFNAME_LAN;
-#if defined (USE_GMAC2_TO_GPHY) || defined (USE_GMAC2_TO_GSW)
+#if defined(USE_GMAC2_TO_GPHY) || defined(USE_GMAC2_TO_GSW)
 		if (get_wan_bridge_mode() != SWAPI_WAN_BRIDGE_DISABLE)
 			wired_ifname = "eth2.1";
 #endif
-	} else {
+	}
+	else
+	{
 		igmp_static_port = nvram_get_int("ether_uport");
-		multicast_router = 0;   // bridge is not mcast router path
-		multicast_querier = 1;  // bridge is needed internal mcast querier (for eth2-ra0-rai0 snooping work)
-#if defined (AP_MODE_LAN_TAGGED)
+		multicast_router = 0;  // bridge is not mcast router path
+		multicast_querier = 1; // bridge is needed internal mcast querier (for eth2-ra0-rai0 snooping work)
+#if defined(AP_MODE_LAN_TAGGED)
 		wired_ifname = IFNAME_LAN;
 #else
 		wired_ifname = IFNAME_MAC;
@@ -341,32 +347,31 @@ config_bridge(int is_ap_mode)
 	phy_igmp_snooping((igmp_snoop && wired_m2u == 2) ? 1 : 0);
 }
 
-void
-switch_config_link(void)
+void switch_config_link(void)
 {
 	int i, i_flow_mode, i_link_mode;
 	char nvram_param[20];
 
 	// WAN
 	i_link_mode = nvram_safe_get_int("ether_link_wan", SWAPI_LINK_SPEED_MODE_AUTO,
-			SWAPI_LINK_SPEED_MODE_AUTO, SWAPI_LINK_SPEED_MODE_FORCE_POWER_OFF);
+									 SWAPI_LINK_SPEED_MODE_AUTO, SWAPI_LINK_SPEED_MODE_FORCE_POWER_OFF);
 	i_flow_mode = nvram_safe_get_int("ether_flow_wan", SWAPI_LINK_FLOW_CONTROL_TX_RX,
-			SWAPI_LINK_FLOW_CONTROL_TX_RX, SWAPI_LINK_FLOW_CONTROL_DISABLE);
+									 SWAPI_LINK_FLOW_CONTROL_TX_RX, SWAPI_LINK_FLOW_CONTROL_DISABLE);
 	phy_set_link_port(SWAPI_PORT_WAN, i_link_mode, i_flow_mode);
 
-	for (i = 0; i < BOARD_NUM_ETH_EPHY-1; i++) {
-		snprintf(nvram_param, sizeof(nvram_param), "ether_link_lan%d", i+1);
+	for (i = 0; i < BOARD_NUM_ETH_EPHY - 1; i++)
+	{
+		snprintf(nvram_param, sizeof(nvram_param), "ether_link_lan%d", i + 1);
 		i_link_mode = nvram_safe_get_int(nvram_param, SWAPI_LINK_SPEED_MODE_AUTO,
-				SWAPI_LINK_SPEED_MODE_AUTO, SWAPI_LINK_SPEED_MODE_FORCE_POWER_OFF);
-		snprintf(nvram_param, sizeof(nvram_param), "ether_flow_lan%d", i+1);
+										 SWAPI_LINK_SPEED_MODE_AUTO, SWAPI_LINK_SPEED_MODE_FORCE_POWER_OFF);
+		snprintf(nvram_param, sizeof(nvram_param), "ether_flow_lan%d", i + 1);
 		i_flow_mode = nvram_safe_get_int(nvram_param, SWAPI_LINK_FLOW_CONTROL_TX_RX,
-				SWAPI_LINK_FLOW_CONTROL_TX_RX, SWAPI_LINK_FLOW_CONTROL_DISABLE);
-		phy_set_link_port(SWAPI_PORT_LAN1+i, i_link_mode, i_flow_mode);
+										 SWAPI_LINK_FLOW_CONTROL_TX_RX, SWAPI_LINK_FLOW_CONTROL_DISABLE);
+		phy_set_link_port(SWAPI_PORT_LAN1 + i, i_link_mode, i_flow_mode);
 	}
 }
 
-void
-switch_config_base(void)
+void switch_config_base(void)
 {
 	update_ether_leds();
 
@@ -375,8 +380,7 @@ switch_config_base(void)
 	phy_eee_lpi(nvram_get_int("ether_eee"));
 }
 
-void
-switch_config_storm(void)
+void switch_config_storm(void)
 {
 	int controlrate_unknown_unicast;
 	int controlrate_unknown_multicast;
@@ -409,8 +413,7 @@ switch_config_storm(void)
 	phy_storm_broadcast(controlrate_broadcast);
 }
 
-void
-switch_config_vlan(int first_call)
+void switch_config_vlan(int first_call)
 {
 	int bridge_mode, bwan_isolation, is_vlan_filter;
 	int vlan_vid[SWAPI_VLAN_RULE_NUM] = {0};
@@ -422,7 +425,8 @@ switch_config_vlan(int first_call)
 	bwan_isolation = get_wan_bridge_iso_mode(bridge_mode);
 
 	is_vlan_filter = (nvram_match("vlan_filter", "1")) ? 1 : 0;
-	if (is_vlan_filter) {
+	if (is_vlan_filter)
+	{
 #if defined(USE_MTK_ESW)
 		/* MT7620 and MT7628 ESW not support port matrix + security */
 		if (bwan_isolation == SWAPI_WAN_BWAN_ISOLATION_BETWEEN)
@@ -434,26 +438,26 @@ switch_config_vlan(int first_call)
 		vlan_vid[SWAPI_VLAN_RULE_WAN_LAN2] = nvram_get_int("vlan_vid_lan2");
 		vlan_vid[SWAPI_VLAN_RULE_WAN_LAN3] = nvram_get_int("vlan_vid_lan3");
 		vlan_vid[SWAPI_VLAN_RULE_WAN_LAN4] = nvram_get_int("vlan_vid_lan4");
-		
-		vlan_pri[SWAPI_VLAN_RULE_WAN_INET] = nvram_get_int("vlan_pri_cpu")  & 0x07;
+
+		vlan_pri[SWAPI_VLAN_RULE_WAN_INET] = nvram_get_int("vlan_pri_cpu") & 0x07;
 		vlan_pri[SWAPI_VLAN_RULE_WAN_IPTV] = nvram_get_int("vlan_pri_iptv") & 0x07;
 		vlan_pri[SWAPI_VLAN_RULE_WAN_LAN1] = nvram_get_int("vlan_pri_lan1") & 0x07;
 		vlan_pri[SWAPI_VLAN_RULE_WAN_LAN2] = nvram_get_int("vlan_pri_lan2") & 0x07;
 		vlan_pri[SWAPI_VLAN_RULE_WAN_LAN3] = nvram_get_int("vlan_pri_lan3") & 0x07;
 		vlan_pri[SWAPI_VLAN_RULE_WAN_LAN4] = nvram_get_int("vlan_pri_lan4") & 0x07;
-		
+
 		vlan_tag[SWAPI_VLAN_RULE_WAN_INET] = 0;
 		vlan_tag[SWAPI_VLAN_RULE_WAN_IPTV] = 0;
 		vlan_tag[SWAPI_VLAN_RULE_WAN_LAN1] = nvram_get_int("vlan_tag_lan1");
 		vlan_tag[SWAPI_VLAN_RULE_WAN_LAN2] = nvram_get_int("vlan_tag_lan2");
 		vlan_tag[SWAPI_VLAN_RULE_WAN_LAN3] = nvram_get_int("vlan_tag_lan3");
 		vlan_tag[SWAPI_VLAN_RULE_WAN_LAN4] = nvram_get_int("vlan_tag_lan4");
-		
+
 		if (is_vlan_vid_valid(vlan_vid[SWAPI_VLAN_RULE_WAN_INET]))
 			vlan_tag[SWAPI_VLAN_RULE_WAN_INET] = 1;
 		else
 			vlan_vid[SWAPI_VLAN_RULE_WAN_INET] = 0;
-		
+
 		if (is_vlan_vid_valid(vlan_vid[SWAPI_VLAN_RULE_WAN_IPTV]))
 			vlan_tag[SWAPI_VLAN_RULE_WAN_IPTV] = 1;
 		else
@@ -467,7 +471,8 @@ switch_config_vlan(int first_call)
 	phy_bridge_mode(bridge_mode, bwan_isolation);
 
 #if defined(USE_RT3352_MII)
-	if (!first_call) {
+	if (!first_call)
+	{
 		// clear isolation iNIC port from all LAN ports
 		if (is_interface_up(IFNAME_INIC_MAIN) && get_mlme_radio_rt())
 			phy_isolate_inic(0);
@@ -475,10 +480,9 @@ switch_config_vlan(int first_call)
 #endif
 }
 
-void
-restart_switch_config_vlan(void)
+void restart_switch_config_vlan(void)
 {
-#if !defined (USE_GMAC2_TO_GPHY) && !defined (USE_GMAC2_TO_GSW)
+#if !defined(USE_GMAC2_TO_GPHY) && !defined(USE_GMAC2_TO_GSW)
 	int pvid_wan = phy_vlan_pvid_wan_get();
 #endif
 
@@ -488,28 +492,27 @@ restart_switch_config_vlan(void)
 	notify_reset_detect_link();
 	switch_config_vlan(0);
 
-#if !defined (USE_GMAC2_TO_GPHY) && !defined (USE_GMAC2_TO_GSW)
+#if !defined(USE_GMAC2_TO_GPHY) && !defined(USE_GMAC2_TO_GSW)
 	if (phy_vlan_pvid_wan_get() != pvid_wan)
 #endif
 		full_restart_wan();
 }
 
-int
-is_vlan_vid_valid(int vlan_vid)
+int is_vlan_vid_valid(int vlan_vid)
 {
 	if (vlan_vid == 2)
 		return 1;
 	return (vlan_vid >= MIN_EXT_VLAN_VID && vlan_vid < 4095) ? 1 : 0;
 }
 
-void
-update_ether_leds(void)
+void update_ether_leds(void)
 {
 #if (BOARD_NUM_ETH_LEDS > 1)
 	int led0 = nvram_get_int("ether_led0");
 	int led1 = nvram_get_int("ether_led1");
 
-	if (!nvram_get_int("led_ether_t")) {
+	if (!nvram_get_int("led_ether_t"))
+	{
 		led0 = SWAPI_LED_OFF;
 		led1 = SWAPI_LED_OFF;
 	}
@@ -533,13 +536,15 @@ update_ether_leds(void)
 #endif
 }
 
-void
-reset_lan_temp(void)
+void reset_lan_temp(void)
 {
-	if (nvram_match("lan_ipaddr", "")) {
+	if (nvram_match("lan_ipaddr", ""))
+	{
 		nvram_set("lan_ipaddr", DEF_LAN_ADDR);
 		nvram_set("lan_netmask", DEF_LAN_MASK);
-	} else if (nvram_match("lan_netmask", "")) {
+	}
+	else if (nvram_match("lan_netmask", ""))
+	{
 		nvram_set("lan_netmask", DEF_LAN_MASK);
 	}
 
@@ -550,8 +555,7 @@ reset_lan_temp(void)
 	nvram_set_temp("lan_dns_t", "");
 }
 
-void
-reset_lan_vars(void)
+void reset_lan_vars(void)
 {
 	nvram_set("lan_hwaddr", nvram_safe_get("il0macaddr"));
 }
@@ -566,13 +570,15 @@ create_hosts_lan(const char *lan_ipaddr, const char *lan_dname)
 	setdomainname(lan_dname, strlen(lan_dname));
 
 	fp = fopen("/etc/hostname", "w+");
-	if (fp) {
+	if (fp)
+	{
 		fprintf(fp, "%s\n", lan_hname);
 		fclose(fp);
 	}
 
 	fp = fopen("/etc/hosts", "w+");
-	if (fp) {
+	if (fp)
+	{
 		fprintf(fp, "%s %s %s\n", "127.0.0.1", "localhost.localdomain", "localhost");
 		if (strlen(lan_dname) > 0)
 			fprintf(fp, "%s %s.%s %s\n", lan_ipaddr, lan_hname, lan_dname, lan_hname);
@@ -582,14 +588,12 @@ create_hosts_lan(const char *lan_ipaddr, const char *lan_dname)
 	}
 }
 
-void
-update_hosts_ap(void)
+void update_hosts_ap(void)
 {
 	create_hosts_lan(nvram_safe_get("lan_ipaddr_t"), nvram_safe_get("lan_domain_t"));
 }
 
-void
-start_lan(int is_ap_mode, int do_wait)
+void start_lan(int is_ap_mode, int do_wait)
 {
 	char *lan_ipaddr;
 	char *lan_netmsk;
@@ -602,16 +606,18 @@ start_lan(int is_ap_mode, int do_wait)
 	ifconfig(lan_ifname, IFUP, lan_ipaddr, lan_netmsk);
 
 	/*
-	* Configure DHCP connection. The DHCP client will run 
-	* 'udhcpc bound'/'udhcpc deconfig' upon finishing IP address 
-	* renew and release.
-	*/
-	if (is_ap_mode) {
+	 * Configure DHCP connection. The DHCP client will run
+	 * 'udhcpc bound'/'udhcpc deconfig' upon finishing IP address
+	 * renew and release.
+	 */
+	if (is_ap_mode)
+	{
 		char *lan_dname = nvram_safe_get("lan_domain");
 
 		create_hosts_lan(lan_ipaddr, lan_dname);
 
-		if (nvram_match("lan_proto_x", "1")) {
+		if (nvram_match("lan_proto_x", "1"))
+		{
 
 			symlink("/sbin/rc", SCRIPT_UDHCPC_LAN);
 
@@ -627,7 +633,9 @@ start_lan(int is_ap_mode, int do_wait)
 
 			/* start dhcp daemon */
 			start_udhcpc_lan(lan_ifname);
-		} else {
+		}
+		else
+		{
 
 			/* manual config lan gateway and dns */
 			lan_up_manual(lan_ifname, lan_dname);
@@ -635,7 +643,9 @@ start_lan(int is_ap_mode, int do_wait)
 			/* di wakeup after 2 secs */
 			notify_run_detect_internet(2);
 		}
-	} else {
+	}
+	else
+	{
 
 		/* install lan specific static routes */
 		add_static_lan_routes(lan_ifname);
@@ -644,7 +654,7 @@ start_lan(int is_ap_mode, int do_wait)
 		update_lan_status(0);
 	}
 
-#if defined (USE_IPV6)
+#if defined(USE_IPV6)
 	if (get_ipv6_type() != IPV6_DISABLED)
 		reload_lan_addr6();
 #endif
@@ -652,16 +662,18 @@ start_lan(int is_ap_mode, int do_wait)
 	config_bridge(is_ap_mode);
 }
 
-void
-stop_lan(int is_ap_mode)
+void stop_lan(int is_ap_mode)
 {
-	char *svcs[] = { "udhcpc", "detect_wan", NULL };
+	char *svcs[] = {"udhcpc", "detect_wan", NULL};
 
-	if (is_ap_mode) {
+	if (is_ap_mode)
+	{
 		notify_pause_detect_internet();
 
 		kill_services(svcs, 3, 1);
-	} else {
+	}
+	else
+	{
 		char *lan_ip = nvram_safe_get("lan_ipaddr_t");
 
 		/* flush conntrack table (only old LAN IP records) */
@@ -672,7 +684,7 @@ stop_lan(int is_ap_mode)
 		clear_if_route4(IFNAME_BR);
 	}
 
-#if defined (USE_IPV6)
+#if defined(USE_IPV6)
 	clear_lan_addr6();
 #endif
 
@@ -680,14 +692,14 @@ stop_lan(int is_ap_mode)
 	ifconfig(IFNAME_BR, 0, NULL, NULL);
 }
 
-void 
-full_restart_lan(void)
+void full_restart_lan(void)
 {
 	int is_wan_err = 0, is_lan_stp = 0;
 	int is_ap_mode = get_ap_mode();
 	int log_remote = nvram_invmatch("log_ipaddr", "");
 
-	if (!is_ap_mode) {
+	if (!is_ap_mode)
+	{
 		is_wan_err = get_wan_unit_value_int(0, "err");
 		is_lan_stp = nvram_get_int("lan_stp");
 	}
@@ -706,7 +718,8 @@ full_restart_lan(void)
 
 	reset_lan_vars();
 
-	if (!is_ap_mode) {
+	if (!is_ap_mode)
+	{
 		br_set_stp(IFNAME_BR, 0);
 		br_set_fd(IFNAME_BR, 2);
 	}
@@ -730,16 +743,21 @@ full_restart_lan(void)
 	/* restart dns relay and dhcp server */
 	start_dns_dhcpd(is_ap_mode);
 
-	if (!is_ap_mode) {
-		if (is_lan_stp) {
+	if (!is_ap_mode)
+	{
+		if (is_lan_stp)
+		{
 			br_set_stp(IFNAME_BR, 1);
 			br_set_fd(IFNAME_BR, 15);
 		}
 
-		if (is_wan_err) {
+		if (is_wan_err)
+		{
 			full_restart_wan();
 			start_vpn_server();
-		} else {
+		}
+		else
+		{
 			/* restart vpn server, firewall and miniupnpd */
 			restart_vpn_server();
 		}
@@ -768,8 +786,7 @@ full_restart_lan(void)
 	doSystem("killall %s %s", "-SIGUSR1", "httpd");
 }
 
-void
-lan_up_manual(char *lan_ifname, char *lan_dname)
+void lan_up_manual(char *lan_ifname, char *lan_dname)
 {
 	FILE *fp;
 	int lock;
@@ -786,18 +803,21 @@ lan_up_manual(char *lan_ifname, char *lan_dname)
 
 	/* Open resolv.conf */
 	fp = fopen(DNS_RESOLV_CONF, "w+");
-	if (fp) {
+	if (fp)
+	{
 		if (strlen(lan_dname) > 0)
 			fprintf(fp, "domain %s\n", lan_dname);
 
 		dns_ip = nvram_safe_get("lan_dns1");
-		if (is_valid_ipv4(dns_ip)) {
+		if (is_valid_ipv4(dns_ip))
+		{
 			fprintf(fp, "nameserver %s\n", dns_ip);
 			dns_count++;
 		}
 
 		dns_ip = nvram_safe_get("lan_dns2");
-		if (is_valid_ipv4(dns_ip)) {
+		if (is_valid_ipv4(dns_ip))
+		{
 			fprintf(fp, "nameserver %s\n", dns_ip);
 			dns_count++;
 		}
@@ -830,25 +850,33 @@ lan_up_auto(char *lan_ifname, char *lan_gateway, char *lan_dname)
 
 	/* Open resolv.conf */
 	fp = fopen(DNS_RESOLV_CONF, "w+");
-	if (fp) {
+	if (fp)
+	{
 		if (strlen(lan_dname) > 0)
 			fprintf(fp, "domain %s\n", lan_dname);
 
-		if (nvram_get_int("lan_dns_x") == 0) {
+		if (nvram_get_int("lan_dns_x") == 0)
+		{
 			dns_ip = nvram_safe_get("lan_dns1");
-			if (is_valid_ipv4(dns_ip)) {
+			if (is_valid_ipv4(dns_ip))
+			{
 				fprintf(fp, "nameserver %s\n", dns_ip);
 				dns_count++;
 			}
 
 			dns_ip = nvram_safe_get("lan_dns2");
-			if (is_valid_ipv4(dns_ip)) {
+			if (is_valid_ipv4(dns_ip))
+			{
 				fprintf(fp, "nameserver %s\n", dns_ip);
 				dns_count++;
 			}
-		} else {
-			foreach(word, nvram_safe_get("lan_dns_t"), next) {
-				if (is_valid_ipv4(word)) {
+		}
+		else
+		{
+			foreach (word, nvram_safe_get("lan_dns_t"), next)
+			{
+				if (is_valid_ipv4(word))
+				{
 					fprintf(fp, "nameserver %s\n", word);
 					dns_count++;
 				}
@@ -857,7 +885,7 @@ lan_up_auto(char *lan_ifname, char *lan_gateway, char *lan_dname)
 
 		if (!dns_count && is_valid_ipv4(lan_gateway))
 			fprintf(fp, "nameserver %s\n", lan_gateway);
-		
+
 		fclose(fp);
 	}
 
@@ -902,21 +930,24 @@ lan_down_auto(char *lan_ifname)
 #endif
 }
 
-void 
-update_lan_status(int is_auto)
+void update_lan_status(int is_auto)
 {
-	if (!is_auto) {
+	if (!is_auto)
+	{
 		nvram_set_temp("lan_ipaddr_t", nvram_safe_get("lan_ipaddr"));
 		nvram_set_temp("lan_netmask_t", nvram_safe_get("lan_netmask"));
 		nvram_set_temp("lan_domain_t", nvram_safe_get("lan_domain"));
 
-		if (!get_ap_mode()) {
-			if (is_dhcpd_enabled(0)) {
+		if (!get_ap_mode())
+		{
+			if (is_dhcpd_enabled(0))
+			{
 				if (nvram_invmatch("dhcp_gateway_x", ""))
 					nvram_set_temp("lan_gateway_t", nvram_safe_get("dhcp_gateway_x"));
 				else
 					nvram_set_temp("lan_gateway_t", nvram_safe_get("lan_ipaddr"));
-			} else
+			}
+			else
 				nvram_set_temp("lan_gateway_t", nvram_safe_get("lan_ipaddr"));
 		}
 		else
@@ -924,12 +955,12 @@ update_lan_status(int is_auto)
 	}
 }
 
-static int 
+static int
 udhcpc_lan_deconfig(char *lan_ifname)
 {
 	ifconfig(lan_ifname, IFUP,
-		 nvram_safe_get("lan_ipaddr"),
-		 nvram_safe_get("lan_netmask"));
+			 nvram_safe_get("lan_ipaddr"),
+			 nvram_safe_get("lan_netmask"));
 
 	lan_down_auto(lan_ifname);
 
@@ -938,7 +969,7 @@ udhcpc_lan_deconfig(char *lan_ifname)
 	return 0;
 }
 
-static int 
+static int
 udhcpc_lan_bound(char *lan_ifname, int is_renew)
 {
 	char *param, *value;
@@ -947,46 +978,55 @@ udhcpc_lan_bound(char *lan_ifname, int is_renew)
 
 	snprintf(prefix, sizeof(prefix), "lan_");
 
-	if ((value = getenv("ip"))) {
+	if ((value = getenv("ip")))
+	{
 		param = strcat_r(prefix, "ipaddr_t", tmp);
 		is_changed |= nvram_invmatch(param, value);
 		ip_changed |= is_changed;
 		nvram_set_temp(param, value);
 	}
-	if ((value = getenv("subnet"))) {
+	if ((value = getenv("subnet")))
+	{
 		param = strcat_r(prefix, "netmask_t", tmp);
 		is_changed |= nvram_invmatch(param, value);
 		nvram_set_temp(param, value);
-	} else {
+	}
+	else
+	{
 		is_changed |= 1;
 	}
-	if ((value = getenv("router"))) {
+	if ((value = getenv("router")))
+	{
 		param = strcat_r(prefix, "gateway_t", tmp);
 		is_changed |= nvram_invmatch(param, value);
 		nvram_set_temp(param, value);
 	}
-	if ((value = getenv("dns"))) {
+	if ((value = getenv("dns")))
+	{
 		param = strcat_r(prefix, "dns_t", tmp);
 		is_changed |= nvram_invmatch(param, value);
 		nvram_set_temp(param, value);
 	}
-	if ((value = getenv("domain"))) {
+	if ((value = getenv("domain")))
+	{
 		param = strcat_r(prefix, "domain_t", tmp);
 		is_changed |= nvram_invmatch(param, value);
 		nvram_set_temp(param, value);
 	}
 	if ((value = getenv("wins")))
 		nvram_set_temp(strcat_r(prefix, "wins_t", tmp), value);
-	if ((value = getenv("lease"))) {
+	if ((value = getenv("lease")))
+	{
 		lease_dur = atoi(value);
 		nvram_set_temp(strcat_r(prefix, "lease_t", tmp), value);
 	}
 
-	if (is_changed || !is_renew) {
-		char *lan_ipaddr  = nvram_safe_get(strcat_r(prefix, "ipaddr_t", tmp));
-		char *lan_ipmask  = nvram_safe_get(strcat_r(prefix, "netmask_t", tmp));
+	if (is_changed || !is_renew)
+	{
+		char *lan_ipaddr = nvram_safe_get(strcat_r(prefix, "ipaddr_t", tmp));
+		char *lan_ipmask = nvram_safe_get(strcat_r(prefix, "netmask_t", tmp));
 		char *lan_gateway = nvram_safe_get(strcat_r(prefix, "gateway_t", tmp));
-		char *lan_domain  = nvram_safe_get(strcat_r(prefix, "domain_t", tmp));
+		char *lan_domain = nvram_safe_get(strcat_r(prefix, "domain_t", tmp));
 
 		if (ip_changed)
 			ifconfig(lan_ifname, IFUP, "0.0.0.0", NULL);
@@ -998,7 +1038,7 @@ udhcpc_lan_bound(char *lan_ifname, int is_renew)
 		lan_up_auto(lan_ifname, lan_gateway, lan_domain);
 
 		logmessage("DHCP LAN Client", "%s, IP: %s/%s, GW: %s, lease time: %d",
-			udhcpc_lan_state, lan_ipaddr, lan_ipmask, lan_gateway, lease_dur);
+				   udhcpc_lan_state, lan_ipaddr, lan_ipmask, lan_gateway, lease_dur);
 	}
 
 	if (!is_renew)
@@ -1007,26 +1047,25 @@ udhcpc_lan_bound(char *lan_ifname, int is_renew)
 	return 0;
 }
 
-static int 
+static int
 udhcpc_lan_leasefail(char *lan_ifname)
 {
 	return 0;
 }
 
-static int 
+static int
 udhcpc_lan_noack(char *lan_ifname)
 {
 	logmessage("DHCP LAN Client", "Received NAK for %s", lan_ifname);
 	return 0;
 }
 
-int
-udhcpc_lan_main(int argc, char **argv)
+int udhcpc_lan_main(int argc, char **argv)
 {
 	int ret = 0;
 	char *lan_ifname;
 
-	if (argc<2 || !argv[1])
+	if (argc < 2 || !argv[1])
 		return EINVAL;
 
 	lan_ifname = safe_getenv("interface");
@@ -1048,11 +1087,10 @@ udhcpc_lan_main(int argc, char **argv)
 	return ret;
 }
 
-int 
-start_udhcpc_lan(char *lan_ifname)
+int start_udhcpc_lan(char *lan_ifname)
 {
-	char lan_hostname[26] = "hostname:";
-	strncat(lan_hostname, get_our_hostname(), sizeof(lan_hostname) - strlen(lan_hostname) - 1);
+	static char lan_mergedhostname[80];
+	const char *our_hostname = get_our_hostname();
 	char *dhcp_argv[] = {
 		"/sbin/udhcpc",
 		"-i", lan_ifname,
@@ -1061,17 +1099,24 @@ start_udhcpc_lan(char *lan_ifname)
 		"-t4",
 		"-T4",
 		"-d", /* Background after run (new patch for udhcpc) */
-		"-x", lan_hostname,
-		NULL
+		NULL, /* Placeholder for "-x" */
+		NULL, /* Placeholder for hostname argument */
+		NULL  /* Terminator */
 	};
-	
+	int index = 7;
+	if (our_hostname && our_hostname[0] != '\0')
+	{
+		snprintf(lan_mergedhostname, sizeof(lan_mergedhostname), "hostname:%s", our_hostname);
+		dhcp_argv[index++] = "-x";
+		dhcp_argv[index++] = lan_mergedhostname; // Use the static buffer
+	}
+
 	logmessage("DHCP LAN Client", "starting on %s ...", lan_ifname);
-	
+
 	return _eval(dhcp_argv, NULL, 0, NULL);
 }
 
-int 
-stop_udhcpc_lan()
+int stop_udhcpc_lan()
 {
 	return kill_pidfile("/var/run/udhcpc_lan.pid");
 }
