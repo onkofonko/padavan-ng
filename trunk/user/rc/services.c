@@ -52,7 +52,7 @@ start_syslogd(void)
 		"-S",				/* smaller output */
 		"-D",				/* drop duplicates */
 		"-O", "/tmp/syslog.log",	/* syslog file */
-		NULL,				/* -L */
+		"-L",				/* log locally */
 		NULL, NULL,			/* -R host:port */
 		NULL
 	};
@@ -63,8 +63,7 @@ start_syslogd(void)
 	if (is_valid_ipv4(log_ipaddr)) {
 		int log_port = nvram_safe_get_int("log_port", 514, 1, 65535);
 		snprintf(host_dst, sizeof(host_dst), "%s:%d", log_ipaddr, log_port);
-		syslogd_argv[7] = "-L";		/* local & remote */
-		syslogd_argv[8] = "-R";
+		syslogd_argv[8] = "-R";		/* Log locally and via network */
 		syslogd_argv[9] = host_dst;
 	}
 
