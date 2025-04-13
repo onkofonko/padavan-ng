@@ -31,7 +31,7 @@
 
 
 
-FREQUENCY_ITEM RtmpFreqItems3020[] =
+const FREQUENCY_ITEM RtmpFreqItems3020[] =
 {	
 	/* ISM : 2.4 to 2.483 GHz                         */
 	/* 11g*/
@@ -52,7 +52,7 @@ FREQUENCY_ITEM RtmpFreqItems3020[] =
 	{14,   248,	 2,  4},
 };
 
-FREQUENCY_ITEM FreqItems3020_Xtal20M[] =
+const FREQUENCY_ITEM FreqItems3020_Xtal20M[] =
 {	
 	/*
 	 * RF_R08:
@@ -88,7 +88,7 @@ FREQUENCY_ITEM *FreqItems3020 = RtmpFreqItems3020;
 #ifndef RT2880
 #if defined(RT28xx) || defined(RT2883) 
 /* Reset the RFIC setting to new series    */
-RTMP_RF_REGS RF2850RegTable[] = {
+const RTMP_RF_REGS RF2850RegTable[] = {
 /*		ch	 R1 		 R2 		 R3(TX0~4=0) R4*/
 		{1,  0x98402ecc, 0x984c0786, 0x9816b455, 0x9800510b},
 		{2,  0x98402ecc, 0x984c0786, 0x98168a55, 0x9800519f},
@@ -480,7 +480,9 @@ VOID RtmpChipWriteMemory(
 			break;
 		case 4:
 			RTMP_IO_WRITE32(pAd, Offset, Value);
+			break; // Added break for consistency, although default follows
 		default:
+			DBGPRINT(RT_DEBUG_WARN, ("%s: Invalid Unit %d\n", __FUNCTION__, Unit));
 			break;
 	}
 }
@@ -1381,7 +1383,8 @@ static VOID ChipSwitchChannel(
 
 	if (index == MAX_NUM_OF_CHANNELS)
 	{
-		DBGPRINT(RT_DEBUG_ERROR, ("AsicSwitchChannel: Can't find the Channel#%d \n", Channel));
+		DBGPRINT(RT_DEBUG_ERROR, ("AsicSwitchChannel: Can't find the Channel#%d in TxPower table\n", Channel));
+		TxPwer = DEFAULT_RF_TX_POWER; // Use default power if channel not found
 	}
 
 	{
@@ -1528,7 +1531,7 @@ static VOID ChipSwitchChannel(
 				break;
 #endif /* defined(RT28xx) */
 			default:
-				DBGPRINT(RT_DEBUG_TRACE, ("SwitchChannel#%d : unknown RFIC=%d\n",
+				DBGPRINT(RT_DEBUG_WARN, ("SwitchChannel#%d : unknown RFIC=%d, Function called unexpectedly?\n",
 					  Channel, pAd->RfIcType));
 				break;
 		}	

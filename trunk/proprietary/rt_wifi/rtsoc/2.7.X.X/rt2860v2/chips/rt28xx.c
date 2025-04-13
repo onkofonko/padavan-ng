@@ -42,6 +42,7 @@ VOID RT28xx_ChipSwitchChannel(
 	UINT32 i = 0;
 	ULONG	R2 = 0, R3 = DEFAULT_RF_TX_POWER, R4 = 0;
 	RTMP_RF_REGS *RFRegTable;
+	BOOLEAN bChannelFound = FALSE;
 
 	i = i; /* avoid compile warning */
 	RFValue = 0;
@@ -79,6 +80,7 @@ VOID RT28xx_ChipSwitchChannel(
 			{
 				if (Channel == RFRegTable[index].Channel)
 				{
+					bChannelFound = TRUE;
 					R2 = RFRegTable[index].R2;
 					if (pAd->Antenna.field.TxPath == 1)
 					{
@@ -186,6 +188,13 @@ VOID RT28xx_ChipSwitchChannel(
 
 					break;
 				}
+			}
+
+			/* Check if channel was found */
+			if (bChannelFound == FALSE)
+			{
+				DBGPRINT(RT_DEBUG_ERROR, ("%s(): Error! Cannot find Channel %d in RFRegTable\n", __FUNCTION__, Channel));
+				return;
 			}
 
 			DBGPRINT(RT_DEBUG_TRACE, ("SwitchChannel#%d(RF=%d, Pwr0=%lu, Pwr1=%lu, %dT) to , R1=0x%08x, R2=0x%08x, R3=0x%08x, R4=0x%08x\n",

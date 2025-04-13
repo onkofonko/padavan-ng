@@ -37,7 +37,7 @@
 #endif // RTMP_RF_RW_SUPPORT //
 
 /* Default EEPROM value for RT3050 */
-UCHAR RT3050_EeBuffer[EEPROM_SIZE] = {
+const UCHAR RT3050_EeBuffer[EEPROM_SIZE] = {
 	0x50, 0x30, 0x01, 0x01, 0x00, 0x0c, 0x43, 0x30, 0x52, 0x88, 0xff, 0xff, 0xff, 0xff, 
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00, 0x0c, 
@@ -78,7 +78,7 @@ UCHAR RT3050_EeBuffer[EEPROM_SIZE] = {
 	};
 
 /* Default EEPROM value for RT3052 */
-UCHAR RT3052_EeBuffer[EEPROM_SIZE] = {
+const UCHAR RT3052_EeBuffer[EEPROM_SIZE] = {
 	0x52, 0x30, 0x01, 0x01, 0x00, 0x0c, 0x43, 0x30, 0x52, 0x88, 0xff, 0xff, 0xff, 0xff, 
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00, 0x0c, 
@@ -118,7 +118,7 @@ UCHAR RT3052_EeBuffer[EEPROM_SIZE] = {
 	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 	};
 
-REG_PAIR   RT305x_BBPRegTable[] = {
+const REG_PAIR   RT305x_BBPRegTable[] = {
 	{BBP_R31,		0x08},		//gary recommend for ACE
 	{BBP_R78,		0x0E},
 	{BBP_R80,		0x08}, // requested by Gary for high power
@@ -133,7 +133,7 @@ UCHAR RT305x_NUM_BBP_REG_PARMS = (sizeof(RT305x_BBPRegTable) / sizeof(REG_PAIR))
 //
 // RF register initialization set
 //
-REG_PAIR   RT3350_RFRegTable[] = {
+const REG_PAIR   RT3350_RFRegTable[] = {
 	{RF_R00,		0xA1},
 	{RF_R01,		0xC1},
 	{RF_R02,		0xF1},
@@ -172,7 +172,7 @@ REG_PAIR   RT3350_RFRegTable[] = {
 //
 // RF register initialization set
 //
-REG_PAIR   RT305x_RFRegTable[] = {
+const REG_PAIR   RT305x_RFRegTable[] = {
 	{RF_R00,		0x50}, //
 	{RF_R01,		0x01}, //
 	{RF_R02,		0xF7}, //
@@ -209,7 +209,7 @@ REG_PAIR   RT305x_RFRegTable[] = {
 
 UCHAR RT305x_NUM_RF_REG_PARMS = (sizeof(RT305x_RFRegTable) / sizeof(REG_PAIR));
 
-RTMP_REG_PAIR	RT305x_MACRegTable[] =	{
+const RTMP_REG_PAIR	RT305x_MACRegTable[] =	{
 	{TX_SW_CFG0,		0x400},   // Gary,2008-05-21 0x0 for CWC test , 2008-06-19 0x400 for rf reason
 	{TX_SW_CFG1,		0x0}, 	  // Gary,2008-06-18 
 	{TX_SW_CFG2,		0x30}, 	  // Bruce, CwC IOT issue
@@ -219,7 +219,7 @@ UCHAR RT305x_NUM_MAC_REG_PARMS = (sizeof(RT305x_MACRegTable) / sizeof(RTMP_REG_P
 
 #ifdef RTMP_INTERNAL_TX_ALC
 /* The Tx power tuning entry */
-TX_POWER_TUNING_ENTRY_STRUCT RT3350_TxPowerTuningTable[] = 
+const TX_POWER_TUNING_ENTRY_STRUCT RT3350_TxPowerTuningTable[] = 
 {
 /*	idxTxPowerTable		Tx power control over RF		Tx power control over MAC */
 /*	(zero-based array)		{ RF R12[4:0]: Tx0 ALC},		{MAC 0x1314~0x1324} */
@@ -605,6 +605,7 @@ VOID RT305x_ChipSwitchChannel(
 	UINT32 	Value = 0; //BbpReg, Value;
 	UCHAR 	RFValue;
 	UINT32 i = 0;
+	BOOLEAN bChannelFound = FALSE; // Add flag to track if channel frequency parameters are found
 
 	i = i; /* avoid compile warning */
 	RFValue = 0;
@@ -767,8 +768,15 @@ VOID RT305x_ChipSwitchChannel(
 
 				// latch channel for future usage.
 				pAd->LatchRfRegs.Channel = Channel;
+				bChannelFound = TRUE; // Set flag indicating channel parameters were programmed
 				break;				
 			}
+		}
+		// Check if channel frequency parameters were programmed
+		if (bChannelFound == FALSE)
+		{
+			DBGPRINT(RT_DEBUG_ERROR, ("%s: Channel #%d not found in FreqItems3020! RF frequency registers not programmed.\n", __FUNCTION__, Channel));
+			return; // Exit if channel parameters not found
 		}
 	}
 	else
@@ -1484,6 +1492,8 @@ VOID RT3350_AsicTxAlcGetAutoAgcOffset(
 	CHAR 			currentTssi = 0;
 	CHAR 			TotalDeltaPower = 0; 
 	CHAR			TuningTableIndex = 0;
+	CHAR			channel_power_offset = 0; // Store power offset safely
+	UCHAR			channel_idx = 0; // Store channel index safely
 
 	BbpR49.byte = 0;
 	
@@ -1507,12 +1517,34 @@ VOID RT3350_AsicTxAlcGetAutoAgcOffset(
 				pAd->TxPowerCtrl.idxTxPowerTable--;
 			}
 
-			TuningTableIndex = pAd->TxPowerCtrl.idxTxPowerTable
-#ifdef DOT11_N_SUPPORT				
-								+ pAd->TxPower[pAd->CommonCfg.CentralChannel-1].Power;
+#ifdef DOT11_N_SUPPORT
+			// Check channel bounds before accessing TxPower array
+			if ((pAd->CommonCfg.CentralChannel > 0) && (pAd->CommonCfg.CentralChannel <= MAX_NUM_OF_CHANNELS))
+			{
+				channel_idx = pAd->CommonCfg.CentralChannel - 1;
+				channel_power_offset = pAd->TxPower[channel_idx].Power;
+			}
+			else
+			{
+				DBGPRINT(RT_DEBUG_ERROR, ("%s: Invalid CentralChannel %d, using default power offset 0\n", __FUNCTION__, pAd->CommonCfg.CentralChannel));
+				channel_power_offset = 0; // Default value if channel is invalid
+			}
 #else
-								+ pAd->TxPower[pAd->CommonCfg.Channel-1].Power;
+			// Check channel bounds before accessing TxPower array
+			if ((pAd->CommonCfg.Channel > 0) && (pAd->CommonCfg.Channel <= MAX_NUM_OF_CHANNELS))
+			{
+				channel_idx = pAd->CommonCfg.Channel - 1;
+				channel_power_offset = pAd->TxPower[channel_idx].Power;
+			}
+			else
+			{
+				DBGPRINT(RT_DEBUG_ERROR, ("%s: Invalid Channel %d, using default power offset 0\n", __FUNCTION__, pAd->CommonCfg.Channel));
+				channel_power_offset = 0; // Default value if channel is invalid
+			}
 #endif /* DOT11_N_SUPPORT */
+
+			TuningTableIndex = pAd->TxPowerCtrl.idxTxPowerTable + channel_power_offset;
+
 
 			if (TuningTableIndex < LOWERBOUND_TX_POWER_TUNING_ENTRY)
 			{
