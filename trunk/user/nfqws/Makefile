@@ -5,6 +5,7 @@ SRC_URL_SH = https://github.com/nilabsent/zapretsh/archive/refs/heads/main.tar.g
 SRC_NAME_SH = zapretsh-main
 
 CFLAGS += -DZAPRET_GH_VER=v$(SRC_VER) -DZAPRET_GH_HASH=release
+CFLAGS += $(if $(CONFIG_IPV6),-DUSE_IPV6,)
 
 all: download_test extract_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
