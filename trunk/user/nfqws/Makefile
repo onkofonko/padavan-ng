@@ -1,6 +1,8 @@
-SRC_VER = 70.5
+SRC_VER = 70.6
 SRC_NAME = zapret-$(SRC_VER)
 SRC_URL = https://github.com/bol-van/zapret/archive/refs/tags/v$(SRC_VER).tar.gz
+SRC_URL_SH = https://github.com/nilabsent/zapretsh/archive/refs/heads/main.tar.gz
+SRC_NAME_SH = zapretsh-main
 
 CFLAGS += -DZAPRET_GH_VER=v$(SRC_VER) -DZAPRET_GH_HASH=release
 
@@ -11,6 +13,9 @@ download_test:
 	( if [ ! -f $(SRC_NAME).tar.gz ]; then \
 		wget -t5 -T20 --no-check-certificate -O $(SRC_NAME).tar.gz $(SRC_URL) || rm -f $(SRC_NAME).tar.gz; \
 	fi )
+	( if [ ! -f $(SRC_NAME_SH).tar.gz ]; then \
+		wget -t5 -T20 --no-check-certificate -O $(SRC_NAME_SH).tar.gz $(SRC_URL_SH) || rm -f $(SRC_NAME_SH).tar.gz; \
+	fi )
 
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
@@ -19,11 +24,14 @@ extract_test:
 		  | sort -z \
 		  | xargs -r -t -0 -n 1 patch -d $(SRC_NAME) -p1 -i; \
 	fi )
+	( if [ ! -d $(SRC_NAME_SH) ]; then \
+		tar zxf $(SRC_NAME_SH).tar.gz; \
+	fi )
 
 clean:
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME) clean
 
 romfs:
 	$(ROMFSINST) -p +x $(SRC_NAME)/binaries/my/nfqws /usr/bin/nfqws
-	$(ROMFSINST) -p +x /usr/bin/zapret.sh
-	$(ROMFSINST) -d config /usr/share/zapret
+	$(ROMFSINST) -p +x $(SRC_NAME_SH)/zapret/usr/bin/zapret.sh /usr/bin/zapret.sh
+	$(ROMFSINST) -d $(SRC_NAME_SH)/zapret/usr/share/zapret /usr/share/zapret
