@@ -841,20 +841,32 @@ wait_ppp_up(char *ppp_ifname, int unit)
 static void
 create_cb_links(void)
 {
-	mkdir("/tmp/ppp", 0777);
-	mkdir(PPP_PEERS_DIR, 0777);
+	if (mkdir("/tmp/ppp", 0777) < 0 && errno != EEXIST)
+		syslog(LOG_ERR, "mkdir /tmp/ppp failed: %m");
+	if (mkdir(PPP_PEERS_DIR, 0777) < 0 && errno != EEXIST)
+		syslog(LOG_ERR, "mkdir %s failed: %m", PPP_PEERS_DIR);
 
-	symlink("/sbin/rc", "/tmp/ppp/ip-up");
-	symlink("/sbin/rc", "/tmp/ppp/ip-down");
-	symlink("/sbin/rc", SCRIPT_UDHCPC_WAN);
-	symlink("/sbin/rc", SCRIPT_UDHCPC_VIPTV);
-	symlink("/sbin/rc", SCRIPT_ZCIP_WAN);
-	symlink("/sbin/rc", SCRIPT_ZCIP_VIPTV);
-	symlink("/sbin/rc", SCRIPT_WPACLI_WAN);
+	if (symlink("/sbin/rc", "/tmp/ppp/ip-up") < 0 && errno != EEXIST)
+		syslog(LOG_ERR, "symlink /tmp/ppp/ip-up failed: %m");
+	if (symlink("/sbin/rc", "/tmp/ppp/ip-down") < 0 && errno != EEXIST)
+		syslog(LOG_ERR, "symlink /tmp/ppp/ip-down failed: %m");
+	if (symlink("/sbin/rc", SCRIPT_UDHCPC_WAN) < 0 && errno != EEXIST)
+		syslog(LOG_ERR, "symlink %s failed: %m", SCRIPT_UDHCPC_WAN);
+	if (symlink("/sbin/rc", SCRIPT_UDHCPC_VIPTV) < 0 && errno != EEXIST)
+		syslog(LOG_ERR, "symlink %s failed: %m", SCRIPT_UDHCPC_VIPTV);
+	if (symlink("/sbin/rc", SCRIPT_ZCIP_WAN) < 0 && errno != EEXIST)
+		syslog(LOG_ERR, "symlink %s failed: %m", SCRIPT_ZCIP_WAN);
+	if (symlink("/sbin/rc", SCRIPT_ZCIP_VIPTV) < 0 && errno != EEXIST)
+		syslog(LOG_ERR, "symlink %s failed: %m", SCRIPT_ZCIP_VIPTV);
+	if (symlink("/sbin/rc", SCRIPT_WPACLI_WAN) < 0 && errno != EEXIST)
+		syslog(LOG_ERR, "symlink %s failed: %m", SCRIPT_WPACLI_WAN);
 #if defined(USE_IPV6)
-	symlink("/sbin/rc", "/tmp/ppp/ipv6-up");
-	symlink("/sbin/rc", "/tmp/ppp/ipv6-down");
-	symlink("/sbin/rc", SCRIPT_DHCP6C_WAN);
+	if (symlink("/sbin/rc", "/tmp/ppp/ipv6-up") < 0 && errno != EEXIST)
+		syslog(LOG_ERR, "symlink /tmp/ppp/ipv6-up failed: %m");
+	if (symlink("/sbin/rc", "/tmp/ppp/ipv6-down") < 0 && errno != EEXIST)
+		syslog(LOG_ERR, "symlink /tmp/ppp/ipv6-down failed: %m");
+	if (symlink("/sbin/rc", SCRIPT_DHCP6C_WAN) < 0 && errno != EEXIST)
+		syslog(LOG_ERR, "symlink %s failed: %m", SCRIPT_DHCP6C_WAN);
 #endif
 }
 
@@ -862,17 +874,27 @@ static void
 remove_cb_links(void)
 {
 	/* Remove dynamically created links */
-	unlink(SCRIPT_ZCIP_WAN);
-	unlink(SCRIPT_ZCIP_VIPTV);
-	unlink(SCRIPT_UDHCPC_WAN);
-	unlink(SCRIPT_UDHCPC_VIPTV);
-	unlink(SCRIPT_WPACLI_WAN);
-	unlink("/tmp/ppp/ip-up");
-	unlink("/tmp/ppp/ip-down");
+	if (unlink(SCRIPT_ZCIP_WAN) < 0 && errno != ENOENT)
+		syslog(LOG_ERR, "unlink %s failed: %m", SCRIPT_ZCIP_WAN);
+	if (unlink(SCRIPT_ZCIP_VIPTV) < 0 && errno != ENOENT)
+		syslog(LOG_ERR, "unlink %s failed: %m", SCRIPT_ZCIP_VIPTV);
+	if (unlink(SCRIPT_UDHCPC_WAN) < 0 && errno != ENOENT)
+		syslog(LOG_ERR, "unlink %s failed: %m", SCRIPT_UDHCPC_WAN);
+	if (unlink(SCRIPT_UDHCPC_VIPTV) < 0 && errno != ENOENT)
+		syslog(LOG_ERR, "unlink %s failed: %m", SCRIPT_UDHCPC_VIPTV);
+	if (unlink(SCRIPT_WPACLI_WAN) < 0 && errno != ENOENT)
+		syslog(LOG_ERR, "unlink %s failed: %m", SCRIPT_WPACLI_WAN);
+	if (unlink("/tmp/ppp/ip-up") < 0 && errno != ENOENT)
+		syslog(LOG_ERR, "unlink /tmp/ppp/ip-up failed: %m");
+	if (unlink("/tmp/ppp/ip-down") < 0 && errno != ENOENT)
+		syslog(LOG_ERR, "unlink /tmp/ppp/ip-down failed: %m");
 #if defined(USE_IPV6)
-	unlink(SCRIPT_DHCP6C_WAN);
-	unlink("/tmp/ppp/ipv6-up");
-	unlink("/tmp/ppp/ipv6-down");
+	if (unlink(SCRIPT_DHCP6C_WAN) < 0 && errno != ENOENT)
+		syslog(LOG_ERR, "unlink %s failed: %m", SCRIPT_DHCP6C_WAN);
+	if (unlink("/tmp/ppp/ipv6-up") < 0 && errno != ENOENT)
+		syslog(LOG_ERR, "unlink /tmp/ppp/ipv6-up failed: %m");
+	if (unlink("/tmp/ppp/ipv6-down") < 0 && errno != ENOENT)
+		syslog(LOG_ERR, "unlink /tmp/ppp/ipv6-down failed: %m");
 #endif
 }
 
@@ -1902,36 +1924,44 @@ void add_dhcp_routes(char *rt, char *rt_rfc, char *rt_ms, char *ifname, int metr
 
 	/* routes */
 	routes = strdup(rt);
-	for (tmp = routes; tmp && *tmp;)
-	{
-		ipaddr = strsep(&tmp, "/");
-		gateway = strsep(&tmp, " ");
-		if (gateway && is_valid_ipv4(ipaddr))
+	if (routes == NULL) {
+		syslog(LOG_ERR, "strdup failed for routes");
+	} else {
+		for (tmp = routes; tmp && *tmp;)
 		{
-			route_add(ifname, metric, ipaddr, gateway, netmask);
+			ipaddr = strsep(&tmp, "/");
+			gateway = strsep(&tmp, " ");
+			if (gateway && is_valid_ipv4(ipaddr))
+			{
+				route_add(ifname, metric, ipaddr, gateway, netmask);
+			}
 		}
+		free(routes);
 	}
-	free(routes);
 
 	/* rfc3442 or ms classless static routes */
 	routes = rt_rfc;
 	if (!*routes)
 		routes = rt_ms;
 	routes = strdup(routes);
-	for (tmp = routes; tmp && *tmp;)
-	{
-		ipaddr = strsep(&tmp, "/");
-		bits = atoi(strsep(&tmp, " "));
-		gateway = strsep(&tmp, " ");
-
-		if (gateway && bits > 0 && bits <= 32)
+	if (routes == NULL) {
+		syslog(LOG_ERR, "strdup failed for rfc/ms routes");
+	} else {
+		for (tmp = routes; tmp && *tmp;)
 		{
-			mask.s_addr = htonl(0xffffffff << (32 - bits));
-			strcpy(netmask, inet_ntoa(mask));
-			route_add(ifname, metric, ipaddr, gateway, netmask);
+			ipaddr = strsep(&tmp, "/");
+			bits = atoi(strsep(&tmp, " "));
+			gateway = strsep(&tmp, " ");
+
+			if (gateway && bits > 0 && bits <= 32)
+			{
+				mask.s_addr = htonl(0xffffffff << (32 - bits));
+				strcpy(netmask, inet_ntoa(mask));
+				route_add(ifname, metric, ipaddr, gateway, netmask);
+			}
 		}
+		free(routes);
 	}
-	free(routes);
 }
 
 void add_dhcp_routes_by_prefix(char *prefix, char *ifname, int metric)
@@ -2083,7 +2113,7 @@ void get_wan_ifname(char wan_ifname[16])
 		}
 	}
 
-	strcpy(wan_ifname, ifname);
+	snprintf(wan_ifname, 16, "%s", ifname);
 }
 
 in_addr_t
@@ -2717,7 +2747,7 @@ int start_udhcpc_wan(char *wan_ifname, int unit, int wait_lease)
 		const char *sane_hostname = sanity_hostname(wan_hostname);
 		if (sane_hostname && sane_hostname[0] != '\0')
 		{
-			snprintf(wan_mergedhostname, sizeof(wan_mergedhostname), "hostname:%s", sane_hostname);
+			snprintf(wan_mergedhostname, sizeof(wan_mergedhostname), "hostname:%.70s", sane_hostname);
 			dhcp_argv[index++] = "-x";
 			dhcp_argv[index++] = wan_mergedhostname;
 		}

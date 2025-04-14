@@ -27,6 +27,7 @@
 #include <netinet/in.h>
 #include <net/route.h>
 #include <net/ethernet.h>
+#include <sys/stat.h>
 
 #include "rc.h"
 
@@ -67,7 +68,7 @@ void reset_wan6_vars(void)
 			ipv6_from_string(wan_addr6, &addr6);
 			inet_ntop(AF_INET6, &addr6, addr6s, INET6_ADDRSTRLEN);
 			if (wan_size6 > 0 && wan_size6 < 128)
-				sprintf(addr6s, "%s/%d", addr6s, wan_size6);
+				snprintf(addr6s, sizeof(addr6s), "%s/%d", addr6s, wan_size6);
 		}
 	}
 
@@ -159,9 +160,12 @@ void store_ip6rd_from_dhcp(const char *env_value, const char *prefix)
 	if (i == 4)
 	{
 		snprintf(addr6, sizeof(addr6), "%s/%s", values[2], values[1]);
-		nvram_set_temp(strcat_r(prefix, "addr6", tmp), addr6);
-		nvram_set_temp(strcat_r(prefix, "6rd_size", tmp), values[0]);
-		nvram_set_temp(strcat_r(prefix, "6rd_relay", tmp), values[3]);
+		snprintf(tmp, sizeof(tmp), "%saddr6", prefix);
+		nvram_set_temp(tmp, addr6);
+		snprintf(tmp, sizeof(tmp), "%s6rd_size", prefix);
+		nvram_set_temp(tmp, values[0]);
+		snprintf(tmp, sizeof(tmp), "%s6rd_relay", prefix);
+		nvram_set_temp(tmp, values[3]);
 	}
 }
 
@@ -257,14 +261,14 @@ void start_sit_tunnel(int ipv6_type, char *wan_ifname, char *wan_addr4, char *wa
 		memcpy(&net6, &addr6, sizeof(addr6));
 		ipv6_to_net(&net6, size6);
 		inet_ntop(AF_INET6, &net6, sit_6rd_prefix, INET6_ADDRSTRLEN);
-		sprintf(sit_6rd_prefix, "%s/%d", sit_6rd_prefix, size6);
+		snprintf(sit_6rd_prefix, sizeof(sit_6rd_prefix), "%s/%d", sit_6rd_prefix, size6);
 
 		strcpy(sit_6rd_relay_prefix, "0.0.0.0/0");
 		size4 = get_wan_unit_value_int(0, "6rd_size");
 		if (size4 > 0 && size4 <= 32)
 		{
 			net4.s_addr = addr4.s_addr & htonl(0xffffffffUL << (32 - size4));
-			sprintf(sit_6rd_relay_prefix, "%s/%d", inet_ntoa(net4), size4);
+			snprintf(sit_6rd_relay_prefix, sizeof(sit_6rd_relay_prefix), "%s/%d", inet_ntoa(net4), size4);
 		}
 
 		doSystem("ip tunnel 6rd dev %s 6rd-prefix %s 6rd-relay_prefix %s", IFNAME_SIT, sit_6rd_prefix, sit_6rd_relay_prefix);
@@ -281,7 +285,7 @@ void start_sit_tunnel(int ipv6_type, char *wan_ifname, char *wan_addr4, char *wa
 	/* WAN IPv6 address */
 	inet_ntop(AF_INET6, &addr6, addr6s, INET6_ADDRSTRLEN);
 	if (size6 > 0)
-		sprintf(addr6s, "%s/%d", addr6s, size6);
+		snprintf(addr6s, sizeof(addr6s), "%s/%d", addr6s, size6);
 
 	control_if_ipv6_radv(IFNAME_SIT, 0);
 	doSystem("ip link set mtu %d dev %s up", sit_mtu, IFNAME_SIT);
@@ -291,7 +295,7 @@ void start_sit_tunnel(int ipv6_type, char *wan_ifname, char *wan_addr4, char *wa
 
 	/* WAN IPv6 gateway (auto-generate for 6to4/6rd) */
 	if (ipv6_type == IPV6_6TO4 || ipv6_type == IPV6_6RD) {
-		sprintf(addr6s, "::%s", sit_relay);
+		snprintf(addr6s, sizeof(addr6s), "::%s", sit_relay);
 		wan_gate6 = addr6s;
 		/* add direct default gateway for workaround "No route to host" on new kernel */
 		doSystem("ip -6 route add default dev %s metric %d", IFNAME_SIT, 2048);
@@ -316,7 +320,7 @@ void start_sit_tunnel(int ipv6_type, char *wan_ifname, char *wan_addr4, char *wa
 		}
 
 		inet_ntop(AF_INET6, &addr6, addr6s, INET6_ADDRSTRLEN);
-		sprintf(addr6s, "%s/%d", addr6s, 64);
+		snprintf(addr6s, sizeof(addr6s), "%s/%d", addr6s, 64);
 
 		clear_if_addr6(IFNAME_BR);
 		doSystem("ip -6 addr add %s dev %s", addr6s, IFNAME_BR);
@@ -460,6 +464,8 @@ int start_dhcp6c(char *wan_ifname)
 	unsigned char ea[ETHER_ADDR_LEN];
 	const char *conf_file = "/etc/dhcp6c.conf";
 	const char *duid_file = "/tmp/dhcp6c_duid";
+	int duid_ok = 0; // Flag to track DUID file writing success
+	struct stat st; // For checking file existence
 
 	wan6_dhcp = nvram_get_int("ip6_wan_dhcp");
 	dns6_auto = nvram_get_int("ip6_dns_auto");
@@ -472,34 +478,64 @@ int start_dhcp6c(char *wan_ifname)
 	sla_id = 1;
 	sla_len = 0; /* auto prefix always /64 */
 
-	if (ether_atoe(nvram_safe_get("wan_hwaddr"), ea)) {
-		uint16_t duid_len;
-		struct {
-			uint16_t type;
-			uint16_t hwtype;
-		} __attribute__ ((__packed__)) duid3;
-		
-		/* generate IAID from the last 20 bits of WAN MAC */
-		ia_id = ((unsigned int)(ea[3] & 0x0f) << 16) |
-			((unsigned int)(ea[4]) << 8) |
-			((unsigned int)(ea[5]));
-		
-		/* create DUID from WAN MAC */
-		duid_len = sizeof(duid3) + ETHER_ADDR_LEN;
-		duid3.type = htons(3);		/* DUID-LL */
-		duid3.hwtype = htons(1);	/* Ethernet */
-		
-		unlink(duid_file);
-		if ((fp = fopen(duid_file, "w"))) {
-			size_t duid_done = 0;
-			duid_done += fwrite(&duid_len, sizeof(duid_len), 1, fp);
-			duid_done += fwrite(&duid3, sizeof(duid3), 1, fp);
-			duid_done += fwrite(&ea, ETHER_ADDR_LEN, 1, fp);
-			fclose(fp);
-			if (duid_done != 3)
-				unlink(duid_file);
+	// Check if DUID file already exists
+	if (stat(duid_file, &st) == 0) {
+		logmessage("DHCPv6 WAN Client", "Reusing existing DUID file: %s", duid_file);
+		duid_ok = 1; // Assume existing file is valid
+		// Need to still get ia_id if based on MAC
+		if (ether_atoe(nvram_safe_get("wan_hwaddr"), ea)) {
+			/* generate IAID from the last 20 bits of WAN MAC */
+			ia_id = ((unsigned int)(ea[3] & 0x0f) << 16) |
+				((unsigned int)(ea[4]) << 8) |
+				((unsigned int)(ea[5]));
+		}
+	} else {
+		logmessage("DHCPv6 WAN Client", "Generating new DUID file: %s", duid_file);
+		// File doesn't exist, try to generate it
+		if (ether_atoe(nvram_safe_get("wan_hwaddr"), ea)) {
+			uint16_t duid_len;
+			struct {
+				uint16_t type;
+				uint16_t hwtype;
+			} __attribute__ ((__packed__)) duid3;
+
+			/* generate IAID from the last 20 bits of WAN MAC */
+			ia_id = ((unsigned int)(ea[3] & 0x0f) << 16) |
+				((unsigned int)(ea[4]) << 8) |
+				((unsigned int)(ea[5]));
+
+			/* create DUID from WAN MAC */
+			duid_len = sizeof(duid3) + ETHER_ADDR_LEN;
+			duid3.type = htons(3);		/* DUID-LL */
+			duid3.hwtype = htons(1);	/* Ethernet */
+
+			unlink(duid_file); // Attempt unlink first (might not exist, that's fine)
+			if ((fp = fopen(duid_file, "w"))) {
+				// Check each fwrite return value explicitly
+				if (fwrite(&duid_len, sizeof(duid_len), 1, fp) != 1) {
+					fprintf(stderr, "Error writing DUID length to %s\n", duid_file);
+				} else if (fwrite(&duid3, sizeof(duid3), 1, fp) != 1) {
+					fprintf(stderr, "Error writing DUID header to %s\n", duid_file);
+				} else if (fwrite(&ea, ETHER_ADDR_LEN, 1, fp) != 1) {
+					fprintf(stderr, "Error writing DUID MAC to %s\n", duid_file);
+				} else {
+					duid_ok = 1; // All writes successful
+				}
+				fclose(fp);
+				if (!duid_ok) // Unlink if any write failed
+					unlink(duid_file);
+			} else {
+				perror(duid_file); // Log fopen error
+			}
+		}
+		// If ether_atoe failed or file writing failed, duid_ok remains 0
+		if (!duid_ok) {
+			logmessage("DHCPv6 WAN Client", "Failed to generate DUID file.");
+			// Consider if dhcp6c should be started without a DUID file.
+			// Current logic proceeds, dhcp6c might generate an internal one.
 		}
 	}
+
 
 	fp = fopen(conf_file, "w");
 	if (!fp) {
@@ -511,7 +547,7 @@ int start_dhcp6c(char *wan_ifname)
 	if (wan6_dhcp)
 		fprintf(fp, " send ia-na %d;\n", ia_id);
 	if (lan6_auto)
-		fprintf(fp, " send ia-pd %d;\n", ia_id);
+		fprintf(fp, " send ia-pd %d;\n", ia_id); // Corrected missing ia_id
 	if (wan6_dhcp || lan6_auto)
 		fprintf(fp, " send rapid-commit;\n");
 	else

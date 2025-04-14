@@ -43,11 +43,12 @@ get_wan_ppp_peer(int unit)
 }
 
 int
-safe_start_xl2tpd(void)
+safe_start_xl2tpd(int unit_for_lac) // Modified signature
 {
 	FILE *fp;
-	int unit, has_lac_lns;
+	int has_lac_lns; // Removed unit declaration
 	const char *l2tp_conf = "/etc/xl2tpd.conf";
+	int ret = 0; // Default to success
 
 	if (!(fp = fopen(l2tp_conf, "w"))) {
 		perror(l2tp_conf);
@@ -63,25 +64,23 @@ safe_start_xl2tpd(void)
 		"rand source = dev\n\n");
 
 	if (nvram_match("vpns_enable", "1") && nvram_match("vpns_type", "1")) {
-		char sa_v[INET_ADDRSTRLEN], sp_b[INET_ADDRSTRLEN], sp_e[INET_ADDRSTRLEN];
 		unsigned int vaddr, vmask, vp_b, vp_e;
 		struct in_addr pool_in;
 
 		get_vpns_pool(nvram_get_int("vpns_vuse"), &vaddr, &vmask, &vp_b, &vp_e);
 
-		pool_in.s_addr = htonl(vaddr);
-		strcpy(sa_v, inet_ntoa(pool_in));
-
-		pool_in.s_addr = htonl((vaddr & vmask) | vp_b);
-		strcpy(sp_b, inet_ntoa(pool_in));
-
-		pool_in.s_addr = htonl((vaddr & vmask) | vp_e);
-		strcpy(sp_e, inet_ntoa(pool_in));
-
 		fprintf(fp, "[lns default]\n");
 		fprintf(fp, "hostname = %s\n", get_our_hostname());
-		fprintf(fp, "local ip = %s\n", sa_v);
-		fprintf(fp, "ip range = %s-%s\n", sp_b, sp_e);
+
+		pool_in.s_addr = htonl(vaddr);
+		fprintf(fp, "local ip = %s\n", inet_ntoa(pool_in));
+
+		pool_in.s_addr = htonl((vaddr & vmask) | vp_b);
+		fprintf(fp, "ip range = %s-", inet_ntoa(pool_in));
+
+		pool_in.s_addr = htonl((vaddr & vmask) | vp_e);
+		fprintf(fp, "%s\n", inet_ntoa(pool_in));
+
 		fprintf(fp, "pppoptfile = %s\n", VPN_SERVER_PPPD_OPTIONS);
 		fprintf(fp, "require authentication = no\n");
 		fprintf(fp, "tunnel rws = %d\n", 8);
@@ -96,8 +95,8 @@ safe_start_xl2tpd(void)
 		has_lac_lns++;
 	}
 
-	unit = 0; // todo
-	if (get_wan_proto(unit) == IPV4_WAN_PROTO_L2TP
+	// Use unit_for_lac for the LAC section
+	if (get_wan_proto(unit_for_lac) == IPV4_WAN_PROTO_L2TP
 #if defined (APP_RPL2TP)
 	    && nvram_invmatch("wan_l2tpd", "1")
 #endif
@@ -105,13 +104,13 @@ safe_start_xl2tpd(void)
 	{
 		char options[64], lac_name[8];
 
-		snprintf(lac_name, sizeof(lac_name), "ISP%d", unit);
-		snprintf(options, sizeof(options), "/tmp/ppp/options.wan%d", unit);
+		snprintf(lac_name, sizeof(lac_name), "ISP%d", unit_for_lac);
+		snprintf(options, sizeof(options), "/tmp/ppp/options.wan%d", unit_for_lac);
 
 		fprintf(fp, "[lac %s]\n", lac_name);
 		fprintf(fp, "pppoptfile = %s\n", options);
-		fprintf(fp, "lns = %s\n", get_wan_ppp_peer(unit));
-		fprintf(fp, "name = %s\n", get_wan_unit_value(unit, "pppoe_username"));
+		fprintf(fp, "lns = %s\n", get_wan_ppp_peer(unit_for_lac));
+		fprintf(fp, "name = %s\n", get_wan_unit_value(unit_for_lac, "pppoe_username"));
 		fprintf(fp, "require authentication = no\n");
 		fprintf(fp, "tunnel rws = %d\n", 8);
 		fprintf(fp, "route_rdgw = %d\n", 1);
@@ -151,10 +150,17 @@ safe_start_xl2tpd(void)
 	chmod(l2tp_conf, 0644);
 
 	/* launch xl2tpd */
-	if (!pids("xl2tpd"))
-		return eval("/usr/sbin/xl2tpd", "-c", (char *)l2tp_conf);
+	if (!pids("xl2tpd")) {
+		ret = eval("/usr/sbin/xl2tpd", "-c", (char *)l2tp_conf);
+		if (ret != 0) {
+			logmessage("xl2tpd", "Failed to start xl2tpd daemon");
+			ret = -1; // Indicate failure
+		}
+	} else {
+		ret = 1; // Indicate already running
+	}
 
-	return 1;
+	return ret;
 }
 
 #if defined (APP_RPL2TP)
@@ -164,8 +170,11 @@ start_rpl2tp(int unit)
 	FILE *fp;
 	char options[64];
 	const char *l2tp_conf = "/etc/l2tp/l2tp.conf";
+	const char *l2tp_pid = "/var/run/l2tpd.pid";
+	int ret;
+	int tries;
 
-	mkdir_if_none("/etc/l2tp", "777");
+	mkdir_if_none("/etc/l2tp", "755");
 
 	snprintf(options, sizeof(options), "/tmp/ppp/options.wan%d", unit);
 
@@ -197,12 +206,31 @@ start_rpl2tp(int unit)
 	chmod(l2tp_conf, 0644);
 
 	/* launch rp-l2tp */
-	eval("/usr/sbin/l2tpd");
+	ret = eval("/usr/sbin/l2tpd");
+	if (ret != 0) {
+		logmessage("l2tpd", "Failed to start l2tpd daemon");
+		return -1;
+	}
 
-	sleep(1);
+	/* Wait for pid file */
+	for (tries = 0; tries < 20; tries++) { // Wait up to 2 seconds (20 * 100ms)
+		if (access(l2tp_pid, F_OK) == 0)
+			break;
+		usleep(100000); // 100ms
+	}
+
+	if (tries >= 20) {
+		logmessage("l2tpd", "PID file %s not found after 2 seconds", l2tp_pid);
+		// Continue anyway, maybe it will work, maybe not.
+	}
 
 	/* start-session */
-	return system("/usr/sbin/l2tp-control \"start-session 0.0.0.0\"");
+	ret = system("/usr/sbin/l2tp-control \"start-session 0.0.0.0\"");
+	if (ret != 0) {
+		logmessage("l2tp-control", "Failed to start L2TP session");
+	}
+
+	return 0; // Return 0 assuming daemon start is the critical part
 }
 #endif
 
@@ -241,6 +269,7 @@ launch_wan_pppd(int unit, int wan_proto)
 	int auth_type, mtu, mru, mtu_max, mru_max, mtu_def, mru_def;
 	char options[64], tmp[256];
 	char *svcs[] = { NULL, NULL };
+	int ret = 0; // Default to success
 
 	if (unit < 0)
 		return -1;
@@ -424,7 +453,10 @@ launch_wan_pppd(int unit, int wan_proto)
 
 			nvram_set_int_temp("l2tp_wan_t", 0);
 
-			start_rpl2tp(unit);
+			ret = start_rpl2tp(unit);
+			if (ret != 0) {
+				logmessage("pppd", "Failed to start rp-l2tp for wan%d", unit);
+			}
 		} else
 #endif
 		{
@@ -433,13 +465,22 @@ launch_wan_pppd(int unit, int wan_proto)
 
 			nvram_set_int_temp("l2tp_wan_t", 1);
 
-			safe_start_xl2tpd();
+			ret = safe_start_xl2tpd(unit); // Pass unit here
+			if (ret < 0) {
+				logmessage("pppd", "Failed to start xl2tpd for wan%d", unit);
+			} else {
+				ret = 0;
+			}
 		}
 	} else {
-		eval("/usr/sbin/pppd", "file", options);
+		ret = eval("/usr/sbin/pppd", "file", options);
+		if (ret != 0) {
+			logmessage("pppd", "Failed to start pppd daemon for wan%d", unit);
+			ret = -1;
+		}
 	}
 
-	return 0;
+	return ret;
 }
 
 void
@@ -501,8 +542,6 @@ ipup_main(int argc, char **argv)
 	/* update ifname_t */
 	set_wan_unit_value(unit, "ifname_t", ppp_ifname);
 
-	umask(0000);
-
 	if ((value = getenv("IPLOCAL"))) {
 		ifconfig(ppp_ifname, IFUP, value, ppp_mask);
 
@@ -517,10 +556,14 @@ ipup_main(int argc, char **argv)
 	value = getenv("DNS1");
 	if (value)
 		snprintf(buf, sizeof(buf), "%s", value);
+
 	value = getenv("DNS2");
-	if (value && strcmp(value, buf) != 0) {
+	if (value) { // Check if DNS2 exists
 		int buf_len = strlen(buf);
-		snprintf(buf + buf_len, sizeof(buf) - buf_len, "%s%s", (buf_len) ? " " : "", value);
+		// Add DNS2 if buf is empty (no DNS1) or if DNS2 is different from DNS1
+		if (buf_len == 0 || strcmp(value, buf) != 0) {
+			snprintf(buf + buf_len, sizeof(buf) - buf_len, "%s%s", (buf_len) ? " " : "", value);
+		}
 	}
 	set_wan_unit_value(unit, "dns", buf);
 
@@ -547,8 +590,6 @@ ipdown_main(int argc, char **argv)
 	unit = ppp_wan_unit(ppp_linkname);
 	if (unit < 0)
 		return -1;
-
-	umask(0000);
 
 	wan_down(ppp_ifname, unit, 0);
 
@@ -578,8 +619,6 @@ ipv6up_main(int argc, char **argv)
 	if (!is_wan_ipv6_if_ppp())
 		return 0;
 
-	umask(0000);
-
 	wan6_up(ppp_ifname, unit);
 
 	return 0;
@@ -602,8 +641,6 @@ ipv6down_main(int argc, char **argv)
 
 	if (!is_wan_ipv6_if_ppp())
 		return 0;
-
-	umask(0000);
 
 	wan6_down(ppp_ifname, unit);
 

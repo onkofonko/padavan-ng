@@ -47,11 +47,24 @@ void reset_lan6_vars(void)
 		lan_size6 = nvram_get_int("ip6_lan_size");
 		if (*lan_addr6) {
 			memset(&addr6, 0, sizeof(addr6));
-			ipv6_from_string(lan_addr6, &addr6);
-			inet_ntop(AF_INET6, &addr6, addr6s, INET6_ADDRSTRLEN);
-			if (lan_size6 < 48 || lan_size6 > 64)
-				lan_size6 = 64;
-			sprintf(addr6s, "%s/%d", addr6s, lan_size6);
+			// Check return value of ipv6_from_string
+			if (ipv6_from_string(lan_addr6, &addr6) >= 0) {
+				char addr_part[INET6_ADDRSTRLEN]; // Temporary buffer for the address part
+				// Check return value of inet_ntop before using addr_part
+				if (inet_ntop(AF_INET6, &addr6, addr_part, sizeof(addr_part)) != NULL) {
+					if (lan_size6 < 48 || lan_size6 > 64)
+						lan_size6 = 64;
+					// Use snprintf with the temporary buffer
+					snprintf(addr6s, sizeof(addr6s), "%s/%d", addr_part, lan_size6);
+				} else {
+					syslog(LOG_ERR, "inet_ntop failed for static IPv6 address: %s", lan_addr6);
+					addr6s[0] = '\0'; // Ensure addr6s is empty on error
+				}
+			} else {
+				// Handle error: log or clear addr6s if needed
+				syslog(LOG_ERR, "Invalid static IPv6 address: %s", lan_addr6);
+				addr6s[0] = '\0'; // Ensure addr6s is empty on error
+			}
 		}
 	}
 
@@ -143,11 +156,31 @@ int store_lan_addr6(char *lan_addr6_new)
 void reload_lan_addr6(void)
 {
 	char *lan_addr6;
+	const char *p;
+	int valid = 1;
+	int ret; // Variable to store doSystem return value
 
 	clear_if_addr6(IFNAME_BR);
 	lan_addr6 = nvram_safe_get("lan_addr6");
-	if (*lan_addr6)
-		doSystem("ip -6 addr add %s dev %s", lan_addr6, IFNAME_BR);
+	if (*lan_addr6) {
+		// Validate lan_addr6 content
+		for (p = lan_addr6; *p; p++) {
+			if (!isalnum(*p) && *p != ':' && *p != '/') {
+				valid = 0;
+				break;
+			}
+		}
+
+		if (valid) {
+			// Check return value of doSystem
+			ret = doSystem("ip -6 addr add %s dev %s", lan_addr6, IFNAME_BR);
+			if (ret != 0) {
+				syslog(LOG_ERR, "Failed to add IPv6 address %s to %s (error: %d)", lan_addr6, IFNAME_BR, ret);
+			}
+		} else {
+			syslog(LOG_ERR, "Invalid characters detected in lan_addr6: %s", lan_addr6);
+		}
+	}
 }
 
 void clear_lan_addr6(void)
@@ -174,15 +207,27 @@ char *get_lan_addr6_prefix(char *p_addr6s)
 	/* force prefix len to 64 for SLAAC */
 	struct in6_addr addr6;
 	char *lan_addr6 = nvram_safe_get("lan_addr6");
+	size_t len; // Use size_t for length
+	char addr_part[INET6_ADDRSTRLEN]; // Temporary buffer for the address part
 
 	if (*lan_addr6) {
-		if (ipv6_from_string(lan_addr6, &addr6) >= 0) {
-			ipv6_to_net(&addr6, 64);
-			if (inet_ntop(AF_INET6, &addr6, p_addr6s, INET6_ADDRSTRLEN) != NULL) {
-				sprintf(p_addr6s, "%s/%d", p_addr6s, 64);
-				return p_addr6s;
-			}
+		// Check return value of ipv6_from_string
+		if (ipv6_from_string(lan_addr6, &addr6) < 0) {
+			syslog(LOG_ERR, "Invalid IPv6 address string in lan_addr6: %s", lan_addr6);
+			return NULL;
 		}
+
+		ipv6_to_net(&addr6, 64);
+		// Check return value of inet_ntop
+		if (inet_ntop(AF_INET6, &addr6, addr_part, sizeof(addr_part)) == NULL) {
+			syslog(LOG_ERR, "inet_ntop failed for lan_addr6 prefix calculation");
+			return NULL;
+		}
+
+		// Use snprintf with the temporary buffer
+		snprintf(p_addr6s, INET6_ADDRSTRLEN, "%s/%d", addr_part, 64);
+
+		return p_addr6s;
 	}
 
 	return NULL;

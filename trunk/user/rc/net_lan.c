@@ -575,6 +575,10 @@ create_hosts_lan(const char *lan_ipaddr, const char *lan_dname)
 		fprintf(fp, "%s\n", lan_hname);
 		fclose(fp);
 	}
+	else
+	{
+		logmessage(LOGNAME, "Error opening /etc/hostname: %s", strerror(errno));
+	}
 
 	fp = fopen("/etc/hosts", "w+");
 	if (fp)
@@ -585,6 +589,10 @@ create_hosts_lan(const char *lan_ipaddr, const char *lan_dname)
 		else
 			fprintf(fp, "%s %s\n", lan_ipaddr, lan_hname);
 		fclose(fp);
+	}
+	else
+	{
+		logmessage(LOGNAME, "Error opening /etc/hosts: %s", strerror(errno));
 	}
 }
 
@@ -843,10 +851,13 @@ lan_up_auto(char *lan_ifname, char *lan_gateway, char *lan_dname)
 	FILE *fp;
 	int dns_count = 0;
 	char word[100], *next, *dns_ip;
+	int lock;
 
 	/* Set default route to gateway if specified */
 	if (is_valid_ipv4(lan_gateway))
 		route_add(lan_ifname, 0, "0.0.0.0", lan_gateway, "0.0.0.0");
+
+	lock = file_lock("resolv");
 
 	/* Open resolv.conf */
 	fp = fopen(DNS_RESOLV_CONF, "w+");
@@ -889,6 +900,8 @@ lan_up_auto(char *lan_ifname, char *lan_gateway, char *lan_dname)
 		fclose(fp);
 	}
 
+	file_unlock(lock);
+
 	/* sync time */
 	notify_watchdog_time();
 
@@ -909,6 +922,7 @@ lan_down_auto(char *lan_ifname)
 {
 	FILE *fp;
 	char *lan_gateway = nvram_safe_get("lan_gateway_t");
+	int lock;
 
 	notify_pause_detect_internet();
 
@@ -916,10 +930,14 @@ lan_down_auto(char *lan_ifname)
 	if (is_valid_ipv4(lan_gateway))
 		route_del(lan_ifname, 0, "0.0.0.0", lan_gateway, "0.0.0.0");
 
+	lock = file_lock("resolv");
+
 	/* Clear resolv.conf */
 	fp = fopen(DNS_RESOLV_CONF, "w+");
 	if (fp)
 		fclose(fp);
+
+	file_unlock(lock);
 
 	/* fill XXX_t fields */
 	update_lan_status(0);
@@ -1069,6 +1087,11 @@ int udhcpc_lan_main(int argc, char **argv)
 		return EINVAL;
 
 	lan_ifname = safe_getenv("interface");
+	// Add check for NULL or empty interface name
+	if (lan_ifname == NULL || *lan_ifname == '\0') {
+		logmessage("DHCP LAN Client", "Error: interface environment variable not set or empty.");
+		return EINVAL;
+	}
 	snprintf(udhcpc_lan_state, sizeof(udhcpc_lan_state), "%s", argv[1]);
 
 	umask(0000);
@@ -1106,7 +1129,7 @@ int start_udhcpc_lan(char *lan_ifname)
 	int index = 7;
 	if (our_hostname && our_hostname[0] != '\0')
 	{
-		snprintf(lan_mergedhostname, sizeof(lan_mergedhostname), "hostname:%s", our_hostname);
+		snprintf(lan_mergedhostname, sizeof(lan_mergedhostname), "hostname:%.70s", our_hostname);
 		dhcp_argv[index++] = "-x";
 		dhcp_argv[index++] = lan_mergedhostname; // Use the static buffer
 	}

@@ -34,8 +34,13 @@
 static int
 wif_control(const char *wifname, int is_up)
 {
+	int ret;
 	logmessage(LOGNAME, "%s: ifname: %s, isup: %d", __func__, wifname, is_up);
-	return doSystem("ifconfig %s %s 2>/dev/null", wifname, (is_up) ? "up" : "down");
+	ret = doSystem("ifconfig %s %s", wifname, (is_up) ? "up" : "down");
+	if (ret != 0) {
+		logmessage(LOGNAME, "Error executing ifconfig %s %s: %d", wifname, (is_up) ? "up" : "down", ret);
+	}
+	return ret;
 }
 
 void
@@ -55,11 +60,15 @@ mlme_radio_wl(int is_on)
 {
 #if BOARD_HAS_5G_RADIO
 	const char *wifname = find_wlan_if_up(1);
+	int ret;
 
 	if (!wifname)
 		return;
 
-	doSystem("iwpriv %s set %s=%d", wifname, "RadioOn", (is_on) ? 1 : 0);
+	ret = doSystem("iwpriv %s set %s=%d", wifname, "RadioOn", (is_on) ? 1 : 0);
+	if (ret != 0) {
+		logmessage(LOGNAME, "Error executing iwpriv %s set RadioOn=%d: %d", wifname, (is_on) ? 1 : 0, ret);
+	}
 #endif
 	mlme_state_wl(is_on);
 
@@ -72,11 +81,15 @@ void
 mlme_radio_rt(int is_on)
 {
 	const char *wifname = find_wlan_if_up(0);
+	int ret;
 
 	if (!wifname)
 		return;
 
-	doSystem("iwpriv %s set %s=%d", wifname, "RadioOn", (is_on) ? 1 : 0);
+	ret = doSystem("iwpriv %s set %s=%d", wifname, "RadioOn", (is_on) ? 1 : 0);
+	if (ret != 0) {
+		logmessage(LOGNAME, "Error executing iwpriv %s set RadioOn=%d: %d", wifname, (is_on) ? 1 : 0, ret);
+	}
 
 	mlme_state_rt(is_on);
 
@@ -87,7 +100,10 @@ mlme_radio_rt(int is_on)
 #if defined(USE_RT3352_MII)
 	if (is_on) {
 		int i_val = nvram_wlan_get_int(0, "TxPower");
-		doSystem("iwpriv %s set %s=%d", wifname, "TxPower", i_val);
+		ret = doSystem("iwpriv %s set %s=%d", wifname, "TxPower", i_val);
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing iwpriv %s set TxPower=%d: %d", wifname, i_val, ret);
+		}
 	}
 
 	// isolation iNIC port from all LAN ports
@@ -169,21 +185,24 @@ get_apcli_sta_auto(int is_aband)
 	return i_sta_auto;
 }
 
-char *
+const char *
 get_apcli_wisp_ifname(void)
 {
 	int i_mode_x;
+	const char *sta_ssid;
 
 #if !defined(USE_RT3352_MII)
 	i_mode_x = get_mode_radio_rt();
+	sta_ssid = nvram_wlan_get(0, "sta_ssid");
 	if (get_enabled_radio_rt() && (i_mode_x == 3 || i_mode_x == 4) && is_apcli_wisp_rt() &&
-	   (strlen(nvram_wlan_get(0, "sta_ssid")) > 0))
+	   (sta_ssid != NULL && strlen(sta_ssid) > 0))
 		return IFNAME_2G_APCLI;
 #endif
 #if BOARD_HAS_5G_RADIO
 	i_mode_x = get_mode_radio_wl();
+	sta_ssid = nvram_wlan_get(1, "sta_ssid");
 	if (get_enabled_radio_wl() && (i_mode_x == 3 || i_mode_x == 4) && is_apcli_wisp_wl() &&
-	   (strlen(nvram_wlan_get(1, "sta_ssid")) > 0))
+	   (sta_ssid != NULL && strlen(sta_ssid) > 0))
 		return IFNAME_5G_APCLI;
 #endif
 	return NULL;
@@ -193,7 +212,8 @@ static void
 check_apcli_wan(int is_5g, int radio_on)
 {
 	int man_id, wisp_id;
-	char *man_ifname, *wisp_ifname;
+	char *man_ifname;
+	const char *wisp_ifname;
 
 	if (get_ap_mode())
 		return;
@@ -245,24 +265,42 @@ update_inic_mii(void)
 {
 #if 0
 	int i;
+	int ret;
 	const char *ifname_inic = IFNAME_INIC_MAIN;
 
 	// below params always set in new iNIC_mii.obj
-	doSystem("iwpriv %s set %s=%d", ifname_inic, "asiccheck", 1);
+	ret = doSystem("iwpriv %s set %s=%d", ifname_inic, "asiccheck", 1);
+	if (ret != 0) {
+		logmessage(LOGNAME, "Error executing iwpriv %s set asiccheck=1: %d", ifname_inic, ret);
+	}
 
 	// config RT3352 embedded switch for VLAN3 passthrough
-	doSystem("iwpriv %s switch setVlanId=%d,%d", ifname_inic, 2, INIC_GUEST_VLAN_VID);
+	ret = doSystem("iwpriv %s switch setVlanId=%d,%d", ifname_inic, 2, INIC_GUEST_VLAN_VID);
+	if (ret != 0) {
+		logmessage(LOGNAME, "Error executing iwpriv %s switch setVlanId=%d,%d: %d", ifname_inic, 2, INIC_GUEST_VLAN_VID, ret);
+	}
 
 	// power down unused PHY of RT3352 embedded switch
-	for(i = 0; i < 5; i++)
-		doSystem("iwpriv %s switch setPortPowerDown=%d,%d", ifname_inic, i, 1);
+	for(i = 0; i < 5; i++) {
+		ret = doSystem("iwpriv %s switch setPortPowerDown=%d,%d", ifname_inic, i, 1);
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing iwpriv %s switch setPortPowerDown=%d,1: %d", ifname_inic, i, ret);
+		}
+	}
 
 	// add static IGMP entries (workaround for IGMP snooping bug in iNIC firmware)
-	doSystem("iwpriv %s set IgmpAdd=%s", ifname_inic, "01:00:5e:7f:ff:fa"); // SSDP IPv4
-	doSystem("iwpriv %s set IgmpAdd=%s", ifname_inic, "01:00:5e:00:00:fb"); // mDNS IPv4
-	doSystem("iwpriv %s set IgmpAdd=%s", ifname_inic, "01:00:5e:00:00:09"); // RIP  IPv4
-//	doSystem("iwpriv %s set IgmpAdd=%s", ifname_inic, "33:33:00:00:00:0c"); // SSDP IPv6
-//	doSystem("iwpriv %s set IgmpAdd=%s", ifname_inic, "33:33:00:00:00:fb"); // mDNS IPv6
+	ret = doSystem("iwpriv %s set IgmpAdd=%s", ifname_inic, "01:00:5e:7f:ff:fa"); // SSDP IPv4
+	if (ret != 0) {
+		logmessage(LOGNAME, "Error executing iwpriv %s set IgmpAdd=01:00:5e:7f:ff:fa: %d", ifname_inic, ret);
+	}
+	ret = doSystem("iwpriv %s set IgmpAdd=%s", ifname_inic, "01:00:5e:00:00:fb"); // mDNS IPv4
+	if (ret != 0) {
+		logmessage(LOGNAME, "Error executing iwpriv %s set IgmpAdd=01:00:5e:00:00:fb: %d", ifname_inic, ret);
+	}
+	ret = doSystem("iwpriv %s set IgmpAdd=%s", ifname_inic, "01:00:5e:00:00:09"); // RIP  IPv4
+	if (ret != 0) {
+		logmessage(LOGNAME, "Error executing iwpriv %s set IgmpAdd=01:00:5e:00:00:09: %d", ifname_inic, ret);
+	}
 #endif
 }
 
@@ -291,7 +329,10 @@ start_inic_mii(void)
 			phy_isolate_inic(0);
 		} else {
 			/* disable mlme radio */
-			doSystem("iwpriv %s set %s=%d", ifname_inic, "RadioOn", 0);
+			int ret = doSystem("iwpriv %s set %s=%d", ifname_inic, "RadioOn", 0);
+			if (ret != 0) {
+				logmessage(LOGNAME, "Error executing iwpriv %s set RadioOn=0: %d", ifname_inic, ret);
+			}
 		}
 
 		/* add rai0 to bridge (needed for RADIUS) */
@@ -319,9 +360,13 @@ void
 check_inic_mii_rebooted(void)
 {
 	int rt_mode_x;
+	int ret;
 
 	if (!get_mlme_radio_rt()) {
-		doSystem("iwpriv %s set %s=%d", IFNAME_INIC_MAIN, "RadioOn", 0);
+		ret = doSystem("iwpriv %s set %s=%d", IFNAME_INIC_MAIN, "RadioOn", 0);
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing iwpriv %s set RadioOn=0: %d", IFNAME_INIC_MAIN, ret);
+		}
 		return;
 	}
 
@@ -341,6 +386,7 @@ update_vga_clamp_wl(int first_call)
 #if defined (USE_WID_5G) && (USE_WID_5G==7612)
 	int i_val;
 	const char *wifname;
+	int ret;
 
 	wifname = find_wlan_if_up(1);
 	if (!wifname)
@@ -350,7 +396,10 @@ update_vga_clamp_wl(int first_call)
 	if (i_val == 0 && first_call)
 		return;
 
-	doSystem("iwpriv %s set %s=%d", wifname, "VgaClamp", i_val);
+	ret = doSystem("iwpriv %s set %s=%d", wifname, "VgaClamp", i_val);
+	if (ret != 0) {
+		logmessage(LOGNAME, "Error executing iwpriv %s set VgaClamp=%d: %d", wifname, i_val, ret);
+	}
 #endif
 #endif
 }
@@ -361,6 +410,7 @@ update_vga_clamp_rt(int first_call)
 #if defined (USE_WID_2G) && (USE_WID_2G==7602 || USE_WID_2G==7612)
 	int i_val;
 	const char *wifname;
+	int ret;
 
 	wifname = find_wlan_if_up(0);
 	if (!wifname)
@@ -370,7 +420,10 @@ update_vga_clamp_rt(int first_call)
 	if (i_val == 0 && first_call)
 		return;
 
-	doSystem("iwpriv %s set %s=%d", wifname, "VgaClamp", i_val);
+	ret = doSystem("iwpriv %s set %s=%d", wifname, "VgaClamp", i_val);
+	if (ret != 0) {
+		logmessage(LOGNAME, "Error executing iwpriv %s set VgaClamp=%d: %d", wifname, i_val, ret);
+	}
 #endif
 }
 
@@ -430,6 +483,7 @@ set_wifi_rssi_threshold(const char* ifname, int is_aband)
 {
 	int kickrssi = 0;
 	int assocrssi = 0;
+	int ret;
 
 	if (is_aband) {
 		kickrssi = nvram_get_int("wl_KickStaRssiLow");
@@ -439,10 +493,18 @@ set_wifi_rssi_threshold(const char* ifname, int is_aband)
 		assocrssi = nvram_get_int("rt_AssocReqRssiThres");
 	}
 
-	if (kickrssi <= 0 && kickrssi >= -100)
-		doSystem("iwpriv %s set %s=%d", ifname, "KickStaRssiLow", kickrssi);
-	if (assocrssi <= 0 && assocrssi >= -100)
-		doSystem("iwpriv %s set %s=%d", ifname, "AssocReqRssiThres", assocrssi);
+	if (kickrssi <= 0 && kickrssi >= -100) {
+		ret = doSystem("iwpriv %s set %s=%d", ifname, "KickStaRssiLow", kickrssi);
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing iwpriv %s set KickStaRssiLow=%d: %d", ifname, kickrssi, ret);
+		}
+	}
+	if (assocrssi <= 0 && assocrssi >= -100) {
+		ret = doSystem("iwpriv %s set %s=%d", ifname, "AssocReqRssiThres", assocrssi);
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing iwpriv %s set AssocReqRssiThres=%d: %d", ifname, assocrssi, ret);
+		}
+	}
 }
 
 
@@ -487,6 +549,7 @@ start_wifi_ap_rt(int radio_on)
 #if defined(USE_RT3352_MII)
 	int is_ap_mode = get_ap_mode();
 #endif
+	int guest_allowed = is_guest_allowed_rt();
 
 	// check WDS only, ApCli only or Radio disabled
 	if (i_mode_x == 1 || i_mode_x == 3 || !radio_on)
@@ -507,7 +570,7 @@ start_wifi_ap_rt(int radio_on)
 	start_inic_mii();
 
 	// check Radio enabled and check not WDS only, not ApCli only
-	if (radio_on && i_mode_x != 1 && i_mode_x != 3 && is_guest_allowed_rt())
+	if (radio_on && i_mode_x != 1 && i_mode_x != 3 && guest_allowed)
 	{
 		wif_control(IFNAME_INIC_GUEST, 1);
 		if (!is_ap_mode)
@@ -525,7 +588,7 @@ start_wifi_ap_rt(int radio_on)
 		br_add_del_if(IFNAME_BR, IFNAME_2G_MAIN, 1);
 		wif_control_m2u(0, IFNAME_2G_MAIN);
 		set_wifi_rssi_threshold(IFNAME_2G_MAIN, 0);
-		if (is_guest_allowed_rt())
+		if (guest_allowed)
 		{
 			wif_control(IFNAME_2G_GUEST, 1);
 			br_add_del_if(IFNAME_BR, IFNAME_2G_GUEST, 1);
@@ -632,13 +695,19 @@ start_wifi_apcli_wl(int radio_on)
 #if BOARD_HAS_5G_RADIO
 	const char *ifname_apcli = IFNAME_5G_APCLI;
 	int i_mode_x = get_mode_radio_wl();
+	const char *sta_ssid = nvram_wlan_get(1, "sta_ssid");
+	int ret;
 
-	if (radio_on && (i_mode_x == 3 || i_mode_x == 4) && (strlen(nvram_wlan_get(1, "sta_ssid")) > 0))
+	if (radio_on && (i_mode_x == 3 || i_mode_x == 4) && (sta_ssid != NULL && strlen(sta_ssid) > 0))
 	{
 		wif_control(ifname_apcli, 1);
 		br_add_del_if(IFNAME_BR, ifname_apcli, !is_apcli_wisp_wl() || get_ap_mode());
-		if (nvram_wlan_get_int(1, "sta_auto"))
-			doSystem("iwpriv %s set %s=%d", ifname_apcli, "ApCliAutoConnect", 1);
+		if (nvram_wlan_get_int(1, "sta_auto")) {
+			ret = doSystem("iwpriv %s set %s=%d", ifname_apcli, "ApCliAutoConnect", 1);
+			if (ret != 0) {
+				logmessage(LOGNAME, "Error executing iwpriv %s set ApCliAutoConnect=1: %d", ifname_apcli, ret);
+			}
+		}
 	}
 	else
 	{
@@ -652,14 +721,20 @@ start_wifi_apcli_rt(int radio_on)
 {
 	const char *ifname_apcli = IFNAME_2G_APCLI;
 	int i_mode_x = get_mode_radio_rt();
+	const char *sta_ssid = nvram_wlan_get(0, "sta_ssid");
+	int ret;
 
-	if (radio_on && (i_mode_x == 3 || i_mode_x == 4) && (strlen(nvram_wlan_get(0, "sta_ssid")) > 0))
+	if (radio_on && (i_mode_x == 3 || i_mode_x == 4) && (sta_ssid != NULL && strlen(sta_ssid) > 0))
 	{
 		wif_control(ifname_apcli, 1);
 #if !defined(USE_RT3352_MII)
 		br_add_del_if(IFNAME_BR, ifname_apcli, !is_apcli_wisp_rt() || get_ap_mode());
-		if (nvram_wlan_get_int(0, "sta_auto"))
-			doSystem("iwpriv %s set %s=%d", ifname_apcli, "ApCliAutoConnect", 1);
+		if (nvram_wlan_get_int(0, "sta_auto")) {
+			ret = doSystem("iwpriv %s set %s=%d", ifname_apcli, "ApCliAutoConnect", 1);
+			if (ret != 0) {
+				logmessage(LOGNAME, "Error executing iwpriv %s set ApCliAutoConnect=1: %d", ifname_apcli, ret);
+			}
+		}
 #endif
 	}
 #if !defined(USE_RT3352_MII)
@@ -674,6 +749,7 @@ void
 reconnect_apcli(const char *ifname_apcli, int force)
 {
 	int is_aband, i_mode_x;
+	int ret;
 
 	if (strcmp(ifname_apcli, IFNAME_2G_APCLI) == 0)
 		is_aband = 0;
@@ -692,11 +768,20 @@ reconnect_apcli(const char *ifname_apcli, int force)
 		return;
 
 	if (get_apcli_sta_auto(is_aband)) {
-		doSystem("iwpriv %s set %s=%d", ifname_apcli, "ApCliAutoConnect", 1);
+		ret = doSystem("iwpriv %s set %s=%d", ifname_apcli, "ApCliAutoConnect", 1);
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing iwpriv %s set ApCliAutoConnect=1: %d", ifname_apcli, ret);
+		}
 	} else if (force) {
-		doSystem("iwpriv %s set %s=%d", ifname_apcli, "ApCliEnable", 0);
+		ret = doSystem("iwpriv %s set %s=%d", ifname_apcli, "ApCliEnable", 0);
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing iwpriv %s set ApCliEnable=0: %d", ifname_apcli, ret);
+		}
 		usleep(300000);
-		doSystem("iwpriv %s set %s=%d", ifname_apcli, "ApCliEnable", 1);
+		ret = doSystem("iwpriv %s set %s=%d", ifname_apcli, "ApCliEnable", 1);
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing iwpriv %s set ApCliEnable=1: %d", ifname_apcli, ret);
+		}
 	}
 }
 
@@ -766,6 +851,10 @@ restart_wifi_rt(int radio_on, int need_reload_conf)
 
 int is_need_8021x(char *auth_mode)
 {
+	// Add NULL check for auth_mode
+	if (auth_mode == NULL)
+		return 0;
+
 	if (!strcmp(auth_mode, "wpa") ||
 	    !strcmp(auth_mode, "wpa2") ||
 	    !strcmp(auth_mode, "radius"))
@@ -778,23 +867,33 @@ void
 start_8021x_wl(void)
 {
 #if BOARD_HAS_5G_RADIO
+	int ret;
 	if (!get_enabled_radio_wl())
 		return;
 
-	if (is_need_8021x(nvram_wlan_get(1, "auth_mode")))
-		eval("rt2860apd", "-i", IFNAME_5G_MAIN);
+	if (is_need_8021x(nvram_wlan_get(1, "auth_mode"))) {
+		ret = eval("rt2860apd", "-i", IFNAME_5G_MAIN);
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error starting rt2860apd for %s: %d", IFNAME_5G_MAIN, ret);
+		}
+	}
 #endif
 }
 
 void
 start_8021x_rt(void)
 {
+	int ret;
 #if !defined(USE_RT3352_MII)
 	if (!get_enabled_radio_rt())
 		return;
 #endif
-	if (is_need_8021x(nvram_wlan_get(0, "auth_mode")))
-		eval("rtinicapd", "-i", IFNAME_2G_MAIN);
+	if (is_need_8021x(nvram_wlan_get(0, "auth_mode"))) {
+		ret = eval("rtinicapd", "-i", IFNAME_2G_MAIN);
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error starting rtinicapd for %s: %d", IFNAME_2G_MAIN, ret);
+		}
+	}
 }
 
 void
@@ -960,11 +1059,11 @@ control_guest_wl(int guest_on, int manual)
 	int is_ap_changed = 0;
 #if BOARD_HAS_5G_RADIO
 	const char *ifname_ap = IFNAME_5G_GUEST;
-	int radio_on = get_enabled_radio_wl();
+	int radio_enabled = get_enabled_radio_wl();
 	int i_mode_x = get_mode_radio_wl();
 
 	// check WDS only, ApCli only or Radio disabled (force or by schedule)
-	if ((guest_on) && (i_mode_x == 1 || i_mode_x == 3 || !radio_on || !is_interface_up(IFNAME_5G_MAIN)))
+	if ((guest_on) && (i_mode_x == 1 || i_mode_x == 3 || !radio_enabled || !is_interface_up(IFNAME_5G_MAIN)))
 	{
 		return 0;
 	}
@@ -1002,14 +1101,14 @@ control_guest_rt(int guest_on, int manual)
 {
 	int is_ap_changed = 0;
 	const char *ifname_ap = IFNAME_2G_GUEST;
-	int radio_on = get_enabled_radio_rt();
+	int radio_enabled = get_enabled_radio_rt();
 	int i_mode_x = get_mode_radio_rt();
 #if defined(USE_RT3352_MII)
 	int is_ap_mode = get_ap_mode();
 #endif
 
 	// check WDS only, ApCli only or Radio disabled (force or by schedule)
-	if ((guest_on) && (i_mode_x == 1 || i_mode_x == 3 || !radio_on || !is_interface_up(IFNAME_2G_MAIN)))
+	if ((guest_on) && (i_mode_x == 1 || i_mode_x == 3 || !radio_enabled || !is_interface_up(IFNAME_2G_MAIN)))
 	{
 		return 0;
 	}
@@ -1054,30 +1153,55 @@ control_guest_rt(int guest_on, int manual)
 static void
 ebtables_filter_guest_ap(const char *wifname, int is_aband, int i_need_dhcp)
 {
+	int ret;
 	if (i_need_dhcp) {
 		/* drop all IPv4 traffic to router host (exclude DHCPv4)  */
-		doSystem("ebtables -A %s -i %s -p IPv4 --ip-protocol ! %s -j %s",
+		ret = doSystem("ebtables -A %s -i %s -p IPv4 --ip-protocol ! %s -j %s",
 				"INPUT", wifname, "udp", "DROP");
-		doSystem("ebtables -A %s -i %s -p IPv4 --ip-protocol %s --ip-destination-port ! %d -j %s",
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing ebtables INPUT rule 1 for %s: %d", wifname, ret);
+		}
+		ret = doSystem("ebtables -A %s -i %s -p IPv4 --ip-protocol %s --ip-destination-port ! %d -j %s",
 				"INPUT", wifname, "udp", 67, "DROP");
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing ebtables INPUT rule 2 for %s: %d", wifname, ret);
+		}
 	} else {
 		/* drop all traffic to router host  */
-		doSystem("ebtables -A %s -i %s -j %s",
+		ret = doSystem("ebtables -A %s -i %s -j %s",
 				"INPUT", wifname, "DROP");
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing ebtables INPUT rule 3 for %s: %d", wifname, ret);
+		}
 	}
 
 	/* drop forwards between 2.4/5GHz AP wifs */
 #if BOARD_HAS_5G_RADIO
 	if (is_aband) {
 #if defined(USE_RT3352_MII)
-		doSystem("ebtables -A %s -i %s -o %s -j %s", "FORWARD", wifname, IFNAME_INIC_GUEST_VLAN, "DROP");
+		ret = doSystem("ebtables -A %s -i %s -o %s -j %s", "FORWARD", wifname, IFNAME_INIC_GUEST_VLAN, "DROP");
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing ebtables FORWARD rule 1 for %s: %d", wifname, ret);
+		}
 #else
-		doSystem("ebtables -A %s -i %s -o %s -j %s", "FORWARD", wifname, IFNAME_2G_MAIN, "DROP");
-		doSystem("ebtables -A %s -i %s -o %s -j %s", "FORWARD", wifname, IFNAME_2G_GUEST, "DROP");
+		ret = doSystem("ebtables -A %s -i %s -o %s -j %s", "FORWARD", wifname, IFNAME_2G_MAIN, "DROP");
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing ebtables FORWARD rule 2 for %s: %d", wifname, ret);
+		}
+		ret = doSystem("ebtables -A %s -i %s -o %s -j %s", "FORWARD", wifname, IFNAME_2G_GUEST, "DROP");
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing ebtables FORWARD rule 3 for %s: %d", wifname, ret);
+		}
 #endif
 	} else {
-		doSystem("ebtables -A %s -i %s -o %s -j %s", "FORWARD", wifname, IFNAME_5G_MAIN, "DROP");
-		doSystem("ebtables -A %s -i %s -o %s -j %s", "FORWARD", wifname, IFNAME_5G_GUEST, "DROP");
+		ret = doSystem("ebtables -A %s -i %s -o %s -j %s", "FORWARD", wifname, IFNAME_5G_MAIN, "DROP");
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing ebtables FORWARD rule 4 for %s: %d", wifname, ret);
+		}
+		ret = doSystem("ebtables -A %s -i %s -o %s -j %s", "FORWARD", wifname, IFNAME_5G_GUEST, "DROP");
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing ebtables FORWARD rule 5 for %s: %d", wifname, ret);
+		}
 	}
 #endif
 }
@@ -1088,6 +1212,7 @@ restart_guest_lan_isolation(void)
 	int bp_isolate, is_need_ebtables = 0;
 	int is_ap_mode = get_ap_mode();
 	const char *rt_ifname_guest = IFNAME_2G_GUEST;
+	int ret;
 #if BOARD_HAS_5G_RADIO
 	const char *wl_ifname_guest = IFNAME_5G_GUEST;
 
@@ -1129,8 +1254,14 @@ restart_guest_lan_isolation(void)
 		int i_need_dhcp = is_dhcpd_enabled(1);
 
 		module_smart_load("ebtable_filter", NULL);
-		doSystem("ebtables %s", "-F");
-		doSystem("ebtables %s", "-X");
+		ret = doSystem("ebtables %s", "-F");
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing ebtables -F: %d", ret);
+		}
+		ret = doSystem("ebtables %s", "-X");
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing ebtables -X: %d", ret);
+		}
 #if BOARD_HAS_5G_RADIO
 		if (is_need_ebtables & 0x10)
 			ebtables_filter_guest_ap(wl_ifname_guest, 1, i_need_dhcp);
@@ -1139,8 +1270,14 @@ restart_guest_lan_isolation(void)
 			ebtables_filter_guest_ap(rt_ifname_guest, 0, i_need_dhcp);
 	}
 	else if (is_module_loaded("ebtables")) {
-		doSystem("ebtables %s", "-F");
-		doSystem("ebtables %s", "-X");
+		ret = doSystem("ebtables %s", "-F");
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing ebtables -F: %d", ret);
+		}
+		ret = doSystem("ebtables %s", "-X");
+		if (ret != 0) {
+			logmessage(LOGNAME, "Error executing ebtables -X: %d", ret);
+		}
 
 		module_smart_unload("ebt_ip", 0);
 		module_smart_unload("ebtable_filter", 0);
@@ -1285,14 +1422,15 @@ timecheck_wifi(int is_aband, const char *nv_date, const char *nv_time1, const ch
 
 	time_t now;
 	struct tm *tm;
-	char *aDate, *aTime1, *aTime2;
+	const char *aDate, *aTime1, *aTime2;
 	int i, current_min, current_dow, schedul_dow, iTime1B, iTime1E, iTime2B, iTime2E;
 
 	aDate  = nvram_wlan_get(is_aband, nv_date);
 	aTime1 = nvram_wlan_get(is_aband, nv_time1);
 	aTime2 = nvram_wlan_get(is_aband, nv_time2);
 
-	if (strlen(aDate) != 7 || strlen(aTime1) != 8 || strlen(aTime2) != 8)
+	if (aDate == NULL || aTime1 == NULL || aTime2 == NULL ||
+	    strlen(aDate) != 7 || strlen(aTime1) != 8 || strlen(aTime2) != 8)
 		return 1;
 
 	if (strcmp(aDate, "1111111")==0 &&
