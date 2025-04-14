@@ -43,10 +43,10 @@ get_wan_ppp_peer(int unit)
 }
 
 int
-safe_start_xl2tpd(int unit_for_lac) // Modified signature
+safe_start_xl2tpd(void)
 {
 	FILE *fp;
-	int has_lac_lns; // Removed unit declaration
+	int unit, has_lac_lns;
 	const char *l2tp_conf = "/etc/xl2tpd.conf";
 	int ret = 0; // Default to success
 
@@ -95,8 +95,8 @@ safe_start_xl2tpd(int unit_for_lac) // Modified signature
 		has_lac_lns++;
 	}
 
-	// Use unit_for_lac for the LAC section
-	if (get_wan_proto(unit_for_lac) == IPV4_WAN_PROTO_L2TP
+	unit = 0; // todo - hardcoded unit
+	if (get_wan_proto(unit) == IPV4_WAN_PROTO_L2TP
 #if defined (APP_RPL2TP)
 	    && nvram_invmatch("wan_l2tpd", "1")
 #endif
@@ -104,13 +104,13 @@ safe_start_xl2tpd(int unit_for_lac) // Modified signature
 	{
 		char options[64], lac_name[8];
 
-		snprintf(lac_name, sizeof(lac_name), "ISP%d", unit_for_lac);
-		snprintf(options, sizeof(options), "/tmp/ppp/options.wan%d", unit_for_lac);
+		snprintf(lac_name, sizeof(lac_name), "ISP%d", unit);
+		snprintf(options, sizeof(options), "/tmp/ppp/options.wan%d", unit);
 
 		fprintf(fp, "[lac %s]\n", lac_name);
 		fprintf(fp, "pppoptfile = %s\n", options);
-		fprintf(fp, "lns = %s\n", get_wan_ppp_peer(unit_for_lac));
-		fprintf(fp, "name = %s\n", get_wan_unit_value(unit_for_lac, "pppoe_username"));
+		fprintf(fp, "lns = %s\n", get_wan_ppp_peer(unit));
+		fprintf(fp, "name = %s\n", get_wan_unit_value(unit, "pppoe_username"));
 		fprintf(fp, "require authentication = no\n");
 		fprintf(fp, "tunnel rws = %d\n", 8);
 		fprintf(fp, "route_rdgw = %d\n", 1);
@@ -269,7 +269,6 @@ launch_wan_pppd(int unit, int wan_proto)
 	int auth_type, mtu, mru, mtu_max, mru_max, mtu_def, mru_def;
 	char options[64], tmp[256];
 	char *svcs[] = { NULL, NULL };
-	int ret = 0; // Default to success
 
 	if (unit < 0)
 		return -1;
@@ -453,10 +452,7 @@ launch_wan_pppd(int unit, int wan_proto)
 
 			nvram_set_int_temp("l2tp_wan_t", 0);
 
-			ret = start_rpl2tp(unit);
-			if (ret != 0) {
-				logmessage("pppd", "Failed to start rp-l2tp for wan%d", unit);
-			}
+			start_rpl2tp(unit);
 		} else
 #endif
 		{
@@ -465,22 +461,13 @@ launch_wan_pppd(int unit, int wan_proto)
 
 			nvram_set_int_temp("l2tp_wan_t", 1);
 
-			ret = safe_start_xl2tpd(unit); // Pass unit here
-			if (ret < 0) {
-				logmessage("pppd", "Failed to start xl2tpd for wan%d", unit);
-			} else {
-				ret = 0;
-			}
+			safe_start_xl2tpd();
 		}
 	} else {
-		ret = eval("/usr/sbin/pppd", "file", options);
-		if (ret != 0) {
-			logmessage("pppd", "Failed to start pppd daemon for wan%d", unit);
-			ret = -1;
-		}
+		eval("/usr/sbin/pppd", "file", options);
 	}
 
-	return ret;
+	return 0;
 }
 
 void

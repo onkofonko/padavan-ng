@@ -1232,8 +1232,8 @@ VOID DisableAPMIMOPSv1(
 
 
 /* global variable */
-extern FREQUENCY_ITEM RtmpFreqItems3020[];
-extern FREQUENCY_ITEM FreqItems3020_Xtal20M[];
+extern const FREQUENCY_ITEM RtmpFreqItems3020[];
+extern const FREQUENCY_ITEM FreqItems3020_Xtal20M[];
 extern UCHAR NUM_OF_3020_CHNL;
 extern FREQUENCY_ITEM *FreqItems3020;
 extern RTMP_RF_REGS RF2850RegTable[];

@@ -185,7 +185,7 @@ get_apcli_sta_auto(int is_aband)
 	return i_sta_auto;
 }
 
-const char *
+char *
 get_apcli_wisp_ifname(void)
 {
 	int i_mode_x;
