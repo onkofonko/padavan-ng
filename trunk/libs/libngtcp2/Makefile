@@ -1,5 +1,5 @@
-SRC_NAME=ngtcp2-1.11.0
-SRC_URL=https://github.com/ngtcp2/ngtcp2/releases/download/v1.11.0/$(SRC_NAME).tar.xz
+SRC_NAME=ngtcp2-1.12.0
+SRC_URL=https://github.com/ngtcp2/ngtcp2/releases/download/v1.12.0/$(SRC_NAME).tar.xz
 
 CFLAGS += -fPIC
 CXXFLAGS += -fPIC
@@ -16,7 +16,6 @@ download_test:
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
 		tar xJf $(SRC_NAME).tar.xz; \
-		patch -d $(SRC_NAME) -p1 -i ../disabled-examples-in-cmakelists.patch; \
 	fi )
 	
 config_test:
@@ -32,6 +31,7 @@ configure:
 		-DENABLE_EXAMPLES=OFF \
 		-DENABLE_STATIC_LIB=ON \
 		-DENABLE_SHARED_LIB=OFF \
+		-DENABLE_LIB_ONLY=ON \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_TOOLCHAIN_FILE=$(ROOTDIR)/include/cross-mipsel-linux.cmake .. \
 	)
