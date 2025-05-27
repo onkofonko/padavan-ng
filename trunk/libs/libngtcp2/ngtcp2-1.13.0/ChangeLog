@@ -1,0 +1,620 @@
+commit 7dd482f949f145632c482d01af2184954b471795
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-05-26
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-26
+
+    Bump package and library versions
+
+commit c1550b0fb8c864df021417744d2beac6f2a61f26
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-05-26
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-26
+
+    Update AUTHORS
+
+commit dec3e0ccd3dbff5457d76003b6e34c71063497ec
+Merge: f0c08bc9 1db3624d
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-05-26
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-05-26
+
+    Merge pull request #1654 from ngtcp2/bump-aws-lc
+    
+    Bump aws-lc to v1.52.0
+
+commit 1db3624dc774603d28473c949c7a3a1125df800a
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-05-26
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-26
+
+    Bump aws-lc to v1.52.0
+
+commit f0c08bc94f6a06f05c468ec4174f05f605606d22
+Merge: 51fb9608 c5235a75
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-05-26
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-05-26
+
+    Merge pull request #1653 from ngtcp2/bump-boringssl
+    
+    Bump boringssl
+
+commit c5235a75c92b0444b3fd9a5ac716c2f48dfb5435
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-05-26
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-26
+
+    Bump boringssl
+
+commit 51fb9608e18124ef98d2d6406da047c69593aaec
+Merge: c483a8f1 8626ddd7
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-05-12
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-05-12
+
+    Merge pull request #1651 from ngtcp2/constexpr-istarts_with
+    
+    Make istarts_with constexpr
+
+commit 8626ddd7a6bca940138588508396bf766e9fbdfe
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-05-12
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-12
+
+    Make istarts_with constexpr
+
+commit c483a8f1b6c4ec8dc1fe704f925ec71c5106d2af
+Merge: f7a4030a d61fb269
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-05-12
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-05-12
+
+    Merge pull request #1650 from ngtcp2/bump-munit
+    
+    Bump munit
+
+commit d61fb2693fb091ff1a0f631c17c21e2564465a38
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-05-11
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-11
+
+    Bump munit
+
+commit f7a4030ab25c3f481f38e6f3e87da9ea9b7139bd
+Merge: c3ede479 210891fb
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-05-04
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-05-04
+
+    Merge pull request #1646 from nak3/bump-libressl-4.1.0
+    
+    Bump libressl to v4.1.0
+
+commit c3ede4793aacbe8b180fd9a4b3280e7f6264e115
+Merge: 4a1611ed 10ebe66c
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-05-04
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-05-04
+
+    Merge pull request #1647 from kazu-yamamoto/boringssl-mac
+    
+    putting important libdir and incdir first
+
+commit 210891fbaefde1995f5210fb3f63540f0ab07ff3
+Author:     Kenjiro Nakayama <nakayamakenjiro@gmail.com>
+AuthorDate: 2025-05-01
+Commit:     Kenjiro Nakayama <nakayamakenjiro@gmail.com>
+CommitDate: 2025-05-03
+
+    Bump libressl to v4.1.0
+
+commit 10ebe66c5c204934a939ba314d40c5d9e9008b7f
+Author:     Kazu Yamamoto <kazu@iij.ad.jp>
+AuthorDate: 2025-05-02
+Commit:     Kazu Yamamoto <kazu@iij.ad.jp>
+CommitDate: 2025-05-03
+
+    putting important libdir and incdir first
+
+commit 4a1611ed5b17bcfbf3bdf197edfb1c60c195066e
+Merge: 1ab80a97 11216f47
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-05-01
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-05-01
+
+    Merge pull request #1645 from ngtcp2/avoid-mismatch
+    
+    Avoid slower std::ranges::mismatch
+
+commit 11216f47288543bbab9a301930affe898a8ff54f
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-05-01
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    Avoid slower std::ranges::mismatch
+
+commit 1ab80a974eee74246cf5684b130492661e161936
+Merge: 261d31d1 426a023f
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-05-01
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-05-01
+
+    Merge pull request #1644 from ngtcp2/as_uint8_span-consteval
+    
+    Make as_uint8_span consteval
+
+commit 426a023fc8d91d06a458dd7da39d434c02034e30
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-05-01
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    Make as_uint8_span consteval
+
+commit 261d31d13e6401d9719c0067064f05001a5a04e7
+Merge: 04313d14 0ee64591
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-05-01
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-05-01
+
+    Merge pull request #1643 from ngtcp2/refactor-examples
+    
+    Refactor examples
+
+commit 0ee645916789e121ce5b242125d9761785a2ca7d
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-05-01
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    Refactor parse_host_port
+
+commit 71f1985238d5d696c827f802140fd92163c8e957
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-05-01
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    examples/client: Adopt std::unordered_map
+
+commit edf55332b846ec1e7a924cdd063940f0c265a19c
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-05-01
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    Rewrite ALPN selection
+
+commit 8d765e0b0ff53a86d860db5a3584a3731d8261c9
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    Remove unused b64encode
+
+commit 9c50a92b862a1c81d8454346caec5b5cbda2bb84
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    C++ style cast
+
+commit 9fbfbf61251f1272bc6b87d7f1ecdb5f13658678
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    get_reason_phrase: Return std::string_view
+
+commit 9f04b6b5ed1d7665eafe070865f05d781d38e319
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    siphash: Adopt std::ranges
+
+commit c65071bf1c52cbd256d64599c05431c5c0f7519d
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    picotls: Adopt std::ranges
+
+commit e4901d2720ab3e467d5b60c4adc75c4796eb3ebe
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    picotls: Refactor ticket encryption/decryption function
+
+commit 9cdee080fb38b2c4388530c68abc3897332e6c4e
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    Refactor ALPN definitions
+
+commit 22fdfc6f7216400580ebceff4e75ff9a56fbb03e
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    examples/client: Adopt std::ranges
+
+commit 8d67312aaf5f29b69b6ea34d7efb9384b6bf40d4
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    tls_server_*: Adopt std::ranges
+
+commit 19e3af2520d206b18f91a91dc0672761bec4ec72
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    examples/server: Adopt std::ranges
+
+commit e27fd65169e410b19e979e4882d01886d504cefd
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    Append sv to string arguments to read_pem and write_pem
+
+commit 3795fde07f00991d5e9a9424c578bcb460906791
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    Refactor hexdump with std::span
+
+commit 846d45bc3926a4a3f16fede156d2387b9b0e65a8
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    Refactor parse_version
+
+commit 9a3d76654e86a63d81fabe676c632a3a9e3aa532
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    percent_decode: Take std::string_view
+
+commit b778aa08802ccb0f9866ea1b95e98a82598b9db4
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-01
+
+    examples/util: Adopt std::ranges
+
+commit 04313d145c7badc950853044673854212cbeb086
+Merge: 2ede338d b3eccce4
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-04-28
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-04-28
+
+    Merge pull request #1640 from ngtcp2/span-first
+    
+    examples: Adopt std::span::first
+
+commit b3eccce4173748f6ce2bceb11dd4e8116a73045f
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-28
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-04-28
+
+    examples: Adopt std::span::first
+
+commit 2ede338d96d3d9ded87b2641bfe83a15cf301ac5
+Merge: 0271af1c 4779b8bf
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-04-28
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-04-28
+
+    Merge pull request #1638 from ngtcp2/client-refactor-packet-write
+    
+    examples/client: Refactor packet write path
+
+commit 4779b8bfc7df59ad6c8493edc96496fa48230a0e
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-28
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-04-28
+
+    examples/client: Refactor packet write path
+
+commit 0271af1c504e769223214cd2138dfadb668f9b1f
+Merge: fdf255b4 280c64ac
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-04-27
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-04-27
+
+    Merge pull request #1637 from ngtcp2/server-refactor-on_send_blocked
+    
+    examples/server: Refactor on_send_blocked
+
+commit 280c64ac6aad528f0d0bf2f6b41c80ca0a7a5c2b
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-27
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-04-27
+
+    examples/server: Refactor on_send_blocked
+
+commit fdf255b49593bf2333a6d357877bca170bd915ab
+Merge: ab43336b 225fc54b
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-04-27
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-04-27
+
+    Merge pull request #1636 from ngtcp2/server-endpoint-const
+    
+    examples/server: Add const qualifier to Endpoint when passed to function
+
+commit 225fc54bd12a78b3fd03ebf9b4dd2941fc38ccc4
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-27
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-04-27
+
+    examples/server: Add const qualifier to Endpoint when passed to function
+
+commit ab43336bf514f8d6a82f1107dc52ee9f35d129b6
+Merge: f2ab5479 b25ba934
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-04-27
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-04-27
+
+    Merge pull request #1635 from ngtcp2/server-refactor-packet-write
+    
+    examples/server: Refactor packet write
+
+commit b25ba9345fe7cbc97d9220ef6a67a6ad84de159b
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-27
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-04-27
+
+    examples/server: Refactor packet write
+
+commit f2ab54791fdd664195a84692b08a84c35baefa29
+Merge: 709806d3 1be14245
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-04-27
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-04-27
+
+    Merge pull request #1634 from ngtcp2/bump-wolfssl
+    
+    Bump wolfssl to v5.8.0-stable
+
+commit 1be1424585ed09702d223ab9da313d508f2725e1
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-27
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-04-27
+
+    Bump wolfssl to v5.8.0-stable
+
+commit 709806d3fe258a0dd0b6cc40b5f03ec3c3c07f89
+Merge: a5d03dd7 95dadc5a
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-04-22
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-04-22
+
+    Merge pull request #1630 from ngtcp2/cubic-bound-time-delta
+    
+    cubic: Bound time_delta
+
+commit 95dadc5a484216edaecef46abbb4c85798e4e19d
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-22
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-04-22
+
+    cubic: Bound time_delta
+
+commit a5d03dd7c9b4b379770f22df8670d8c329faf518
+Merge: e92f7528 9fcff171
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-04-21
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-04-21
+
+    Merge pull request #1629 from ngtcp2/refactor-cubic
+    
+    Refactor cubic
+
+commit 9fcff171091382f58005705dfdb4b405015b1a2b
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-20
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-04-21
+
+    Refactor cubic
+
+commit e92f75288d9a66d3969e5b2f5b108b980037733d
+Merge: 02ebe607 876c29af
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-04-20
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-04-20
+
+    Merge pull request #1628 from ngtcp2/pacing-interval
+    
+    Add extra precision to pacing_interval
+
+commit 876c29afd910dd5d69d2663dc9465507eefd78c6
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-20
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-04-20
+
+    Add extra precision to pacing_interval
+
+commit 02ebe6075a043f6f1eeaa7f81ff07f1f4775bf32
+Merge: 3e31700b b30e8c33
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-04-19
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-04-19
+
+    Merge pull request #1627 from ngtcp2/pacing-less-bursty
+    
+    Make pacing less bursty
+
+commit b30e8c33d9099472c9df66c072200a36ce0d3b76
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-19
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-04-19
+
+    Make pacing less bursty
+
+commit 3e31700b746dc612d0c8edbb23b8aaf842a3b1f2
+Merge: c239f04f 1a77af29
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-04-19
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-04-19
+
+    Merge pull request #1626 from ngtcp2/path-response-non-probing
+    
+    Make a packet containing PATH_RESPONSE to active path non-probing
+
+commit 1a77af297cd7391155a870896e2af1a6c9610a64
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-19
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-04-19
+
+    Make a packet containing PATH_RESPONSE to active path non-probing
+
+commit c239f04f982726df75afd2673256bb69b3f0a3fa
+Merge: 438d4e9d d6d4f064
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-04-19
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-04-19
+
+    Merge pull request #1625 from ngtcp2/fix-path-response-padding
+    
+    Fix path response padding
+
+commit d6d4f064c917c5f60e61070821b6a67ee07e3d3a
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-19
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-04-19
+
+    Remove unnecessary conn->pkt.require_padding manipulation
+    
+    On first write call (!ppe_pending),
+    NGTCP2_WRITE_PKT_FLAG_REQUIRE_PADDING suggests padding requirement.
+    On the subsequent calls (ppe_pending), conn->pkt.require_padding is
+    used instead.
+
+commit 47a9f9044532448d9cedd452a7230feb1b3a4a34
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-19
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-04-19
+
+    Fix bug that packet is not padded with NGTCP2_WRITE_STREAM_FLAG_MORE
+    
+    Make sure that packet with PATH_RESPONSE to an active path is padded
+    with NGTCP2_WRITE_STREAM_FLAG_MORE.
+
+commit 438d4e9d7d4dad936a7cd57904ce1019568ce96d
+Merge: 4408e690 48cba1d2
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-04-19
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-04-19
+
+    Merge pull request #1624 from jixinqi/jixinqi-patch-1
+    
+    Update CMakeLists.txt to fix the error of check_symbol_exists() when static-link openssl.
+
+commit 48cba1d21c126070c4fe13c5cfd7b87f7f9f1e09
+Author:     Jixinqi <4635756+jixinqi@users.noreply.github.com>
+AuthorDate: 2025-04-19
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-04-19
+
+    Update CMakeLists.txt to fix the error of check_symbol_exists() when static-link openssl.
+
+commit 4408e6905274dc13131b67fdc6511193bf3ebf62
+Merge: 8e09f33f 4439eaa0
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-04-18
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2025-04-18
+
+    Merge pull request #1623 from ngtcp2/update-doc
+    
+    Update doc
+
+commit 4439eaa08263a334968993649d2f42cb79f74d1a
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-18
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-04-18
+
+    Fix picotls crypto helper doc
+
+commit 4b6e1c3f9db8817d4250d7a22b7795a4c173dff1
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-18
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-04-18
+
+    Update packet padding flag docs
+
+commit 8e09f33ff0c53cf149607d177006e11b2bfbe0c0
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-04-16
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-04-16
+
+    Bump package version

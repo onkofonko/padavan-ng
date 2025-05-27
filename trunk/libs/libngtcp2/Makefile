@@ -1,5 +1,5 @@
-SRC_NAME=ngtcp2-1.12.0
-SRC_URL=https://github.com/ngtcp2/ngtcp2/releases/download/v1.12.0/$(SRC_NAME).tar.xz
+SRC_NAME=ngtcp2-1.13.0
+SRC_URL=https://github.com/ngtcp2/ngtcp2/releases/download/v1.13.0/$(SRC_NAME).tar.xz
 
 CFLAGS += -fPIC
 CXXFLAGS += -fPIC
