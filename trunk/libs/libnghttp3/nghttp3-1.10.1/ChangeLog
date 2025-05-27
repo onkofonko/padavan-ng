@@ -1,0 +1,15 @@
+commit df0d504b60a2600f57ab300ca2b61f64905e7d15
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2025-05-27
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-27
+
+    Bump package and library versions
+
+commit 7abad8b0c920c1e587ee52ee8a5f76241d177828
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2025-05-27
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2025-05-27
+
+    Revert "Tighten up :path validation"
