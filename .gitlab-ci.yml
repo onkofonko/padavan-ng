@@ -31,14 +31,13 @@ check:
     COMMIT_REF: "$CI_DEFAULT_BRANCH"
   script:
     - |
-      apk add --no-cache coreutils curl jq
+      apk add --no-cache coreutils curl jq skopeo
 
       echo "Getting container repository ID" # -> "" if no repo
       container_repo="$(curl -L "$API_URL/registry/repositories" | jq -r '.[0].id | values' ||:)"
 
       echo "Getting timestamp of the $IMAGE_TAG image" # -> "" if no image
-      image_response="$(curl -L "$API_URL/registry/repositories/$container_repo/tags/$IMAGE_TAG")"
-      image_time="$(jq -r '.created_at | values' <<< "$image_response" ||:)"
+      image_time="$(skopeo inspect docker://$CI_REGISTRY_IMAGE:$IMAGE_TAG | jq -r '.Created | values' ||:)"
       image_time="$(date +%s -d "${image_time:-0-01-01}")"
 
       echo "Getting timestamp of the latest commit in $BUILD_CONTAINER_TRIGGER_PATH" # -> "" if no commits
