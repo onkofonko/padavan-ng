@@ -1,5 +1,5 @@
-SRC_NAME=curl-8.13.0
-SRC_URL=https://github.com/curl/curl/releases/download/curl-8_13_0/$(SRC_NAME).tar.xz
+SRC_NAME=curl-8.14.1
+SRC_URL=https://github.com/curl/curl/releases/download/curl-8_14_1/$(SRC_NAME).tar.xz
 
 #all: download_test extract_test config_test
 all: config_test
