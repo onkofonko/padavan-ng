@@ -1,4 +1,4 @@
-SRC_NAME=libogg-1.3.5
+SRC_NAME=libogg-1.3.6
 SRC_URL=https://downloads.xiph.org/releases/ogg/$(SRC_NAME).tar.xz
 
 #all: download_test extract_test config_test
