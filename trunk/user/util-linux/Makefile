@@ -1,6 +1,5 @@
-SRC_VERSION=2.41
-SRC_NAME=util-linux-$(SRC_VERSION)
-SRC_URL=https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v$(SRC_VERSION)/$(SRC_NAME).tar.xz
+SRC_NAME=util-linux-2.41.1
+SRC_URL=https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.41/$(SRC_NAME).tar.xz
 THISDIR = $(shell pwd)
 
 CFLAGS += -ffunction-sections -fdata-sections
