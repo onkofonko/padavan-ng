@@ -1,4 +1,4 @@
-SRC_VER = 70.6
+SRC_VER = 71.1.1
 SRC_NAME = zapret-$(SRC_VER)
 SRC_URL = https://github.com/bol-van/zapret/archive/refs/tags/v$(SRC_VER).tar.gz
 SRC_URL_SH = https://github.com/nilabsent/zapretsh/archive/refs/heads/main.tar.gz
@@ -30,7 +30,9 @@ extract_test:
 	fi )
 
 clean:
-	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME) clean
+	( if [ -f $(SRC_NAME)/Makefile ] ; then \
+		$(MAKE) -C $(SRC_NAME) clean ; \
+	fi )
 
 romfs:
 	$(ROMFSINST) -p +x $(SRC_NAME)/binaries/my/nfqws /usr/bin/nfqws
