@@ -641,6 +641,8 @@ struct nvram_pair router_defaults[] = {
 #endif
 #if defined (APP_ZAPRET)
 	{ "zapret_enable", "0" },
+	{ "zapret_iface", "" },
+	{ "zapret_log", "0" },
 #endif
 #if defined (APP_TOR)
 	{ "tor_enable", "0" },
