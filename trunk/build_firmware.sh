@@ -439,7 +439,7 @@ if [ "$CONFIG_FIRMWARE_INCLUDE_XFRM" != "y" ]; then
 	func_disable_kernel_param "CONFIG_NETFILTER_XT_MATCH_POLICY"
 	func_disable_kernel_param "CONFIG_IP_NF_MATCH_AH"
 	func_disable_kernel_param "CONFIG_IP6_NF_MATCH_AH"
-	func_disable_kernel_param "CONFIG_IPV6_MULTIPLE_TABLES"
+#	func_disable_kernel_param "CONFIG_IPV6_MULTIPLE_TABLES"
 	func_disable_kernel_param "CONFIG_CRYPTO_AEAD"
 	func_disable_kernel_param "CONFIG_CRYPTO_AEAD2"
 	func_disable_kernel_param "CONFIG_CRYPTO_AUTHENC"
@@ -544,7 +544,6 @@ if [ "$CONFIG_FIRMWARE_INCLUDE_NFQWS" = "y" ] ; then
 	func_enable_kernel_param_as_m "CONFIG_NETFILTER_NETLINK_QUEUE"
 	func_enable_kernel_param_as_m "CONFIG_NETFILTER_XT_TARGET_NFQUEUE"
 fi
-
 #######################################################################
 echo --------------------------MAKE-DEP--------------------------------
 make dep
