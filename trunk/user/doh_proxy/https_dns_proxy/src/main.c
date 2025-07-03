@@ -36,13 +36,16 @@ typedef struct {
   struct sockaddr_storage raddr;
 } request_t;
 
-static int is_ipv4_address(char *str) {
+static int is_ipv4_address(const char *str) {
     struct in6_addr addr;
     return inet_pton(AF_INET, str, &addr) == 1;
 }
 
 static int hostname_from_url(const char* url_in,
                              char* hostname, const size_t hostname_len) {
+  if (!url_in || !hostname || hostname_len == 0) {
+    return 0;
+  }
   int res = 0;
   CURLU *url = curl_url();
   if (url != NULL) {
@@ -54,8 +57,9 @@ static int hostname_from_url(const char* url_in,
       if (rc == CURLUE_OK && host_len < hostname_len &&
           host[0] != '[' && host[host_len-1] != ']' && // skip IPv6 address
           !is_ipv4_address(host)) {
-        strncpy(hostname, host, hostname_len-1); // NOLINT(clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling)
-        hostname[hostname_len-1] = '\0';
+        size_t copy_len = host_len < hostname_len - 1 ? host_len : hostname_len - 1;
+        memcpy(hostname, host, copy_len);
+        hostname[copy_len] = '\0';
         res = 1; // success
       }
       curl_free(host);
@@ -80,10 +84,11 @@ static void sigpipe_cb(struct ev_loop __attribute__((__unused__)) *loop,
 
 static void https_resp_cb(void *data, char *buf, size_t buflen) {
   request_t *req = (request_t *)data;
-  DLOG("Received response for id: %hX, len: %zu", req->tx_id, buflen);
   if (req == NULL) {
-    FLOG("%04hX: data NULL", req->tx_id);
+    FLOG("data NULL in https_resp_cb");
+    return;
   }
+  DLOG("Received response for id: %hX, len: %zu", req->tx_id, buflen);
   free((void*)req->dns_req);
   if (buf != NULL) { // May be NULL for timeout, DNS failure, or something similar.
     if (buflen < (int)sizeof(uint16_t)) {
@@ -107,6 +112,11 @@ static void https_resp_cb(void *data, char *buf, size_t buflen) {
 static void dns_server_cb(dns_server_t *dns_server, void *data,
                           struct sockaddr* addr, uint16_t tx_id,
                           char *dns_req, size_t dns_req_len) {
+  if (!dns_server || !data || !addr || !dns_req) {
+    ELOG("NULL pointer in dns_server_cb");
+    if (dns_req) free(dns_req);
+    return;
+  }
   app_state_t *app = (app_state_t *)data;
 
   DLOG("Received request for id: %hX, len: %d", tx_id, dns_req_len);
@@ -139,34 +149,63 @@ static void dns_server_cb(dns_server_t *dns_server, void *data,
 }
 
 static int addr_list_reduced(const char* full_list, const char* list) {
+  if (!full_list || !list) {
+    return 1;
+  }
+
   const char *pos = list;
-  const char *end = list + strlen(list);
+  const size_t list_len = strlen(list);
+  const char *end = list + list_len;
+
   while (pos < end) {
-    char current[50];
+    char current[INET6_ADDRSTRLEN];
     const char *comma = strchr(pos, ',');
-    size_t ip_len = comma ? comma - pos : end - pos;
-    strncpy(current, pos, ip_len); // NOLINT(clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling)
+    size_t ip_len = comma ? (size_t)(comma - pos) : (size_t)(end - pos);
+
+    if (ip_len == 0 || ip_len >= sizeof(current)) {
+      DLOG("Invalid IP address length: %zu", ip_len);
+      return 1;
+    }
+
+    memcpy(current, pos, ip_len);
     current[ip_len] = '\0';
 
-    const char *match_begin = strstr(full_list, current);
-    if (!match_begin ||
-        !(match_begin == full_list || *(match_begin - 1) == ',') ||
-        !(*(match_begin + ip_len) == ',' || *(match_begin + ip_len) == '\0')) {
+    // More efficient search: check if the current IP exists as a complete token
+    const char *search_pos = full_list;
+    int found = 0;
+
+    while ((search_pos = strstr(search_pos, current)) != NULL) {
+      // Check if it's a complete token (preceded and followed by delimiter or boundary)
+      int is_start = (search_pos == full_list || *(search_pos - 1) == ',');
+      int is_end = (*(search_pos + ip_len) == ',' || *(search_pos + ip_len) == '\0');
+
+      if (is_start && is_end) {
+        found = 1;
+        break;
+      }
+      search_pos += ip_len;
+    }
+
+    if (!found) {
       DLOG("IP address missing: %s", current);
       return 1;
     }
 
-    pos += ip_len + 1;
+    pos = comma ? comma + 1 : end;
   }
   return 0;
 }
 
 static void dns_poll_cb(const char* hostname, void *data,
                         const char* addr_list) {
+  if (!hostname || !data || !addr_list) {
+    ELOG("NULL pointer in dns_poll_cb");
+    return;
+  }
   app_state_t *app = (app_state_t *)data;
   char buf[255 + (sizeof(":443:") - 1) + POLLER_ADDR_LIST_SIZE];
   memset(buf, 0, sizeof(buf)); // NOLINT(clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling)
-  if (strlen(hostname) > 254) { FLOG("Hostname too long."); }
+  if (strlen(hostname) > 253) { FLOG("Hostname too long."); }
   int ip_start = snprintf(buf, sizeof(buf) - 1, "%s:443:", hostname);  // NOLINT(clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling)
   (void)snprintf(buf + ip_start, sizeof(buf) - 1 - ip_start, "%s", addr_list); // NOLINT(clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling)
   if (app->resolv && app->resolv->data) {
@@ -205,7 +244,7 @@ static int proxy_supports_name_resolution(const char *proxy)
   return 0;
 }
 
-static const char * sw_version(void) {
+static const char *sw_version(void) {
 #ifdef SW_VERSION
   return SW_VERSION;
 #else
@@ -315,10 +354,27 @@ int main(int argc, char *argv[]) {
   }
 
   if (opt.daemonize) {
-    // daemon() is non-standard. If needed, see OpenSSH openbsd-compat/daemon.c
-    if (daemon(0, 0) == -1) {
-      FLOG("daemon failed: %s", strerror(errno));
+    // Use fork() and setsid() instead of deprecated daemon()
+    pid_t pid = fork();
+    if (pid < 0) {
+      FLOG("fork failed: %s", strerror(errno));
+    } else if (pid > 0) {
+      exit(0); // parent exits
     }
+
+    if (setsid() < 0) {
+      FLOG("setsid failed: %s", strerror(errno));
+    }
+
+    // Change working directory to root
+    if (chdir("/") < 0) {
+      FLOG("chdir failed: %s", strerror(errno));
+    }
+
+    // Close standard file descriptors
+    close(STDIN_FILENO);
+    close(STDOUT_FILENO);
+    close(STDERR_FILENO);
   }
 
   ev_signal sigpipe;

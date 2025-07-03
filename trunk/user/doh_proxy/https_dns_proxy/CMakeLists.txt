@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.10)
 project(HttpsDnsProxy C)
 
 # FUNCTIONS
@@ -65,8 +65,21 @@ endif()
 
 # LIBRARY DEPENDENCIES
 
+# Add Homebrew paths for macOS
+if(APPLE)
+  if(EXISTS "/opt/homebrew")
+    list(APPEND CMAKE_PREFIX_PATH "/opt/homebrew")
+    link_directories("/opt/homebrew/lib")
+  elseif(EXISTS "/usr/local")
+    list(APPEND CMAKE_PREFIX_PATH "/usr/local")
+    link_directories("/usr/local/lib")
+  endif()
+endif()
+
 find_path(LIBCARES_INCLUDE_DIR ares.h)
 find_path(LIBEV_INCLUDE_DIR ev.h)
+find_library(LIBCARES_LIBRARY NAMES cares)
+find_library(LIBEV_LIBRARY NAMES ev)
 
 if(CUSTOM_LIBCURL_INSTALL_PATH)
   message(STATUS "Using custom libcurl from: ${CUSTOM_LIBCURL_INSTALL_PATH}")
@@ -108,7 +121,7 @@ set(TARGET_NAME "https_dns_proxy")
 aux_source_directory(src SRC_LIST)
 set(SRC_LIST ${SRC_LIST})
 add_executable(${TARGET_NAME} ${SRC_LIST})
-set(LIBS ${LIBS} cares curl ev resolv)
+set(LIBS ${LIBS} ${LIBCARES_LIBRARY} curl ${LIBEV_LIBRARY} resolv)
 target_link_libraries(${TARGET_NAME} ${LIBS})
 set_property(TARGET ${TARGET_NAME} PROPERTY C_STANDARD 11)
 

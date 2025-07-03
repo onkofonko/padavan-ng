@@ -44,21 +44,40 @@ static void sock_state_cb(void *data, int fd, int read, int write) {
   ev_io_start(d->loop, io_event_ptr);
 }
 
-static char *get_addr_listing(char** addr_list, const int af) {
+
+static char *get_addrinfo_listing(struct ares_addrinfo *ai) {
   char *list = (char *)calloc(1, POLLER_ADDR_LIST_SIZE);
   char *pos = list;
   if (list == NULL) {
     FLOG("Out of mem");
   }
-  for (int i = 0; addr_list[i]; i++) {
-    const char *res = ares_inet_ntop(af, addr_list[i], pos,
-                                     list + POLLER_ADDR_LIST_SIZE - 1 - pos);
+
+  for (struct ares_addrinfo_node *node = ai->nodes; node; node = node->ai_next) {
+    size_t remaining = POLLER_ADDR_LIST_SIZE - (pos - list) - 1;
+    if (remaining < INET6_ADDRSTRLEN + 1) { // +1 for comma
+      WLOG("Address list buffer too small, truncating");
+      break;
+    }
+
+    const char *res = NULL;
+    if (node->ai_family == AF_INET) {
+      struct sockaddr_in *sin = (struct sockaddr_in *)node->ai_addr;
+      res = ares_inet_ntop(AF_INET, &sin->sin_addr, pos, remaining);
+    } else if (node->ai_family == AF_INET6) {
+      struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *)node->ai_addr;
+      res = ares_inet_ntop(AF_INET6, &sin6->sin6_addr, pos, remaining);
+    }
+
     if (res != NULL) {
       pos += strlen(pos);
+      if (pos - list >= POLLER_ADDR_LIST_SIZE - 1) {
+        break; // prevent overflow
+      }
       *pos = ',';
       pos++;
     }
   }
+
   if (pos == list) {
     free((void*)list);
     list = NULL;
@@ -68,19 +87,23 @@ static char *get_addr_listing(char** addr_list, const int af) {
   return list;
 }
 
-static void ares_cb(void *arg, int status, int __attribute__((unused)) timeouts,
-                    struct hostent *h) {
+static void ares_addrinfo_cb(void *arg, int status, int __attribute__((unused)) timeouts,
+                            struct ares_addrinfo *ai) {
   dns_poller_t *d = (dns_poller_t *)arg;
   d->request_ongoing = 0;
   ev_tstamp interval = 5;  // retry by default after some time
 
   if (status != ARES_SUCCESS) {
     WLOG("DNS lookup of '%s' failed: %s", d->hostname, ares_strerror(status));
-  } else if (!h || h->h_length < 1) {
+  } else if (!ai || !ai->nodes) {
     WLOG("No hosts found for '%s'", d->hostname);
   } else {
     interval = d->polling_interval;
-    d->cb(d->hostname, d->cb_data, get_addr_listing(h->h_addr_list, h->h_addrtype));
+    d->cb(d->hostname, d->cb_data, get_addrinfo_listing(ai));
+  }
+
+  if (ai) {
+    ares_freeaddrinfo(ai);
   }
 
   if (status != ARES_EDESTRUCTION) {
@@ -91,6 +114,7 @@ static void ares_cb(void *arg, int status, int __attribute__((unused)) timeouts,
   }
 }
 
+
 static ev_tstamp get_timeout(dns_poller_t *d)
 {
     static struct timeval max_tv = {.tv_sec = 5, .tv_usec = 0};
@@ -98,7 +122,7 @@ static ev_tstamp get_timeout(dns_poller_t *d)
     struct timeval *tvp = ares_timeout(d->ares, &max_tv, &tv);
     // NOLINTNEXTLINE(bugprone-narrowing-conversions,cppcoreguidelines-narrowing-conversions)
     ev_tstamp after = tvp->tv_sec + tvp->tv_usec * 1e-6;
-    return after ? after : 0.1;
+    return after > 0 ? after : 0.1;
 }
 
 static void timer_cb(struct ev_loop __attribute__((unused)) *loop,
@@ -108,7 +132,7 @@ static void timer_cb(struct ev_loop __attribute__((unused)) *loop,
   if (d->request_ongoing) {
     // process query timeouts
     DLOG("Processing DNS queries");
-    ares_process(d->ares, NULL, NULL);
+    ares_process_fds(d->ares, NULL, 0, 0);
   } else {
     DLOG("Starting DNS query");
     // Cancel any pending queries before making new ones. c-ares can't be depended on to
@@ -117,7 +141,9 @@ static void timer_cb(struct ev_loop __attribute__((unused)) *loop,
     // free memory tied up by any "zombie" queries.
     ares_cancel(d->ares);
     d->request_ongoing = 1;
-    ares_gethostbyname(d->ares, d->hostname, d->family, ares_cb, d);
+    struct ares_addrinfo_hints hints = {0};
+    hints.ai_family = d->family;
+    ares_getaddrinfo(d->ares, d->hostname, NULL, &hints, ares_addrinfo_cb, d);
   }
 
   if (d->request_ongoing) {  // need to re-check, it might change!
@@ -134,6 +160,10 @@ void dns_poller_init(dns_poller_t *d, struct ev_loop *loop,
                      int bootstrap_dns_polling_interval,
                      const char *hostname,
                      int family, dns_poller_cb cb, void *cb_data) {
+  if (!d || !loop || !bootstrap_dns || !hostname || !cb) {
+    FLOG("Invalid parameters to dns_poller_init");
+  }
+
   int r = ares_library_init(ARES_LIB_INIT_ALL);
   if (r != ARES_SUCCESS) {
     FLOG("ares_library_init error: %s", ares_strerror(r));
