@@ -209,6 +209,10 @@ init_gpio_leds_buttons(void)
 {
 	/* hide WiFi 2G soft-led  */
 #if defined (BOARD_GPIO_LED_SW2G)
+#if defined (CONFIG_RALINK_MT7628) && (BOARD_GPIO_LED_WIFI == 44)
+	cpu_gpio_mode_set_bit(32, 1); // change GPIO Mode for WLED_AN
+	cpu_gpio_mode_set_bit(48, 1); // change GPIO Mode for WLED_KN
+#endif
 	cpu_gpio_set_pin_direction(BOARD_GPIO_LED_SW2G, 1);
 	cpu_gpio_set_pin(BOARD_GPIO_LED_SW2G, LED_OFF);
 	cpu_gpio_led_set(BOARD_GPIO_LED_SW2G, LED_BLINK_STAY_SHOW);
@@ -221,6 +225,10 @@ init_gpio_leds_buttons(void)
 #endif
 	/* hide WAN soft-led  */
 #if defined (BOARD_GPIO_LED_WAN)
+#if defined (CONFIG_RALINK_MT7628) && (BOARD_GPIO_LED_WAN == 43)
+	cpu_gpio_mode_set_bit(34, 1); // change GPIO Mode for P0_LED_AN
+	cpu_gpio_mode_set_bit(50, 1); // change GPIO Mode for P0_LED_KN
+#endif
 	cpu_gpio_set_pin_direction(BOARD_GPIO_LED_WAN, 1);
 #if defined (BOARD_GPIO_LED_WAN_INVERTED)
 	cpu_gpio_set_pin(BOARD_GPIO_LED_WAN, LED_ON);
@@ -248,6 +256,10 @@ init_gpio_leds_buttons(void)
 #endif
 	/* hide LAN soft-led  */
 #if defined (BOARD_GPIO_LED_LAN)
+#if defined (CONFIG_RALINK_MT7628) && (BOARD_GPIO_LED_LAN == 42)
+	cpu_gpio_mode_set_bit(36, 1); // change GPIO Mode for P1_LED_AN
+	cpu_gpio_mode_set_bit(52, 1); // change GPIO Mode for P1_LED_KN
+#endif
 	cpu_gpio_set_pin_direction(BOARD_GPIO_LED_LAN, 1);
 	cpu_gpio_set_pin(BOARD_GPIO_LED_LAN, LED_OFF);
 #endif
@@ -280,10 +292,6 @@ init_gpio_leds_buttons(void)
 #if defined (BOARD_GPIO_LED_WIFI)
 #if defined (CONFIG_RALINK_MT7620) && (BOARD_GPIO_LED_WIFI == 72)
 	cpu_gpio_mode_set_bit(13, 1); // change GPIO Mode for WLED
-#endif
-#if defined (CONFIG_RALINK_MT7628) && (BOARD_GPIO_LED_WIFI == 44)
-	cpu_gpio_mode_set_bit(32, 1); // change GPIO Mode for WLED_AN
-	cpu_gpio_mode_set_bit(48, 1); // change GPIO Mode for WLED_KN
 #endif
 	cpu_gpio_set_pin_direction(BOARD_GPIO_LED_WIFI, 1);
 	LED_CONTROL(BOARD_GPIO_LED_WIFI, LED_ON);
