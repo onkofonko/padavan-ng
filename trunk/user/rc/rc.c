@@ -278,6 +278,13 @@ init_gpio_leds_buttons(void)
 #endif
 	/* allow WiFi hw-led  */
 #if defined (BOARD_GPIO_LED_WIFI)
+#if defined (CONFIG_RALINK_MT7620) && (BOARD_GPIO_LED_WIFI == 72)
+	cpu_gpio_mode_set_bit(13, 1); // change GPIO Mode for WLED
+#endif
+#if defined (CONFIG_RALINK_MT7628) && (BOARD_GPIO_LED_WIFI == 44)
+	cpu_gpio_mode_set_bit(32, 1); // change GPIO Mode for WLED_AN
+	cpu_gpio_mode_set_bit(48, 1); // change GPIO Mode for WLED_KN
+#endif
 	cpu_gpio_set_pin_direction(BOARD_GPIO_LED_WIFI, 1);
 	LED_CONTROL(BOARD_GPIO_LED_WIFI, LED_ON);
 #endif
@@ -806,27 +813,10 @@ LED_CONTROL(int gpio_led, int flag)
 	if (flag != LED_OFF && !nvram_get_int("led_front_t"))
 		flag = LED_OFF;
 
-#if defined (BOARD_GPIO_LED_WIFI)
-#if defined (CONFIG_RALINK_MT7620) && (BOARD_GPIO_LED_WIFI == 72)
-	if (gpio_led == BOARD_GPIO_LED_WIFI) {
-		cpu_gpio_mode_set_bit(13, (flag == LED_OFF) ? 1 : 0); // change GPIO Mode for WLED
-		cpu_gpio_set_pin(gpio_led, LED_OFF); // always set GPIO to high
-	} else
-#endif
-#if defined (CONFIG_RALINK_MT7628) && (BOARD_GPIO_LED_WIFI == 44)
-	if (gpio_led == BOARD_GPIO_LED_WIFI) {
-		cpu_gpio_mode_set_bit(32, (flag == LED_OFF) ? 1 : 0); // change GPIO Mode for WLED_AN
-		cpu_gpio_mode_set_bit(48, (flag == LED_OFF) ? 1 : 0); // change GPIO Mode for WLED_KN
-		cpu_gpio_set_pin(gpio_led, LED_OFF); // always set GPIO to high
-	} else
-#endif
-#endif
-	{
-		if (is_soft_blink)
-			cpu_gpio_led_enabled(gpio_led, (flag == LED_OFF) ? 0 : 1);
+	if (is_soft_blink)
+		cpu_gpio_led_enabled(gpio_led, (flag == LED_OFF) ? 0 : 1);
 
-		cpu_gpio_set_pin(gpio_led, flag);
-	}
+	cpu_gpio_set_pin(gpio_led, flag);
 }
 
 void 
