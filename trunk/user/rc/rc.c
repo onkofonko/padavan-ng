@@ -209,7 +209,7 @@ init_gpio_leds_buttons(void)
 {
 	/* hide WiFi 2G soft-led  */
 #if defined (BOARD_GPIO_LED_SW2G)
-#if defined (CONFIG_RALINK_MT7628) && (BOARD_GPIO_LED_WIFI == 44)
+#if defined (CONFIG_RALINK_MT7628) && (BOARD_GPIO_LED_SW2G == 44)
 	cpu_gpio_mode_set_bit(32, 1); // change GPIO Mode for WLED_AN
 	cpu_gpio_mode_set_bit(48, 1); // change GPIO Mode for WLED_KN
 #endif
