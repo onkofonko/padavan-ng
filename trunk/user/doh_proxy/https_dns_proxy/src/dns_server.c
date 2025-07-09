@@ -73,13 +73,11 @@ static void watcher_cb(struct ev_loop __attribute__((unused)) *loop,
                          &tmp_addrlen);
   if (len < 0) {
     ELOG("recvfrom failed: %s", strerror(errno));
-    free(buf);
     return;
   }
 
   if (len < (int)sizeof(uint16_t)) {
     WLOG("Malformed request received (too short).");
-    free(buf);
     return;
   }
 

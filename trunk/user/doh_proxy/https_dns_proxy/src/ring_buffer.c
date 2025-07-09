@@ -34,13 +34,8 @@ void ring_buffer_init(struct ring_buffer **rbp, uint32_t size)
 
 void ring_buffer_free(struct ring_buffer **rbp)
 {
-    if (!rbp || !*rbp) {
-        return;
-    }
     struct ring_buffer *rb = *rbp;
     if (!rb->storage) {
-        free((void*) rb);
-        *rbp = NULL;
         return;
     }
     for (uint32_t i = 0; i < rb->size; i++) {
@@ -55,7 +50,7 @@ void ring_buffer_free(struct ring_buffer **rbp)
 
 void ring_buffer_dump(struct ring_buffer *rb, FILE * file)
 {
-    if (!rb || !rb->storage || !file) {
+    if (!rb->storage) {
         return;
     }
     if (rb->next == 0 && !rb->full) {
@@ -78,7 +73,7 @@ void ring_buffer_dump(struct ring_buffer *rb, FILE * file)
 
 void ring_buffer_push_back(struct ring_buffer *rb, char* data, uint32_t size)
 {
-    if (!rb || !rb->storage || !data || size == 0) {
+    if (!rb->storage) {
         return;
     }
 
@@ -86,9 +81,6 @@ void ring_buffer_push_back(struct ring_buffer *rb, char* data, uint32_t size)
         free(rb->storage[rb->next]);
     }
     rb->storage[rb->next] = (char*)malloc(size + 1);
-    if (!rb->storage[rb->next]) {
-        return; // malloc failed
-    }
     // NOLINTNEXTLINE(clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling)
     memcpy(rb->storage[rb->next], data, size);
     rb->storage[rb->next][size] = '\0';

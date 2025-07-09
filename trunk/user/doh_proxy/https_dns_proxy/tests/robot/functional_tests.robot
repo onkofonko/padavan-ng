@@ -8,7 +8,6 @@ Library        Collections
 *** Variables ***
 ${BINARY_PATH}  ${CURDIR}/../../https_dns_proxy
 ${PORT}  55353
-${PLATFORM}  %{OSTYPE=unknown}
 
 
 *** Settings ***
@@ -106,7 +105,6 @@ Reuse HTTP/2 Connection
   Set To Dictionary  ${expected_logs}  curl opened socket=1  # curl must not open more sockets then 1
 
 Valgrind Resource Leak Check
-  Skip If  '${PLATFORM}' != 'linux'  Valgrind only supported on Linux
   Start Proxy With Valgrind
   Run Dig Parallel
   

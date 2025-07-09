@@ -123,24 +123,16 @@ enum OptionsParseResult options_parse_args(struct Options *opt, int argc, char *
 
   if (opt->user) {
     struct passwd *p = getpwnam(opt->user);
-    if (!p) {
-      printf("Username (%s) not found.\n", opt->user);
-      return OPR_OPTION_ERROR;
-    }
-    if (p->pw_uid == 0) {
-      printf("Username (%s) is root (uid 0), which is not allowed.\n", opt->user);
+    if (!p || !p->pw_uid) {
+      printf("Username (%s) invalid.\n", opt->user);
       return OPR_OPTION_ERROR;
     }
     opt->uid = p->pw_uid;
   }
   if (opt->group) {
     struct group *g = getgrnam(opt->group);
-    if (!g) {
-      printf("Group (%s) not found.\n", opt->group);
-      return OPR_OPTION_ERROR;
-    }
-    if (g->gr_gid == 0) {
-      printf("Group (%s) is root (gid 0), which is not allowed.\n", opt->group);
+    if (!g || !g->gr_gid) {
+      printf("Group (%s) invalid.\n", opt->group);
       return OPR_OPTION_ERROR;
     }
     opt->gid = g->gr_gid;
