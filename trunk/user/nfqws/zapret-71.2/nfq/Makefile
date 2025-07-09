@@ -1,5 +1,6 @@
-CC ?= gcc
-CFLAGS += -std=gnu99 -Os
+CC ?= cc
+OPTIMIZE ?= -Os
+CFLAGS += -std=gnu99 $(OPTIMIZE)
 CFLAGS_SYSTEMD = -DUSE_SYSTEMD
 CFLAGS_BSD = -Wno-address-of-packed-member
 CFLAGS_CYGWIN = -Wno-address-of-packed-member -static

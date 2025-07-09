@@ -514,6 +514,15 @@ install_easy: stop if running embedded release on traditional linux system (some
 install_bin: add "read elf" arch detection method
 binaries: renamed arch dirs in binaries
 
-v71.2
+v71.1.1
 
 nfqws: use wireless ext in case nl80211 does not return SSID
+
+v71.2
+
+nfqws: apply udp desync to replayed packets with non-zero reasm offset (except fake)
+blockcheck: display curl version and kernel version
+install_bin: stop if no binaries found. display help text.
+winws: increase buffers for port filter
+tpws: tpws no more opens /dev/pf in OpenBSD by default. requires --enable-pf like in FreeBSD. this is migration from rdr-to to divert-to redirection scheme.
+install_easy: warn if --ipset parameter is specified
