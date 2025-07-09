@@ -28,9 +28,7 @@ config_test:
 configure:
 	( mkdir -p $(SRC_NAME)/build && cd $(SRC_NAME)/build ; \
 	cmake	-DCMAKE_INSTALL_PREFIX:PATH=/ \
-		-DENABLE_APP=OFF \
-		-DENABLE_EXAMPLES=OFF \
-		-DENABLE_HPACK_TOOLS=OFF \
+		-DENABLE_LIB_ONLY=ON \
 		-DBUILD_STATIC_LIBS=ON \
 		-DBUILD_SHARED_LIBS=OFF \
 		-DENABLE_STATIC_CRT=OFF \
