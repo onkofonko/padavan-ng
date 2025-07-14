@@ -1,0 +1,1 @@
+[ -x /usr/bin/zapret.sh ] && /usr/bin/zapret.sh reload

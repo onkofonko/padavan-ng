@@ -1,0 +1,164 @@
+'\" t
+.\"     Title: bits
+.\"    Author: [see the "AUTHOR(S)" section]
+.\" Generator: Asciidoctor 2.0.20
+.\"      Date: 2025-06-23
+.\"    Manual: User Commands
+.\"    Source: util-linux 2.41.1
+.\"  Language: English
+.\"
+.TH "BITS" "1" "2025-06-23" "util\-linux 2.41.1" "User Commands"
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.ss \n[.ss] 0
+.nh
+.ad l
+.de URL
+\fI\\$2\fP <\\$1>\\$3
+..
+.als MTO URL
+.if \n[.g] \{\
+.  mso www.tmac
+.  am URL
+.    ad l
+.  .
+.  am MTO
+.    ad l
+.  .
+.  LINKSTYLE blue R < >
+.\}
+.SH "NAME"
+bits \- convert bit masks from/to various formats
+.SH "SYNOPSIS"
+.sp
+\fBbits\fP [\fB\-h\fP] [\fB\-V\fP] [\fB\-w\fP \fI<NUM>\fP] [\fI<MODE>\fP] [\fI<MASK_OR_LIST>\fP...]
+.SH "DESCRIPTION"
+.sp
+The \fBbits\fP utility converts bit masks into various formats. It supports
+combining multiple masks together using bitwise operations.
+.SH "POSITIONAL ARGUMENTS"
+.sp
+\fI<MASK_OR_LIST>\fP
+.RS 4
+A set of bits specified as a hexadecimal mask value (e.g. \fI0xeec2\fP) or as
+a comma\-separated list of bit IDs.
+.RE
+.sp
+If no argument is specified, the sets of bits will be read from standard input;
+one group per line.
+.sp
+Consecutive ids can be compressed as ranges (e.g. \fI5,6,7,8,9,10\fP \(-> \fI5\-10\fP).
+.sp
+Optionally, if an argument starts with a comma, it will be parsed as a single
+hexadecimal mask split in 32bit groups (e.g. \fI,00014000,00000000,00020000\fP \(->
+\fI17,78,80\fP).
+.sp
+By default all groups will be OR\(cqed together. If a group has one of the
+following prefixes, it will be combined with the resulting mask using
+a different binary operation:
+.sp
+\fB&\fP\fI<MASK_OR_LIST>\fP
+.RS 4
+The group will be combined with a binary AND operation. I.e. all bits that are
+set to 1 in the group AND the combined groups so far will be preserved to 1.
+All other bits will be reset to 0.
+.RE
+.sp
+\fB^\fP\fI<MASK_OR_LIST>\fP
+.RS 4
+The group will be combined with a binary XOR operation. I.e. all bits that are
+set to 1 in the group AND to 0 the combined groups so far (or the other way
+around) will be set to 1. Bits that are both to 1 or both to 0 will be reset to
+0.
+.RE
+.sp
+\fB~\fP\fI<MASK_OR_LIST>\fP
+.RS 4
+All bits set to 1 in the group will be cleared (reset to 0) in the combined
+groups so far.
+.RE
+.SH "OPTIONS"
+.sp
+\fB\-w\fP \fI<NUM>\fP, \fB\-\-width\fP \fI<NUM>\fP
+.RS 4
+Maximum number of bits in the masks handled by \fBbits\fP (default \fI8192\fP). Any
+bit larger than this number will be truncated.
+.RE
+.sp
+\fB\-h\fP, \fB\-\-help\fP
+.RS 4
+Display help text and exit.
+.RE
+.sp
+\fB\-V\fP, \fB\-\-version\fP
+.RS 4
+Display version and exit.
+.RE
+.SH "CONVERSION MODE"
+.sp
+One of the following conversion modes can be specified. If not specified, it
+defaults to \fB\-m\fP, \fB\-\-mask\fP.
+.sp
+\fB\-m\fP, \fB\-\-mask\fP
+.RS 4
+Print the combined args as a hexadecimal mask value (default).
+.RE
+.sp
+\fB\-g\fP, \fB\-\-grouped\-mask\fP
+.RS 4
+Print the combined args as a hexadecimal mask value in 32bit comma separated
+groups.
+.RE
+.sp
+\fB\-b\fP, \fB\-\-binary\fP
+.RS 4
+Print the combined args as a binary mask value.
+.RE
+.sp
+\fB\-l\fP, \fB\-\-list\fP
+.RS 4
+Print the combined args as a list of bit IDs. Consecutive IDs are compressed as
+ranges.
+.RE
+.SH "EXAMPLES"
+.sp
+.if n .RS 4
+.nf
+.fam C
+~$ bits \-\-mask 4,5\-8 16,30
+0x400101f0
+
+~$ bits \-\-list 0xeec2
+1,6,7,9\-11,13\-15
+
+~$ bits \-\-binary 4,5\-8 16,30
+0b100_0000_0000_0001_0000_0001_1111_0000
+
+~$ bits \-\-list ,00300000,03000000,30000003
+0,1,28,29,56,57,84,85
+
+~$ bits \-\-list 1,2,3,4 ~3\-10
+1,2
+
+~$ bits \-\-list 1,2,3,4 ^3\-10
+1,2,5\-10
+
+~$ bits \-\-grouped\-mask 2,22,74,79
+8400,00000000,00400004
+
+~$ bits \-\-width 64 \-\-list 2,22,74,79
+2,22
+.fam
+.fi
+.if n .RE
+.SH "AUTHORS"
+.sp
+Robin Jarry.
+.SH "REPORTING BUGS"
+.sp
+For bug reports, use the \c
+.URL "https://github.com/util\-linux/util\-linux/issues" "issue tracker" "."
+.SH "AVAILABILITY"
+.sp
+The \fBbits\fP command is part of the util\-linux package which can be downloaded from \c
+.URL "https://www.kernel.org/pub/linux/utils/util\-linux/" "Linux Kernel Archive" "."

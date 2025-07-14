@@ -1,5 +1,5 @@
---- a/Makefile.am	2020-05-04 20:14:04.000000000 +0300
-+++ b/Makefile.am	2023-02-26 02:23:10.709361057 +0200
+--- a/Makefile.am	2025-06-16 19:02:12.000000000 +0300
++++ b/Makefile.am	2025-06-22 18:21:20.876536610 +0300
 @@ -5,7 +5,7 @@
  AUTOMAKE_OPTIONS = foreign 1.11 dist-zip dist-xz
  ACLOCAL_AMFLAGS = -I m4
@@ -9,9 +9,9 @@
  
  m4datadir = $(datadir)/aclocal
  m4data_DATA = ogg.m4
---- a/Makefile.in	2021-06-04 06:21:09.000000000 +0300
-+++ b/Makefile.in	2023-02-26 02:23:10.713360953 +0200
-@@ -375,7 +375,7 @@
+--- a/Makefile.in	2025-06-16 19:02:26.000000000 +0300
++++ b/Makefile.in	2025-06-22 18:21:20.878536394 +0300
+@@ -377,7 +377,7 @@
  #AUTOMAKE_OPTIONS = foreign 1.6 dist-zip
  AUTOMAKE_OPTIONS = foreign 1.11 dist-zip dist-xz
  ACLOCAL_AMFLAGS = -I m4

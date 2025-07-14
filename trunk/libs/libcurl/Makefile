@@ -1,5 +1,15 @@
-SRC_NAME=curl-8.13.0
-SRC_URL=https://github.com/curl/curl/releases/download/curl-8_13_0/$(SRC_NAME).tar.xz
+SRC_NAME = curl-8.14.1
+SRC_URL = https://github.com/curl/curl/releases/download/curl-8_14_1/$(SRC_NAME).tar.xz
+
+CPPFLAGS += $(CFLAGS)
+
+QUIC = --without-nghttp3 --without-ngtcp2 --without-openssl-quic
+ifeq ($(CONFIG_FIRMWARE_INCLUDE_QUIC),y)
+QUIC = --with-nghttp3 --without-ngtcp2 --with-openssl-quic
+endif
+ifeq ($(CONFIG_FIRMWARE_INCLUDE_QUIC_NGTCP2),y)
+QUIC = --with-nghttp3 --with-ngtcp2 --without-openssl-quic
+endif
 
 #all: download_test extract_test config_test
 all: config_test
@@ -7,7 +17,7 @@ all: config_test
 
 download_test:
 	( if [ ! -f $(SRC_NAME).tar.xz ]; then \
-		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.xz $(SRC_URL); \
+		wget -t5 -T20 --no-check-certificate -O $(SRC_NAME).tar.xz $(SRC_URL) || rm -f $(SRC_NAME).tar.xz; \
 	fi )
 
 extract_test:
@@ -32,6 +42,12 @@ configure:
 		--enable-openssl-auto-load-config \
 		--enable-shared \
 		$(if $(CONFIG_IPV6),--enable-ipv6,--disable-ipv6) \
+		$(QUIC) \
+		--without-quiche \
+		--without-msh3 \
+		--disable-ipfs \
+		--disable-rtsp \
+		--disable-websockets \
 		--disable-gopher \
 		--disable-ldap \
 		--disable-ldaps \
@@ -59,31 +75,21 @@ configure:
 		--disable-ntlm \
 		--disable-docs \
 		--without-brotli \
-		--without-hyper \
 		--without-gnutls \
 		--without-ca-path \
 		--without-ca-fallback \
-		--without-cyassl \
 		--without-default-ssl-backend \
 		--without-libidn2 \
 		--without-libpsl \
 		--without-librtmp \
 		--without-libssh \
 		--without-libssh2 \
-		--without-krb4 \
 		--with-nghttp2 \
-		--with-nghttp3 \
-		--with-ngtcp2 \
-		--without-nss \
 		--without-mbedtls \
-		--without-mesalink \
-		--without-polarssl \
 		--without-schannel \
 		--without-wolfssl \
 		--without-winidn \
-		--without-winssl \
 		--without-zsh-functions-dir \
-		--with-random=/dev/urandom \
 		--with-zlib=$(STAGEDIR) \
 		--with-ssl=$(STAGEDIR) \
 		--with-ca-bundle=/etc/ssl/cert.pem \

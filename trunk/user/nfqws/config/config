@@ -1,8 +1,0 @@
-ISP_INTERFACE=
-IPV6_ENABLED=0
-TCP_PORTS=80,443
-UDP_PORTS=443,50000:50099
-NFQUEUE_NUM=200
-LOG_LEVEL=0
-### Do not change this path if you want to edit POST_SCRIPT from GUI in the row below
-POST_SCRIPT=/etc/storage/zapret/post_script.sh

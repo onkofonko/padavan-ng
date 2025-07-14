@@ -1,4 +1,4 @@
-SRC_NAME=busybox-1.33.1
+SRC_NAME=busybox-1.37.0
 SRC_URL=https://busybox.net/downloads/$(SRC_NAME).tar.bz2
 THISDIR = $(shell pwd)
 

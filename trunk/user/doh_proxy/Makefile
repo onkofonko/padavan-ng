@@ -1,7 +1,7 @@
 SRC_NAME=https_dns_proxy
 #SRC_NAME=https_dns_proxy-master
-#SRC_URL=https://github.com/aarond10/https_dns_proxy/archive/refs/heads/master.zip
-#SRC_URL=https://github.com/baranyaib90/https_dns_proxy/archive/refs/heads/master.zip
+#SRC_URL=https://github.com/aarond10/https_dns_proxy/archive/refs/heads/master.tar.gz
+#SRC_URL=https://github.com/baranyaib90/https_dns_proxy/archive/refs/heads/master.tar.gz
 
 CFLAGS  += -O2 -ffunction-sections -fdata-sections -fvisibility=hidden -fPIC
 LDFLAGS += -Wl,--gc-sections,-rpath-link,$(STAGEDIR)/lib -lcurl -lssl -lcrypto -lz
@@ -11,13 +11,13 @@ all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)/build
 
 download_test:
-	( if [ ! -f $(SRC_NAME).zip ]; then \
-		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).zip $(SRC_URL); \
+	( if [ ! -f $(SRC_NAME).tar.gz ]; then \
+		wget -t5 -T20 --no-check-certificate -O $(SRC_NAME).tar.gz $(SRC_URL) || rm -f $(SRC_NAME).tar.gz; \
 	fi )
 
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
-		unzip -qq $(SRC_NAME).zip ; \
+		tar zxf $(SRC_NAME).tar.gz; \
 	fi )
 
 config_test:

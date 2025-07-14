@@ -35,6 +35,7 @@ LIBS_INCLUDE_LIBEVENT=n
 LIBS_INCLUDE_MEDIA=n
 LIBS_INCLUDE_LIBCURL=n
 STORAGE_ENABLED=n
+QUIC_ENABLED=n
 
 ifdef CONFIG_MMC_BLOCK
 STORAGE_ENABLED=y
@@ -85,7 +86,10 @@ ifeq ($(CONFIG_FIRMWARE_INCLUDE_DOH),y)
 LIBS_INCLUDE_LIBSSL=y
 LIBS_INCLUDE_LIBCURL=y
 endif
-
+ifeq ($(CONFIG_FIRMWARE_INCLUDE_CURL),y)
+LIBS_INCLUDE_LIBSSL=y
+LIBS_INCLUDE_LIBCURL=y
+endif
 ifeq ($(STORAGE_ENABLED),y)
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_TRANSMISSION),y)
 LIBS_INCLUDE_LIBSSL=y
@@ -112,14 +116,13 @@ ifdef CONFIG_MTD_UBI
 LIBS_INCLUDE_LIBLZO=y
 endif
 
-ifeq ($(CONFIG_FIRMWARE_INCLUDE_CURL),y)
-LIBS_INCLUDE_LIBCURL=y
-LIBS_INCLUDE_LIBSSL=y
-endif
-
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_TOR),y)
 LIBS_INCLUDE_LIBSSL=y
 LIBS_INCLUDE_LIBEVENT=y
+endif
+
+ifneq (,$(filter y, $(CONFIG_FIRMWARE_INCLUDE_QUIC) $(CONFIG_FIRMWARE_INCLUDE_QUIC_NGTCP2)))
+QUIC_ENABLED=y
 endif
 
 dir_$(LIBS_INCLUDE_LIBDEFLATE)			+= libdeflate
@@ -127,16 +130,7 @@ dir_y						+= libz
 dir_$(LIBS_INCLUDE_LIBLZO)			+= liblzo
 dir_$(LIBS_INCLUDE_LIBNL)			+= libnl
 dir_$(LIBS_INCLUDE_LIBCAP_NG)			+= libcap-ng
-
-ifeq ($(LIBS_INCLUDE_LIBSSL),y)
-ifeq ($(CONFIG_FIRMWARE_INCLUDE_OPENSSL_OLD),y)
-dir_y						+= libssl-1.1
-else
-dir_y						+= libssl-3.1
-endif
-endif
-
-#dir_$(LIBS_INCLUDE_LIBSSL)			+= libssl-3.3
+dir_$(LIBS_INCLUDE_LIBSSL)			+= libssl
 dir_$(LIBS_INCLUDE_LIBUSB_0)			+= libusb
 dir_$(LIBS_INCLUDE_LIBUSB_1)			+= libusb-1.0
 dir_y						+= libnfnetlink
@@ -166,9 +160,9 @@ dir_$(CONFIG_FIRMWARE_INCLUDE_DOH)		+= libev
 dir_$(CONFIG_FIRMWARE_INCLUDE_DOH)		+= libcares
 
 # libcurl for Transmission and DoH proxy
+dir_$(QUIC_ENABLED)				+= libngtcp2
+dir_$(QUIC_ENABLED)				+= libnghttp3
 dir_$(LIBS_INCLUDE_LIBCURL)			+= libnghttp2
-dir_$(LIBS_INCLUDE_LIBCURL)			+= libnghttp3
-dir_$(LIBS_INCLUDE_LIBCURL)			+= libngtcp2
 dir_$(LIBS_INCLUDE_LIBCURL)			+= libcurl
 
 # aria2 shared libs

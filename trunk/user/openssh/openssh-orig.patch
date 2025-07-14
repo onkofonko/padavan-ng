@@ -1,7 +1,7 @@
 diff --git a/Makefile.in b/Makefile.in
---- a/Makefile.in	2023-03-15 23:28:19.000000000 +0200
-+++ b/Makefile.in	2023-03-23 00:35:37.465673933 +0200
-@@ -202,6 +202,7 @@
+--- a/Makefile.in	2025-02-18 10:15:08.000000000 +0200
++++ b/Makefile.in	2025-04-16 00:53:36.779174396 +0300
+@@ -210,6 +210,7 @@
  libssh.a: $(LIBSSH_OBJS)
  	$(AR) rv $@ $(LIBSSH_OBJS)
  	$(RANLIB) $@
@@ -9,7 +9,7 @@ diff --git a/Makefile.in b/Makefile.in
  
  ssh$(EXEEXT): $(LIBCOMPAT) libssh.a $(SSHOBJS)
  	$(LD) -o $@ $(SSHOBJS) $(LDFLAGS) -lssh -lopenbsd-compat $(LIBS) $(GSSLIBS) $(CHANNELLIBS)
-@@ -210,7 +211,7 @@
+@@ -221,7 +222,7 @@
  	$(LD) -o $@ $(SSHDOBJS) $(LDFLAGS) -lssh -lopenbsd-compat $(SSHDLIBS) $(LIBS) $(GSSLIBS) $(K5LIBS) $(CHANNELLIBS)
  
  scp$(EXEEXT): $(LIBCOMPAT) libssh.a $(SCP_OBJS)
@@ -18,7 +18,7 @@ diff --git a/Makefile.in b/Makefile.in
  
  ssh-add$(EXEEXT): $(LIBCOMPAT) libssh.a $(SSHADD_OBJS)
  	$(LD) -o $@ $(SSHADD_OBJS) $(LDFLAGS) -lssh -lopenbsd-compat $(LIBS) $(CHANNELLIBS)
-@@ -228,16 +229,16 @@
+@@ -239,16 +240,16 @@
  	$(LD) -o $@ $(P11HELPER_OBJS) $(LDFLAGS) -lssh -lopenbsd-compat -lssh -lopenbsd-compat $(LIBS) $(CHANNELLIBS)
  
  ssh-sk-helper$(EXEEXT): $(LIBCOMPAT) libssh.a $(SKHELPER_OBJS)
@@ -38,7 +38,7 @@ diff --git a/Makefile.in b/Makefile.in
  
  # test driver for the loginrec code - not built by default
  logintest: logintest.o $(LIBCOMPAT) libssh.a loginrec.o
-@@ -265,7 +266,7 @@
+@@ -276,7 +277,7 @@
  	echo
  
  clean:	regressclean
@@ -47,7 +47,7 @@ diff --git a/Makefile.in b/Makefile.in
  	rm -f *.out core survey
  	rm -f regress/check-perm$(EXEEXT)
  	rm -f regress/mkdtemp$(EXEEXT)
-@@ -299,7 +300,7 @@
+@@ -310,7 +311,7 @@
  	(cd openbsd-compat && $(MAKE) clean)
  
  distclean:	regressclean
@@ -57,8 +57,8 @@ diff --git a/Makefile.in b/Makefile.in
  	rm -f Makefile buildpkg.sh config.h config.status
  	rm -f survey.sh openbsd-compat/regress/Makefile *~ 
 diff --git a/pathnames.h b/pathnames.h
---- a/pathnames.h	2023-03-15 23:28:19.000000000 +0200
-+++ b/pathnames.h	2023-03-23 00:35:37.465673933 +0200
+--- a/pathnames.h	2025-02-18 10:15:08.000000000 +0200
++++ b/pathnames.h	2025-04-16 00:53:36.779174396 +0300
 @@ -41,7 +41,7 @@
  #define _PATH_HOST_ED25519_KEY_FILE	SSHDIR "/ssh_host_ed25519_key"
  #define _PATH_HOST_XMSS_KEY_FILE	SSHDIR "/ssh_host_xmss_key"

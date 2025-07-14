@@ -4,7 +4,6 @@ dir_storage="/etc/storage/openssh"
 sshd_config="$dir_storage/sshd_config"
 
 rsa_key="$dir_storage/ssh_host_rsa_key"
-dsa_key="$dir_storage/ssh_host_dsa_key"
 ed25519_key="$dir_storage/ssh_host_ed25519_key"
 
 func_create_config()
@@ -27,7 +26,6 @@ func_create_config()
 
 # HostKeys for protocol version 2
 HostKey ${rsa_key}
-#HostKey ${dsa_key}
 HostKey ${dir_storage}/ssh_host_ecdsa_key
 HostKey ${ed25519_key}
 
@@ -121,12 +119,10 @@ func_start()
 
 	old_path="/etc/storage"
 	rm -f "${old_path}/sshd_config"
-	for i in ssh_host_rsa_key ssh_host_dsa_key ; do
-		[ -f "${old_path}/${i}" ] && mv -n "${old_path}/${i}" "$dir_storage"
-		[ -f "${old_path}/${i}.pub" ] && mv -n "${old_path}/${i}.pub" "$dir_storage"
-	done
+	[ -f "${old_path}/${ssh_host_rsa_key}" ] && mv -n "${old_path}/${ssh_host_rsa_key}" "$dir_storage"
+	[ -f "${old_path}/${ssh_host_rsa_key}.pub" ] && mv -n "${old_path}/${ssh_host_rsa_key}.pub" "$dir_storage"
 
-	if [ ! -f "$rsa_key" ] || [ ! -f "$dsa_key" ] || [ ! -f "$ed25519_key" ]; then
+	if [ ! -f "$rsa_key" ] || [ ! -f "$ed25519_key" ]; then
 		/usr/bin/ssh-keygen -A
 	fi
 
@@ -140,10 +136,10 @@ func_start()
 		key_passwordauth="-o PasswordAuthentication=no"
 	fi
 
-        gateway_ports=`nvram get sshd_enable_gp`
-        if [ "$gateway_ports" = "1" ]; then
-                key_gatewayports="-o GatewayPorts=yes"
-        fi
+	gateway_ports=`nvram get sshd_enable_gp`
+	if [ "$gateway_ports" = "1" ]; then
+		key_gatewayports="-o GatewayPorts=yes"
+	fi
 
 	/usr/sbin/sshd $key_passwordauth $key_gatewayports
 }

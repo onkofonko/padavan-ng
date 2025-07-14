@@ -2580,7 +2580,7 @@ zcip_viptv_main(int argc, char **argv)
 int start_udhcpc_wan(char *wan_ifname, int unit, int wait_lease)
 {
 	int index, is_man;
-	char log_prefix[32], pidfile[32] = {0};
+	char log_prefix[32], pidfile[32] = {0}, opt_wan_hostname[64];
 	char *wan_hostname, *wan_vci;
 	char *dhcp_argv[] = {
 		"/sbin/udhcpc",
@@ -2590,7 +2590,7 @@ int start_udhcpc_wan(char *wan_ifname, int unit, int wait_lease)
 		"-t4",
 		"-T4",
 		NULL,
-		NULL, NULL,	/* -H hostname		*/
+		NULL, NULL,	/* -x hostname:hostname */
 		NULL, NULL,	/* -V vendorclass	*/
 		NULL,		/* -O mtu		*/
 		NULL,		/* -O routes		*/
@@ -2617,8 +2617,9 @@ int start_udhcpc_wan(char *wan_ifname, int unit, int wait_lease)
 
 	wan_hostname = get_wan_unit_value(unit, "hostname");
 	if (strlen(wan_hostname) > 0) {
-		dhcp_argv[index++] = "-H";
-		dhcp_argv[index++] = sanity_hostname(wan_hostname);
+		dhcp_argv[index++] = "-x";
+		snprintf(opt_wan_hostname, sizeof(opt_wan_hostname), "%s:%s", "hostname", wan_hostname);
+		dhcp_argv[index++] = opt_wan_hostname;
 	}
 
 	wan_vci = get_wan_unit_value(unit, "vci");
