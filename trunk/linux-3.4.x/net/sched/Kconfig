@@ -308,6 +308,24 @@ config NET_SCH_FQ_CODEL
 
 	  If unsure, say N.
 
+config NET_SCH_CAKE
+	tristate "Common Applications Kept Enhanced (CAKE)"
+	help
+	  Say Y here if you want to use the Common Applications Kept Enhanced
+	  (CAKE) packet scheduling algorithm. CAKE is a comprehensive Smart
+	  Queue Management system that combines multiple techniques including
+	  flow isolation, per-flow fair queuing, DiffServ handling, and
+	  improved Active Queue Management for low latency and fairness.
+
+	  CAKE is particularly effective for reducing latency in gaming,
+	  VoIP, and other real-time applications while maintaining fairness
+	  across different traffic flows.
+
+	  To compile this driver as a module, choose M here: the module
+	  will be called sch_cake.
+
+	  If unsure, say N.
+
 comment "Classification"
 
 config NET_CLS

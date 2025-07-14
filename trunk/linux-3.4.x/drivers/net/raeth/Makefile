@@ -1,4 +1,5 @@
 obj-$(CONFIG_RAETH) += raeth.o
+obj-$(CONFIG_RAETH_LOW_LATENCY) += latency_irq.o
 
 raeth-objs := raether.o mii_mgr.o ra_ioctl.o ra_mac.o ra_phy.o ra_eth.o
 

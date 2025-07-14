@@ -127,11 +127,14 @@ typedef u32 netdev_features_t;
 #endif
 
 //#if defined (CONFIG_RAETH_NAPI_GRO) && defined (CONFIG_RALINK_MT7621)
+// Low-latency optimized NAPI weight
+#ifdef CONFIG_RAETH_LOW_LATENCY
+#define NAPI_WEIGHT		16  /* Lower weight for reduced latency */
+#else
 //#define NAPI_WEIGHT		64
-//#else
 //#define NAPI_WEIGHT		32
-//#endif
 #define NAPI_WEIGHT		128
+#endif
 
 ///////////////////////////////////////////////////////////////
 

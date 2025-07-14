@@ -18,6 +18,19 @@ config  RAETH_BQL
 	depends on RAETH && BQL
 	default n
 
+config  RAETH_LOW_LATENCY
+	bool "Low Latency Optimizations (Gaming/VoIP)"
+	depends on RAETH && RAETH_NAPI
+	default n
+	---help---
+	  Enable low latency optimizations including:
+	  - Reduced NAPI weight for faster packet processing
+	  - IRQ affinity management for network interrupts
+	  - Enhanced interrupt mitigation settings
+	  - Optimized buffer management for minimal delay
+	  
+	  Recommended for gaming, VoIP, and low-latency VPN applications.
+
 config  RAETH_QDMA
 	bool "QDMA port P5 for Tx path (HW QoS -> 16 pipes)"
 	depends on RAETH && RALINK_MT7621
