@@ -521,6 +521,12 @@ dma_recv(struct net_device* dev, END_DEVICE* ei_local, int work_todo)
 #endif	/* CONFIG_RAETH_NAPI */
 		}
 		
+#ifdef CONFIG_RAETH_LOW_LATENCY
+		/* BPF-style latency tracing for low-latency mode */
+		extern void bpf_trace_netdev_rx(struct sk_buff *skb, const char *dev_name);
+		bpf_trace_netdev_rx(rx_skb, dev->name);
+#endif
+		
 		work_done++;
 	}
 
