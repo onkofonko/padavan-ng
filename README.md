@@ -36,6 +36,43 @@ WiFi name 2.4GHz: Padavan_2.4GHz
 WiFi name 5GHz: Padavan_5GHz
 WiFi Password 2.4/5GHz: 1234567890
 ```
+# Для желающих поддержать проект #
+
+Чтобы выразить благодарность и поддержать мою работу:
+
+ЮMoney кошелёк 4100118647832050
+
+Ссылка для быстрого пополнения https://yoomoney.ru/to/4100118647832050
+
+ЮMoney виртуальная карта 5599 0020 6991 1404
+
+Виртуальная карта Приват Банка гривна: 5169 3600 0910 4443
+
+Виртуальная карта Приват Банка USD: 5169 3600 0910 4385
+
+Большое спасибо вам за вашу поддержку!
+
+Желаю всем добра, а так же Здоровья! Вы даёте мне возможоность жить и дышать! © by Sergey Hadzhioglu
+
+# For those who want to support the project #
+
+To express gratitude and support my work:
+
+ЮMoney wallet 4100118647832050
+
+Link for quick replenishment https://yoomoney.ru/to/4100118647832050
+
+ЮMoney Virtual Card 5599 0020 6991 1404
+
+Virtual Card Privat Bank UAH: 5169 3600 0910 4443
+
+Virtual Card Privat Bank USD: 5169 3600 0910 4385
+
+Thank you very much for your support!
+
+I wish you all the best, and also Health! You give me the opportunity to live and breathe! © by Sergey Hadzhioglu
+
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/4KRbrfM/maxresdefault.jpg" alt="maxresdefault" border="0"></a>
 
 # DISCLAIMER #
 IMPORTANT NOTE!! PLEASE READ IT CAREFULLY!!
