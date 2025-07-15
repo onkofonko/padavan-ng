@@ -28,4 +28,3 @@ clean:
 romfs:
 	$(MAKE) -C $(SSL_VER) romfs
 	$(ROMFSINST) /etc_ro/ca-certificates.crt
-	$(ROMFSINST) /etc_ro/openssl.cnf

@@ -99,9 +99,8 @@ install:
 romfs:
 	cp -fP $(DESTDIR)/lib/libssl.so* $(ROMFSDIR)/lib
 	cp -fP $(DESTDIR)/lib/libcrypto.so* $(ROMFSDIR)/lib
-#	cp -fP ${CONFIG_TOOLCHAIN_DIR}/mipsel-linux-uclibc/sysroot/lib/libatomic.so* $(ROMFSDIR)/lib
-	cp -fP libatomic/libatomic.so* $(ROMFSDIR)/lib
-
+	cp -fP $(CONFIG_CROSS_COMPILER_ROOT)/mipsel-linux-uclibc/sysroot/lib/libatomic.so* $(ROMFSDIR)/lib
+	$(ROMFSINST) /etc_ro/openssl.cnf
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_OPENSSL_EXE),y)
 	$(ROMFSINST) $(SRC_NAME)/apps/openssl /usr/bin/openssl
 endif
